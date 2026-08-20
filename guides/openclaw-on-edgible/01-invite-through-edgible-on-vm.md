@@ -1,6 +1,6 @@
 # OpenClaw on Edgible — Getting started
 
-By the end of this chapter you have an OpenClaw Control UI on a real **`https://….edgible.app`** URL. You open it from a **phone on cellular**, chat with the agent that lives on the mini-PC, and you did **not** port-forward 22, 80, 443, or 18789, and you did **not** install Tailscale. The Gateway stays on **loopback** at home. Edgible is the public door: HTTPS hostname, certificate, and **org login** so a stranger with the URL should not see the dashboard.
+By the end of this chapter you have an OpenClaw Control UI on a real **`https://openclaw-ui.your-org.edgible.com`** URL (pattern: `<app>.<org>.edgible.com`). You open it from a **phone on cellular**, chat with the agent that lives on the mini-PC, and you did **not** port-forward 22, 80, 443, or 18789, and you did **not** install Tailscale. The Gateway stays on **loopback** at home. Edgible is the public door: HTTPS hostname, certificate, and **org login** so a stranger with the URL should not see the dashboard.
 
 **Why Edgible (not Tailscale Serve, not a hole in the router):**
 
@@ -9,7 +9,7 @@ By the end of this chapter you have an OpenClaw Control UI on a real **`https://
 - **Org login in front.** You decide who in the organisation can hit the hostname. Tailscale Serve instead trusts whoever is on your tailnet and speaks identity headers OpenClaw already understands — fewer OpenClaw prompts, but every client must run Tailscale.
 - **OpenClaw still has its own locks.** First time on a browser you paste the gateway token and approve the device. That is OpenClaw, not Edgible. Later visits on that browser are just the URL and, when the session expired, Edgible login.
 
-The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **one file on the VM created from the phone**. Teardown is a later chapter.
+The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone**. Teardown is a later chapter.
 
 ---
 
@@ -20,11 +20,11 @@ The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on 
 - The `edgible` CLI on that VM, logged in as you.
 - A serving device registered in your org (we will call it `mini-pc`).
 - `edgible device health --name mini-pc` reporting **Health check OK**.
-- A public **Hello World** page on an `*.edgible.app` URL that loads on your **phone** (cellular, not the VM’s Wi‑Fi).
+- A public **Hello World** page on a `hello-world.your-org.edgible.com` URL that loads on your **phone** (cellular, not the VM’s Wi‑Fi).
 - A **model** for OpenClaw: a Gemini API key (default), or local Ollama if the box is big enough.
 - OpenClaw Gateway on the VM, with a **local** `hello` reply in the terminal.
-- The OpenClaw Control UI on an `*.edgible.app` URL, **org auth**, reachable from a **phone** on cellular.
-- One file on the VM (`~/edgible-from-phone.txt`) created from that phone — the agent acted on the mini-PC, not only chatted.
+- The OpenClaw Control UI on an `openclaw-ui.your-org.edgible.com` URL, **org auth**, reachable from a **phone** on cellular.
+- The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML. The agent acted on the mini-PC, not only chatted.
 
 You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 
@@ -369,7 +369,7 @@ edgible app create existing
 | Select local workload | **hello-world** (the nginx container) |
 | Select port | **8081** |
 
-When it succeeds, the CLI prints an application **URL** (an `*.edgible.app` hostname). Do **not** open that HTTPS URL yet — the certificate is still being issued.
+When it succeeds, the CLI prints an application **URL**. Standard shape is `https://<app>.<org>.edgible.com` — for this app, something like `https://hello-world.your-org.edgible.com`. Always copy the exact host the CLI prints. Do **not** open that HTTPS URL yet — the certificate is still being issued.
 
 ### 7c. Wait for the certificate (console)
 
@@ -405,7 +405,7 @@ Leave this app running until the teardown chapter (or `edgible app delete --name
 ### Verify
 
 - [ ] `curl http://127.0.0.1:8081/` shows Hello World on the VM.
-- [ ] `edgible app list` shows **hello-world** with an `*.edgible.app` URL.
+- [ ] `edgible app list` shows **hello-world** with a `hello-world.<org>.edgible.com` URL.
 - [ ] In the console, **hello-world** → **Certificates** shows the cert as issued / ready.
 - [ ] `curl` to the **https** URL shows Hello World on the VM.
 - [ ] The same page loads on a phone on **cellular**.
@@ -471,7 +471,7 @@ Any key OpenClaw onboarding accepts is fine: **OpenAI Platform** (`sk-…` at [p
 
 ### 8d. A private model via Edgible (someone you trust)
 
-Someone else (or your other site) runs a model on **their** hardware — Ollama, vLLM, a fine-tune — and publishes that API through Edgible. You point OpenClaw at their `https://….edgible.app` URL instead of Gemini.
+Someone else (or your other site) runs a model on **their** hardware — Ollama, vLLM, a fine-tune — and publishes that API through Edgible. You point OpenClaw at their `https://<app>.<org>.edgible.com` URL instead of Gemini.
 
 This is a real Edgible job. It is **not** this trial’s path if you already have Gemini (8a).
 
@@ -553,7 +553,7 @@ If you used **8b / 8c / 8d** instead of Gemini, swap only the auth flags:
 | 8a Gemini | as above |
 | 8b Ollama | `--auth-choice ollama --custom-model-id llama3.2:1b` (or the model you pulled) |
 | 8c OpenAI / Groq / … | that provider’s `--auth-choice` and key flag ([CLI automation](https://docs.openclaw.ai/start/wizard-cli-automation)) |
-| 8d private Edgible URL | `--auth-choice custom-api-key --custom-base-url 'https://….edgible.app/v1' --custom-model-id '…' --custom-api-key "$CUSTOM_API_KEY"` |
+| 8d private Edgible URL | `--auth-choice custom-api-key --custom-base-url 'https://<app>.<org>.edgible.com/v1' --custom-model-id '…' --custom-api-key "$CUSTOM_API_KEY"` |
 
 ### 9c. Pin a Flash model (required on Gemini free tier)
 
@@ -728,7 +728,7 @@ Leave extra hostnames blank if asked. **Allow other organizations?** **No**. Nev
 
 Confirm `ss -ltnp | grep 18789` still shows `127.0.0.1:18789` before you continue.
 
-The CLI prints an `*.edgible.app` URL. Do **not** open it yet — wait for the certificate.
+The CLI prints an `openclaw-ui.<org>.edgible.com` URL. Do **not** open it yet — wait for the certificate.
 
 ### 10b. Wait for the certificate
 
@@ -739,11 +739,11 @@ edgible app list
 edgible app status
 ```
 
-Copy the **https://…edgible.app** URL (no trailing path).
+Copy the **https://openclaw-ui.<org>.edgible.com** URL (no trailing path). Always copy the exact host from `edgible app list`.
 
 ### 10c. Tell OpenClaw that origin is allowed
 
-The landing page loading through Edgible is **not** enough. The Control UI’s JavaScript sends `Origin: https://….edgible.app`. Loopback allows `http://127.0.0.1:18789`; Edgible is a **different origin**, so OpenClaw returns **browser origin not allowed**. That is **not** fixed by `openclaw gateway` / `openclaw dashboard` (those are local-only).
+The landing page loading through Edgible is **not** enough. The Control UI’s JavaScript sends `Origin: https://openclaw-ui.<org>.edgible.com`. Loopback allows `http://127.0.0.1:18789`; Edgible is a **different origin**, so OpenClaw returns **browser origin not allowed**. That is **not** fixed by `openclaw gateway` / `openclaw dashboard` (those are local-only).
 
 On the VM, get the exact hostname (no path):
 
@@ -755,11 +755,11 @@ Allow **both** the local UI and the Edgible origin (replace the host):
 
 ```bash
 openclaw config set gateway.controlUi.allowedOrigins \
-  '["http://127.0.0.1:18789","https://YOUR-HOST.edgible.app"]' --strict-json
+  '["http://127.0.0.1:18789","https://openclaw-ui.YOUR-ORG.edgible.com"]' --strict-json
 openclaw gateway restart
 ```
 
-The Edgible value must be exactly `https://` + hostname — no path, no trailing slash, no `www` unless the URL has it.
+The Edgible value must be exactly `https://` + hostname from `edgible app list` — pattern `https://<app>.<org>.edgible.com`, no path, no trailing slash, no `www` unless the URL has it.
 
 ```bash
 openclaw config get gateway.controlUi.allowedOrigins
@@ -788,7 +788,7 @@ python3 -c 'import json, pathlib; p=pathlib.Path.home()/".openclaw"/"openclaw.js
 Then either:
 
 - Control UI → **Settings** → gateway token → paste → save, or
-- Open `https://YOUR-HOST.edgible.app/#token=THEVALUE` (same host as `edgible app list`; fragment, not a query string).
+- Open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=THEVALUE` (same host as `edgible app list`; fragment, not a query string).
 
 Do **not** set `gateway.auth.mode` to `none` or `trusted-proxy`.
 
@@ -822,7 +822,7 @@ You do **not** repeat origins, `trustedProxies`, token-from-disk, or `devices ap
 
 | Each visit | First time only (this browser / this phone) | Only if something changed |
 | --- | --- | --- |
-| Open the same `https://….edgible.app` URL | Paste gateway token (or `#token=`) | New hostname → update `allowedOrigins` |
+| Open the same `https://openclaw-ui.<org>.edgible.com` URL | Paste gateway token (or `#token=`) | New hostname → update `allowedOrigins` |
 | Edgible **org** login if the session expired | `openclaw devices approve` for this browser | Cleared site data, private window, new browser/profile, or phone → token + pairing again |
 | Gateway already running on the mini-PC (`openclaw gateway status`) | — | Token rotated / device revoked → paste + approve again |
 
@@ -832,7 +832,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 
 1. Turn **Wi‑Fi off** on the phone.
 2. Open the **https** URL. You should get **Edgible org login** first — sign in as the same account as step 1. A stranger with the URL should **not** see OpenClaw.
-3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 10c: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://YOUR-HOST.edgible.app/#token=…`. The phone is a **new** device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a **local** handoff; it does not replace this on the phone.
+3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 10c: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a **new** device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a **local** handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 
 If **hello-world** still loads on the phone and **openclaw-ui** does not, the tunnel is fine — the failure is OpenClaw (certs, org login, origins, WebSocket, token).
@@ -841,7 +841,7 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet — 
 
 ### Verify
 
-- [ ] `edgible app list` shows **openclaw-ui** with an `*.edgible.app` URL.
+- [ ] `edgible app list` shows **openclaw-ui** with an `openclaw-ui.<org>.edgible.com` URL.
 - [ ] Console **Certificates** for **openclaw-ui** is issued / ready.
 - [ ] Protection is **org**, not None.
 - [ ] Phone on **cellular**: Edgible login, then Control UI, then a chat reply.
@@ -850,44 +850,58 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet — 
 
 ---
 
-## 11. One thing it can actually do (from the phone)
+## 11. Show OpenClaw actually doing something (from the phone)
 
-**Outcome:** A file on the mini-PC that you created from the phone — proof this is not a website chatbot.
+**Outcome:** Your public Hello World site changed because the agent on the mini-PC rewrote it — you watched it from the phone.
 
-`hello` only showed the model. The interesting Edgible story is: **you are not at the box, the agent is.** ChatGPT in a browser cannot write `~/edgible-from-phone.txt` on this VM.
+`hello` only showed the model. A file on disk is proof of tools. The **wow** is Edgible-shaped: you already have a public page at `hello-world.<org>.edgible.com`. OpenClaw lives on the same box. From the Control UI, tell it to replace that page. Refresh the Hello World URL. ChatGPT in a tab cannot change a website on your mini-PC.
 
-On the **phone** (cellular, same Control UI as 10d), send:
+Leave the **hello-world** nginx container running (step 7). The HTML is on the **host** at `~/hello-world/index.html` (bind-mounted read-only into nginx — the container cannot write; the agent on the host can).
+
+On the **phone** (cellular, Control UI from step 10), talk like a person — you do not need the path:
 
 ```text
-On this machine, write ~/edgible-from-phone.txt with two lines:
-1) created via Edgible from my phone
-2) the current UTC time
-Then reply with the hostname and the exact contents of that file. Use tools — do not only describe the file.
+Change the hello-world app to say "OpenClaw was here!"
 ```
 
-If the Control UI asks to **approve** a shell/write, approve it. That is the agent touching the mini-PC; you are still in the loop.
+That one line is enough on this setup (Gemini Flash + tools). Approve a write if asked.
 
-On the **VM** (proof the model did not invent it):
+Then **leave the Control UI**, open `https://hello-world.YOUR-ORG.edgible.com` (same host as step 7, Wi‑Fi still off), and **hard-refresh**. You should see **OpenClaw was here** — not the original Hello World.
 
-```bash
-hostname
-cat ~/edgible-from-phone.txt
+If it only *describes* the change, or the public page is unchanged, it guessed (docker exec into a read-only mount, wrong path, or no tool call). Then be explicit:
+
+```text
+Overwrite ~/hello-world/index.html on the host (nginx bind-mount). Do not docker exec.
+Put a heading "OpenClaw was here" and the current UTC time. Use the write or exec tool.
 ```
 
-You want the same two lines in the terminal as in the chat. If the chat claims success and `cat` says no such file, it hallucinated — say “use the write or exec tool” and retry.
+On the VM, `cat ~/hello-world/index.html` is the ground truth. New file, old page → wait a second and hard-refresh again.
 
-Do **not** ask it to open ports, install packages, or edit OpenClaw/Edgible config. This is a sandbox demo, not a sysadmin.
+Optional extra wow — it works while you are not talking to it:
+
+```text
+In two minutes, append one HTML paragraph to ~/hello-world/index.html: "cron: still here" and the new UTC time. Use a cron/automation job, then confirm it is scheduled.
+```
+
+Wait, refresh Hello World again. The second line should appear without another chat.
+
+Do **not** ask it to open ports, install packages, or edit OpenClaw/Edgible config.
 
 ### Verify
 
-- [ ] Phone chat shows hostname + file contents.
-- [ ] `cat ~/edgible-from-phone.txt` on the VM matches.
+- [ ] Phone Control UI says it wrote the page.
+- [ ] Phone browser on **hello-world** (cellular) shows **OpenClaw was here**, not the original Hello World.
+- [ ] `cat ~/hello-world/index.html` on the VM matches what you see.
 - [ ] Port **18789** is still not forwarded.
 
 ---
 
-## Stop here
+## Why this pattern
 
-You have a sandboxed OpenClaw on the VM, the Control UI on a hostname behind Edgible org auth, and a file on disk that you created from a phone. A stranger should not reach the dashboard; you can, without Tailscale.
+You just ran OpenClaw on a box you control, with a real `https://<app>.<org>.edgible.com` door, **org login**, and **no hole in the router**. The Gateway stays on loopback. Edgible is outbound 443, a bookmarkable URL, and who in the org can hit it — not Tailscale on every phone, not a Serve hostname only your tailnet can use. First browser still does OpenClaw’s token and device approve; after that it is the URL and, when the session expired, Edgible login.
+
+The agent can think where you choose. Same VM: a local model (Ollama, if the box is big enough) so weights never leave the house. Or point OpenClaw at a **trusted private provider** you published through Edgible — their hardware, your org’s hostname, often **free tokens** from someone you actually trust, not a public chatbot that keeps the conversation. Gemini in this chapter was the cheap on-ramp, not the ceiling.
+
+The VM is the blast radius. OpenClaw can write files and run tools; that happens **inside the guest**, not on the laptop you browse and bank on. You still drive it from anywhere: phone on cellular, Control UI, rewrite the public Hello World page, refresh `hello-world.<org>.edgible.com` and see it. ChatGPT in a tab cannot do that. A stranger with the OpenClaw URL should not see the dashboard. You can — without Tailscale, without port-forward, from wherever you are.
 
 **Later:** tear down hello-world, OpenClaw, the agent, the CLI, and the VM.
