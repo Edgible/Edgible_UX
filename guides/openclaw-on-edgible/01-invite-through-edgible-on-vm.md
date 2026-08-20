@@ -9,7 +9,7 @@ By the end of this chapter you have an OpenClaw Control UI on a real **`https://
 - **Org login in front.** You decide who in the organisation can hit the hostname. Tailscale Serve instead trusts whoever is on your tailnet and speaks identity headers OpenClaw already understands — fewer OpenClaw prompts, but every client must run Tailscale.
 - **OpenClaw still has its own locks.** First time on a browser you paste the gateway token and approve the device. That is OpenClaw, not Edgible. Later visits on that browser are just the URL and, when the session expired, Edgible login.
 
-The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone**. Teardown is a later chapter.
+The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL**. Teardown is a later chapter.
 
 ---
 
@@ -24,7 +24,8 @@ The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on 
 - A **model** for OpenClaw: a Gemini API key (default), or local Ollama if the box is big enough.
 - OpenClaw Gateway on the VM, with a **local** `hello` reply in the terminal.
 - The OpenClaw Control UI on an `openclaw-ui.your-org.edgible.com` URL, **org auth**, reachable from a **phone** on cellular.
-- The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML. The agent acted on the mini-PC, not only chatted.
+- The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML.
+- A **born on this day** page on that same public URL (one notable person, Wikipedia-scale public sources) that **rotates every hour** — 24 people in a day.
 
 You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 
@@ -461,9 +462,37 @@ ollama pull llama3.2:1b
 ollama run llama3.2:1b "Say hello in one word"
 ```
 
-On 16 GB+ you can pull a larger model instead. You want a short reply in the terminal, not an out-of-memory kill.
+**Ollama on the Mac, OpenClaw in the VM (32 GB Mac):** Do **not** put the model in the 8 GB guest. Install [Ollama for Mac](https://ollama.com/download). After the VM’s 8 GB, you have on the order of **16 GB** left for a model once macOS and the browser have a share — enough for a real agent, tight for a 27B if Chrome is fat.
 
-**Different machine of yours for Ollama?** If OpenClaw cannot see that box on the LAN, publish Ollama through Edgible (with **auth**, never None) — that is 8d, except you are both operator and client. If both boxes are on the same home LAN, use the LAN IP and skip Edgible for Ollama.
+On the **Mac**:
+
+```bash
+ollama pull gpt-oss:20b
+# or, if `ollama run` stays snappy with the VM up: ollama pull qwen3.5:27b
+ollama run gpt-oss:20b "Say hello in one word"
+```
+
+`gpt-oss:20b` is the safer fit next to an 8 GB VM. Try **Qwen 27B** only if Activity Monitor still has headroom (no swap storm).
+
+Ollama defaults to **Mac localhost only**. The VM’s `127.0.0.1` is the *guest*, so OpenClaw will not see it. Listen on all interfaces on the Mac (home LAN only — do not port-forward **11434** on the router):
+
+```bash
+launchctl setenv OLLAMA_HOST "0.0.0.0:11434"
+killall Ollama; open -a Ollama
+```
+
+On the **VM**, the host is the default gateway (UTM NAT is often `192.168.64.1`; VirtualBox NAT is often `10.0.2.2`):
+
+```bash
+HOST=$(ip route | awk '/default/ {print $3; exit}')
+curl -sS "http://${HOST}:11434/api/tags"
+```
+
+You want JSON with your model name, not connection refused. UTM NAT is often `192.168.64.1` if `$HOST` is wrong. Do **not** test `127.0.0.1` **on the VM** — that is the guest, not the Mac.
+
+Ollama is the **runtime** on the Mac. Qwen / gpt-oss is the **model** you pulled. There is no Google-style API key; OpenClaw still wants a dummy `apiKey` (`ollama-local`).
+
+Do **not** publish Ollama through Edgible on **None**. The VM talking to the Mac on the virtual LAN is enough. After OpenClaw is installed, point it at this host in **9g**.
 
 ### 8c. Another cloud provider
 
@@ -487,7 +516,7 @@ When you install OpenClaw, that URL is a **custom / OpenAI-compatible provider**
 
 ### Verify
 
-- [ ] You have **one** of: a Gemini (or other cloud) API key, `ollama run` on this machine, or a private Edgible model URL plus a machine credential from someone you trust.
+- [ ] If you used Mac Ollama: `curl` from the **VM** to `http://$HOST:11434/api/tags` returns JSON (not `127.0.0.1` on the guest).
 - [ ] You did **not** use ChatGPT Free as the model.
 - [ ] The key or private URL was not pasted into Slack, git, or the Hello World page.
 
@@ -551,7 +580,8 @@ If you used **8b / 8c / 8d** instead of Gemini, swap only the auth flags:
 | Step 8 choice | Onboard auth |
 | ------------- | ------------ |
 | 8a Gemini | as above |
-| 8b Ollama | `--auth-choice ollama --custom-model-id llama3.2:1b` (or the model you pulled) |
+| 8b Ollama **in the guest** | `--auth-choice ollama --custom-model-id llama3.2:1b` (tiny; only if the VM has enough RAM) |
+| 8b Ollama **on the Mac** | `--auth-choice ollama --custom-base-url "http://$HOST:11434" --custom-model-id gpt-oss:20b` (no `/v1`; `$HOST` from step 8b). Or onboard Gemini first, then **9g**. |
 | 8c OpenAI / Groq / … | that provider’s `--auth-choice` and key flag ([CLI automation](https://docs.openclaw.ai/start/wizard-cli-automation)) |
 | 8d private Edgible URL | `--auth-choice custom-api-key --custom-base-url 'https://<app>.<org>.edgible.com/v1' --custom-model-id '…' --custom-api-key "$CUSTOM_API_KEY"` |
 
@@ -565,7 +595,14 @@ Google’s API name from step 8 (`models/gemini-2.5-flash`) is **not** always Op
 openclaw models list --provider google
 ```
 
-Copy an id from the output (examples that *might* appear: `google/gemini-3.5-flash`, `google/gemini-flash-latest`, `google/gemini-2.5-flash`). Then:
+Copy an id from the output. Pick in this order (use a row that is **actually listed**):
+
+1. **`flash` in the name, no `pro`, no `preview`** — e.g. `google/gemini-2.5-flash`, `google/gemini-3-flash`, `google/gemini-flash-latest`.
+2. If several Flash rows: prefer **latest / highest 2.x or 3.x Flash**, not `-lite`, not `-thinking`.
+3. **Flash-Lite** only if you are hitting 429s on Flash and need more RPM (weaker at tools).
+4. **Never** Pro, Ultra, or `*-preview` on the AI Studio **free** key — that is the 429.
+
+Then:
 
 ```bash
 openclaw models set google/<the-flash-id-from-list>
@@ -667,6 +704,61 @@ That launches the VM browser onto the Control UI (with a short-lived handoff —
 
 If there is no GUI, there is no in-guest browser — skip to Edgible, or forward host `127.0.0.1:18789` → guest `18789` in UTM/VirtualBox and use the Mac browser. Do not port-forward 18789 on the router.
 
+### 9g. Point OpenClaw at Ollama on the Mac (optional)
+
+**Outcome:** Chat on the VM uses the Mac’s local model (unlimited tokens, no Gemini quota), still via native Ollama — not `/v1`.
+
+Do this if you already onboarded with **Gemini** (9b) and step **8b** `curl` from the VM already returns JSON. Do **not** re-run full `openclaw onboard` unless you want to redo Gateway setup.
+
+On the **VM**:
+
+```bash
+HOST=$(ip route | awk '/default/ {print $3; exit}')
+echo "Ollama host: $HOST"
+curl -sS -m 5 "http://${HOST}:11434/api/tags"
+```
+
+Copy a model **name** from that JSON (example: `gpt-oss:20b` or `qwen3.5:27b`). There is no real Ollama key — `ollama-local` is a dummy.
+
+```bash
+openclaw config set models.providers.ollama.baseUrl "http://${HOST}:11434"
+openclaw config set models.providers.ollama.api ollama
+openclaw config set models.providers.ollama.apiKey ollama-local
+openclaw models list --provider ollama
+openclaw models set ollama/gpt-oss:20b
+openclaw gateway restart
+```
+
+Use the tag you actually pulled (`ollama/qwen3.5:27b` if that is the name). Then:
+
+```bash
+openclaw agent --agent main --thinking off --message "Say hello in one sentence."
+```
+
+First reply can be slow (Mac loads the weights). If it still behaves like Gemini, `models set` missed — `list` again and set an id that is printed.
+
+To make **Gemini Flash the default** and **gpt-oss only when Gemini has no capacity** (429 / quota / timeout), do **not** leave `models set ollama/…` as primary. After the Ollama provider is configured (the `config set` lines above), on the VM:
+
+```bash
+openclaw models list --provider google
+openclaw models list --provider ollama
+```
+
+Use ids that `list` actually prints (Flash, not Pro; `ollama/gpt-oss:20b` or whatever tag you pulled — **not** a 20 GB-resident Qwen). Then:
+
+```bash
+openclaw models set google/<the-flash-id-from-list>
+openclaw config set agents.defaults.model.fallbacks '["ollama/gpt-oss:20b"]' --strict-json
+openclaw gateway restart
+openclaw config get agents.defaults.model
+```
+
+You want `primary` = `google/…flash…` and `fallbacks` including `ollama/…`.
+
+Failover applies to the **configured default** and to **cron** (step 12). It does **not** apply if you pick a model in the Control UI picker or `/model` — that choice is strict.
+
+Keep the Ollama model small enough that the Mac does not swap, or the “backup” is slower than waiting for Gemini. Do not publish port **11434** on the router.
+
 ### Do not do these yet
 
 - Telegram / WhatsApp / Discord — they already dial out; they are not the Edgible job.
@@ -678,6 +770,7 @@ If there is no GUI, there is no in-guest browser — skip to Edgible, or forward
 - [ ] `openclaw --version` prints a version on the VM.
 - [ ] `openclaw gateway status` shows running on **18789** (loopback).
 - [ ] After **9c**, `openclaw models status` shows a **Flash** (not Pro/preview) default if you used Gemini free tier.
+- [ ] After **9g** (optional): `openclaw models status` shows `ollama/…` and a hello reply still works (Mac Ollama, not `127.0.0.1` on the guest).
 - [ ] `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
 - [ ] Hello World on the phone still loads (Edgible tunnel unchanged).
 - [ ] `curl` to `http://127.0.0.1:18789/` on the VM returns **200**.
@@ -877,14 +970,6 @@ Put a heading "OpenClaw was here" and the current UTC time. Use the write or exe
 
 On the VM, `cat ~/hello-world/index.html` is the ground truth. New file, old page → wait a second and hard-refresh again.
 
-Optional extra wow — it works while you are not talking to it:
-
-```text
-In two minutes, append one HTML paragraph to ~/hello-world/index.html: "cron: still here" and the new UTC time. Use a cron/automation job, then confirm it is scheduled.
-```
-
-Wait, refresh Hello World again. The second line should appear without another chat.
-
 Do **not** ask it to open ports, install packages, or edit OpenClaw/Edgible config.
 
 ### Verify
@@ -892,6 +977,47 @@ Do **not** ask it to open ports, install packages, or edit OpenClaw/Edgible conf
 - [ ] Phone Control UI says it wrote the page.
 - [ ] Phone browser on **hello-world** (cellular) shows **OpenClaw was here**, not the original Hello World.
 - [ ] `cat ~/hello-world/index.html` on the VM matches what you see.
+- [ ] Port **18789** is still not forwarded.
+
+---
+
+## 12. A repeating public brief (no personal data)
+
+**Outcome:** Hello World becomes an **On this day** page: one important person **born on this calendar day**, rotating **every hour** so a day shows **24 different people**. Public sources only.
+
+Inbox and calendar demos are the wrong story here: they need your mail, and this Hello World URL is **public**. Use the open web. The job OpenClaw is good at: **the same research, on a schedule, reported somewhere you will actually look.**
+
+On the **phone**, Control UI — talk like a person:
+
+```text
+Turn the hello-world app into an On this day page.
+Pick one important historical figure born on this date (any year).
+Summarise who they were, why they still matter, and one quirky detail.
+Public sources only (Wikipedia is fine). Nothing about me. Simple HTML.
+```
+
+Hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a name, dates, a few paragraphs — not “OpenClaw was here.”
+
+If it guesses from memory with no fetch, say: use Wikipedia’s “On this day” **births** for today’s month and day, then rewrite hello-world.
+
+Then make it **rotate every hour** (24 people per calendar day):
+
+```text
+Every hour, update hello-world with a different person born on this calendar date.
+Do not repeat someone already shown today. Aim for 24 distinct people in 24 hours.
+After local midnight, start the next date's births.
+Keep a short list of who you've already shown (a file next to the HTML is fine).
+Use a cron/automation job. Confirm the schedule. Public sources only. Nothing about me.
+```
+
+Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash (step 9c). For a long-running box, switch this cron to daily after the demo.
+
+### Verify
+
+- [ ] Hello World names someone **born on this calendar day**, with a short summary.
+- [ ] A second run (next hour or Run now) shows a **different** person, not a repeat.
+- [ ] Control UI / Automations lists an **hourly** job.
+- [ ] No personal mail, files, or calendar in the page source (`cat ~/hello-world/index.html`).
 - [ ] Port **18789** is still not forwarded.
 
 ---
