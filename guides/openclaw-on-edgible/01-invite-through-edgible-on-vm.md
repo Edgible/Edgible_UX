@@ -9,7 +9,7 @@ By the end of this chapter you have an OpenClaw Control UI on a real **`https://
 - **Org login in front.** You decide who in the organisation can hit the hostname. Tailscale Serve instead trusts whoever is on your tailnet and speaks identity headers OpenClaw already understands — fewer OpenClaw prompts, but every client must run Tailscale.
 - **OpenClaw still has its own locks.** First time on a browser you paste the gateway token and approve the device. That is OpenClaw, not Edgible. Later visits on that browser are just the URL and, when the session expired, Edgible login.
 
-The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL**. Teardown is a later chapter.
+The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL** → (optional) **Cursor Agent on a git repo**, spawned from that same phone chat. Teardown is a later chapter.
 
 ---
 
@@ -26,6 +26,7 @@ The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on 
 - The OpenClaw Control UI on an `openclaw-ui.your-org.edgible.com` URL, **org auth**, reachable from a **phone** on cellular.
 - The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML.
 - A **born on this day** page on that same public URL (one notable person, Wikipedia-scale public sources) that **rotates every hour** — 24 people in a day.
+- (Optional, step 13) Cursor CLI logged in **on the VM**, OpenClaw ACP pointing at it, one coding spawn against a **git repo that is not hello-world**.
 
 You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 
@@ -41,6 +42,7 @@ You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 | Ubuntu **24.04 LTS** ISO | Downloaded in step 2. Match the CPU: **amd64** on typical PCs; **arm64** on Apple Silicon.                                                                                                                                              |
 | Sudo on the guest        | You will install a systemd agent that configures WireGuard, iptables, and Caddy.                                                                                                                                                        |
 | A model for OpenClaw     | Default: a free **Gemini** API key (Google account). Or local **Ollama** if the VM/mini-PC has enough RAM. ChatGPT Free on chatgpt.com is not a key. See step 8.                                                                        |
+| Cursor (optional)        | Paid **Cursor** plan if you will do step 13. The IDE on the host is not enough — you log the **CLI** in on the VM. Skip step 13 if you have no plan.                                                                                    |
 
 
 NAT networking is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 80, 443, or 18789 on the host. That is the point of Edgible.
@@ -706,7 +708,7 @@ If there is no GUI, there is no in-guest browser — skip to Edgible, or forward
 
 ### 9g. Point OpenClaw at Ollama on the Mac (optional)
 
-**Outcome:** Chat on the VM uses the Mac’s local model (unlimited tokens, no Gemini quota), still via native Ollama — not `/v1`.
+**Outcome:** Chat on the VM uses the Mac’s local model (unlimited tokens, no Gemini quota), still via native Ollama — not `/v1`. The dashboard picker lists that model after you register it.
 
 Do this if you already onboarded with **Gemini** (9b) and step **8b** `curl` from the VM already returns JSON. Do **not** re-run full `openclaw onboard` unless you want to redo Gateway setup.
 
@@ -720,11 +722,21 @@ curl -sS -m 5 "http://${HOST}:11434/api/tags"
 
 Copy a model **name** from that JSON (example: `gpt-oss:20b` or `qwen3.5:27b`). There is no real Ollama key — `ollama-local` is a dummy.
 
+An explicit `models.providers.ollama` block (`baseUrl`, `api`, `apiKey`) **turns off** auto-discovery. The Control UI picker stays Google-only until you also register the pulled tag in the provider `models` array (use the name from `/api/tags`, not a guess):
+
 ```bash
 openclaw config set models.providers.ollama.baseUrl "http://${HOST}:11434"
 openclaw config set models.providers.ollama.api ollama
 openclaw config set models.providers.ollama.apiKey ollama-local
+openclaw config set models.providers.ollama.models \
+  '[{"id":"gpt-oss:20b","name":"gpt-oss:20b"}]' --strict-json
+openclaw gateway restart
 openclaw models list --provider ollama
+```
+
+`list` must print `ollama/gpt-oss:20b` (or your tag). Then you can pin it as primary if you want local-only chat:
+
+```bash
 openclaw models set ollama/gpt-oss:20b
 openclaw gateway restart
 ```
@@ -755,7 +767,9 @@ openclaw config get agents.defaults.model
 
 You want `primary` = `google/…flash…` and `fallbacks` including `ollama/…`.
 
-Failover applies to the **configured default** and to **cron** (step 12). It does **not** apply if you pick a model in the Control UI picker or `/model` — that choice is strict.
+**Control UI picker.** Fallbacks do **not** fill the dashboard list. After `gateway restart`, **refresh** the Control UI tab. gpt-oss appears only when `openclaw models list --provider ollama` already prints it (the `models` array above). If `list` omits it, the picker stays Google-only — Ollama often hides models that `/api/show` does not mark as **tool-capable** with **≥16K** context. Fallback can still use `ollama/gpt-oss:20b` from config. To pin local in chat anyway: `/model ollama/gpt-oss:20b`.
+
+Failover applies to the **configured default** and to **cron** (step 12). It does **not** apply if you pick a model in the Control UI picker or `/model` — that choice is strict. Leave the picker on **Default** so Gemini can fail over.
 
 Keep the Ollama model small enough that the Mac does not swap, or the “backup” is slower than waiting for Gemini. Do not publish port **11434** on the router.
 
@@ -770,7 +784,7 @@ Keep the Ollama model small enough that the Mac does not swap, or the “backup�
 - [ ] `openclaw --version` prints a version on the VM.
 - [ ] `openclaw gateway status` shows running on **18789** (loopback).
 - [ ] After **9c**, `openclaw models status` shows a **Flash** (not Pro/preview) default if you used Gemini free tier.
-- [ ] After **9g** (optional): `openclaw models status` shows `ollama/…` and a hello reply still works (Mac Ollama, not `127.0.0.1` on the guest).
+- [ ] After **9g** (optional): `openclaw models list --provider ollama` prints `ollama/gpt-oss:…` (or your tag); Control UI picker shows that model after a refresh; leave picker on **Default** if Gemini should fail over. `openclaw models status` and a hello reply still work (Mac Ollama, not `127.0.0.1` on the guest).
 - [ ] `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
 - [ ] Hello World on the phone still loads (Edgible tunnel unchanged).
 - [ ] `curl` to `http://127.0.0.1:18789/` on the VM returns **200**.
@@ -1022,6 +1036,180 @@ Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World
 
 ---
 
+## 13. Advanced: spawn Cursor Agent for programming (optional)
+
+**Outcome:** From the phone Control UI, OpenClaw **spawns Cursor Agent** on a git repo on the mini-PC. A real code change lands in that repo. Cursor is the **coding worker**, not the chat model.
+
+Skip this step if you have no Cursor subscription. Gemini/gpt-oss stay the OpenClaw brain. Steps 11–12 already rewrote public HTML — do **not** point Cursor at `~/hello-world` or `~/.openclaw`.
+
+ACP launches a process on the **Gateway host**. Cursor.app on the Mac does **not** count. Install and log in the CLI **inside the Ubuntu VM**.
+
+`openclaw-ui` must stay **org** (step 10). A phone that can chat can, after this step, ask a coding agent to write files. That is the point — and the blast radius.
+
+### 13a. Cursor CLI on the VM
+
+On the **VM** (guest terminal, same user as the Gateway):
+
+```bash
+curl https://cursor.com/install -fsS | bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+agent --version
+```
+
+You want a version string. The binary is **`agent`**. Some docs say `cursor-agent`; if `which cursor-agent` is empty, that is fine.
+
+Sign in with the **VM desktop browser** (same Cursor account as the Mac is fine):
+
+```bash
+agent login
+agent status
+```
+
+You want a logged-in account, not a prompt to log in. systemd will not see a GUI keychain the way macOS does; Ubuntu file auth from `agent login` as this user is enough.
+
+Do **not** publish Cursor through Edgible. Do **not** put a Cursor API key in Hello World.
+
+### 13b. A tiny git repo (not Hello World)
+
+```bash
+mkdir -p "$HOME/cursor-demo"
+cd "$HOME/cursor-demo"
+git init
+cat > greet.py << 'EOF'
+def greet(name: str) -> str:
+    return f"Hello, {name}"
+
+if __name__ == "__main__":
+    print(greet("world"))
+EOF
+git add greet.py
+git -c user.email=demo@localhost -c user.name=Demo commit -m "start"
+echo "$HOME/cursor-demo"
+```
+
+Copy that last path. You will paste it into `/acp spawn` (the Control UI does not expand `$HOME`).
+
+### 13c. ACP plugin
+
+`ACP_BACKEND_MISSING` / `ACP runtime backend is not configured` means the **Gateway process** has no acpx backend yet. `/acp doctor` in chat cannot fix that — install on the VM, **restart**, then doctor again. Do not `/acp spawn` until doctor is healthy.
+
+On this OpenClaw (**2026.7.x**) the doctor’s own next step is the bare plugin id. On the VM:
+
+```bash
+openclaw plugins install acpx
+openclaw config set plugins.entries.acpx.enabled true
+openclaw config set acp.enabled true
+openclaw config set acp.backend acpx
+openclaw gateway restart
+openclaw plugins list
+```
+
+You want `acpx` **enabled** and **loaded** (not only “installed”). If `install acpx` fails or list stays empty:
+
+```bash
+openclaw plugins install @openclaw/acpx
+openclaw config set plugins.entries.acpx.enabled true
+openclaw gateway restart
+openclaw plugins list
+```
+
+Still missing: `openclaw plugins install clawhub:@openclaw/acpx`, then restart and list again.
+
+If `openclaw config get plugins.allow` prints a JSON list, **`acpx` must be in it**. `plugins install` usually appends it; if not, add `acpx` to that list (keep the other ids) and restart.
+
+`/acp install` in Control UI prints the same enable steps. `acpx --help` is a 2026.7 hint for a **standalone** CLI. Newer acpx is **embedded in the plugin** — if `acpx --help` is “command not found” but `plugins list` shows loaded, ignore the binary and continue. Do not `npm i -g acpx` unless doctor still says backend missing after a loaded plugin + restart.
+
+Then the Cursor harness + a narrow allowlist:
+
+```bash
+openclaw config set acp.defaultAgent cursor
+openclaw config set acp.allowedAgents '["cursor"]' --strict-json
+openclaw config set plugins.entries.acpx.config.probeAgent cursor
+```
+
+The Gateway daemon often **does not** have `~/.local/bin` on `PATH`. Point ACP at the real binary (your `$HOME`):
+
+```bash
+openclaw config set plugins.entries.acpx.config.agents.cursor.command "$HOME/.local/bin/agent"
+openclaw config set plugins.entries.acpx.config.agents.cursor.args '["acp"]' --strict-json
+```
+
+If `which cursor-agent` printed a path instead, use that path and args `["acp"]`.
+
+Headless ACP cannot click “allow write.” For **this demo only**:
+
+```bash
+openclaw config set plugins.entries.acpx.config.permissionMode approve-all
+openclaw gateway restart
+```
+
+`approve-all` is for ACP sessions on this Gateway, not only `cursor-demo`. Put **org** back on openclaw-ui if you flipped it. After 13e, set `permissionMode` back to `approve-reads`.
+
+Open a **new** Control UI chat (an old tab can still think ACP is missing). Then `/acp doctor`.
+
+### 13d. Doctor, then spawn from the phone
+
+On the VM, Gateway running. In Control UI chat (local dashboard **or** phone on cellular — same as step 10):
+
+```text
+/acp doctor
+```
+
+You want a healthy **acpx** backend and **cursor** allowed — not “plugin disabled” or “binary not found.”
+
+Then (paste **your** path from 13b):
+
+```text
+/acp spawn cursor --mode oneshot --thread off --bind here --cwd /home/YOURUSER/cursor-demo
+```
+
+Then, in that same bound chat:
+
+```text
+Add a --name CLI flag to greet.py using argparse. Add tests/test_greet.py with two pytest cases (default world, and a custom name). Do not touch ~/hello-world, ~/.openclaw, or Edgible config.
+```
+
+Wait. `/acp status` if it goes quiet. First Cursor run can be slow (login + model).
+
+On the VM:
+
+```bash
+cd ~/cursor-demo
+git diff
+python3 greet.py --name OpenClaw
+```
+
+You want a diff (argparse + tests) and a greeting that uses the flag. If the page on hello-world also changed, the spawn `cwd` was wrong — restore HTML from git/history if you have it; do not keep using Cursor on that tree.
+
+When you are done:
+
+```text
+/acp close
+```
+
+Natural language (“have Cursor fix the tests in cursor-demo”) can work **after** doctor is green. Prefer `/acp spawn` for this first run.
+
+### 13e. Tighten permissions
+
+```bash
+openclaw config set plugins.entries.acpx.config.permissionMode approve-reads
+openclaw gateway restart
+```
+
+Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` stays a narrow door. Do not set `gateway.auth` to none. Do not point later spawns at `~/hello-world`.
+
+### Verify
+
+- [ ] `agent status` on the VM shows a logged-in Cursor account.
+- [ ] `/acp doctor` in Control UI is healthy.
+- [ ] `git diff` (or new files) under `~/cursor-demo` matches the argparse + tests request.
+- [ ] `~/hello-world/index.html` is unchanged by this step.
+- [ ] `permissionMode` is **approve-reads** again (or you accept the wider ACP blast radius and said so).
+- [ ] openclaw-ui protection is still **org**. Port **18789** is still not forwarded.
+
+---
+
 ## Why this pattern
 
 You just ran OpenClaw on a box you control, with a real `https://<app>.<org>.edgible.com` door, **org login**, and **no hole in the router**. The Gateway stays on loopback. Edgible is outbound 443, a bookmarkable URL, and who in the org can hit it — not Tailscale on every phone, not a Serve hostname only your tailnet can use. First browser still does OpenClaw’s token and device approve; after that it is the URL and, when the session expired, Edgible login.
@@ -1029,5 +1217,7 @@ You just ran OpenClaw on a box you control, with a real `https://<app>.<org>.edg
 The agent can think where you choose. Same VM: a local model (Ollama, if the box is big enough) so weights never leave the house. Or point OpenClaw at a **trusted private provider** you published through Edgible — their hardware, your org’s hostname, often **free tokens** from someone you actually trust, not a public chatbot that keeps the conversation. Gemini in this chapter was the cheap on-ramp, not the ceiling.
 
 The VM is the blast radius. OpenClaw can write files and run tools; that happens **inside the guest**, not on the laptop you browse and bank on. You still drive it from anywhere: phone on cellular, Control UI, rewrite the public Hello World page, refresh `hello-world.<org>.edgible.com` and see it. ChatGPT in a tab cannot do that. A stranger with the OpenClaw URL should not see the dashboard. You can — without Tailscale, without port-forward, from wherever you are.
+
+Programming is a **specialist**, not a second chat model. OpenClaw (Gemini/gpt-oss) remains the dispatcher; optional step 13 spawns **Cursor Agent** on a git repo via ACP. Same phone, same org door, same loopback Gateway — a different worker for multi-file code. Keep that worker off the public HTML tree.
 
 **Later:** tear down hello-world, OpenClaw, the agent, the CLI, and the VM.
