@@ -1065,7 +1065,8 @@ The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is 
 | **`/acp doctor`** | Is acpx loaded and can it start `agent acp`? |
 | **`/acp spawn`** | Start a session and point it at a directory (`--cwd`). On Control UI this does **not** send the coding task. |
 | **`/acp steer`** | Send the actual prompt to that session key. |
-| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind**. This chapter is spawn + steer, not `--bind here`. |
+| **`/acp close`** | End that Cursor job from OpenClaw’s side (stop the harness process, drop the session key). Does not close the Control UI, uninstall acpx, or log out `agent`. |
+| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** — that is why this chapter uses `/acp spawn` then `/acp steer` with a uuid. Discord, Telegram, and WhatsApp can `/acp spawn cursor --bind here --cwd …`; after that you type a normal message, no steer. This chapter still skips those apps (step 9). |
 | **Oneshot** | Do the task and finish. |
 | **`approve-all`** | Headless writes. Applies to **all** ACP jobs on this Gateway until `approve-reads`. |
 
@@ -1213,6 +1214,7 @@ Success looks like: `Spawned ACP session agent:cursor:acp:<uuid> (oneshot, backe
 - Who they were
 - Why they still matter
 - A quirky detail
+- Footer at the end: next rotation time in **Australia/Adelaide** (IANA zone), human-readable (include the offset or ACDT/ACST). Compute from “hourly from this run,” e.g. this update + 1 hour, in that zone — not UTC and not the browser’s local zone.
 Readable typography and a simple layout (CSS file is fine). Those three sections must be real headings, not a single blob. Public sources only. Nothing about me. Do not docker exec (nginx mount is read-only). Do not touch ~/.openclaw, Edgible config, or openclaw-ui.
 ```
 
@@ -1220,7 +1222,7 @@ Readable typography and a simple layout (CSS file is fine). Those three sections
 
 Success looks like: `ACP steer sent to…` then a Cursor summary of HTML/CSS/state/script. That write-up is the **harness**, not Gemini describing a change it did not make.
 
-Leave Control UI. On the **phone** (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a designed page with **Who they were / Why they still matter / A quirky detail** — not a single Gemini dump, not “Hello World”, not “OpenClaw was here.”
+Leave Control UI. On the **phone** (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a designed page with **Who they were / Why they still matter / A quirky detail**, and a footer **Next rotation** in Adelaide time — not a single Gemini dump, not “Hello World”, not “OpenClaw was here.”
 
 ```bash
 cd ~/hello-world
@@ -1246,7 +1248,7 @@ Spawn like 13d (`--cwd` `~/hello-world`). Steer:
 
 ```text
 /acp steer --session agent:cursor:acp:YOUR-UUID Keep the current visual design. Implement hourly rotation infrastructure in this folder:
-1. A Python 3 updater that fetches Wikipedia births for today's month-day, picks one notable person not already shown today, rewrites index.html using the existing CSS and the same sections every time (name + dates, Who they were, Why they still matter, A quirky detail), updates a state file, and starts a new list after local midnight. Print the chosen name to stdout.
+1. A Python 3 updater that fetches Wikipedia births for today's month-day, picks one notable person not already shown today, rewrites index.html using the existing CSS and the same sections every time (name + dates, Who they were, Why they still matter, A quirky detail, footer with next rotation in Australia/Adelaide), updates a state file, and starts a new list after local midnight. Print the chosen name to stdout. Next rotation = this run + 1 hour, formatted in IANA Australia/Adelaide (not UTC).
 2. A small install script (or README with the exact command) that registers an OpenClaw command cron: every 1h, python3 the updater, cwd this folder. Name the job on-this-day-rotate. Use --command (shell), not an agent prompt and not ACP/Cursor.
 3. Tell me the exact commands to run once on the VM.
 Do not docker exec. Do not edit ~/.openclaw by hand. Do not schedule Cursor or /acp spawn. Public sources only. Nothing about me.
@@ -1285,7 +1287,7 @@ Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` st
 
 - [ ] `agent status` on the VM shows a logged-in Cursor account.
 - [ ] `/acp doctor` in Control UI is healthy.
-- [ ] Phone on **cellular**, hard-refresh **hello-world**: designed On this day page with **Who they were**, **Why they still matter**, and **A quirky detail**; still a person born on this date; still no personal data.
+- [ ] Phone on **cellular**, hard-refresh **hello-world**: designed On this day page with **Who they were**, **Why they still matter**, and **A quirky detail**; footer shows **next rotation** in Australia/Adelaide time; still a person born on this date; still no personal data.
 - [ ] `~/hello-world` contains updater + state, and Cursor documented (or installed) **on-this-day-rotate** as an OpenClaw **command** cron. The step 12 Gemini HTML job is disabled or gone.
 - [ ] A second run (next hour or Run now) shows a **different** person, not a repeat.
 - [ ] `permissionMode` is **approve-reads** again (or you accept the wider ACP blast radius and said so).
