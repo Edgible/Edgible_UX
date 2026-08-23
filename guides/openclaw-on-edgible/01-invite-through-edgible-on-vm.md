@@ -9,7 +9,7 @@ By the end of this chapter you have an OpenClaw Control UI on a real **`https://
 - **Org login in front.** You decide who in the organisation can hit the hostname. Tailscale Serve instead trusts whoever is on your tailnet and speaks identity headers OpenClaw already understands — fewer OpenClaw prompts, but every client must run Tailscale.
 - **OpenClaw still has its own locks.** First time on a browser you paste the gateway token and approve the device. That is OpenClaw, not Edgible. Later visits on that browser are just the URL and, when the session expired, Edgible login.
 
-The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL** (Gemini) → (optional) **reset to Hello World** and **Cursor rebuilds that same product**. Teardown is a later chapter.
+The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL** (Gemini) → (optional) **reset to Hello World** and **Cursor rebuilds that same product** → (optional) **WhatsApp**, where `/acp spawn --bind here` lets you tweak the page in ordinary chat. Teardown is a later chapter.
 
 ---
 
@@ -27,6 +27,7 @@ The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on 
 - The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML.
 - A **born on this day** page on that same public URL (one notable person, Wikipedia-scale public sources) that **rotates every hour** — 24 people in a day.
 - (Optional, step 13) Reset **hello-world** to the original Hello World page, drop the Gemini rotation cron, then Cursor implements On this day + rotation infra from that clean slate. Same URL; the contrast is the demo.
+- (Optional, step 14) WhatsApp linked as a Gateway device; a `hello` reply that starts with `[OpenClaw]`; then `/acp spawn cursor --bind here` and a normal message that retitles On this day sections — no `/acp steer`.
 
 You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 
@@ -42,7 +43,7 @@ You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 | Ubuntu **24.04 LTS** ISO | Downloaded in step 2. Match the CPU: **amd64** on typical PCs; **arm64** on Apple Silicon.                                                                                                                                              |
 | Sudo on the guest        | You will install a systemd agent that configures WireGuard, iptables, and Caddy.                                                                                                                                                        |
 | A model for OpenClaw     | Default: a free **Gemini** API key (Google account). Or local **Ollama** if the VM/mini-PC has enough RAM. ChatGPT Free on chatgpt.com is not a key. See step 8.                                                                        |
-| Cursor (optional)        | Paid **Cursor** plan if you will do step 13. The IDE on the host is not enough — you log the **CLI** in on the VM. Skip step 13 if you have no plan.                                                                                    |
+| Cursor (optional)        | Paid **Cursor** plan if you will do steps 13–14. The IDE on the host is not enough — you log the **CLI** in on the VM. Skip 13–14 if you have no plan.                                                                                  |
 
 
 NAT networking is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 80, 443, or 18789 on the host. That is the point of Edgible.
@@ -775,7 +776,7 @@ Keep the Ollama model small enough that the Mac does not swap, or the “backup�
 
 ### Do not do these yet
 
-- Telegram / WhatsApp / Discord — they already dial out; they are not the Edgible job.
+- Telegram / Discord — they already dial out; they are not the Edgible job. **WhatsApp** is optional **step 14**.
 - Tailscale Serve / Funnel / Cloudflare Tunnel.
 - `gateway.auth` set to none.
 
@@ -1066,7 +1067,7 @@ The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is 
 | **`/acp spawn`** | Start a session and point it at a directory (`--cwd`). On Control UI this does **not** send the coding task. |
 | **`/acp steer`** | Send the actual prompt to that session key. |
 | **`/acp close`** | End that Cursor job from OpenClaw’s side (stop the harness process, drop the session key). Does not close the Control UI, uninstall acpx, or log out `agent`. |
-| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** — that is why this chapter uses `/acp spawn` then `/acp steer` with a uuid. Discord, Telegram, and WhatsApp can `/acp spawn cursor --bind here --cwd …`; after that you type a normal message, no steer. This chapter still skips those apps (step 9). |
+| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** — that is why **this** step uses `/acp spawn` then `/acp steer` with a uuid. **Step 14** (WhatsApp) can `/acp spawn cursor --bind here --cwd …`; after that you type a normal message, no steer. Telegram / Discord stay later. |
 | **Oneshot** | Do the task and finish. |
 | **`approve-all`** | Headless writes. Applies to **all** ACP jobs on this Gateway until `approve-reads`. |
 
@@ -1293,6 +1294,107 @@ Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` st
 - [ ] `permissionMode` is **approve-reads** again (or you accept the wider ACP blast radius and said so).
 - [ ] openclaw-ui protection is still **org**. Port **18789** is still not forwarded.
 
+WhatsApp as the bindable client (same page, retitle sections, no `/acp steer`) is **step 14**.
+
+---
+
+## 14. WhatsApp as the chat client (optional)
+
+**Outcome:** You talk to the mini-PC from **WhatsApp**. `/acp spawn cursor --bind here` pins that chat to Cursor. A normal message retitles the On this day sections. Hard-refresh `hello-world.<org>.edgible.com` — no `/acp steer`, no uuid.
+
+Skip if you have no WhatsApp. Finish **step 13** so the public page already exists. WhatsApp is **not** an Edgible app: the Gateway still owns a **linked device** (WhatsApp Web / Baileys) and dials **out**. Do not publish WhatsApp through Edgible. Do not port-forward. Leave openclaw-ui on **org**.
+
+This is the client that makes ACP feel obvious. Control UI is **webchat** and cannot bind (step 13). WhatsApp can.
+
+### Approach
+
+The phone’s WhatsApp account **links** the Gateway as another device (same idea as WhatsApp Web). Incoming DMs hit OpenClaw on the VM. Gemini is still the dispatcher until you **bind** Cursor. Then this WhatsApp thread *is* the Cursor session until `/acp close`.
+
+A dedicated second number is cleaner (replies arrive as a **different contact**). **Self-chat** on your personal number is supported: `allowFrom` includes you, `selfChatMode` on. WhatsApp has **no bot badge** for a linked device — without a prefix, the first reply looks like you answering yourself. Set `messages.responsePrefix` so replies start with `[OpenClaw]`.
+
+### 14a. Plugin + QR login
+
+On the **VM desktop** terminal (you must **see** the QR; it expires in about a minute). Gateway running:
+
+```bash
+openclaw plugins install clawhub:@openclaw/whatsapp
+openclaw gateway restart
+openclaw channels login --channel whatsapp
+```
+
+If install already happened, `channels login` is enough. Phone: **WhatsApp → Settings → Linked devices → Link a device** → scan the terminal QR. You want a linked session, not “can’t link new devices” (remove a stale Web session, or wait if WhatsApp is throttling).
+
+```bash
+openclaw channels status --probe
+```
+
+WhatsApp should show connected / linked.
+
+Do **not** paste session creds into chat or Hello World.
+
+### 14b. Who may DM
+
+Default is **pairing** (unknown senders wait). Put **your** E.164 in `allowFrom` (example shape only — use your number):
+
+```bash
+openclaw config set channels.whatsapp.dmPolicy pairing
+openclaw config set channels.whatsapp.allowFrom '["+61XXXXXXXXX"]' --strict-json
+openclaw config set channels.whatsapp.selfChatMode true
+openclaw config set channels.whatsapp.groupPolicy allowlist
+openclaw config set messages.responsePrefix "[OpenClaw] "
+openclaw gateway restart
+```
+
+### 14c. First WhatsApp `hello`
+
+From the phone, message **yourself** (or a second phone messaging the linked account). If OpenClaw asks to pair:
+
+```bash
+openclaw pairing list whatsapp
+openclaw pairing approve whatsapp <CODE>
+```
+
+That is the same *idea* as `devices approve` for the Control UI — it is **not** the WhatsApp QR. Send `hello`. You want a reply in WhatsApp that **starts with `[OpenClaw]`** (Gemini/gpt-oss behind it). Edgible is unused for this hop.
+
+A bare “Hey Stefano! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 14b is the check.
+
+### 14d. Bind Cursor — retitle sections (no steer)
+
+If you set `permissionMode` back to `approve-reads` in 13e, headless Cursor cannot write HTML. For this pass:
+
+```bash
+openclaw config set plugins.entries.acpx.config.permissionMode approve-all
+openclaw gateway restart
+```
+
+In the **same** WhatsApp chat (not Control UI):
+
+```text
+/acp spawn cursor --bind here --thread off --cwd /home/YOURUSER/hello-world
+```
+
+You want a spawn **without** `Conversation bindings are unavailable for webchat`. Then a **normal** message — not `/acp steer`:
+
+```text
+Rename the three section headings to: Who this is. Why we remember them. One odd fact.
+Keep the body copy, CSS, and the Australia/Adelaide next-rotation footer.
+Update the Python updater so the next hourly run uses those headings too.
+Do not docker exec. Do not touch ~/.openclaw or Edgible.
+```
+
+Wait for Cursor to finish in WhatsApp. `/acp close` when done. Then 13e again (`approve-reads`).
+
+Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellular). You want the **new titles**, same person, same footer.
+
+### Verify
+
+- [ ] `openclaw channels status --probe` shows WhatsApp linked.
+- [ ] WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`** (pairing approved if asked).
+- [ ] `/acp spawn cursor --bind here …` succeeds in WhatsApp (no webchat bind error).
+- [ ] Public On this day page shows **Who this is / Why we remember them / One odd fact** after a hard-refresh.
+- [ ] You did not use `/acp steer` for this change.
+- [ ] `permissionMode` is **approve-reads** again. openclaw-ui is still **org**. Port **18789** is still not forwarded.
+
 ---
 
 ## Why this pattern
@@ -1303,6 +1405,6 @@ The agent can think where you choose. Same VM: a local model (Ollama, if the box
 
 The VM is the blast radius. OpenClaw can write files and run tools; that happens **inside the guest**, not on the laptop you browse and bank on. You still drive it from anywhere: phone on cellular, Control UI, rewrite the public Hello World page, refresh `hello-world.<org>.edgible.com` and see it. ChatGPT in a tab cannot do that. A stranger with the OpenClaw URL should not see the dashboard. You can — without Tailscale, without port-forward, from wherever you are.
 
-Programming is a **specialist**, not a second chat model. OpenClaw dispatches; Cursor **builds** the public site and the rotation tools. The hourly tick is a command cron on that script.
+Programming is a **specialist**, not a second chat model. OpenClaw dispatches; Cursor **builds** the public site and the rotation tools. The hourly tick is a command cron on that script. WhatsApp (step 14) is a **bindable** client: spawn `--bind here`, then talk — Control UI still cannot do that.
 
 **Later:** tear down hello-world, OpenClaw, the agent, the CLI, and the VM.
