@@ -1042,9 +1042,30 @@ Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World
 
 Skip this step if you have no Cursor subscription. Gemini/gpt-oss stay the OpenClaw brain. Steps 11–12 already rewrote public HTML — do **not** point Cursor at `~/hello-world` or `~/.openclaw`.
 
-ACP launches a process on the **Gateway host**. Cursor.app on the Mac does **not** count. Install and log in the CLI **inside the Ubuntu VM**.
-
 `openclaw-ui` must stay **org** (step 10). A phone that can chat can, after this step, ask a coding agent to write files. That is the point — and the blast radius.
+
+### Approach
+
+OpenClaw is a **dispatcher**: chat, cron, phone, “do this on the mini-PC.” It is a weak IDE. Cursor Agent is the opposite: repo, edits, tests. This step keeps that split. You do **not** paste a Cursor key into `openclaw models set`. You do **not** make Cursor the default chat model. You start a **one-off coding job** on a git repo, then go back to Gemini.
+
+The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is unused. The CLI must be installed and logged in **inside the guest**.
+
+**ACP** (Agent Client Protocol) is a small language two programs speak over stdin/stdout: start a session, send a prompt, stream tool calls, finish. OpenClaw is the client. Cursor CLI (`agent acp`) is the server. Think “OpenClaw hires Cursor for this repo,” not “OpenClaw *is* Cursor.”
+
+**acpx** is OpenClaw’s plugin that owns that client. Until it is installed, **enabled**, and the Gateway **restarted**, `/acp doctor` reports `ACP_BACKEND_MISSING`. On 2026.7 the runtime is **embedded in the plugin** — you usually do not need a global `acpx` binary.
+
+| Word | What it is here |
+| --- | --- |
+| **Harness** | Cursor CLI running as that ACP server. |
+| **Session** | One hired job. Key looks like `agent:cursor:acp:<uuid>`. |
+| **`/acp doctor`** | Is acpx loaded and can it start `agent acp`? |
+| **`/acp spawn`** | Start a session and point it at a directory (`--cwd`). On Control UI this does **not** send the coding task. |
+| **`/acp steer`** | Send the actual prompt to that session key. |
+| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** (`Conversation bindings are unavailable for webchat`). Discord/Telegram can. This chapter is spawn + steer, not `--bind here`. |
+| **Oneshot** | Do the task and finish — not a long-lived IDE thread. |
+| **`approve-all`** | Headless Cursor cannot click “allow write.” Needed for the demo; it applies to **all** ACP jobs on this Gateway until you set `approve-reads` again. |
+
+Once, in order: CLI + a demo repo → install acpx and restart → doctor green → spawn (unbound) → steer with the uuid → files change on disk → `/acp close` → tighten permissions.
 
 ### 13a. Cursor CLI on the VM
 
@@ -1090,7 +1111,7 @@ echo "$HOME/cursor-demo"
 
 Copy that last path. You will paste it into `/acp spawn` (the Control UI does not expand `$HOME`).
 
-### 13c. ACP plugin
+### 13c. Install the ACP runtime (acpx plugin)
 
 `ACP_BACKEND_MISSING` / `ACP runtime backend is not configured` means the **Gateway process** has no acpx backend yet. `/acp doctor` in chat cannot fix that — install on the VM, **restart**, then doctor again. Do not `/acp spawn` until doctor is healthy.
 
@@ -1156,21 +1177,25 @@ On the VM, Gateway running. In Control UI chat (local dashboard **or** phone on 
 /acp doctor
 ```
 
-You want a healthy **acpx** backend and **cursor** allowed — not “plugin disabled” or “binary not found.”
+Healthy looks like: `configuredBackend: acpx`, `registeredBackend: acpx`, `runtimeDoctor: ok (embedded ACP runtime ready)`, `agent=cursor`, `command=/home/YOURUSER/.local/bin/agent acp`, `healthy: yes`. Doctor’s `cwd` is often `~/.openclaw/workspace` — that is the **probe**, not the repo. Spawn still needs `--cwd` from 13b.
 
-Then (paste **your** path from 13b):
+`ACP_BACKEND_MISSING` is the failure. Zero sessions / zero turns is normal before the first spawn.
 
-```text
-/acp spawn cursor --mode oneshot --thread off --bind here --cwd /home/YOURUSER/cursor-demo
-```
-
-Then, in that same bound chat:
+Then spawn (unbound — Control UI cannot `--bind here`; see Approach). Use **your** path from 13b if it is not `/home/stefano/cursor-demo`:
 
 ```text
-Add a --name CLI flag to greet.py using argparse. Add tests/test_greet.py with two pytest cases (default world, and a custom name). Do not touch ~/hello-world, ~/.openclaw, or Edgible config.
+/acp spawn cursor --mode oneshot --thread off --cwd /home/stefano/cursor-demo --label cursor-demo
 ```
 
-Wait. `/acp status` if it goes quiet. First Cursor run can be slow (login + model).
+Success looks like: `Spawned ACP session agent:cursor:acp:<uuid> (oneshot, backend acpx). Session is unbound…` Ignore the hint to `--bind here` on webchat. Copy that **full session key** for steer (do not type the next prompt as a normal chat line — this conversation is still Gemini, not Cursor):
+
+```text
+/acp steer --session agent:cursor:acp:YOUR-UUID Add a --name CLI flag to greet.py using argparse. Add tests/test_greet.py with two pytest cases (default world, and a custom name). Do not touch ~/hello-world, ~/.openclaw, or Edgible config.
+```
+
+`--session cursor-demo` only works if the label stuck; the uuid key always works. `/acp sessions` if you lost it. `/acp status` if it goes quiet. First Cursor run can be slow (login + model). Completions still announce back into this Control UI as a parent task — you do not need Discord.
+
+Success looks like: `ACP steer sent to agent:cursor:acp:<uuid>.` then a Cursor summary — argparse `--name`, `tests/test_greet.py`, pytest passing. That write-up is the **harness**, not Gemini describing a change it did not make.
 
 On the VM:
 
