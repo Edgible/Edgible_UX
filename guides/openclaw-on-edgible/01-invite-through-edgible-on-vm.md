@@ -9,7 +9,7 @@ By the end of this chapter you have an OpenClaw Control UI on a real **`https://
 - **Org login in front.** You decide who in the organisation can hit the hostname. Tailscale Serve instead trusts whoever is on your tailnet and speaks identity headers OpenClaw already understands — fewer OpenClaw prompts, but every client must run Tailscale.
 - **OpenClaw still has its own locks.** First time on a browser you paste the gateway token and approve the device. That is OpenClaw, not Edgible. Later visits on that browser are just the URL and, when the session expired, Edgible login.
 
-The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL** → (optional) **Cursor Agent on a git repo**, spawned from that same phone chat. Teardown is a later chapter.
+The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on the computer in front of you: **VirtualBox** (Windows or Linux PC) or **UTM** (Mac). You go Hello World on the phone → a **model** → OpenClaw **locally** → Control UI through Edgible → **the public Hello World page rewritten from the phone** → **an hourly “born on this day” page on that same URL** (Gemini) → (optional) **reset to Hello World** and **Cursor rebuilds that same product**. Teardown is a later chapter.
 
 ---
 
@@ -26,7 +26,7 @@ The “mini-PC” in this chapter is an **Ubuntu 24.04 LTS** virtual machine on 
 - The OpenClaw Control UI on an `openclaw-ui.your-org.edgible.com` URL, **org auth**, reachable from a **phone** on cellular.
 - The public **hello-world** page rewritten from that phone — refresh `hello-world.<org>.edgible.com` and see OpenClaw’s HTML.
 - A **born on this day** page on that same public URL (one notable person, Wikipedia-scale public sources) that **rotates every hour** — 24 people in a day.
-- (Optional, step 13) Cursor CLI logged in **on the VM**, OpenClaw ACP pointing at it, one coding spawn against a **git repo that is not hello-world**.
+- (Optional, step 13) Reset **hello-world** to the original Hello World page, drop the Gemini rotation cron, then Cursor implements On this day + rotation infra from that clean slate. Same URL; the contrast is the demo.
 
 You do **not** yet have teardown (hello-world, OpenClaw, agent, VM).
 
@@ -1006,7 +1006,7 @@ On the **phone**, Control UI — talk like a person:
 ```text
 Turn the hello-world app into an On this day page.
 Pick one important historical figure born on this date (any year).
-Summarise who they were, why they still matter, and one quirky detail.
+Use three headings: Who they were. Why they still matter. A quirky detail.
 Public sources only (Wikipedia is fine). Nothing about me. Simple HTML.
 ```
 
@@ -1026,6 +1026,8 @@ Use a cron/automation job. Confirm the schedule. Public sources only. Nothing ab
 
 Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash (step 9c). For a long-running box, switch this cron to daily after the demo.
 
+Gemini is enough to *research and dump HTML*. Optional **step 13** is the A/B: wipe back to the step 7 Hello World page, remove that cron, then hire Cursor to rebuild the **same** product (designed On this day + rotation tools). Same public URL. Do not skip 12 — you need to have seen Gemini’s version so Cursor’s looks like an upgrade.
+
 ### Verify
 
 - [ ] Hello World names someone **born on this calendar day**, with a short summary.
@@ -1038,21 +1040,23 @@ Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World
 
 ## 13. Advanced: spawn Cursor Agent for programming (optional)
 
-**Outcome:** From the phone Control UI, OpenClaw **spawns Cursor Agent** on a git repo on the mini-PC. A real code change lands in that repo. Cursor is the **coding worker**, not the chat model.
+**Outcome:** You **inspect** the original Hello World page again (step 7 HTML, no Gemini cron). Then Cursor Agent, from that empty folder, builds the **same** On this day product as step 12 — designed site + rotation infra. Hard-refresh the **same** public URL. The contrast is the demo.
 
-Skip this step if you have no Cursor subscription. Gemini/gpt-oss stay the OpenClaw brain. Steps 11–12 already rewrote public HTML — do **not** point Cursor at `~/hello-world` or `~/.openclaw`.
+Skip this step if you have no Cursor subscription. Gemini/gpt-oss stay the OpenClaw brain. Finish **step 12** first so you have seen Gemini’s dump; this step **wipes** it on purpose.
 
-`openclaw-ui` must stay **org** (step 10). A phone that can chat can, after this step, ask a coding agent to write files. That is the point — and the blast radius.
+`openclaw-ui` must stay **org** (step 10). `approve-all` plus this spawn writes the **public** site.
 
 ### Approach
 
-OpenClaw is a **dispatcher**: chat, cron, phone, “do this on the mini-PC.” It is a weak IDE. Cursor Agent is the opposite: repo, edits, tests. This step keeps that split. You do **not** paste a Cursor key into `openclaw models set`. You do **not** make Cursor the default chat model. You start a **one-off coding job** on a git repo, then go back to Gemini.
+Steps 11–12 proved OpenClaw can change a public URL. The HTML is a dump. Step 13 is the specialist A/B: put the **starting** Hello World page back, delete the rotation jobs, look at the folder, then hire Cursor to implement On this day (layout, CSS, updater, state, cron installer) from that slate. Same Edgible hostname. Gemini researched; Cursor engineers.
 
-The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is unused. The CLI must be installed and logged in **inside the guest**.
+You do **not** paste a Cursor key into `openclaw models set`. You do **not** make Cursor the default chat model. One-off ACP jobs on `~/hello-world` (nginx bind-mount from step 7 — write on the **host**, not `docker exec`). The hourly tick after install is `python3` via OpenClaw **command** cron, not another ACP spawn.
 
-**ACP** (Agent Client Protocol) is a small language two programs speak over stdin/stdout: start a session, send a prompt, stream tool calls, finish. OpenClaw is the client. Cursor CLI (`agent acp`) is the server. Think “OpenClaw hires Cursor for this repo,” not “OpenClaw *is* Cursor.”
+The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is unused.
 
-**acpx** is OpenClaw’s plugin that owns that client. Until it is installed, **enabled**, and the Gateway **restarted**, `/acp doctor` reports `ACP_BACKEND_MISSING`. On 2026.7 the runtime is **embedded in the plugin** — you usually do not need a global `acpx` binary.
+**ACP** (Agent Client Protocol) is a small language two programs speak over stdin/stdout: start a session, send a prompt, stream tool calls, finish. OpenClaw is the client. Cursor CLI (`agent acp`) is the server.
+
+**acpx** is OpenClaw’s plugin that owns that client. Until it is installed, **enabled**, and the Gateway **restarted**, `/acp doctor` reports `ACP_BACKEND_MISSING`. On 2026.7 the runtime is **embedded in the plugin**.
 
 | Word | What it is here |
 | --- | --- |
@@ -1061,13 +1065,45 @@ The job runs on the **Gateway host** (this Ubuntu VM). Cursor.app on the Mac is 
 | **`/acp doctor`** | Is acpx loaded and can it start `agent acp`? |
 | **`/acp spawn`** | Start a session and point it at a directory (`--cwd`). On Control UI this does **not** send the coding task. |
 | **`/acp steer`** | Send the actual prompt to that session key. |
-| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** (`Conversation bindings are unavailable for webchat`). Discord/Telegram can. This chapter is spawn + steer, not `--bind here`. |
-| **Oneshot** | Do the task and finish — not a long-lived IDE thread. |
-| **`approve-all`** | Headless Cursor cannot click “allow write.” Needed for the demo; it applies to **all** ACP jobs on this Gateway until you set `approve-reads` again. |
+| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind**. This chapter is spawn + steer, not `--bind here`. |
+| **Oneshot** | Do the task and finish. |
+| **`approve-all`** | Headless writes. Applies to **all** ACP jobs on this Gateway until `approve-reads`. |
 
-Once, in order: CLI + a demo repo → install acpx and restart → doctor green → spawn (unbound) → steer with the uuid → files change on disk → `/acp close` → tighten permissions.
+Once, in order: **reset + inspect Hello World** → CLI + acpx → doctor → spawn → steer the **full** product (site + rotation tools) → run Cursor’s installer → `/acp close` → tighten permissions.
 
-### 13a. Cursor CLI on the VM
+### 13a. Clean slate (Hello World, no rotation cron)
+
+The A/B only works if you can **see** the starting page. Restore step 7’s HTML, delete extra files from 11–12, remove Gemini rotation jobs. nginx stays up; you are not recreating the Edgible app.
+
+On the VM:
+
+```bash
+openclaw cron list
+```
+
+Remove (or disable) every job that rewrites hello-world / On this day. In Control UI → Automations you can delete them too. Then:
+
+```bash
+cd "$HOME/hello-world"
+# keep .git if you want history; drop the Gemini/Cursor leftovers
+find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'index.html' -exec rm -rf {} +
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Hello World</title></head>
+<body>
+  <h1>Hello World</h1>
+  <p>Served from your Ubuntu VM through Edgible.</p>
+</body>
+</html>
+EOF
+ls -la
+curl -sS http://127.0.0.1:8081/
+```
+
+`ls` should be `index.html` (and maybe `.git`). curl should be **Hello World**, not a biography. On the **phone** (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. Same starting page as step 7. That is the before shot.
+
+### 13b. Cursor CLI on the VM
 
 On the **VM** (guest terminal, same user as the Gateway):
 
@@ -1091,25 +1127,7 @@ You want a logged-in account, not a prompt to log in. systemd will not see a GUI
 
 Do **not** publish Cursor through Edgible. Do **not** put a Cursor API key in Hello World.
 
-### 13b. A tiny git repo (not Hello World)
-
-```bash
-mkdir -p "$HOME/cursor-demo"
-cd "$HOME/cursor-demo"
-git init
-cat > greet.py << 'EOF'
-def greet(name: str) -> str:
-    return f"Hello, {name}"
-
-if __name__ == "__main__":
-    print(greet("world"))
-EOF
-git add greet.py
-git -c user.email=demo@localhost -c user.name=Demo commit -m "start"
-echo "$HOME/cursor-demo"
-```
-
-Copy that last path. You will paste it into `/acp spawn` (the Control UI does not expand `$HOME`).
+echo "$HOME/hello-world" — that path is `--cwd` later. Do **not** spawn against `~/.openclaw`.
 
 ### 13c. Install the ACP runtime (acpx plugin)
 
@@ -1165,7 +1183,7 @@ openclaw config set plugins.entries.acpx.config.permissionMode approve-all
 openclaw gateway restart
 ```
 
-`approve-all` is for ACP sessions on this Gateway, not only `cursor-demo`. Put **org** back on openclaw-ui if you flipped it. After 13e, set `permissionMode` back to `approve-reads`.
+`approve-all` is for ACP sessions on this Gateway, not only hello-world. Put **org** back on openclaw-ui if you flipped it. After 13e, set `permissionMode` back to `approve-reads`.
 
 Open a **new** Control UI chat (an old tab can still think ACP is missing). Then `/acp doctor`.
 
@@ -1177,43 +1195,82 @@ On the VM, Gateway running. In Control UI chat (local dashboard **or** phone on 
 /acp doctor
 ```
 
-Healthy looks like: `configuredBackend: acpx`, `registeredBackend: acpx`, `runtimeDoctor: ok (embedded ACP runtime ready)`, `agent=cursor`, `command=/home/YOURUSER/.local/bin/agent acp`, `healthy: yes`. Doctor’s `cwd` is often `~/.openclaw/workspace` — that is the **probe**, not the repo. Spawn still needs `--cwd` from 13b.
+Healthy looks like: `configuredBackend: acpx`, `registeredBackend: acpx`, `runtimeDoctor: ok (embedded ACP runtime ready)`, `agent=cursor`, `command=/home/YOURUSER/.local/bin/agent acp`, `healthy: yes`. Doctor’s `cwd` is often `~/.openclaw/workspace` — that is the **probe**, not the site. Spawn still needs `--cwd` from 13b.
 
 `ACP_BACKEND_MISSING` is the failure. Zero sessions / zero turns is normal before the first spawn.
 
-Then spawn (unbound — Control UI cannot `--bind here`; see Approach). Use **your** path from 13b if it is not `/home/stefano/cursor-demo`:
+Then spawn (unbound — Control UI cannot `--bind here`; see Approach). Use **your** path from 13b:
 
 ```text
-/acp spawn cursor --mode oneshot --thread off --cwd /home/stefano/cursor-demo --label cursor-demo
+/acp spawn cursor --mode oneshot --thread off --cwd /home/YOURUSER/hello-world --label hello-world
 ```
 
 Success looks like: `Spawned ACP session agent:cursor:acp:<uuid> (oneshot, backend acpx). Session is unbound…` Ignore the hint to `--bind here` on webchat. Copy that **full session key** for steer (do not type the next prompt as a normal chat line — this conversation is still Gemini, not Cursor):
 
 ```text
-/acp steer --session agent:cursor:acp:YOUR-UUID Add a --name CLI flag to greet.py using argparse. Add tests/test_greet.py with two pytest cases (default world, and a custom name). Do not touch ~/hello-world, ~/.openclaw, or Edgible config.
+/acp steer --session agent:cursor:acp:YOUR-UUID This folder is the original Hello World page (step 7). Build a phone-friendly On this day mini-site. One notable person born on this calendar date (Wikipedia births). Page structure, every time:
+- Name, birth–death years, and a one-line label (what they are known as)
+- Who they were
+- Why they still matter
+- A quirky detail
+Readable typography and a simple layout (CSS file is fine). Those three sections must be real headings, not a single blob. Public sources only. Nothing about me. Do not docker exec (nginx mount is read-only). Do not touch ~/.openclaw, Edgible config, or openclaw-ui.
 ```
 
-`--session cursor-demo` only works if the label stuck; the uuid key always works. `/acp sessions` if you lost it. `/acp status` if it goes quiet. First Cursor run can be slow (login + model). Completions still announce back into this Control UI as a parent task — you do not need Discord.
+`--session hello-world` only works if the label stuck; the uuid key always works. `/acp sessions` if you lost it. `/acp status` if it goes quiet. First Cursor run can be slow (login + model). Completions still announce back into this Control UI as a parent task.
 
-Success looks like: `ACP steer sent to agent:cursor:acp:<uuid>.` then a Cursor summary — argparse `--name`, `tests/test_greet.py`, pytest passing. That write-up is the **harness**, not Gemini describing a change it did not make.
+Success looks like: `ACP steer sent to…` then a Cursor summary of HTML/CSS/state/script. That write-up is the **harness**, not Gemini describing a change it did not make.
 
-On the VM:
+Leave Control UI. On the **phone** (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a designed page with **Who they were / Why they still matter / A quirky detail** — not a single Gemini dump, not “Hello World”, not “OpenClaw was here.”
 
 ```bash
-cd ~/cursor-demo
-git diff
-python3 greet.py --name OpenClaw
+cd ~/hello-world
+git diff --stat
+ls -la
 ```
 
-You want a diff (argparse + tests) and a greeting that uses the flag. If the page on hello-world also changed, the spawn `cwd` was wrong — restore HTML from git/history if you have it; do not keep using Cursor on that tree.
+You want CSS plus (after 13f) an updater and a way to register hourly **command** cron. Rotation infra is a **second Cursor coding pass**, not a timer that launches Cursor.
 
-When you are done:
+When you are done with the visual pass (or after 13f):
 
 ```text
 /acp close
 ```
 
-Natural language (“have Cursor fix the tests in cursor-demo”) can work **after** doctor is green. Prefer `/acp spawn` for this first run.
+Natural language can work **after** doctor is green. Prefer `/acp spawn` + `/acp steer` for this first run.
+
+### 13f. Rotation infra (Cursor implements it)
+
+**Outcome:** Cursor Agent adds the **tools** for hourly rotation in `~/hello-world`: updater script, already-shown state, midnight rollover, and an installer (or a printed `openclaw cron create …`) that registers a **command** job. You run that installer **once**. After that, the hour belongs to OpenClaw’s scheduler executing Python.
+
+Spawn like 13d (`--cwd` `~/hello-world`). Steer:
+
+```text
+/acp steer --session agent:cursor:acp:YOUR-UUID Keep the current visual design. Implement hourly rotation infrastructure in this folder:
+1. A Python 3 updater that fetches Wikipedia births for today's month-day, picks one notable person not already shown today, rewrites index.html using the existing CSS and the same sections every time (name + dates, Who they were, Why they still matter, A quirky detail), updates a state file, and starts a new list after local midnight. Print the chosen name to stdout.
+2. A small install script (or README with the exact command) that registers an OpenClaw command cron: every 1h, python3 the updater, cwd this folder. Name the job on-this-day-rotate. Use --command (shell), not an agent prompt and not ACP/Cursor.
+3. Tell me the exact commands to run once on the VM.
+Do not docker exec. Do not edit ~/.openclaw by hand. Do not schedule Cursor or /acp spawn. Public sources only. Nothing about me.
+```
+
+`/acp close` when the summary lists files + the install command. On the VM, run **what Cursor specified** (example only — prefer their output):
+
+```bash
+ls -la ~/hello-world
+cd ~/hello-world
+python3 update.py
+```
+
+Hard-refresh the public URL: **different name, same look**. Then run their installer, or if they only printed cron:
+
+```bash
+openclaw cron list
+openclaw cron create "every 1h" \
+  --name "on-this-day-rotate" \
+  --command "python3 update.py" \
+  --command-cwd "$HOME/hello-world"
+```
+
+**Run now** in Automations. Disable the step 12 Gemini job that rewrites HTML in chat — it will overwrite this CSS.
 
 ### 13e. Tighten permissions
 
@@ -1222,14 +1279,15 @@ openclaw config set plugins.entries.acpx.config.permissionMode approve-reads
 openclaw gateway restart
 ```
 
-Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` stays a narrow door. Do not set `gateway.auth` to none. Do not point later spawns at `~/hello-world`.
+Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` stays a narrow door. Do not set `gateway.auth` to none. Do not spawn against `~/.openclaw`.
 
 ### Verify
 
 - [ ] `agent status` on the VM shows a logged-in Cursor account.
 - [ ] `/acp doctor` in Control UI is healthy.
-- [ ] `git diff` (or new files) under `~/cursor-demo` matches the argparse + tests request.
-- [ ] `~/hello-world/index.html` is unchanged by this step.
+- [ ] Phone on **cellular**, hard-refresh **hello-world**: designed On this day page with **Who they were**, **Why they still matter**, and **A quirky detail**; still a person born on this date; still no personal data.
+- [ ] `~/hello-world` contains updater + state, and Cursor documented (or installed) **on-this-day-rotate** as an OpenClaw **command** cron. The step 12 Gemini HTML job is disabled or gone.
+- [ ] A second run (next hour or Run now) shows a **different** person, not a repeat.
 - [ ] `permissionMode` is **approve-reads** again (or you accept the wider ACP blast radius and said so).
 - [ ] openclaw-ui protection is still **org**. Port **18789** is still not forwarded.
 
@@ -1243,6 +1301,6 @@ The agent can think where you choose. Same VM: a local model (Ollama, if the box
 
 The VM is the blast radius. OpenClaw can write files and run tools; that happens **inside the guest**, not on the laptop you browse and bank on. You still drive it from anywhere: phone on cellular, Control UI, rewrite the public Hello World page, refresh `hello-world.<org>.edgible.com` and see it. ChatGPT in a tab cannot do that. A stranger with the OpenClaw URL should not see the dashboard. You can — without Tailscale, without port-forward, from wherever you are.
 
-Programming is a **specialist**, not a second chat model. OpenClaw (Gemini/gpt-oss) remains the dispatcher; optional step 13 spawns **Cursor Agent** on a git repo via ACP. Same phone, same org door, same loopback Gateway — a different worker for multi-file code. Keep that worker off the public HTML tree.
+Programming is a **specialist**, not a second chat model. OpenClaw dispatches; Cursor **builds** the public site and the rotation tools. The hourly tick is a command cron on that script.
 
 **Later:** tear down hello-world, OpenClaw, the agent, the CLI, and the VM.
