@@ -52,7 +52,7 @@ python3 -u "$HOME/.openclaw/workspace/skills/edgible-publish/scripts/publish.py"
 
 If that path is missing, try `{baseDir}/scripts/publish.py` the same way.
 
-Optional: `--device-name mini-pc` if more than one serving device exists.
+Optional: `--device-name <this-machine>` if more than one serving device exists. Use the guest you are on (e.g. `macbookairubuntu2404vm`), not another box in the same org.
 
 The script is idempotent: if that app name already exists, it prints the existing URL. It prints `URL=` when finished. Paste that line back to the user. If `exec` is waiting for approval, say so — do not sit silent.
 

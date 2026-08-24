@@ -71,8 +71,9 @@ Only if you want to check Edgible **without** the agent. This is the same script
 On the VM:
 
 ```bash
-python3 ~/.openclaw/workspace/skills/edgible-publish/scripts/publish.py \
-  --name skill-test --port 8082 --auth-modes none
+python3 -u ~/.openclaw/workspace/skills/edgible-publish/scripts/publish.py \
+  --name skill-test --port 8082 --auth-modes none \
+  --device-name macbookairubuntu2404vm
 
 python3 ~/.openclaw/workspace/skills/edgible-publish/scripts/publish.py \
   --name openclaw-ui --port 18789 --auth-modes org
@@ -104,7 +105,8 @@ If the reply has a URL but no `URL=` line, the model may have skipped the helper
 
 ```bash
 python3 -u ~/.openclaw/workspace/skills/edgible-publish/scripts/publish.py \
-  --name skill-test --port 8081 --auth-modes none
+  --name skill-test --port 8082 --auth-modes none \
+  --device-name macbookairubuntu2404vm
 ```
 
-You should see `edgible-publish: starting` immediately, then `URL=`. If that works and `/skill` still stays mute, the skill is loaded but **exec never ran**.
+If the helper says **Several serving devices**, add `--device-name` for **this** box (on the getting-started VM that is `macbookairubuntu2404vm`, not `awsubuntu24`). Then retry. The script prints `edgible-publish: starting` immediately, then `URL=`. If that works and `/skill` still stays mute, the skill is loaded but **exec never ran**.

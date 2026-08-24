@@ -89,7 +89,13 @@ def pick_device(device_id: str | None, device_name: str | None) -> tuple[str, st
         return str(d["id"]), str(d.get("name") or d["id"])
 
     names = ", ".join(f"{d.get('name')} ({d.get('id')})" for d in devices)
-    die(f"Several serving devices. Pass --device-name. Known: {names}")
+    retries = "\n".join(
+        f"  --device-name {d.get('name')}" for d in devices if d.get("name")
+    )
+    die(
+        "Several serving devices. Pass --device-name for *this* machine "
+        f"(the VM you are on, not AWS).\nKnown: {names}\nRetry with one of:\n{retries}"
+    )
 
 
 def find_app_by_name(name: str) -> dict | None:
@@ -155,7 +161,7 @@ def main() -> None:
         help="none (public), org (sign-in), api-key, or comma-separated",
     )
     parser.add_argument("--device-id", help="Serving device id")
-    parser.add_argument("--device-name", help="Serving device name (e.g. mini-pc)")
+    parser.add_argument("--device-name", help="Serving device name (this machine)")
     args = parser.parse_args()
 
     require_edgible()
