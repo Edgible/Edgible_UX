@@ -1,6 +1,8 @@
 # OpenClaw on Edgible — Getting started
 
-By the end of this chapter you have an OpenClaw Control UI on a real **`https://openclaw-ui.your-org.edgible.com`** URL (pattern: `<app>.<org>.edgible.com`). You open it from a **phone on cellular**, chat with the agent that lives on the mini-PC, and you did **not** port-forward 22, 80, 443, or 18789, and you did **not** install Tailscale. The Gateway stays on **loopback** at home. Edgible is the public door: HTTPS hostname, certificate, and **org login** so a stranger with the URL should not see the dashboard.
+**OpenClaw is the agent on a box you own. Edgible is the door: a real `https://` URL with authenticated login you can access anywhere — no port-forward, no hole in the router, no Tailscale.**
+
+By the end of this chapter you have an OpenClaw Control UI on a real **`https://openclaw-ui.your-org.edgible.com`** URL (pattern: `<app>.<org>.edgible.com`). You open it from a **phone on cellular** or a **remote browser**, chat with the agent that lives on the mini-PC, and you did **not** port-forward 22, 80, 443, or 18789, and you did **not** install Tailscale. The Gateway stays on **loopback** at home. Edgible is the public door: HTTPS hostname, certificate, and **org login** so a stranger with the URL should not see the dashboard.
 
 **Why Edgible (not Tailscale Serve, not a hole in the router):**
 
