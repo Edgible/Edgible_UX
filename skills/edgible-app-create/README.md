@@ -13,6 +13,7 @@ Edgible CLI logged in, serving device healthy, OpenClaw Gateway running.
 ```bash
 mkdir -p ~/.openclaw/workspace/skills
 cp -R /path/to/Edgible_UX/skills/edgible-app-create ~/.openclaw/workspace/skills/
+cp -R /path/to/Edgible_UX/skills/edgible-app-list ~/.openclaw/workspace/skills/
 cp -R /path/to/Edgible_UX/skills/edgible-app-delete ~/.openclaw/workspace/skills/
 # remove a leftover old name if you installed it earlier:
 # rm -rf ~/.openclaw/workspace/skills/edgible-publish
@@ -21,7 +22,7 @@ openclaw skills list
 openclaw gateway restart
 ```
 
-You want **edgible-app-create** and **edgible-app-delete**. New chat (`/new`).
+You want **edgible-app-create**, **edgible-app-list**, and **edgible-app-delete**. New chat (`/new`).
 
 ## Build a test app (nginx on 8082)
 
