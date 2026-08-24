@@ -4,9 +4,9 @@
 
 By the end of this chapter you DM **a bot you created** and OpenClaw on the VM replies. The Gateway still dials **out** to `api.telegram.org` on TCP 443. Your personal Telegram login is you; the BotFather **token** is the bot’s password, stored only on the VM.
 
-This is the usual pocket client for OpenClawers. **Control UI** (chapter 1) is still the cleaner place for `/skill` and exec approvals. **WhatsApp** (chapter 1, step 14) is the bindable ACP client (`/acp spawn --bind here`). Telegram is official Bot API; WhatsApp is a linked device (Baileys).
+This is the usual pocket client for OpenClawers. **Control UI** ([chapter 3](03-publish-control-ui.md) or local dashboard) is still the cleaner place for `/skill` and exec approvals. **WhatsApp** ([chapter 7](07-whatsapp-pocket-client.md)) is the bindable ACP client (`/acp spawn --bind here`). Telegram is official Bot API; WhatsApp is a linked device (Baileys).
 
-**Prerequisites:** [Getting started](01-invite-through-edgible-on-vm.md) through a running Gateway and a model (at least step 9). Control UI through Edgible is optional here. `edgible` on PATH is only needed if you will use the [openclaw-edgible](https://github.com/Edgible/openclaw-edgible) skill.
+**Prerequisites:** [chapter 2](02-openclaw-on-the-box.md) (Gateway + a model). Install and prove the **edgible** skill first: [chapter 5](05-edgible-openclaw-skill.md) (`edgible whoami` on the VM, `/skill edgible whoami` in Control UI). Control UI through Edgible is optional for Telegram itself.
 
 There is **no** `openclaw channels login telegram`. You paste a BotFather token into config.
 
@@ -170,25 +170,17 @@ If debug still shows nothing when you send a DM, the Gateway is not receiving Te
 
 ---
 
-## 7. Install the Edgible skill (optional)
+## 7. `/skill edgible` from Telegram
 
-The skill is **[Edgible/openclaw-edgible](https://github.com/Edgible/openclaw-edgible)**, not this UX repo. One skill named **`edgible`**.
+You already installed the skill in [chapter 5](05-edgible-openclaw-skill.md). After pairing works, send:
 
-```bash
-openclaw skills install git:Edgible/openclaw-edgible --force
-openclaw skills list
-openclaw gateway restart
+```text
+/skill edgible whoami
 ```
 
-You want **edgible**. Then `/new`. Remove old folders `edgible-app-create` / `edgible-app-list` / `edgible-app-delete` if they are still under `~/.openclaw/workspace/skills/`.
+You want the same Profile / Environment / Account / Organization as the VM `edgible whoami`. If that never ran in Control UI, go back to [chapter 5](05-edgible-openclaw-skill.md) — Telegram `/skill` is the slower copy of the same agent turn.
 
-`openclaw skills update --all` refreshes **ClawHub** installs only. Git installs need `install … --force` again.
-
-Helpers live in the **skill** directory (`{baseDir}/scripts/delete.py`), not `~/.openclaw/workspace/scripts/`. If logs say `ENOENT` on `workspace/scripts/delete.py`, the model expanded `{baseDir}` wrong.
-
-`/skill edgible whoami` and `/skill edgible doctor` are CLI pass-through (`edgible` + those args). English “list my apps” / “publish this port” / “take down that URL” use the Python helpers. Test `/skill` in **Control UI** first if Telegram is noisy.
-
-Create helper flags: `--name`, `--port`, `--auth-modes` (`none` \| `org` \| `api-key`), optional `--device-name` / `--device-id`. Never `--auth-modes none` on port **18789**.
+Do not confuse with Gateway `/whoami` (your Telegram id).
 
 ---
 
