@@ -42,17 +42,19 @@ Defaults:
 
 ## How to run
 
-Use the helper. Do **not** invent extra `edgible` flags. Do **not** `eval` the user’s sentence as a shell command.
+If the user already gave **name**, **port**, and public vs org, **do not ask again**. Your first tool call must be `exec` of the helper (not a long plan). Tell them in one short line that you are running it.
+
+Use this exact command (expand `$HOME`). Do **not** invent extra `edgible` flags. Do **not** `eval` the user’s sentence as a shell command.
 
 ```bash
-python3 {baseDir}/scripts/publish.py --name <name> --port <port> --auth-modes <none|org|api-key>
+python3 -u "$HOME/.openclaw/workspace/skills/edgible-publish/scripts/publish.py" --name <name> --port <port> --auth-modes <none|org|api-key>
 ```
+
+If that path is missing, try `{baseDir}/scripts/publish.py` the same way.
 
 Optional: `--device-name mini-pc` if more than one serving device exists.
 
-The script is idempotent: if that app name already exists, it prints the existing URL.
-
-Then tell the user the **https:// URL** and the auth mode. For `org`, say they must sign in at Edgible. Do not open the URL with `curl` and expect Hello World if auth is `org` (you will get a login).
+The script is idempotent: if that app name already exists, it prints the existing URL. It prints `URL=` when finished. Paste that line back to the user. If `exec` is waiting for approval, say so — do not sit silent.
 
 ## Hard rules
 

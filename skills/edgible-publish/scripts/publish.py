@@ -18,8 +18,12 @@ POLL_SECONDS = 5
 POLL_ATTEMPTS = 18  # ~90s, matches first-publish cert wait in the getting-started guide
 
 
+def log(msg: str) -> None:
+    print(msg, flush=True)
+
+
 def die(msg: str, code: int = 1) -> None:
-    print(msg, file=sys.stderr)
+    print(msg, file=sys.stderr, flush=True)
     raise SystemExit(code)
 
 
@@ -155,6 +159,7 @@ def main() -> None:
     args = parser.parse_args()
 
     require_edgible()
+    log("edgible-publish: starting")
 
     name = args.name.strip().lower()
     if not NAME_RE.match(name):
@@ -173,6 +178,7 @@ def main() -> None:
         )
 
     device_id, device_name = pick_device(args.device_id, args.device_name)
+    log(f"edgible-publish: device {device_name} ({device_id})")
     health = run_edgible(["device", "health", "--name", device_name], check=False)
     if health.returncode != 0:
         die(
@@ -182,30 +188,33 @@ def main() -> None:
 
     existing = find_app_by_name(name)
     if existing:
+        log(f"edgible-publish: app {name} already exists, waiting for URL")
         app_id = str(existing["id"])
         url = wait_for_url(app_id)
-        print(f"Already published as {name} (auth unchanged here).")
-        print(f"URL={url}")
-        print(f"AUTH={auth}")
-        print(f"DEVICE={device_name}")
-        print(f"PORT={port}")
-        print(f"APP_ID={app_id}")
-        print("STATUS=existing")
+        print(f"Already published as {name} (auth unchanged here).", flush=True)
+        print(f"URL={url}", flush=True)
+        print(f"AUTH={auth}", flush=True)
+        print(f"DEVICE={device_name}", flush=True)
+        print(f"PORT={port}", flush=True)
+        print(f"APP_ID={app_id}", flush=True)
+        print("STATUS=existing", flush=True)
         return
 
+    log(f"edgible-publish: creating {name} on port {port} ({auth})")
     create_app(name, port, auth, device_id)
+    log("edgible-publish: create returned, waiting for https URL (up to ~90s)")
     created = find_app_by_name(name)
     if not created:
         die("Create appeared to succeed but the app is not in `edgible app list`.")
     app_id = str(created["id"])
     url = wait_for_url(app_id)
-    print(f"Published {name} on port {port} ({auth}) via {device_name}.")
-    print(f"URL={url}")
-    print(f"AUTH={auth}")
-    print(f"DEVICE={device_name}")
-    print(f"PORT={port}")
-    print(f"APP_ID={app_id}")
-    print("STATUS=created")
+    print(f"Published {name} on port {port} ({auth}) via {device_name}.", flush=True)
+    print(f"URL={url}", flush=True)
+    print(f"AUTH={auth}", flush=True)
+    print(f"DEVICE={device_name}", flush=True)
+    print(f"PORT={port}", flush=True)
+    print(f"APP_ID={app_id}", flush=True)
+    print("STATUS=created", flush=True)
 
 
 if __name__ == "__main__":
