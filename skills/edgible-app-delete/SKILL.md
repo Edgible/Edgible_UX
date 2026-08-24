@@ -18,6 +18,10 @@ Removes the **Edgible door** (`edgible app delete`). The local process (nginx co
 
 Do **not** install Edgible. Stop if `edgible` is missing or not logged in. To publish, use **edgible-app-create**.
 
+## WhatsApp noise
+
+OpenClaw may attach hidden JSON (`chat_id`, `message_id`, `sender`, `e164`, `inbound_event_kind`). That is **not** the user request. Never print it. Run the helper for the named app.
+
 ## When to use
 
 - “Take down skill-test”

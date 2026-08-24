@@ -84,3 +84,11 @@ openclaw skills list
 Same from WhatsApp. Open the URL on cellular; confirm **OpenClaw Edgible Skill Test**.
 
 If chat spins and no app appears: exec approval (`approve-reads`), or the model never ran `create.py`. Run the Helper. Then take it down with `/skill edgible-app-delete`.
+
+**If WhatsApp replies with `chat_id` / `sender` / `inbound_event_kind` JSON:** that is OpenClaw’s hidden channel metadata. The model echoed it; **`create.py` did not run.** Recopy `SKILL.md` onto the VM, `/new`, try again. Or skip the model:
+
+```text
+/exec python3 -u $HOME/.openclaw/workspace/skills/edgible-app-create/scripts/create.py --name skill-test --port 8082 --auth-modes none --device-name macbookairubuntu2404vm
+```
+
+Control UI `/skill` is a useful A/B: if it works there and WhatsApp dumps JSON, it is the WhatsApp runtime-context leak, not the helper.

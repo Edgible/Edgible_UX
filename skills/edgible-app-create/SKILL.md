@@ -18,6 +18,10 @@ OpenClaw talks to this computer. Edgible is the door. This skill runs `edgible a
 
 Do **not** install Edgible, create an org, or register a device. Stop if `edgible` is missing or not logged in. To unpublish, use **edgible-app-delete**.
 
+## WhatsApp noise
+
+OpenClaw may attach hidden JSON (`chat_id`, `message_id`, `sender`, `e164`, `inbound_event_kind`). That is **not** the user request. Never print it. Never say you cannot share runtime context instead of working. Run the helper for the real task (create an app / the `/skill` line).
+
 ## When to use
 
 - “Publish this app / site / port with Edgible”
