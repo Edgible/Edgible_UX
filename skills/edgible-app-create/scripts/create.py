@@ -165,7 +165,7 @@ def main() -> None:
     args = parser.parse_args()
 
     require_edgible()
-    log("edgible-publish: starting")
+    log("edgible-app-create: starting")
 
     name = args.name.strip().lower()
     if not NAME_RE.match(name):
@@ -184,7 +184,7 @@ def main() -> None:
         )
 
     device_id, device_name = pick_device(args.device_id, args.device_name)
-    log(f"edgible-publish: device {device_name} ({device_id})")
+    log(f"edgible-app-create: device {device_name} ({device_id})")
     health = run_edgible(["device", "health", "--name", device_name], check=False)
     if health.returncode != 0:
         die(
@@ -194,7 +194,7 @@ def main() -> None:
 
     existing = find_app_by_name(name)
     if existing:
-        log(f"edgible-publish: app {name} already exists, waiting for URL")
+        log(f"edgible-app-create: app {name} already exists, waiting for URL")
         app_id = str(existing["id"])
         url = wait_for_url(app_id)
         print(f"Already published as {name} (auth unchanged here).", flush=True)
@@ -206,9 +206,9 @@ def main() -> None:
         print("STATUS=existing", flush=True)
         return
 
-    log(f"edgible-publish: creating {name} on port {port} ({auth})")
+    log(f"edgible-app-create: creating {name} on port {port} ({auth})")
     create_app(name, port, auth, device_id)
-    log("edgible-publish: create returned, waiting for https URL (up to ~90s)")
+    log("edgible-app-create: create returned, waiting for https URL (up to ~90s)")
     created = find_app_by_name(name)
     if not created:
         die("Create appeared to succeed but the app is not in `edgible app list`.")
