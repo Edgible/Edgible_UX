@@ -56,7 +56,15 @@ If that path is missing, try `{baseDir}/scripts/create.py`.
 
 Optional: `--device-name <this-machine>` if more than one serving device exists. Use the guest you are on (e.g. `macbookairubuntu2404vm`), not another box in the same org.
 
-The script is idempotent: if that app name already exists, it prints the existing URL. It prints `URL=` when finished. Paste that line back. If `exec` is waiting for approval, say so — do not sit silent.
+The script is idempotent: if that app name already exists, it prints the existing URL.
+
+**Required chat reply:** after `exec` finishes, send a normal assistant message. Do not stop on the tool card. Copy these lines from the helper stdout, verbatim:
+
+```text
+URL=https://….edgible.com
+```
+
+Also include `AUTH=` if present. One extra sentence is fine (“open this on your phone”). Never end the turn with only a tool result and no URL in the bubble.
 
 ## Hard rules
 

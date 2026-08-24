@@ -42,7 +42,9 @@ python3 -u "$HOME/.openclaw/workspace/skills/edgible-app-delete/scripts/delete.p
 
 If that path is missing, try `{baseDir}/scripts/delete.py`.
 
-The script prints `STATUS=deleted` or `STATUS=missing` (already gone — that is success). Paste `STATUS=` back. If `exec` needs approval, say so.
+The script prints `STATUS=deleted` or `STATUS=missing` (already gone — that is success).
+
+**Required chat reply:** after `exec` finishes, send a normal assistant message with `STATUS=` (and `NAME=` if present) copied from stdout. Do not stop on the tool card with no text in the bubble. If `exec` needs approval, say so.
 
 ## Hard rules
 

@@ -81,7 +81,9 @@ openclaw skills list
 /skill edgible-app-create Create a public Edgible app named skill-test for nginx on port 8082. If it already exists, just give me the URL.
 ```
 
-Same from WhatsApp. Open the URL on cellular; confirm **OpenClaw Edgible Skill Test**.
+You want a reply that contains **`URL=https://`** … **`edgible.com`**. Open that URL on cellular; confirm **OpenClaw Edgible Skill Test**.
+
+If **activity** shows `create.py` / `URL=` but the **chat bubble is empty**, Edgible still worked — the model skipped the follow-up message. Recopy `SKILL.md` (it now requires that bubble). The URL is also in the exec output and in `edgible app list`.
 
 If chat spins and no app appears: exec approval (`approve-reads`), or the model never ran `create.py`. Run the Helper. Then take it down with `/skill edgible-app-delete`.
 
