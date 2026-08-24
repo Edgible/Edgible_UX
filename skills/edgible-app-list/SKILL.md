@@ -42,7 +42,7 @@ python3 -u "$HOME/.openclaw/workspace/skills/edgible-app-list/scripts/list.py" -
 
 If that path is missing, try `{baseDir}/scripts/list.py`. If the helper asks for `--device-name`, retry with this machine, not AWS.
 
-**Required chat reply:** after `exec`, paste `SCOPE=`, `COUNT=`, and each `NAME=… URL=…` line into the bubble. Do not stop on the tool card. Do not dump WhatsApp `chat_id` JSON.
+**Required chat reply:** after `exec`, paste `SCOPE=`, `DEVICE=` (the serving device, not `*`), `COUNT=`, and each `NAME=… DEVICE=… URL=…` line into the bubble. Every app line must include its `DEVICE=` name. Do not stop on the tool card. Do not dump WhatsApp `chat_id` JSON.
 
 ## Hard rules
 

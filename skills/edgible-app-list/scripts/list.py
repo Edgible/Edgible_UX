@@ -47,8 +47,19 @@ def serving_devices() -> list[dict]:
     return load_json(proc).get("devices") or []
 
 
-def pick_device(device_id: str | None, device_name: str | None) -> tuple[str, str]:
-    devices = serving_devices()
+def device_id_to_name(devices: list[dict]) -> dict[str, str]:
+    return {
+        str(d["id"]): str(d.get("name") or d["id"])
+        for d in devices
+        if d.get("id")
+    }
+
+
+def pick_device(
+    device_id: str | None,
+    device_name: str | None,
+    devices: list[dict],
+) -> tuple[str, str]:
     if not devices:
         die("No serving devices in this org. Register the Edgible agent first.")
 
@@ -97,6 +108,12 @@ def app_device_ids(app: dict) -> set[str]:
     return ids
 
 
+def app_device_names(app: dict, id_to_name: dict[str, str]) -> str:
+    ids = app_device_ids(app)
+    names = [id_to_name.get(i, i) for i in sorted(ids)]
+    return ",".join(names) if names else "unknown"
+
+
 def app_url(app_id: str) -> str:
     proc = run_edgible(["app", "get", "--app-id", app_id, "--json"], check=False)
     if proc.returncode != 0:
@@ -124,6 +141,9 @@ def main() -> None:
     require_edgible()
     log("edgible-app-list: starting")
 
+    devices = serving_devices()
+    id_to_name = device_id_to_name(devices)
+
     proc = run_edgible(["app", "list", "--json"])
     payload = load_json(proc)
     apps = payload.get("applications") or payload.get("apps") or []
@@ -134,7 +154,9 @@ def main() -> None:
         filtered = apps
         log("edgible-app-list: scope org (all devices)")
     else:
-        device_id, device_name = pick_device(args.device_id, args.device_name)
+        device_id, device_name = pick_device(
+            args.device_id, args.device_name, devices
+        )
         scope = "device"
         filtered = [a for a in apps if device_id in app_device_ids(a)]
         log(f"edgible-app-list: scope device {device_name} ({device_id})")
@@ -152,8 +174,10 @@ def main() -> None:
         port = app.get("port")
         status = app.get("status") or ""
         url = app_url(app_id) if app_id else ""
+        app_device = app_device_names(app, id_to_name)
         print(
-            f"NAME={name} PORT={port} STATUS={status} URL={url} APP_ID={app_id}",
+            f"NAME={name} DEVICE={app_device} PORT={port} STATUS={status} "
+            f"URL={url} APP_ID={app_id}",
             flush=True,
         )
     print("STATUS=ok", flush=True)

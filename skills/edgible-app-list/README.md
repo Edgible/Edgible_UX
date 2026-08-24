@@ -29,7 +29,7 @@ Whole org:
 python3 -u ~/.openclaw/workspace/skills/edgible-app-list/scripts/list.py --all
 ```
 
-You want `SCOPE=device` (or `org`), `COUNT=`, then `NAME=… URL=…` lines, then `STATUS=ok` or `STATUS=empty`.
+You want `SCOPE=device` (or `org`), `DEVICE=` (this box’s serving name, or `*` for `--all`), `COUNT=`, then `NAME=… DEVICE=… URL=…` lines, then `STATUS=ok` or `STATUS=empty`. Each app line has its own `DEVICE=` so `--all` still shows which box hosts which URL.
 
 ## Test (Control UI)
 
@@ -37,4 +37,4 @@ You want `SCOPE=device` (or `org`), `COUNT=`, then `NAME=… URL=…` lines, the
 /skill edgible-app-list List Edgible apps on this machine, device macbookairubuntu2404vm.
 ```
 
-Success is those `NAME=` / `URL=` lines in the bubble (or in activity if the model skips the follow-up). Compare with `edgible app list`.
+Success is `DEVICE=` plus those `NAME=` / `DEVICE=` / `URL=` lines in the bubble (or in activity if the model skips the follow-up). Compare with `edgible app list`.
