@@ -4,7 +4,7 @@ Each chapter is one job and one smoke test. Do them in order.
 
 **How to read a chapter:** one-line hook under the title, then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
 
-**OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no Tailscale). Telegram / WhatsApp are chat doors; they are not Edgible apps.
+**OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). Telegram / WhatsApp are chat doors; they are not Edgible apps.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

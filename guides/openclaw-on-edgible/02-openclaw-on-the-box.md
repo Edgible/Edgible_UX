@@ -272,7 +272,7 @@ You should get a short reply in the terminal. That is local OpenClaw working. Yo
 The **first** turn is often OpenClaw’s identity ritual (`Who am I? Who are you?`) instead of a literal hello. That still counts. Answer in one line, for example:
 
 ```bash
-openclaw agent --agent main --thinking off --message "You are OpenClaw on my Ubuntu VM. I am Stefano. Say hello in one sentence."
+openclaw agent --agent main --thinking off --message "You are OpenClaw on my Ubuntu VM. I am Bruce. Say hello in one sentence."
 ```
 
 **If the model was not found:** go back to **2.3.3**. You set an id OpenClaw does not have.
@@ -379,7 +379,7 @@ Keep the Ollama model small enough that the Mac does not swap, or the “backup�
 ### 2.3.8 Do not do these yet
 
 - Telegram / Discord — they already dial out; they are not the Edgible job. Skill: [chapter 5](05-edgible-openclaw-skill.md). Telegram: [chapter 6](06-telegram-pocket-client.md). WhatsApp: [chapter 7](07-whatsapp-pocket-client.md).
-- Tailscale Serve / Funnel / Cloudflare Tunnel.
+- Mesh VPNs, ingress tunnels, or other tools that publish a local port.
 - `gateway.auth` set to none.
 
 ### 2.3.9 Verify

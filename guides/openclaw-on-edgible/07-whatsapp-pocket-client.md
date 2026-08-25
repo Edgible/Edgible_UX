@@ -62,7 +62,7 @@ openclaw pairing approve whatsapp <CODE>
 
 That is the same *idea* as `devices approve` for the Control UI — it is **not** the WhatsApp QR. Send `hello`. You want a reply in WhatsApp that **starts with `[OpenClaw]`** (Gemini/gpt-oss behind it). Edgible is unused for this hop.
 
-A bare “Hey Stefano! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 7.3 is the check.
+A bare “Hey Bruce! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 7.3 is the check.
 
 ## 7.5 Bind Cursor — retitle sections (no steer)
 
@@ -83,7 +83,7 @@ You want a spawn **without** `Conversation bindings are unavailable for webchat`
 
 ```text
 Rename the three section headings to: Who this is. Why we remember them. One odd fact.
-Keep the body copy, CSS, and the Australia/Adelaide next-rotation footer.
+Keep the body copy, CSS, and the next-rotation footer (IANA timezone).
 Update the Python updater so the next hourly run uses those headings too.
 Do not docker exec. Do not touch ~/.openclaw or Edgible.
 ```

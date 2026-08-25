@@ -16,7 +16,7 @@ Three locks, in order: **Edgible org** (only your organisation hits the hostname
 
 **Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + local hello). Leave **hello-world** running.
 
-**Not this chapter:** binding `0.0.0.0`, Tailscale, or public (**None**) auth on 18789.
+**Not this chapter:** binding `0.0.0.0`, a mesh VPN, or public (**None**) auth on 18789.
 
 ## 3.2 Create the Edgible app
 
@@ -156,7 +156,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 
 If **hello-world** still loads on the phone and **openclaw-ui** does not, the tunnel is fine — the failure is OpenClaw (certs, org login, origins, WebSocket, token).
 
-If chat disconnects immediately, Edgible may not be proxying WebSockets yet — stop and note that; do not “fix” it with Tailscale Funnel.
+If chat disconnects immediately, Edgible may not be proxying WebSockets yet — stop and note that; do not “fix” it with a mesh VPN or an ingress tunnel.
 
 ### Verify
 

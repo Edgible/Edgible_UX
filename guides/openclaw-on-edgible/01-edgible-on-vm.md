@@ -1,6 +1,6 @@
 # 1. Edgible on an Ubuntu VM
 
-**A public HTTPS page on a box you own — cellular, no port-forward, no Tailscale.**
+**A public HTTPS page on a box you own — cellular, no port-forward, no mesh VPN.**
 
 ## 1.1 The job
 
