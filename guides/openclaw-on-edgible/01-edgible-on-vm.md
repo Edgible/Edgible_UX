@@ -16,7 +16,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 
 **Need first:** the invite email. Host kit is 1.2. NAT is enough — outbound TCP 443 only.
 
-**Not this chapter:** OpenClaw, Control UI on the internet, Telegram, or the Edgible skill.
+**Not this chapter:** OpenClaw, n8n, Control UI on the internet, Telegram, or the Edgible skill.
 
 ## 1.2 What you need on the host computer
 
@@ -403,3 +403,5 @@ Leave this app running until the teardown chapter (or `edgible app delete --name
 ## Next
 
 [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) — Gateway on loopback, Gemini Flash, local hello / Control UI. Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
+
+Or skip OpenClaw and run workflows: [n8n on Edgible](../n8n-on-edgible/README.md) (same VM, Hello World still up).

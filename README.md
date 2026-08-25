@@ -7,3 +7,4 @@ The OpenClaw skill (`/skill edgible`) lives in **[openclaw-edgible](https://gith
 ## Contents
 
 - [OpenClaw on Edgible — chapter index](guides/openclaw-on-edgible/README.md) — nine short chapters (VM + Edgible → OpenClaw → Control UI → public page → skill → Telegram → WhatsApp → Cursor → models).
+- [n8n on Edgible — chapter index](guides/n8n-on-edgible/README.md) — five chapters (n8n on the VM → org editor → public webhook hostname → cron → a webhook you can hit from cellular). Start from [OpenClaw chapter 1](guides/openclaw-on-edgible/01-edgible-on-vm.md) for the VM; this series does not use OpenClaw.

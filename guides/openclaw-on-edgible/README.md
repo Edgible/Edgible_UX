@@ -21,3 +21,5 @@ Each chapter is one job and one smoke test. Do them in order.
 Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **host bash** (`commands.bash`), off by default, and needs elevated allowlists. Chapter 5 is `/skill edgible whoami`. Chapter 6 can enable `!` if you want a host shell from Telegram.
 
 The skill source is [openclaw-edgible](https://github.com/Edgible/openclaw-edgible), not this repo.
+
+Workflows (webhooks, not an agent): [n8n on Edgible](../n8n-on-edgible/README.md) — same VM from [chapter 1](01-edgible-on-vm.md).
