@@ -60,7 +60,7 @@ openclaw pairing list whatsapp
 openclaw pairing approve whatsapp <CODE>
 ```
 
-That is the same *idea* as `devices approve` for the Control UI — it is **not** the WhatsApp QR. Send `hello`. You want a reply in WhatsApp that **starts with `[OpenClaw]`** (Gemini/gpt-oss behind it). Edgible is unused for this hop.
+That is the same *idea* as `devices approve` for the Control UI — it is **not** the WhatsApp QR. Send `hello`. You want a reply in WhatsApp that **starts with `[OpenClaw]`** (Gemini, or whatever you set in [9](09-models-beyond-free-gemini.md)). Edgible is unused for this hop.
 
 A bare “Hey Bruce! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 7.3 is the check.
 
@@ -105,5 +105,5 @@ Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellula
 
 ## Next
 
-[8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) if you have not done ACP yet. Series: [README](README.md).
+[8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) if you have not done ACP yet. Other models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Series: [README](README.md).
 

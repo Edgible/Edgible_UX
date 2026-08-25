@@ -80,7 +80,7 @@ Keep a short list of who you've already shown (a file next to the HTML is fine).
 Use a cron/automation job. Confirm the schedule. Public sources only. Nothing about me.
 ```
 
-Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash ([chapter 2](02-openclaw-on-the-box.md) 2.3.3). For a long-running box, switch this cron to daily after the demo.
+Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash ([chapter 2](02-openclaw-on-the-box.md) 2.3.3), or switch the chat brain in [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). For a long-running box, switch this cron to daily after the demo.
 
 Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-agent.md) is the A/B: wipe back to the [chapter 1](01-edgible-on-vm.md) Hello World page, remove that cron, then hire Cursor to rebuild the **same** product. Same public URL. Do not skip this chapter — you need to have seen Gemini’s version so Cursor’s looks like an upgrade.
 
@@ -96,4 +96,4 @@ Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-age
 
 ## Next
 
-[5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Optional later: [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). Series: [README](README.md).
+[5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Optional later: [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md), [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Series: [README](README.md).

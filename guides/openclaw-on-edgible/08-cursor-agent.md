@@ -4,7 +4,7 @@
 
 ## 8.1 The job
 
-[4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md) proved OpenClaw can change a public URL. The HTML is a dump. Here you put the **starting** Hello World page back, hire Cursor over ACP to build On this day (layout, CSS, updater, state, cron installer), and hard-refresh the **same** hostname. Gemini stays the OpenClaw chat brain. You do **not** paste a Cursor key into `openclaw models set`. `approve-all` plus this spawn writes the **public** site.
+[4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md) proved OpenClaw can change a public URL. The HTML is a dump. Here you put the **starting** Hello World page back, hire Cursor over ACP to build On this day (layout, CSS, updater, state, cron installer), and hard-refresh the **same** hostname. Gemini (or whatever you set in [9](09-models-beyond-free-gemini.md)) stays the OpenClaw **chat** brain. You do **not** paste a Cursor key into `openclaw models set`. `approve-all` plus this spawn writes the **public** site.
 
 Skip without a Cursor subscription. Finish chapter 4 first so the A/B is honest — this chapter **wipes** Gemini’s page on purpose.
 
@@ -264,5 +264,5 @@ Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` st
 
 ## Next
 
-That's the series. [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md). Telegram is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). The **edgible** skill is [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md).
+That's the series for the site A/B. Other chat models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md). Telegram is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). The **edgible** skill is [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md).
 

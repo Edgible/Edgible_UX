@@ -83,7 +83,7 @@ openclaw pairing list telegram
 openclaw pairing approve telegram <CODE>
 ```
 
-Send `hello` again. You want a reply from OpenClaw (Gemini, or Ollama if Gemini returned 429 — see [6.6](#66-which-model-and-429s)).
+Send `hello` again. You want a reply from OpenClaw (Gemini Flash, or whatever you set in [9](09-models-beyond-free-gemini.md)).
 
 If there is no reply: token, `apiRoot`, pairing, or the Gateway not running. `openclaw doctor` and `channels status --probe` first. There is still no Edgible hop on this path.
 
@@ -103,7 +103,7 @@ Telegram slash commands that OpenClaw handles **in the Gateway** (no model) must
 | You send | What it is |
 | --- | --- |
 | `/whoami` or `/id` | **Your Telegram sender id** (`telegram:123…`). Instant. |
-| `/status` | Runtime + **selected** model; **Fallback** line if this session answered on Ollama. |
+| `/status` | Runtime + **selected** model; **Fallback** line if this session answered on a backup. |
 | `/model status` | Endpoints / picker detail. |
 | `/stop` | Abort a stuck OpenClaw turn. |
 | `/skill edgible whoami` | **Edgible CLI** `edgible whoami`. Full model turn (slow). |
@@ -116,25 +116,25 @@ If `/whoami` spins, a previous `/skill` turn is probably still queued (`/stop` t
 
 ## 6.6 Which model, and 429s
 
-Gemini free tier **429** is quota, not a broken Telegram install. If `agents.defaults.model.fallbacks` includes e.g. `ollama/gpt-oss:20b`, OpenClaw **fails over on that same turn** — you do not resend for fallback to start. The next message starts on Gemini again.
+This chapter assumes the [chapter 2](02-openclaw-on-the-box.md) **Gemini Flash** primary. A 429 is quota, not a broken Telegram install.
 
-Failover does **not** run if you pinned a model in Control UI or `/model …` (strict). Leave the picker on **Default**.
+Failover (same turn, no resend) only if you set `agents.defaults.model.fallbacks` in [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). A pinned Control UI `/model` is **strict** — leave the picker on **Default**.
 
 In a **DM**, a switch can show:
 
 ```text
-↪️ Model Fallback: ollama/gpt-oss:20b (selected google/…; rate_limit)
+↪️ Model Fallback: ollama/qwen2.5:7b (selected google/…; rate_limit)
 ```
 
 Groups suppress that notice; `/status` still has the state.
 
-A 20B local model on an 8 GB VM is slow. That is why `/skill` feels the same in Control UI and Telegram: same Gateway, same model. `edgible whoami` on the VM is milliseconds.
+`/skill` is slow when the **model** is slow. `edgible whoami` on the VM is milliseconds.
 
 ```bash
 openclaw config get agents.defaults.model
 ```
 
-You want `primary` = Flash and `fallbacks` including `ollama/…` if you set that in [2.3.7](02-openclaw-on-the-box.md#237-point-openclaw-at-ollama-on-the-mac-optional).
+You want `primary` = Flash until you change it in [chapter 9](09-models-beyond-free-gemini.md).
 
 ---
 
@@ -218,4 +218,4 @@ Standalone message: `! edgible whoami` or `/bash edgible whoami`. Limit Telegram
 
 ## Next
 
-[7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) if you want a linked-device client, or skip to [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). Series: [README](README.md).
+[7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) if you want a linked-device client, or skip to [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). Paid / local models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Series: [README](README.md).

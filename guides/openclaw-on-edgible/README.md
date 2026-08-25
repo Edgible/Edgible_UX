@@ -16,6 +16,7 @@ Each chapter is one job and one smoke test. Do them in order.
 | 6 | [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md) | DM **your** bot; `/skill edgible whoami` |
 | 7 | [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) | Linked device `hello` with `[OpenClaw]`; optional ACP `--bind here` |
 | 8 | [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) | `/acp doctor` then spawn; Control UI uses steer; WhatsApp can bind |
+| 9 | [9. Models beyond free Gemini](09-models-beyond-free-gemini.md) | `openclaw agent --model … hello` on DeepSeek / Ollama / another key; optional fallbacks |
 
 Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **host bash** (`commands.bash`), off by default, and needs elevated allowlists. Chapter 5 is `/skill edgible whoami`. Chapter 6 can enable `!` if you want a host shell from Telegram.
 

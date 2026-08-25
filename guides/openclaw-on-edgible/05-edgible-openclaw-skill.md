@@ -92,7 +92,7 @@ Also useful:
 | Control UI | `/skill edgible whoami` | Same CLI, via the skill (OpenClaw model turn) |
 | Control UI or Telegram | `/whoami` or `/id` | **OpenClaw** sender id (`webchat:…` / `telegram:123…`). Instant. Not Edgible. |
 
-`/skill` is a full model turn. It can be slow (Gemini 429 → local Ollama). The CLI itself is milliseconds. If chat hangs, `/stop`, then retry in Control UI — not Telegram — for the first skill check.
+`/skill` is a full model turn. It can be slow on Gemini free tier (429). The CLI itself is milliseconds. If chat hangs, `/stop`, then retry in Control UI — not Telegram — for the first skill check. A paid or local primary is [9. Models beyond free Gemini](09-models-beyond-free-gemini.md).
 
 Exec may wait for approval (`approve-reads`). Approve `edgible whoami`.
 
@@ -108,4 +108,4 @@ Telegram: same `/skill edgible whoami` in [chapter 6](06-telegram-pocket-client.
 
 ## Next
 
-[6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). Series: [README](README.md).
+[6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). Other models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Series: [README](README.md).
