@@ -1,10 +1,12 @@
 # OpenClaw on Edgible — chapters
 
-Each chapter is one job and one smoke test. Do them in order.
+**Guide 2.** Each chapter is one job and one smoke test. Do them in order. If [1. n8n on Edgible](../n8n-on-edgible/README.md) already left Hello World up, skip [chapter 1](01-edgible-on-vm.md) and start at [chapter 2](02-openclaw-on-the-box.md).
 
 **How to read a chapter:** one-line hook under the title, then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
 
-**OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). Telegram / WhatsApp are chat doors; they are not Edgible apps.
+**OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). The Edgible story here is the **Control UI**: phone browser, **org** login, no tunnel on the laptop. Telegram / WhatsApp are chat doors; they are not Edgible apps.
+
+Publishing plus two locks on one process (editor **org**, webhooks **None**) is [1. n8n on Edgible](../n8n-on-edgible/README.md). Hooking n8n and OpenClaw to a **big** local or remote LLM you publish through Edgible is [3. LLM on Edgible](../llm-on-edgible/README.md) — not this series, not chapter 9.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
@@ -22,4 +24,4 @@ Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **
 
 The skill source is [openclaw-edgible](https://github.com/Edgible/openclaw-edgible), not this repo.
 
-Workflows (webhooks, not an agent): [n8n on Edgible](../n8n-on-edgible/README.md) — same VM from [chapter 1](01-edgible-on-vm.md).
+Workflows (webhooks and auth split, not an agent): [1. n8n on Edgible](../n8n-on-edgible/README.md) — same VM from [chapter 1](01-edgible-on-vm.md). A model you control, published for both products: [3. LLM on Edgible](../llm-on-edgible/README.md) (stub).

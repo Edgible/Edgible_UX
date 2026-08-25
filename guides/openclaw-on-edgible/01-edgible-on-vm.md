@@ -402,6 +402,6 @@ Leave this app running until the teardown chapter (or `edgible app delete --name
 
 ## Next
 
-[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) — Gateway on loopback, Gemini Flash, local hello / Control UI. Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
+[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) — continue **guide 2** (Gateway on loopback, Gemini Flash, local hello / Control UI). Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
 
-Or skip OpenClaw and run workflows: [n8n on Edgible](../n8n-on-edgible/README.md) (same VM, Hello World still up).
+Or **guide 1** (workflows, no agent): [n8n on Edgible](../n8n-on-edgible/README.md) — same VM, Hello World still up.

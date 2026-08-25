@@ -2,9 +2,11 @@
 
 **Flash proved hello. This is how you live on a paid or local model — with a fallback.**
 
+Cloud keys and a **small** same-LAN Ollama failover belong here. Publishing a **big** local or remote LLM through Edgible, then pointing n8n **and** OpenClaw at that URL, is [3. LLM on Edgible](../llm-on-edgible/README.md) — not this chapter.
+
 ## 9.1 The job
 
-[2. OpenClaw on the VM](02-openclaw-on-the-box.md) onboarded **free Gemini Flash**. That is enough for the series. Free-tier **429**s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider **without** reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, Ollama, or a private URL through Edgible. Optional: a fallback list so a 429 still answers.
+[2. OpenClaw on the VM](02-openclaw-on-the-box.md) onboarded **free Gemini Flash**. That is enough for the series. Free-tier **429**s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider **without** reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, or a small Ollama on the same LAN. Optional: a fallback list so a 429 still answers. A published model URL is [3. LLM on Edgible](../llm-on-edgible/README.md).
 
 A Cursor subscription is **not** a chat model. That is [8. Cursor Agent](08-cursor-agent.md) (ACP). Do not paste a Cursor key into `openclaw models set`.
 
@@ -17,7 +19,7 @@ A Cursor subscription is **not** a chat model. That is [8. Cursor Agent](08-curs
 
 **Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway up, Gemini hello already worked). The rest of the series can stay on Flash until you do this.
 
-**Not this chapter:** installing OpenClaw, publishing Control UI, pairing Telegram, hiring Cursor.
+**Not this chapter:** installing OpenClaw, publishing Control UI, pairing Telegram, hiring Cursor, or publishing an Ollama / vLLM Edgible app ([3. LLM on Edgible](../llm-on-edgible/README.md)).
 
 ## 9.2 Rules that stay
 
@@ -29,7 +31,7 @@ Do this on the **VM** (Gateway host). Put keys in `~/.openclaw/.env` so systemd 
 | `/think off` (or `thinkingDefault off`) | Flash and DeepSeek V4 both hang if thinking stays on **medium**. |
 | `models set` = primary; `fallbacks` = backup | Fallback is turn-local. Next message starts on primary again. |
 | Use an id `list` actually prints | Guessing `deepseek/deepseek-v4-flash` when the catalog says something else is “model not found”. |
-| Do **not** publish Ollama or the Gateway on Edgible **None** | Same as chapters 2–3. |
+| Do **not** publish Ollama or the Gateway on Edgible **None** | Control UI stays **org**. A published inference URL is [3. LLM on Edgible](../llm-on-edgible/README.md), never **None**. |
 
 Check cooldown **before** blaming the new key:
 
@@ -102,7 +104,7 @@ Exact `--auth-choice` flags: [CLI automation](https://docs.openclaw.ai/start/wiz
 
 ## 9.5 Local Ollama
 
-Prompts stay on hardware you own. Do **not** publish Ollama through Edgible when it is on the same LAN as the VM.
+Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN, point the Gateway at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)) — do not hairpin through Edgible. Callers that are **not** on that LAN wait for [3. LLM on Edgible](../llm-on-edgible/README.md).
 
 ### 9.5.1 Same machine as OpenClaw (enough RAM)
 
@@ -168,26 +170,9 @@ openclaw models list --provider ollama
 
 Ollama often hides models that `/api/show` does not mark as **tool-capable** with **≥16K** context. Fallback can still use the config id. To pin local in chat: `/model ollama/qwen2.5:7b`.
 
-## 9.6 A private model via Edgible
+## 9.6 A published model (later)
 
-Someone else (or your other site) runs Ollama / vLLM on **their** hardware and publishes that API through Edgible. You point OpenClaw at `https://<app>.<org>.edgible.com`.
-
-You need from the operator:
-
-- The **HTTPS URL** (OpenAI-compatible or Ollama-style).
-- A **machine credential** (Edgible **API key** protection, or the model’s own key). Browser-only login will not work.
-- Confirmation the endpoint is **not** `None`.
-
-Trust: they can see your prompts.
-
-```bash
-openclaw onboard --auth-choice custom-api-key \
-  --custom-base-url 'https://<app>.<org>.edgible.com/v1' \
-  --custom-model-id '…' \
-  --custom-api-key "$CUSTOM_API_KEY"
-```
-
-Prefer adding the custom provider in config if the Gateway is already up — same idea as 9.2 (do not redo bind/daemon). Flags: [CLI automation](https://docs.openclaw.ai/start/wizard-cli-automation).
+Do not create an Ollama or vLLM Edgible app in this series. When the big local or remote LLM is answering on the serving box, [3. LLM on Edgible](../llm-on-edgible/README.md) publishes it (**api-key**) and points OpenClaw and n8n at that URL.
 
 ## 9.7 Fallback chain
 
@@ -229,4 +214,4 @@ Groups suppress that notice; `/status` still has Fallback. The notice is **not**
 
 ## Next
 
-That's the series. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md).
+That's the series. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM for n8n **and** OpenClaw is [3. LLM on Edgible](../llm-on-edgible/README.md) (stub).
