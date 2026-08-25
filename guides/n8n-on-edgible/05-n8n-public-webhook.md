@@ -19,22 +19,25 @@ You add a **Webhook** node whose **production** URL is on **n8n-hooks** (None), 
 
 ## 5.2 Build it
 
-In the editor:
+In the **org** editor (`n8n.<org>…`), not the hooks hostname:
 
 1. **Add workflow** (new, not the cron).
 2. Add **Webhook**.
-3. HTTP method: **GET** (phone browser) — you can also allow POST later.
-4. Path: something unguessable, e.g. `edgible-smoke-<random>`.
-5. Respond: **Immediately**, JSON body:
+3. **HTTP Method:** **GET** (phone browser).
+4. **Path:** something unguessable, e.g. `edgible-smoke-<random>` (or keep n8n’s random path).
+5. **Respond** is a **dropdown** on the Webhook node’s **Parameters** tab. Set it to **Using 'Respond to Webhook' Node** (not **Immediately** — that only returns *Workflow got started*).
+6. Click the **+** on the right of the Webhook (or the canvas **+**). In the search box type **`respond`**. Pick **Respond to Webhook**.  
+   Do not look for Edit Fields / Set **inside** the Webhook panel — those are other nodes. If you want them anyway, search **`edit fields`** or **`set`** (official name: **Edit Fields (Set)**), under **Core** / transform, not Apps.
+7. On **Respond to Webhook**: **Respond With** → **JSON**. Body:
 
 ```json
-{"ok": true, "via": "edgible"}
+{ "ok": true, "via": "edgible" }
 ```
 
-6. **Save**. Copy the **Production** URL (not Test). It must use the **n8n-hooks** host from [chapter 3](03-n8n-webhook-door.md).
-7. Toggle **Active**.
+8. **Save**. At the top of the **Webhook** node, switch to **Production URL** (not Test). Copy that URL — it must start with `https://n8n-hooks.` from [chapter 3](03-n8n-webhook-door.md).
+9. **Publish** / toggle **Active** (production webhooks only exist when the workflow is active).
 
-If the node still prints `localhost:5678` or `:5678` on the Edgible host, `WEBHOOK_URL` is wrong — go back to [3.3](03-n8n-webhook-door.md#33-point-n8n-at-the-two-origins) and recreate the container.
+If the URL still shows `localhost:5678` or `:5678`, `WEBHOOK_URL` is wrong — go back to [3.3](03-n8n-webhook-door.md#33-point-n8n-at-the-two-origins) and recreate the container.
 
 ## 5.3 Hit it from outside the VM
 
