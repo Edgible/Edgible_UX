@@ -1,39 +1,37 @@
 # 1. VM and Edgible
 
-**Edgible is the door: a real `https://` URL, outbound TCP 443 only — no port-forward, no Tailscale.** This chapter stops when a serving device is healthy and a public **Hello World** page loads on a **phone on cellular**. OpenClaw is [chapter 2](02-openclaw-on-the-box.md).
+**A public HTTPS page on a box you own — cellular, no port-forward, no Tailscale.**
 
-The “mini-PC” is an **Ubuntu 24.04 LTS** VM on the computer in front of you: **VirtualBox** (Windows/Linux) or **UTM** (Mac).
+## 1.1 The job
 
-Series index: [README](README.md).
+You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serving device, and publish Hello World. The “mini-PC” is that guest: **VirtualBox** (Windows/Linux) or **UTM** (Mac). OpenClaw is the next chapter.
 
----
-
-## What you should have at the end
+**Done when**
 
 - An Edgible account and organisation from the invite.
-- An Ubuntu 24.04 VM with outbound HTTPS (no port forwarding).
-- `edgible` on the VM, logged in. **`edgible whoami`** prints Profile / Environment / Account / Organization.
+- Ubuntu 24.04 on the VM, outbound HTTPS only (no port forwarding).
+- `edgible whoami` on the VM prints Profile / Environment / Account / Organization.
 - Serving device `mini-pc` with **Health check OK**.
 - `https://hello-world.<org>.edgible.com` loads on a **phone (cellular)**.
 
-You do **not** yet have OpenClaw, Control UI on the internet, Telegram, or the Edgible skill.
+**Need first:** the invite email. Host kit is 1.2. NAT is enough — outbound TCP 443 only.
 
----
+**Not this chapter:** OpenClaw, Control UI on the internet, Telegram, or the Edgible skill.
 
-## What you need on the host computer
+## 1.2 What you need on the host computer
 
 | Item | Notes |
 | --- | --- |
 | Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A **temporary password** arrives in a second email. |
-| VM manager | **VirtualBox** or **UTM** — see step 2. |
+| VM manager | **VirtualBox** or **UTM** — see 1.4. |
 | Ubuntu **24.04 LTS** ISO | Match the CPU: **amd64** on typical PCs; **arm64** on Apple Silicon. |
-| Sudo on the guest | You will install a systemd agent that configures WireGuard, iptables, and Caddy. |
+| Sudo on the guest | You will install the **Edgible serving agent** (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. |
 
 NAT is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 80, 443, or 18789. A **Gemini** key and Cursor are later chapters.
 
 ---
 
-## 1. Create account
+## 1.3 Create account
 
 **Outcome:** An Edgible account and organisation you can sign into at the console.
 
@@ -58,7 +56,7 @@ Keep the **email** and the **new password** somewhere you can paste into the VM.
 
 ---
 
-## 2. Create Virtual Machine
+## 1.4 Create the virtual machine
 
 **Outcome:** An Ubuntu 24 virtual machine in a VM manager — a stand-in for the mini-PC.
 
@@ -75,12 +73,12 @@ To create one you need a **VM manager** (hypervisor) — the app that hosts the 
 
 Use **Ubuntu Server** (not Desktop). You will work in a terminal, like a mini-PC.
 
-**Recommended minimums** for this guide (sized so the same guest can run OpenClaw later, not only the Edgible agent):
+**Recommended minimums** for this guide (sized so the same guest can run OpenClaw later, not only the Edgible serving agent):
 
 
 | Resource | Recommended minimum | Floor if you are short on host RAM/disk                                                                      |
 | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Memory   | **4 GB**            | **2 GB** can boot Ubuntu and the Edgible agent; OpenClaw will struggle.                                      |
+| Memory   | **4 GB**            | **2 GB** can boot Ubuntu and the Edgible serving agent; OpenClaw will struggle.                                      |
 | Disk     | **40 GB**           | **20 GB** is enough for this chapter only; images and OpenClaw need the rest. Dynamically allocated is fine. |
 | CPUs     | **2**               | **1** works; two is the minimum we recommend.                                                                |
 
@@ -93,7 +91,7 @@ During the Ubuntu installer:
 - Create a user you will remember (for example `ubuntu`). Give it sudo.
 - Skip extra snaps except what the installer requires.
 
-### 2a. VirtualBox (Windows or Linux PC)
+### 1.4.1 VirtualBox (Windows or Linux PC)
 
 1. Install [VirtualBox](https://www.virtualbox.org/) if needed.
 2. **New** VM: type Linux, version **Ubuntu (64-bit)**.
@@ -105,7 +103,7 @@ During the Ubuntu installer:
 
 Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Guest Additions, so you can paste the Edgible password. Until then, type it.
 
-### 2b. UTM (Mac)
+### 1.4.2 UTM (Mac)
 
 1. Install [UTM](https://mac.getutm.app/) if needed.
 2. **Create a New Virtual Machine** → **Virtualize** (Apple Silicon) or **Virtualize** on Intel Mac with an amd64 ISO. Do **not** use **Emulate** unless you have no other choice (it is slow).
@@ -122,7 +120,7 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 
 ---
 
-## 3. Prepare Virtual Machine
+## 1.5 Prepare the virtual machine
 
 **Outcome:** An updated VM with outbound internet and Docker installed.
 
@@ -136,7 +134,7 @@ ssh -p 2222 ubuntu@127.0.0.1
 
 Use your VM username if it is not `ubuntu`. Do **not** forward 80, 443, or 18789.
 
-### 3a. Update Ubuntu
+### 1.5.1 Update Ubuntu
 
 ```bash
 sudo apt-get update
@@ -146,7 +144,7 @@ sudo apt-get install -y ca-certificates curl
 
 If the upgrade installed a new kernel, reboot the VM (`sudo reboot`), then log in again.
 
-### 3b. Confirm outbound internet
+### 1.5.2 Confirm outbound internet
 
 The VM only needs **outbound** HTTPS. A generic check is enough:
 
@@ -156,7 +154,7 @@ curl -fsSI https://www.google.com | head -n 5
 
 You want a successful TLS response (for example HTTP **200** or **301**), not “Could not resolve host” or a hang. If this fails, fix NAT/shared network in the VM manager before installing anything else.
 
-### 3c. Install Docker
+### 1.5.3 Install Docker
 
 Follow Docker’s current Ubuntu steps if these drift: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
 
@@ -190,7 +188,7 @@ If you see permission denied on `/var/run/docker.sock`, the group is not active 
 
 ---
 
-## 4. Install the Edgible CLI (on the VM)
+## 1.6 Install the Edgible CLI (on the VM)
 
 **Outcome:** The `edgible` command on the VM.
 
@@ -216,11 +214,11 @@ edgible --help
 
 ---
 
-## 5. Log the CLI into your Edgible account
+## 1.7 Log the CLI into your Edgible account
 
 **Outcome:** The CLI on the VM logged into your organisation.
 
-Use the email and **new** password from **step 1** (not the temporary password from the email). On the VM:
+Use the email and **new** password from **1.3** (not the temporary password from the email). On the VM:
 
 ```bash
 edgible auth login \
@@ -254,11 +252,11 @@ edgible auth select-org
 
 ---
 
-## 6. Install and start the serving agent
+## 1.8 Install and start the Edgible serving agent
 
 **Outcome:** A serving device (`mini-pc`) connected to Edgible, with no inbound ports opened on your router.
 
-The agent must run **on the VM** as systemd. It registers a device named `mini-pc` in your org.
+The Edgible serving agent must run **on the VM** as systemd. It registers a device named `mini-pc` in your org. It is not OpenClaw.
 
 ```bash
 sudo edgible agent install \
@@ -275,7 +273,7 @@ sudo edgible agent start
 sudo systemctl status edgible-agent --no-pager
 ```
 
-The agent connects **outbound** to the control plane (WebSocket over HTTPS). It does not open a port on your router.
+That process connects **outbound** to the control plane (WebSocket over HTTPS). It does not open a port on your router.
 
 Wait a few seconds, then:
 
@@ -302,15 +300,15 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 
 ---
 
-## 7. Edgible says "Hello World"
+## 1.9 Hello World
 
 **Outcome:** An application hosted on your laptop / mini-PC that is accessible from the internet.
 
-The agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying **Hello World**: a throwaway nginx page you open from a **phone**, before you touch OpenClaw.
+The Edgible serving agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying **Hello World**: a throwaway nginx page you open from a **phone**, before you touch OpenClaw.
 
 Choose **None** (public access) when asked how the application should be protected. That is acceptable **only** because this page is a public Hello World. Do not use None for OpenClaw or anything private.
 
-### 7a. Run nginx on the VM
+### 1.9.1 Run nginx on the VM
 
 Still on the guest:
 
@@ -337,7 +335,7 @@ curl -s http://127.0.0.1:8081/
 
 You should see the Hello World HTML. That is **local only** — your phone cannot reach `8081` on the VM, and you did not port-forward it.
 
-### 7b. Publish it with Edgible
+### 1.9.2 Publish it with Edgible
 
 The nginx container is already listening on **8081**. Create an **existing** app — Edgible will discover that port. No YAML file.
 
@@ -360,7 +358,7 @@ edgible app create existing
 
 When it succeeds, the CLI prints an application **URL**. Standard shape is `https://<app>.<org>.edgible.com` — for this app, something like `https://hello-world.your-org.edgible.com`. Always copy the exact host the CLI prints. Do **not** open that HTTPS URL yet — the certificate is still being issued.
 
-### 7c. Wait for the certificate (console)
+### 1.9.3 Wait for the certificate (console)
 
 First publish typically takes **30–90 seconds**. Use the console to watch it, rather than hammering the URL.
 
@@ -379,7 +377,7 @@ curl -sS https://<the-hostname>/
 
 You should see Hello World over **HTTPS**. If curl complains about the certificate, wait and refresh **Certificates** in the console; do not fall back to `http://`.
 
-### 7d. Hit it from your phone
+### 1.9.4 Hit it from your phone
 
 This is the real check: the page must load when you are **not** on the same LAN as the laptop.
 

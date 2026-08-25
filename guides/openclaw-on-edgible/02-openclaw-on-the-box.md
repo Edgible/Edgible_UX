@@ -1,26 +1,24 @@
 # 2. OpenClaw on this box
 
-**OpenClaw is the agent on the VM.** It is not on the internet yet. The Gateway stays on **loopback** (`127.0.0.1:18789`). Hello World from [chapter 1](01-invite-through-edgible-on-vm.md) keeps running.
+**OpenClaw on *your* VM that can say hello — still not on the internet.**
 
-**Smoke test:** `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` replies in the VM terminal. If the guest has a **desktop**, `openclaw dashboard` opens **local** Control UI and chat works. That is **not** `! edgible whoami` (host bash — off by default; see [chapter 6](06-telegram-pocket-client.md) if you want it later). Edgible CLI via the skill is [chapter 5](05-edgible-openclaw-skill.md).
+## 2.1 The job
 
-**Models:** Gemini **Flash** on the free AI Studio key (not Pro/preview — that is the 429). Optional Ollama on a RAM-heavy Mac as failover.
+You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays on **loopback** (`127.0.0.1:18789`). Pin Gemini **Flash** on the free AI Studio key (not Pro/preview — that is the 429). Optional: Ollama on a RAM-heavy Mac as failover.
 
-Series index: [README](README.md). Next: [publish Control UI](03-publish-control-ui.md).
+**Done when**
 
----
-
-## What you should have at the end
-
-- OpenClaw Gateway running on the VM, bind **loopback**, port **18789**.
+- Gateway running on the VM, bind **loopback**, port **18789**.
 - A **Flash** default if you used Gemini free tier.
-- A local `hello` reply from `openclaw agent`.
-- Optional: Control UI in a VM-desktop browser via `openclaw dashboard`.
+- `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` replies in the VM terminal.
+- Optional: `openclaw dashboard` opens **local** Control UI and chat works (guest desktop only).
 - Hello World on the phone still loads.
 
----
+**Need first:** [1. VM and Edgible](01-edgible-on-vm.md) (Hello World still up).
 
-## 8. OpenClaw prerequisites (a model)
+**Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), or `! edgible whoami` (host bash — off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash--bash) if you want it later).
+
+## 2.2 Choose a model
 
 **Outcome:** A model OpenClaw can call — a Gemini API key (default), local Ollama if the box is big enough, or a private model URL from someone you trust.
 
@@ -28,7 +26,7 @@ OpenClaw onboarding will not finish until a **real completion** succeeds. **Chat
 
 Leave **hello-world** running. Pick **one** of the options below. You will paste the key (or point at Ollama) in the next step, when OpenClaw is installed.
 
-### 8a. Google Gemini (default, free)
+### 2.2.1 Google Gemini (default, free)
 
 Do this on the **host** browser, not inside the VM. You need a Google account (Gmail is fine).
 
@@ -51,13 +49,13 @@ curl -sS "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_A
 
 You want a model name such as `models/gemini-2.5-flash`, not `API_KEY_INVALID` or a hang. (If you piped the full JSON to `head` instead, `curl: (23) Failure writing output to destination` after that JSON is still success — `head` closed the pipe early.) If the request itself fails on the VM, fix outbound HTTPS before installing OpenClaw.
 
-### 8b. Local Ollama (same machine, enough RAM)
+### 2.2.2 Local Ollama (same machine, enough RAM)
 
 Use this if you want prompts to stay on the mini-PC. OpenClaw will call Ollama at `http://127.0.0.1:11434`. **Do not** publish Ollama through Edgible when it is on the same box.
 
 | RAM on the VM / mini-PC | What to expect |
 | ----------------------- | -------------- |
-| **4 GB** (this guide’s VM default) | Too small. Use Gemini (8a) or give the guest more RAM. |
+| **4 GB** (this guide’s VM default) | Too small. Use Gemini (2.2.1) or give the guest more RAM. |
 | **8 GB** | Floor. Pull a **tiny** model only (about 1B parameters). |
 | **16 GB+** | Usable local chat. |
 
@@ -69,7 +67,7 @@ ollama pull llama3.2:1b
 ollama run llama3.2:1b "Say hello in one word"
 ```
 
-**Ollama on the Mac, OpenClaw in the VM (32 GB Mac):** Do **not** put the model in the 8 GB guest. Install [Ollama for Mac](https://ollama.com/download). After the VM’s 8 GB, you have on the order of **16 GB** left for a model once macOS and the browser have a share — enough for a real agent, tight for a 27B if Chrome is fat.
+**Ollama on the Mac, OpenClaw in the VM (32 GB Mac):** Do **not** put the model in the 8 GB guest. Install [Ollama for Mac](https://ollama.com/download). After the VM’s 8 GB, you have on the order of **16 GB** left for a model once macOS and the browser have a share — enough for OpenClaw, tight for a 27B if Chrome is fat.
 
 On the **Mac**:
 
@@ -99,17 +97,17 @@ You want JSON with your model name, not connection refused. UTM NAT is often `19
 
 Ollama is the **runtime** on the Mac. Qwen / gpt-oss is the **model** you pulled. There is no Google-style API key; OpenClaw still wants a dummy `apiKey` (`ollama-local`).
 
-Do **not** publish Ollama through Edgible on **None**. The VM talking to the Mac on the virtual LAN is enough. After OpenClaw is installed, point it at this host in **9g**.
+Do **not** publish Ollama through Edgible on **None**. The VM talking to the Mac on the virtual LAN is enough. After OpenClaw is installed, point it at this host in [2.3.7](#237-point-openclaw-at-ollama-on-the-mac-optional).
 
-### 8c. Another cloud provider
+### 2.2.3 Another cloud provider
 
 Any key OpenClaw onboarding accepts is fine: **OpenAI Platform** (`sk-…` at [platform.openai.com/api-keys](https://platform.openai.com/api-keys), billed separately from ChatGPT), **Groq**, **OpenRouter** (`:free` models, tight daily caps). Set a spend cap if the provider bills.
 
-### 8d. A private model via Edgible (someone you trust)
+### 2.2.4 A private model via Edgible (someone you trust)
 
 Someone else (or your other site) runs a model on **their** hardware — Ollama, vLLM, a fine-tune — and publishes that API through Edgible. You point OpenClaw at their `https://<app>.<org>.edgible.com` URL instead of Gemini.
 
-This is a real Edgible job. It is **not** this trial’s path if you already have Gemini (8a).
+This is a real Edgible job. It is **not** this trial’s path if you already have Gemini (2.2.1).
 
 You need from the operator:
 
@@ -121,7 +119,7 @@ Trust: they can see your prompts. Treat it like handing them a diary, not like G
 
 When you install OpenClaw, that URL is a **custom / OpenAI-compatible provider**, not “Google” in the wizard. Exact flags wait until the install step.
 
-### Verify
+### 2.2.5 Verify
 
 - [ ] If you used Mac Ollama: `curl` from the **VM** to `http://$HOST:11434/api/tags` returns JSON (not `127.0.0.1` on the guest).
 - [ ] You did **not** use ChatGPT Free as the model.
@@ -129,15 +127,15 @@ When you install OpenClaw, that URL is a **custom / OpenAI-compatible provider**
 
 ---
 
-## 9. Install OpenClaw locally
+## 2.3 Install OpenClaw locally
 
 **Outcome:** OpenClaw Gateway running on the VM; you can send `hello` from the guest terminal and get a reply. It is not on the internet yet.
 
-Still **inside the VM**. Leave **hello-world** and the Edgible agent running. Do **not** install OpenClaw on the Mac/PC host for this guide.
+Still **inside the VM**. Leave **hello-world** and the Edgible serving agent running. Do **not** install OpenClaw on the Mac/PC host for this guide.
 
 This VM is Ubuntu **Server** — there is no desktop browser. Local proof is the CLI, not `openclaw dashboard`.
 
-### 9a. Install the OpenClaw CLI
+### 2.3.1 Install the OpenClaw CLI
 
 OpenClaw needs **Node.js 22.22.3+** (the installer can provision it). That is newer than Edgible’s Node 20 floor; let this installer handle it.
 
@@ -155,7 +153,7 @@ openclaw --version
 
 Official reference: [Install](https://docs.openclaw.ai/install).
 
-### 9b. Onboard with your model (Gemini default)
+### 2.3.2 Onboard with your model (Gemini default)
 
 If `GEMINI_API_KEY` is empty in this shell, paste it again (hidden):
 
@@ -176,27 +174,27 @@ openclaw onboard --non-interactive --accept-risk \
   --skip-skills
 ```
 
-`--accept-risk` is OpenClaw’s required flag for unattended setup (the agent can use tools and a shell). It is not an Edgible setting.
+`--accept-risk` is OpenClaw’s required flag for unattended setup (OpenClaw can use tools and a shell). It is not an Edgible setting.
 
 `--gateway-bind loopback` keeps the Control UI on `127.0.0.1:18789` only. Do **not** bind `0.0.0.0` and do **not** port-forward 18789 on the router.
 
 `--skip-skills` keeps this first `hello` about the Gateway + Gemini, not extra downloads. The Edgible CLI skill is [chapter 5](05-edgible-openclaw-skill.md). Telegram is [chapter 6](06-telegram-pocket-client.md).
 
-If you used **8b / 8c / 8d** instead of Gemini, swap only the auth flags:
+If you used **2.2.2 / 2.2.3 / 2.2.4** instead of Gemini, swap only the auth flags:
 
-| Step 8 choice | Onboard auth |
+| 2.2 choice | Onboard auth |
 | ------------- | ------------ |
-| 8a Gemini | as above |
-| 8b Ollama **in the guest** | `--auth-choice ollama --custom-model-id llama3.2:1b` (tiny; only if the VM has enough RAM) |
-| 8b Ollama **on the Mac** | `--auth-choice ollama --custom-base-url "http://$HOST:11434" --custom-model-id gpt-oss:20b` (no `/v1`; `$HOST` from step 8b). Or onboard Gemini first, then **9g**. |
-| 8c OpenAI / Groq / … | that provider’s `--auth-choice` and key flag ([CLI automation](https://docs.openclaw.ai/start/wizard-cli-automation)) |
-| 8d private Edgible URL | `--auth-choice custom-api-key --custom-base-url 'https://<app>.<org>.edgible.com/v1' --custom-model-id '…' --custom-api-key "$CUSTOM_API_KEY"` |
+| 2.2.1 Gemini | as above |
+| 2.2.2 Ollama **in the guest** | `--auth-choice ollama --custom-model-id llama3.2:1b` (tiny; only if the VM has enough RAM) |
+| 2.2.2 Ollama **on the Mac** | `--auth-choice ollama --custom-base-url "http://$HOST:11434" --custom-model-id gpt-oss:20b` (no `/v1`; `$HOST` from 2.2.2). Or onboard Gemini first, then **2.3.7**. |
+| 2.2.3 OpenAI / Groq / … | that provider’s `--auth-choice` and key flag ([CLI automation](https://docs.openclaw.ai/start/wizard-cli-automation)) |
+| 2.2.4 private Edgible URL | `--auth-choice custom-api-key --custom-base-url 'https://<app>.<org>.edgible.com/v1' --custom-model-id '…' --custom-api-key "$CUSTOM_API_KEY"` |
 
-### 9c. Pin a Flash model (required on Gemini free tier)
+### 2.3.3 Pin a Flash model (required on Gemini free tier)
 
 OpenClaw’s Google default is often a **Pro / preview** model. Free-tier quota on those is tiny — that is the **429** you hit if you skip this.
 
-Google’s API name from step 8 (`models/gemini-2.5-flash`) is **not** always OpenClaw’s id. Do not guess. List what *this* install knows, then set a **Flash** or **Flash-Lite** row from that list (avoid Pro / preview):
+Google’s API name from 2.2.1 (`models/gemini-2.5-flash`) is **not** always OpenClaw’s id. Do not guess. List what *this* install knows, then set a **Flash** or **Flash-Lite** row from that list (avoid Pro / preview):
 
 ```bash
 openclaw models list --provider google
@@ -218,7 +216,7 @@ openclaw gateway restart
 
 If `set` or the next chat says **model was not found**, you guessed. Run `list` again and set an id that is actually printed.
 
-Skip this substep if you onboarded Ollama (8b) or another cloud provider (8c) whose default already works.
+Skip this substep if you onboarded Ollama (2.2.2) or another cloud provider (2.2.3) whose default already works.
 
 OpenClaw’s **memory search** still defaults to OpenAI embeddings even when chat is Gemini. You will see a warning that no `OPENAI_API_KEY` was found. That is not required for this trial — do **not** add an OpenAI key just to silence it. Disable it:
 
@@ -229,7 +227,7 @@ openclaw gateway restart
 
 To keep semantic memory on the same Gemini key instead: `openclaw config set agents.defaults.memorySearch.provider gemini` (uses extra quota). Verify with `openclaw memory status --deep`.
 
-### 9d. Confirm the Gateway
+### 2.3.4 Confirm the Gateway
 
 ```bash
 openclaw gateway status
@@ -261,7 +259,7 @@ openclaw logs --follow
 
 (`Ctrl+C` stops following logs.)
 
-### 9e. Chat from the VM terminal
+### 2.3.5 Chat from the VM terminal
 
 The Gateway must be up. Do **not** pass `--local` (that fights the running Gateway).
 
@@ -274,12 +272,12 @@ You should get a short reply in the terminal. That is local OpenClaw working. Yo
 The **first** turn is often OpenClaw’s identity ritual (`Who am I? Who are you?`) instead of a literal hello. That still counts. Answer in one line, for example:
 
 ```bash
-openclaw agent --agent main --thinking off --message "You are a trial agent on my Ubuntu VM. I am Stefano. Say hello in one sentence."
+openclaw agent --agent main --thinking off --message "You are OpenClaw on my Ubuntu VM. I am Stefano. Say hello in one sentence."
 ```
 
-**If the model was not found:** go back to **9c**. You set an id OpenClaw does not have.
+**If the model was not found:** go back to **2.3.3**. You set an id OpenClaw does not have.
 
-**If you see 429 / quota exceeded:** OpenClaw is fine — Google’s free tier said stop. You are still on Pro/preview, or you already used the daily cap. Pin Flash (9c), wait a minute (RPM) or until tomorrow (daily). If logs say **google** is in **cooldown**, wait that out. To keep going now, use 8c (Groq / OpenRouter `:free` / OpenAI Platform) and re-onboard. Usage: [Google AI Studio](https://aistudio.google.com/).
+**If you see 429 / quota exceeded:** OpenClaw is fine — Google’s free tier said stop. You are still on Pro/preview, or you already used the daily cap. Pin Flash (2.3.3), wait a minute (RPM) or until tomorrow (daily). If logs say **google** is in **cooldown**, wait that out. To keep going now, use 2.2.3 (Groq / OpenRouter `:free` / OpenAI Platform) and re-onboard. Usage: [Google AI Studio](https://aistudio.google.com/).
 
 Optional TUI on the VM console:
 
@@ -287,7 +285,7 @@ Optional TUI on the VM console:
 openclaw tui
 ```
 
-### 9f. Control UI in a browser (before Edgible)
+### 2.3.6 Control UI in a browser (before Edgible)
 
 If this Ubuntu VM has a **desktop**, do **not** hunt for the token and paste a URL by hand. From a **terminal on the VM desktop** (so it can open Firefox/Chromium):
 
@@ -311,11 +309,11 @@ That launches the VM browser onto the Control UI (with a short-lived handoff —
 
 If there is no GUI, there is no in-guest browser — skip to Edgible, or forward host `127.0.0.1:18789` → guest `18789` in UTM/VirtualBox and use the Mac browser. Do not port-forward 18789 on the router.
 
-### 9g. Point OpenClaw at Ollama on the Mac (optional)
+### 2.3.7 Point OpenClaw at Ollama on the Mac (optional)
 
 **Outcome:** Chat on the VM uses the Mac’s local model (unlimited tokens, no Gemini quota), still via native Ollama — not `/v1`. The dashboard picker lists that model after you register it.
 
-Do this if you already onboarded with **Gemini** (9b) and step **8b** `curl` from the VM already returns JSON. Do **not** re-run full `openclaw onboard` unless you want to redo Gateway setup.
+Do this if you already onboarded with **Gemini** (2.3.2) and **2.2.2** `curl` from the VM already returns JSON. Do **not** re-run full `openclaw onboard` unless you want to redo Gateway setup.
 
 On the **VM**:
 
@@ -374,22 +372,22 @@ You want `primary` = `google/…flash…` and `fallbacks` including `ollama/…`
 
 **Control UI picker.** Fallbacks do **not** fill the dashboard list. After `gateway restart`, **refresh** the Control UI tab. gpt-oss appears only when `openclaw models list --provider ollama` already prints it (the `models` array above). If `list` omits it, the picker stays Google-only — Ollama often hides models that `/api/show` does not mark as **tool-capable** with **≥16K** context. Fallback can still use `ollama/gpt-oss:20b` from config. To pin local in chat anyway: `/model ollama/gpt-oss:20b`.
 
-Failover applies to the **configured default** and to **cron** ([chapter 4](04-public-page-from-agent.md)). It does **not** apply if you pick a model in the Control UI picker or `/model` — that choice is strict. Leave the picker on **Default** so Gemini can fail over.
+Failover applies to the **configured default** and to **cron** ([chapter 4](04-openclaw-changes-edgible-site.md)). It does **not** apply if you pick a model in the Control UI picker or `/model` — that choice is strict. Leave the picker on **Default** so Gemini can fail over.
 
 Keep the Ollama model small enough that the Mac does not swap, or the “backup” is slower than waiting for Gemini. Do not publish port **11434** on the router.
 
-### Do not do these yet
+### 2.3.8 Do not do these yet
 
 - Telegram / Discord — they already dial out; they are not the Edgible job. Skill: [chapter 5](05-edgible-openclaw-skill.md). Telegram: [chapter 6](06-telegram-pocket-client.md). WhatsApp: [chapter 7](07-whatsapp-pocket-client.md).
 - Tailscale Serve / Funnel / Cloudflare Tunnel.
 - `gateway.auth` set to none.
 
-### Verify
+### 2.3.9 Verify
 
 - [ ] `openclaw --version` prints a version on the VM.
 - [ ] `openclaw gateway status` shows running on **18789** (loopback).
-- [ ] After **9c**, `openclaw models status` shows a **Flash** (not Pro/preview) default if you used Gemini free tier.
-- [ ] After **9g** (optional): `openclaw models list --provider ollama` prints `ollama/gpt-oss:…` (or your tag); Control UI picker shows that model after a refresh; leave picker on **Default** if Gemini should fail over. `openclaw models status` and a hello reply still work (Mac Ollama, not `127.0.0.1` on the guest).
+- [ ] After **2.3.3**, `openclaw models status` shows a **Flash** (not Pro/preview) default if you used Gemini free tier.
+- [ ] After **2.3.7** (optional): `openclaw models list --provider ollama` prints `ollama/gpt-oss:…` (or your tag); Control UI picker shows that model after a refresh; leave picker on **Default** if Gemini should fail over. `openclaw models status` and a hello reply still work (Mac Ollama, not `127.0.0.1` on the guest).
 - [ ] `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
 - [ ] Hello World on the phone still loads (Edgible tunnel unchanged).
 - [ ] `curl` to `http://127.0.0.1:18789/` on the VM returns **200**.
@@ -399,4 +397,4 @@ Keep the Ollama model small enough that the Mac does not swap, or the “backup�
 
 ## Next
 
-[3. Publish Control UI](03-publish-control-ui.md). Skill (not this chapter): [5](05-edgible-openclaw-skill.md). Series: [README](README.md).
+[3. Publish Control UI](03-publish-openclaw-control-ui.md). Skill (not this chapter): [5. Edgible skill](05-edgible-openclaw-skill.md). Series: [README](README.md).

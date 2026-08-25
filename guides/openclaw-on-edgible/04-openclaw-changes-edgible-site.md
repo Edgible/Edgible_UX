@@ -1,24 +1,27 @@
-# 4. Public page from the agent
+# 4. OpenClaw changes the Edgible site
 
-**Outcome:** The agent on the mini-PC rewrites the **Hello World** site you already published. You watch it from the phone. Optional hourly **On this day** (public sources only).
+**You tell OpenClaw to change a public Edgible page. Refresh. A chatbot in a tab cannot.**
 
-Prerequisites: [chapter 3](03-publish-control-ui.md) — Control UI on cellular.
+## 4.1 The job
 
-This is the “wow”: ChatGPT in a tab cannot change a website on your box. Cursor as a specialist is [chapter 8](08-cursor-agent.md).
+From Control UI on the phone, you tell **OpenClaw** to rewrite the Hello World site that already lives at `hello-world.<org>.edgible.com`. Edgible is still only the public door — it does not write the HTML. Optional: an hourly **On this day** brief (public sources only — this URL is public). Cursor as a specialist is [8. Cursor Agent](08-cursor-agent.md); do this chapter first so that A/B has a Gemini dump to beat.
 
-Series index: [README](README.md).
+**Done when**
 
----
+- Cellular hard-refresh of Hello World shows **OpenClaw was here** (or On this day, if you continued).
+- `cat ~/hello-world/index.html` on the VM matches what you see.
+- Optional: an hourly job rotates a different person born on this calendar day.
+- Port **18789** is still not forwarded.
 
-## 11. Show OpenClaw actually doing something (from the phone)
+**Need first:** [3. Publish Control UI](03-publish-openclaw-control-ui.md) on cellular. Leave the **hello-world** nginx container running ([1.9](01-edgible-on-vm.md)).
 
-**Outcome:** Your public Hello World site changed because the agent on the mini-PC rewrote it — you watched it from the phone.
+**Not this chapter:** inbox/calendar demos (personal data on a public URL), opening ports, or editing OpenClaw/Edgible config.
 
-`hello` only showed the model. A file on disk is proof of tools. The **wow** is Edgible-shaped: you already have a public page at `hello-world.<org>.edgible.com`. OpenClaw lives on the same box. From the Control UI, tell it to replace that page. Refresh the Hello World URL. ChatGPT in a tab cannot change a website on your mini-PC.
+## 4.2 Rewrite Hello World from the phone
 
-Leave the **hello-world** nginx container running ([chapter 1](01-invite-through-edgible-on-vm.md)). The HTML is on the **host** at `~/hello-world/index.html` (bind-mounted read-only into nginx — the container cannot write; the agent on the host can).
+Leave the **hello-world** nginx container running. The HTML is on the **host** at `~/hello-world/index.html` (bind-mounted read-only into nginx — the container cannot write; OpenClaw on the host can).
 
-On the **phone** (cellular, Control UI from [chapter 3](03-publish-control-ui.md)), talk like a person — you do not need the path:
+On the **phone** (cellular, Control UI from [chapter 3](03-publish-openclaw-control-ui.md)), talk like a person — you do not need the path:
 
 ```text
 Change the hello-world app to say "OpenClaw was here!"
@@ -26,7 +29,7 @@ Change the hello-world app to say "OpenClaw was here!"
 
 That one line is enough on this setup (Gemini Flash + tools). Approve a write if asked.
 
-Then **leave the Control UI**, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](01-invite-through-edgible-on-vm.md), Wi‑Fi still off), and **hard-refresh**. You should see **OpenClaw was here** — not the original Hello World.
+Then **leave the Control UI**, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](01-edgible-on-vm.md), Wi‑Fi still off), and **hard-refresh**. You should see **OpenClaw was here** — not the original Hello World.
 
 If it only *describes* the change, or the public page is unchanged, it guessed (docker exec into a read-only mount, wrong path, or no tool call). Then be explicit:
 
@@ -48,7 +51,7 @@ Do **not** ask it to open ports, install packages, or edit OpenClaw/Edgible conf
 
 ---
 
-## 12. A repeating public brief (no personal data)
+## 4.3 A repeating public brief (no personal data)
 
 **Outcome:** Hello World becomes an **On this day** page: one important person **born on this calendar day**, rotating **every hour** so a day shows **24 different people**. Public sources only.
 
@@ -77,9 +80,9 @@ Keep a short list of who you've already shown (a file next to the HTML is fine).
 Use a cron/automation job. Confirm the schedule. Public sources only. Nothing about me.
 ```
 
-Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash ([chapter 2](02-openclaw-on-the-box.md) §9c). For a long-running box, switch this cron to daily after the demo.
+Wait for the next hour (or **Run now** in Automations), hard-refresh Hello World. A **different** name should be on the page. Gemini free tier has daily caps — if 429s start, pause the job or pin Flash ([chapter 2](02-openclaw-on-the-box.md) 2.3.3). For a long-running box, switch this cron to daily after the demo.
 
-Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-agent.md) is the A/B: wipe back to the [chapter 1](01-invite-through-edgible-on-vm.md) Hello World page, remove that cron, then hire Cursor to rebuild the **same** product. Same public URL. Do not skip this chapter — you need to have seen Gemini’s version so Cursor’s looks like an upgrade.
+Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-agent.md) is the A/B: wipe back to the [chapter 1](01-edgible-on-vm.md) Hello World page, remove that cron, then hire Cursor to rebuild the **same** product. Same public URL. Do not skip this chapter — you need to have seen Gemini’s version so Cursor’s looks like an upgrade.
 
 ### Verify
 
@@ -90,3 +93,7 @@ Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-age
 - [ ] Port **18789** is still not forwarded.
 
 ---
+
+## Next
+
+[5. Edgible skill](05-edgible-openclaw-skill.md). Optional later: [8. Cursor Agent](08-cursor-agent.md). Series: [README](README.md).

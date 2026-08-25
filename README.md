@@ -2,7 +2,7 @@
 
 Tutorials and getting-started guides for [Edgible](https://edgible.com). This repo is documentation and UX rehearsal — not the OpenClaw skill, and not the Edgible CLI.
 
-The OpenClaw skill (`/skill edgible`) lives in **[openclaw-edgible](https://github.com/Edgible/openclaw-edgible)**. How to install and check it: [Edgible skill](guides/openclaw-on-edgible/05-edgible-openclaw-skill.md). Do not copy skill folders from this repo.
+The OpenClaw skill (`/skill edgible`) lives in **[openclaw-edgible](https://github.com/Edgible/openclaw-edgible)**. How to install and check it: [5. Edgible skill](guides/openclaw-on-edgible/05-edgible-openclaw-skill.md). Do not copy skill folders from this repo.
 
 ## Contents
 

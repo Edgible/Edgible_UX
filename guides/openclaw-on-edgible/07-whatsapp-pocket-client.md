@@ -1,30 +1,24 @@
-# 7. WhatsApp as the chat client (optional)
+# 7. WhatsApp
 
-**Outcome:** Talk to the mini-PC from **WhatsApp**. Optional: `/acp spawn cursor --bind here` so a normal message retitles On this day — no `/acp steer`.
+**WhatsApp as a linked device — and the client that can bind Cursor.**
 
-WhatsApp is **not** an Edgible app (linked device / Baileys, outbound). Everyday pocket chat without linking a device: [Telegram](06-telegram-pocket-client.md). Cursor install: [chapter 8](08-cursor-agent.md). Control UI cannot `--bind here`.
+## 7.1 The job
 
-Prerequisites: [chapter 2](02-openclaw-on-the-box.md). For ACP bind, also [chapter 8](08-cursor-agent.md) through doctor. For the retitle demo, [chapter 4](04-public-page-from-agent.md) / [8](08-cursor-agent.md) so the designed page exists.
+You link the Gateway as another WhatsApp device (same idea as WhatsApp Web). Incoming DMs hit OpenClaw on the VM. Gemini stays the dispatcher until you **bind** Cursor; then this thread *is* the Cursor session until `/acp close`. Control UI cannot `--bind here`. Skip if you have no WhatsApp — [6. Telegram](06-telegram-pocket-client.md) is everyday pocket chat without linking a device.
 
-Series index: [README](README.md).
+A dedicated second number is cleaner. **Self-chat** on your personal number works (`allowFrom` includes you, `selfChatMode` on). WhatsApp has **no bot badge** — set `messages.responsePrefix` so replies start with `[OpenClaw]`.
 
----
+**Done when**
 
-## 14. WhatsApp as the chat client (optional)
+- `openclaw channels status --probe` shows WhatsApp linked.
+- WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`**.
+- Optional: `/acp spawn cursor --bind here …` succeeds (no webchat bind error); public On this day retitles without `/acp steer`.
 
-**Outcome:** You talk to the mini-PC from **WhatsApp**. `/acp spawn cursor --bind here` pins that chat to Cursor. A normal message retitles the On this day sections. Hard-refresh `hello-world.<org>.edgible.com` — no `/acp steer`, no uuid.
+**Need first:** [2. OpenClaw on this box](02-openclaw-on-the-box.md). For ACP bind, [8. Cursor Agent](08-cursor-agent.md) through doctor. For the retitle demo, the designed page from [4](04-openclaw-changes-edgible-site.md) or [8](08-cursor-agent.md).
 
-Skip if you have no WhatsApp. For everyday phone chat without linking a device, use [Telegram](06-telegram-pocket-client.md) instead. Finish [chapter 8](08-cursor-agent.md) if you want the ACP bind demo. WhatsApp is **not** an Edgible app: the Gateway still owns a **linked device** (WhatsApp Web / Baileys) and dials **out**. Do not publish WhatsApp through Edgible. Do not port-forward. Leave openclaw-ui on **org**.
+**Not this chapter:** publishing WhatsApp through Edgible, port-forwarding, or **None** on openclaw-ui.
 
-This is the client that makes ACP feel obvious. Control UI is **webchat** and cannot bind ([chapter 8](08-cursor-agent.md)). WhatsApp can.
-
-### Approach
-
-The phone’s WhatsApp account **links** the Gateway as another device (same idea as WhatsApp Web). Incoming DMs hit OpenClaw on the VM. Gemini is still the dispatcher until you **bind** Cursor. Then this WhatsApp thread *is* the Cursor session until `/acp close`.
-
-A dedicated second number is cleaner (replies arrive as a **different contact**). **Self-chat** on your personal number is supported: `allowFrom` includes you, `selfChatMode` on. WhatsApp has **no bot badge** for a linked device — without a prefix, the first reply looks like you answering yourself. Set `messages.responsePrefix` so replies start with `[OpenClaw]`.
-
-### 14a. Plugin + QR login
+## 7.2 Plugin + QR login
 
 On the **VM desktop** terminal (you must **see** the QR; it expires in about a minute). Gateway running:
 
@@ -44,7 +38,7 @@ WhatsApp should show connected / linked.
 
 Do **not** paste session creds into chat or Hello World.
 
-### 14b. Who may DM
+## 7.3 Who may DM
 
 Default is **pairing** (unknown senders wait). Put **your** E.164 in `allowFrom` (example shape only — use your number):
 
@@ -57,7 +51,7 @@ openclaw config set messages.responsePrefix "[OpenClaw] "
 openclaw gateway restart
 ```
 
-### 14c. First WhatsApp `hello`
+## 7.4 First WhatsApp `hello`
 
 From the phone, message **yourself** (or a second phone messaging the linked account). If OpenClaw asks to pair:
 
@@ -68,9 +62,9 @@ openclaw pairing approve whatsapp <CODE>
 
 That is the same *idea* as `devices approve` for the Control UI — it is **not** the WhatsApp QR. Send `hello`. You want a reply in WhatsApp that **starts with `[OpenClaw]`** (Gemini/gpt-oss behind it). Edgible is unused for this hop.
 
-A bare “Hey Stefano! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 14b is the check.
+A bare “Hey Stefano! How can I help you today?” is still the Gateway — it just has no product label. WhatsApp shows it as **your** linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 7.3 is the check.
 
-### 14d. Bind Cursor — retitle sections (no steer)
+## 7.5 Bind Cursor — retitle sections (no steer)
 
 If you set `permissionMode` back to `approve-reads` in [chapter 8](08-cursor-agent.md), headless Cursor cannot write HTML. For this pass:
 
@@ -106,4 +100,10 @@ Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellula
 - [ ] Public On this day page shows **Who this is / Why we remember them / One odd fact** after a hard-refresh.
 - [ ] You did not use `/acp steer` for this change.
 - [ ] `permissionMode` is **approve-reads** again. openclaw-ui is still **org**. Port **18789** is still not forwarded.
+
+---
+
+## Next
+
+[8. Cursor Agent](08-cursor-agent.md) if you have not done ACP yet. Series: [README](README.md).
 

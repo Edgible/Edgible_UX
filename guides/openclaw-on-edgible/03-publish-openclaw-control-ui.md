@@ -1,28 +1,24 @@
-# 3. Publish Control UI through Edgible
+# 3. Publish Control UI
 
-**Outcome:** `https://openclaw-ui.<org>.edgible.com` on a **phone (cellular)**, Edgible **org** login, then OpenClaw token + device approve. Gateway stays on loopback. Never **None** on port **18789**.
+**The same OpenClaw, from a phone, behind a real `https://` URL and org login.**
 
-Prerequisites: [chapter 1](01-invite-through-edgible-on-vm.md) (Hello World) and [chapter 2](02-openclaw-on-the-box.md) (Gateway + local hello).
+## 3.1 The job
 
-Series index: [README](README.md). Next: [public page from the agent](04-public-page-from-agent.md) or skip to the [Edgible skill](05-edgible-openclaw-skill.md).
+You publish the Control UI through Edgible. The Gateway stays on loopback; Edgible on this VM proxies to `127.0.0.1:18789`. Never **None** on that port. Prefer the **systemd / `openclaw gateway start`** Gateway, not a terminal you might close.
 
----
+Three locks, in order: **Edgible org** (only your organisation hits the hostname), **OpenClaw gateway token** (first time on this browser — local `openclaw dashboard` does not inject it on the Edgible origin), **device pairing** (`openclaw devices approve <requestId>` on the VM — local dashboard pairing does not cover the Edgible tab).
 
-## 10. Publish the Control UI through Edgible
+**Done when**
 
-**Outcome:** The OpenClaw Control UI on your mini-PC, reachable from the internet (phone on cellular), with Edgible **org** login in front — no Tailscale, no port-forward.
+- Phone on **cellular** opens `https://openclaw-ui.<org>.edgible.com`.
+- Edgible **org** login, then OpenClaw token + device approve, then a chat reply.
+- Hello World still loads. Port **18789** is still not forwarded.
 
-Leave **hello-world** running. Keep the Gateway on **loopback** `127.0.0.1:18789`. Edgible on this same VM proxies to that port. Do **not** bind `0.0.0.0` and do **not** use **None** (public) for this app.
+**Need first:** [1. VM and Edgible](01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on this box](02-openclaw-on-the-box.md) (Gateway + local hello). Leave **hello-world** running.
 
-Three locks:
+**Not this chapter:** binding `0.0.0.0`, Tailscale, or public (**None**) auth on 18789.
 
-1. **Edgible org** — only someone logged into your organisation can hit the hostname.
-2. **OpenClaw gateway token** — first time on this browser (Control UI Settings or `#token=`). Local `openclaw dashboard` does not inject it on the Edgible origin.
-3. **Device pairing** — first time on this browser: `openclaw devices approve <requestId>` on the VM. Local dashboard pairing does not cover the Edgible tab.
-
-Prefer the **systemd / `openclaw gateway start`** Gateway, not a terminal you might close.
-
-### 10a. Create the Edgible app
+## 3.2 Create the Edgible app
 
 Edgible’s interactive picker looks at **Docker** (and a short list of process names). OpenClaw on loopback **18789** often **does not appear**. That is expected. The app is “this port on `mini-pc`,” not “this Docker name.”
 
@@ -53,7 +49,7 @@ Confirm `ss -ltnp | grep 18789` still shows `127.0.0.1:18789` before you continu
 
 The CLI prints an `openclaw-ui.<org>.edgible.com` URL. Do **not** open it yet — wait for the certificate.
 
-### 10b. Wait for the certificate
+## 3.3 Wait for the certificate
 
 Same as Hello World. Host browser: [https://app.prod.edgible.com/](https://app.prod.edgible.com/) → **openclaw-ui** → **Certificates** until issued.
 
@@ -64,7 +60,7 @@ edgible app status
 
 Copy the **https://openclaw-ui.<org>.edgible.com** URL (no trailing path). Always copy the exact host from `edgible app list`.
 
-### 10c. Tell OpenClaw that origin is allowed
+## 3.4 Tell OpenClaw that origin is allowed
 
 The landing page loading through Edgible is **not** enough. The Control UI’s JavaScript sends `Origin: https://openclaw-ui.<org>.edgible.com`. Loopback allows `http://127.0.0.1:18789`; Edgible is a **different origin**, so OpenClaw returns **browser origin not allowed**. That is **not** fixed by `openclaw gateway` / `openclaw dashboard` (those are local-only).
 
@@ -139,7 +135,7 @@ Hard-refresh again and paste the token if Settings was cleared.
 
 **None (public)** was only to prove the tunnel. Switch this app back to **org** when chat works — a public Control UI is an admin shell on the internet. If org auth still fails after that, it is an Edgible bug; do not leave **None** as the real setup.
 
-### Later visits (same browser)
+## 3.5 Later visits (same browser)
 
 You do **not** repeat origins, `trustedProxies`, token-from-disk, or `devices approve` every time.
 
@@ -151,11 +147,11 @@ You do **not** repeat origins, `trustedProxies`, token-from-disk, or `devices ap
 
 Keep a normal (non-private) browser profile. Private windows throw away the device identity on close, so pairing looks “every time.”
 
-### 10d. Phone on cellular
+## 3.6 Phone on cellular
 
 1. Turn **Wi‑Fi off** on the phone.
-2. Open the **https** URL. You should get **Edgible org login** first — sign in as the same account as step 1. A stranger with the URL should **not** see OpenClaw.
-3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 10c: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a **new** device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a **local** handoff; it does not replace this on the phone.
+2. Open the **https** URL. You should get **Edgible org login** first — sign in as the same account as [1.3](01-edgible-on-vm.md). A stranger with the URL should **not** see OpenClaw.
+3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 3.3: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a **new** device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a **local** handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 
 If **hello-world** still loads on the phone and **openclaw-ui** does not, the tunnel is fine — the failure is OpenClaw (certs, org login, origins, WebSocket, token).
@@ -172,3 +168,7 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet — 
 - [ ] Port **18789** is still not forwarded on the router.
 
 ---
+
+## Next
+
+[4. OpenClaw changes the Edgible site](04-openclaw-changes-edgible-site.md). Skip ahead: [5. Edgible skill](05-edgible-openclaw-skill.md). Series: [README](README.md).
