@@ -2,6 +2,8 @@
 
 **n8n can work with no inbound URL. Prove that before webhooks.**
 
+A schedule never needs a public URL. You edit it on the **org** hostname; n8n fires on the box. That is the other half of per-app auth: not every workflow is a door. The second app is only for inbound calls. Cron would work even if you never created **n8n-hooks**.
+
 ## 4.1 The job
 
 You add a **Schedule** workflow that writes one **Executions** row. Nothing on the internet calls you. If this fails, the problem is n8n, not Edgible hooks.

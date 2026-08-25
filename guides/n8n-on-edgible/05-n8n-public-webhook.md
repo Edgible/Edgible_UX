@@ -2,6 +2,8 @@
 
 **This is the Edgible demo: HTTPS in, no port-forward.**
 
+Hit **n8n-hooks** (**None**) from cellular. The same path on the **org** editor host would stop at Edgible login — that is the point, not a bug. Same process, two doors; only the door that must be public is public. Unpublish when you are done playing.
+
 ## 5.1 The job
 
 You add a **Webhook** node whose **production** URL is on **n8n-hooks** (None), not the org editor host. You hit it from **cellular** or any machine that is not the VM. n8n responds with JSON. That is what GitHub/Stripe would do next; you do not need them for the smoke test.

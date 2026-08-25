@@ -2,6 +2,8 @@
 
 **Workflows on *your* VM — still not on the internet.**
 
+n8n is one process on loopback. Later you will give it **two** public hostnames with **two** Edgible locks: **org** for the editor you log into, **None** for webhooks GitHub and `curl` can hit. This chapter only installs the process. Nothing is on the internet yet.
+
 ## 1.1 The job
 
 You install n8n in Docker on the same Ubuntu guest as Hello World. It listens on **loopback** port **5678**. Edgible is already running; you do not publish n8n yet.

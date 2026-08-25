@@ -2,6 +2,8 @@
 
 **Same n8n process. Second hostname. Callers that cannot log into your org.**
 
+This is the Edgible trick. One container, port **5678**, two apps: **n8n** stays **org**; **n8n-hooks** is **None**. GitHub never sees a login page; you never put the editor on the public internet. If you only have one hostname, you either lock the webhooks or unlock the canvas. `WEBHOOK_URL` only tells n8n which origin to print — traffic still lands on the same process.
+
 ## 3.1 The job
 
 Stripe, GitHub, and `curl` from a café will not pass **Edgible org**. You add a second application on the **same** port **5678**, named **n8n-hooks**, with **None**. Then you tell n8n that webhook URLs are that origin (`WEBHOOK_URL`). The editor stays `n8n.<org>…` with **org**.

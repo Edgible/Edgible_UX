@@ -2,6 +2,8 @@
 
 **The canvas, from a phone, behind `https://` and org login.**
 
+Edgible auth is per **app** (the hostname), not per path on one URL. This hostname is the privileged door — canvas, credentials, every workflow. Keep it **org**. Stripe and GitHub cannot sit through that login, so they get a **different** hostname in the next chapter. Do not “fix” webhooks by setting this app to **None**.
+
 ## 2.1 The job
 
 You publish n8n’s **editor** through Edgible. n8n stays on loopback **5678**. Protection is **org** — never **None** on this hostname. GitHub cannot log into your org; inbound webhooks are a **different** app in [chapter 3](03-n8n-webhook-door.md).
