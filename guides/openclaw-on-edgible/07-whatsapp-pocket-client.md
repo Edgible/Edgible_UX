@@ -1,10 +1,10 @@
-# 7. WhatsApp
+# 7. WhatsApp linked device for OpenClaw
 
 **WhatsApp as a linked device — and the client that can bind Cursor.**
 
 ## 7.1 The job
 
-You link the Gateway as another WhatsApp device (same idea as WhatsApp Web). Incoming DMs hit OpenClaw on the VM. Gemini stays the dispatcher until you **bind** Cursor; then this thread *is* the Cursor session until `/acp close`. Control UI cannot `--bind here`. Skip if you have no WhatsApp — [6. Telegram](06-telegram-pocket-client.md) is everyday pocket chat without linking a device.
+You link the Gateway as another WhatsApp device (same idea as WhatsApp Web). Incoming DMs hit OpenClaw on the VM. Gemini stays the dispatcher until you **bind** Cursor; then this thread *is* the Cursor session until `/acp close`. Control UI cannot `--bind here`. Skip if you have no WhatsApp — [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md) is everyday pocket chat without linking a device.
 
 A dedicated second number is cleaner. **Self-chat** on your personal number works (`allowFrom` includes you, `selfChatMode` on). WhatsApp has **no bot badge** — set `messages.responsePrefix` so replies start with `[OpenClaw]`.
 
@@ -14,7 +14,7 @@ A dedicated second number is cleaner. **Self-chat** on your personal number work
 - WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`**.
 - Optional: `/acp spawn cursor --bind here …` succeeds (no webchat bind error); public On this day retitles without `/acp steer`.
 
-**Need first:** [2. OpenClaw on this box](02-openclaw-on-the-box.md). For ACP bind, [8. Cursor Agent](08-cursor-agent.md) through doctor. For the retitle demo, the designed page from [4](04-openclaw-changes-edgible-site.md) or [8](08-cursor-agent.md).
+**Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md). For ACP bind, [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) through doctor. For the retitle demo, the designed page from [4](04-openclaw-changes-edgible-site.md) or [8](08-cursor-agent.md).
 
 **Not this chapter:** publishing WhatsApp through Edgible, port-forwarding, or **None** on openclaw-ui.
 
@@ -105,5 +105,5 @@ Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellula
 
 ## Next
 
-[8. Cursor Agent](08-cursor-agent.md) if you have not done ACP yet. Series: [README](README.md).
+[8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) if you have not done ACP yet. Series: [README](README.md).
 

@@ -8,14 +8,14 @@ Each chapter is one job and one smoke test. Do them in order.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
-| 1 | [1. VM and Edgible](01-edgible-on-vm.md) | `edgible whoami` on the VM; Hello World on a **phone (cellular)** |
-| 2 | [2. OpenClaw on this box](02-openclaw-on-the-box.md) | `openclaw agent … hello`; local Control UI (`openclaw dashboard`) if the guest has a desktop |
-| 3 | [3. Publish Control UI](03-publish-openclaw-control-ui.md) | Phone opens `openclaw-ui.<org>.edgible.com` (**org** auth), chat works |
-| 4 | [4. OpenClaw changes the Edgible site](04-openclaw-changes-edgible-site.md) | Control UI rewrites Hello World; optional hourly On this day |
-| 5 | [5. Edgible skill](05-edgible-openclaw-skill.md) | VM `edgible whoami` and Control UI `/skill edgible whoami` |
-| 6 | [6. Telegram](06-telegram-pocket-client.md) | DM **your** bot; `/skill edgible whoami` |
-| 7 | [7. WhatsApp](07-whatsapp-pocket-client.md) | Linked device `hello` with `[OpenClaw]`; optional ACP `--bind here` |
-| 8 | [8. Cursor Agent](08-cursor-agent.md) | `/acp doctor` then spawn; Control UI uses steer; WhatsApp can bind |
+| 1 | [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) | `edgible whoami` on the VM; Hello World on a **phone (cellular)** |
+| 2 | [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) | `openclaw agent … hello`; local Control UI (`openclaw dashboard`) if the guest has a desktop |
+| 3 | [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) | Phone opens `openclaw-ui.<org>.edgible.com` (**org** auth), chat works |
+| 4 | [4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md) | Control UI rewrites Hello World; optional hourly On this day |
+| 5 | [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md) | VM `edgible whoami` and Control UI `/skill edgible whoami` |
+| 6 | [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md) | DM **your** bot; `/skill edgible whoami` |
+| 7 | [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) | Linked device `hello` with `[OpenClaw]`; optional ACP `--bind here` |
+| 8 | [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) | `/acp doctor` then spawn; Control UI uses steer; WhatsApp can bind |
 
 Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **host bash** (`commands.bash`), off by default, and needs elevated allowlists. Chapter 5 is `/skill edgible whoami`. Chapter 6 can enable `!` if you want a host shell from Telegram.
 

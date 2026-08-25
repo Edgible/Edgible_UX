@@ -1,4 +1,4 @@
-# 5. Edgible skill
+# 5. OpenClaw skill for the Edgible CLI
 
 **Chat can run `edgible` on the box — the same CLI, from OpenClaw.**
 
@@ -16,7 +16,7 @@ The skill does not sign you up, create an org, or register a device. Telegram an
 - Control UI: `/whoami` is OpenClaw identity, not the Edgible block.
 - `/skill edgible doctor` is a doctor report, not an app list.
 
-**Need first:** [2. OpenClaw on this box](02-openclaw-on-the-box.md) (Gateway running, `edgible auth login`). Control UI — local `openclaw dashboard` or [3. Publish Control UI](03-publish-openclaw-control-ui.md) — for the chat test.
+**Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway running, `edgible auth login`). Control UI — local `openclaw dashboard` or [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) — for the chat test.
 
 **Not this chapter:** Edgible signup, publishing apps (that is English helpers after the smoke test), or Telegram `/skill` (prove Control UI first).
 
@@ -67,7 +67,7 @@ Optional: `edgible doctor` (diagnostics). That is a real top-level command, not 
 
 ## 5.4 Control UI: skill pass-through
 
-Open Control UI ([3. Publish Control UI](03-publish-openclaw-control-ui.md) or local dashboard). New session (`/new`). Leave the model picker on **Default**. Send **exactly**:
+Open Control UI ([3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) or local dashboard). New session (`/new`). Leave the model picker on **Default**. Send **exactly**:
 
 ```text
 /skill edgible whoami
@@ -108,4 +108,4 @@ Telegram: same `/skill edgible whoami` in [chapter 6](06-telegram-pocket-client.
 
 ## Next
 
-[6. Telegram](06-telegram-pocket-client.md). Series: [README](README.md).
+[6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). Series: [README](README.md).

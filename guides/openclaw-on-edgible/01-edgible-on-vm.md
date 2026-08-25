@@ -1,4 +1,4 @@
-# 1. VM and Edgible
+# 1. Edgible on an Ubuntu VM
 
 **A public HTTPS page on a box you own — cellular, no port-forward, no Tailscale.**
 
@@ -402,4 +402,4 @@ Leave this app running until the teardown chapter (or `edgible app delete --name
 
 ## Next
 
-[2. OpenClaw on this box](02-openclaw-on-the-box.md) — Gateway on loopback, Gemini Flash, local hello / Control UI. Series: [README](README.md).
+[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) — Gateway on loopback, Gemini Flash, local hello / Control UI. Series: [README](README.md).

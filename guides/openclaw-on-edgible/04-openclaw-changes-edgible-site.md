@@ -1,10 +1,10 @@
-# 4. OpenClaw changes the Edgible site
+# 4. OpenClaw changes the public Edgible site
 
 **You tell OpenClaw to change a public Edgible page. Refresh. A chatbot in a tab cannot.**
 
 ## 4.1 The job
 
-From Control UI on the phone, you tell **OpenClaw** to rewrite the Hello World site that already lives at `hello-world.<org>.edgible.com`. Edgible is still only the public door — it does not write the HTML. Optional: an hourly **On this day** brief (public sources only — this URL is public). Cursor as a specialist is [8. Cursor Agent](08-cursor-agent.md); do this chapter first so that A/B has a Gemini dump to beat.
+From Control UI on the phone, you tell **OpenClaw** to rewrite the Hello World site that already lives at `hello-world.<org>.edgible.com`. Edgible is still only the public door — it does not write the HTML. Optional: an hourly **On this day** brief (public sources only — this URL is public). Cursor as a specialist is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md); do this chapter first so that A/B has a Gemini dump to beat.
 
 **Done when**
 
@@ -13,7 +13,7 @@ From Control UI on the phone, you tell **OpenClaw** to rewrite the Hello World s
 - Optional: an hourly job rotates a different person born on this calendar day.
 - Port **18789** is still not forwarded.
 
-**Need first:** [3. Publish Control UI](03-publish-openclaw-control-ui.md) on cellular. Leave the **hello-world** nginx container running ([1.9](01-edgible-on-vm.md)).
+**Need first:** [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) on cellular. Leave the **hello-world** nginx container running ([1.9](01-edgible-on-vm.md)).
 
 **Not this chapter:** inbox/calendar demos (personal data on a public URL), opening ports, or editing OpenClaw/Edgible config.
 
@@ -96,4 +96,4 @@ Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-age
 
 ## Next
 
-[5. Edgible skill](05-edgible-openclaw-skill.md). Optional later: [8. Cursor Agent](08-cursor-agent.md). Series: [README](README.md).
+[5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Optional later: [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). Series: [README](README.md).

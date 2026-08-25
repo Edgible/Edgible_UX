@@ -1,10 +1,10 @@
-# 8. Cursor Agent
+# 8. Cursor Agent from OpenClaw on the Edgible site
 
 **Cursor engineers the site Gemini only dumped. Same URL. Night and day.**
 
 ## 8.1 The job
 
-[4. OpenClaw changes the Edgible site](04-openclaw-changes-edgible-site.md) proved OpenClaw can change a public URL. The HTML is a dump. Here you put the **starting** Hello World page back, hire Cursor over ACP to build On this day (layout, CSS, updater, state, cron installer), and hard-refresh the **same** hostname. Gemini stays the OpenClaw chat brain. You do **not** paste a Cursor key into `openclaw models set`. `approve-all` plus this spawn writes the **public** site.
+[4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md) proved OpenClaw can change a public URL. The HTML is a dump. Here you put the **starting** Hello World page back, hire Cursor over ACP to build On this day (layout, CSS, updater, state, cron installer), and hard-refresh the **same** hostname. Gemini stays the OpenClaw chat brain. You do **not** paste a Cursor key into `openclaw models set`. `approve-all` plus this spawn writes the **public** site.
 
 Skip without a Cursor subscription. Finish chapter 4 first so the A/B is honest — this chapter **wipes** Gemini’s page on purpose.
 
@@ -15,7 +15,7 @@ Skip without a Cursor subscription. Finish chapter 4 first so the A/B is honest 
 - Cursor documented (or installed) **on-this-day-rotate** as an OpenClaw **command** cron.
 - `permissionMode` is **approve-reads** again. openclaw-ui stays **org**.
 
-**Need first:** [4. OpenClaw changes the Edgible site](04-openclaw-changes-edgible-site.md), [3. Publish Control UI](03-publish-openclaw-control-ui.md) (`openclaw-ui` **org**), nginx bind-mount from [1.9](01-edgible-on-vm.md). Control UI **cannot bind** — spawn then **steer**. WhatsApp ([7](07-whatsapp-pocket-client.md)) can `--bind here`.
+**Need first:** [4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md), [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) (`openclaw-ui` **org**), nginx bind-mount from [1.9](01-edgible-on-vm.md). Control UI **cannot bind** — spawn then **steer**. WhatsApp ([7](07-whatsapp-pocket-client.md)) can `--bind here`.
 
 **Not this chapter:** Cursor.app on the Mac; making Cursor the default chat model; another ACP spawn for the hourly tick (`python3` cron after install).
 
@@ -35,7 +35,7 @@ The job runs on the **Gateway host** (this Ubuntu VM). One-off ACP jobs on `~/he
 | **`/acp spawn`** | Start a session and point it at a directory (`--cwd`). On Control UI this does **not** send the coding task. |
 | **`/acp steer`** | Send the actual prompt to that session key. |
 | **`/acp close`** | End that Cursor job from OpenClaw’s side (stop the harness process, drop the session key). Does not close the Control UI, uninstall acpx, or log out `agent`. |
-| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** — that is why **this** step uses `/acp spawn` then `/acp steer` with a uuid. [WhatsApp](07-whatsapp-pocket-client.md) can `/acp spawn cursor --bind here --cwd …`; after that you type a normal message, no steer. **Telegram** is [6. Telegram](06-telegram-pocket-client.md) (Bot API, not ACP bind). |
+| **Bind** | Pin *this chat* so follow-ups go to Cursor. Control UI is **webchat** and **cannot bind** — that is why **this** step uses `/acp spawn` then `/acp steer` with a uuid. [WhatsApp](07-whatsapp-pocket-client.md) can `/acp spawn cursor --bind here --cwd …`; after that you type a normal message, no steer. **Telegram** is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md) (Bot API, not ACP bind). |
 | **Oneshot** | Do the task and finish. |
 | **`approve-all`** | Headless writes. Applies to **all** ACP jobs on this Gateway until `approve-reads`. |
 
@@ -264,5 +264,5 @@ Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` st
 
 ## Next
 
-That's the series. [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp](07-whatsapp-pocket-client.md). Telegram is [6. Telegram](06-telegram-pocket-client.md). The **edgible** skill is [5. Edgible skill](05-edgible-openclaw-skill.md).
+That's the series. [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md). Telegram is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). The **edgible** skill is [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md).
 

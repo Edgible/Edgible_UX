@@ -1,4 +1,4 @@
-# 3. Publish Control UI
+# 3. OpenClaw Control UI through Edgible
 
 **The same OpenClaw, from a phone, behind a real `https://` URL and org login.**
 
@@ -14,7 +14,7 @@ Three locks, in order: **Edgible org** (only your organisation hits the hostname
 - Edgible **org** login, then OpenClaw token + device approve, then a chat reply.
 - Hello World still loads. Port **18789** is still not forwarded.
 
-**Need first:** [1. VM and Edgible](01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on this box](02-openclaw-on-the-box.md) (Gateway + local hello). Leave **hello-world** running.
+**Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + local hello). Leave **hello-world** running.
 
 **Not this chapter:** binding `0.0.0.0`, Tailscale, or public (**None**) auth on 18789.
 
@@ -171,4 +171,4 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet — 
 
 ## Next
 
-[4. OpenClaw changes the Edgible site](04-openclaw-changes-edgible-site.md). Skip ahead: [5. Edgible skill](05-edgible-openclaw-skill.md). Series: [README](README.md).
+[4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md). Skip ahead: [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Series: [README](README.md).

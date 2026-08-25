@@ -1,4 +1,4 @@
-# 6. Telegram
+# 6. Telegram pocket client for OpenClaw
 
 **Pocket chat with OpenClaw. Telegram is a door; Edgible stays the HTTPS one.**
 
@@ -15,7 +15,7 @@ Control UI remains the cleaner place for `/skill` and exec approvals. WhatsApp i
 - A DM to **your bot** gets an OpenClaw reply; pairing approved if asked.
 - You can tell Gateway `/whoami` (instant sender id) from `/skill edgible whoami` (Edgible CLI, through the model).
 
-**Need first:** [2. OpenClaw on this box](02-openclaw-on-the-box.md) (Gateway + a model). Prove the skill in [5. Edgible skill](05-edgible-openclaw-skill.md) before Telegram `/skill`. Control UI through Edgible is optional for Telegram itself.
+**Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + a model). Prove the skill in [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md) before Telegram `/skill`. Control UI through Edgible is optional for Telegram itself.
 
 **Not this chapter:** putting the token in chat or Edgible; using Telegram as an Edgible app.
 
@@ -218,4 +218,4 @@ Standalone message: `! edgible whoami` or `/bash edgible whoami`. Limit Telegram
 
 ## Next
 
-[7. WhatsApp](07-whatsapp-pocket-client.md) if you want a linked-device client, or skip to [8. Cursor Agent](08-cursor-agent.md). Series: [README](README.md).
+[7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) if you want a linked-device client, or skip to [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). Series: [README](README.md).

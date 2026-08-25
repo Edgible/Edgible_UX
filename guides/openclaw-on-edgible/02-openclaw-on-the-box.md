@@ -1,4 +1,4 @@
-# 2. OpenClaw on this box
+# 2. OpenClaw on the VM (loopback Gateway)
 
 **OpenClaw on *your* VM that can say hello — still not on the internet.**
 
@@ -14,7 +14,7 @@ You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays 
 - Optional: `openclaw dashboard` opens **local** Control UI and chat works (guest desktop only).
 - Hello World on the phone still loads.
 
-**Need first:** [1. VM and Edgible](01-edgible-on-vm.md) (Hello World still up).
+**Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World still up).
 
 **Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), or `! edgible whoami` (host bash — off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash--bash) if you want it later).
 
@@ -397,4 +397,4 @@ Keep the Ollama model small enough that the Mac does not swap, or the “backup�
 
 ## Next
 
-[3. Publish Control UI](03-publish-openclaw-control-ui.md). Skill (not this chapter): [5. Edgible skill](05-edgible-openclaw-skill.md). Series: [README](README.md).
+[3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md). Skill (not this chapter): [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Series: [README](README.md).
