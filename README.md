@@ -8,10 +8,10 @@ Three guides. Same box from [Edgible on an Ubuntu VM](guides/openclaw-on-edgible
 
 - **1. n8n on Edgible** — publishing plus **per-app auth**: one process, **org** editor, **None** webhook hostname.
 - **2. OpenClaw on Edgible** — Control UI on `https://` with **org**, from a phone, no port-forward and no mesh VPN on the laptop.
-- **3. LLM on Edgible** — not written yet. Publish a local or remote model you control (**api-key**), then point n8n **and** OpenClaw at it. Do not do that hook-up in guides 1 or 2.
+- **3. LLM on Edgible** — Ollama on Mac (GPU), Edgible agent in the colocated Ubuntu VM, published **api-key**. n8n / OpenClaw hook-up chapters still to write.
 
 ## Contents
 
 - [1. n8n on Edgible](guides/n8n-on-edgible/README.md) — five chapters. Need the VM first; this series does not use OpenClaw.
 - [2. OpenClaw on Edgible](guides/openclaw-on-edgible/README.md) — nine short chapters (VM + Edgible → OpenClaw → Control UI → public page → skill → Telegram → WhatsApp → Cursor → models). Skip the VM chapter if you already did it for n8n.
-- [3. LLM on Edgible](guides/llm-on-edgible/README.md) — stub until the model answers on the serving box.
+- [3. LLM on Edgible](guides/llm-on-edgible/README.md) — Ollama on bare metal, then the VM publishes it (**api-key**). n8n / OpenClaw chapters later.

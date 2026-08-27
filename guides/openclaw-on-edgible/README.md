@@ -24,4 +24,4 @@ Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **
 
 The skill source is [openclaw-edgible](https://github.com/Edgible/openclaw-edgible), not this repo.
 
-Workflows (webhooks and auth split, not an agent): [1. n8n on Edgible](../n8n-on-edgible/README.md) — same VM from [chapter 1](01-edgible-on-vm.md). A model you control, published for both products: [3. LLM on Edgible](../llm-on-edgible/README.md) (stub).
+Workflows (webhooks and auth split, not an agent): [1. n8n on Edgible](../n8n-on-edgible/README.md) — same VM from [chapter 1](01-edgible-on-vm.md). A model you control, published for both products: [3. LLM on Edgible](../llm-on-edgible/README.md).

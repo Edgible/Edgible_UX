@@ -18,4 +18,4 @@ This is the demo of **internet publishing** and **per-app auth**. n8n is **one**
 | 4 | [4. A cron workflow](04-n8n-cron.md) | Active schedule writes an **Executions** row (no inbound URL) |
 | 5 | [5. A webhook a stranger can hit](05-n8n-public-webhook.md) | Cellular (or off-LAN) GET/POST to the **hooks** production URL returns JSON |
 
-Next guides: [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md), [3. LLM on Edgible](../llm-on-edgible/README.md) (stub).
+Next guides: [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md), [3. LLM on Edgible](../llm-on-edgible/README.md).

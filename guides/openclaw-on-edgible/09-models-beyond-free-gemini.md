@@ -172,7 +172,7 @@ Ollama often hides models that `/api/show` does not mark as **tool-capable** wit
 
 ## 9.6 A published model (later)
 
-Do not create an Ollama or vLLM Edgible app in this series. When the big local or remote LLM is answering on the serving box, [3. LLM on Edgible](../llm-on-edgible/README.md) publishes it (**api-key**) and points OpenClaw and n8n at that URL.
+Do not create an Ollama or vLLM Edgible app in this series. That is [3. LLM on Edgible](../llm-on-edgible/README.md): Ollama on the Mac, forwarder on the VM, app **api-key**.
 
 ## 9.7 Fallback chain
 
@@ -214,4 +214,4 @@ Groups suppress that notice; `/status` still has Fallback. The notice is **not**
 
 ## Next
 
-That's the series. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM for n8n **and** OpenClaw is [3. LLM on Edgible](../llm-on-edgible/README.md) (stub).
+That's the series. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).
