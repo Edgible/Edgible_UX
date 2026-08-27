@@ -6,7 +6,7 @@
 
 **OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). The Edgible story here is the **Control UI**: phone browser, **org** login, no tunnel on the laptop. Telegram / WhatsApp are chat doors; they are not Edgible apps.
 
-Publishing plus two locks on one process (editor **org**, webhooks **None**) is [1. n8n on Edgible](../n8n-on-edgible/README.md). Hooking n8n and OpenClaw to a **big** local or remote LLM you publish through Edgible is [3. LLM on Edgible](../llm-on-edgible/README.md) — not this series, not chapter 9.
+Publishing plus two locks on one process (editor **org**, webhooks **None**) is [1. n8n on Edgible](../n8n-on-edgible/README.md). A **remote** self-hosted Gateway calling a **self-hosted** Ollama on another home machine is [3. LLM on Edgible](../llm-on-edgible/README.md) — not this series, not chapter 9 (chapter 9 is same-LAN or cloud keys).
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

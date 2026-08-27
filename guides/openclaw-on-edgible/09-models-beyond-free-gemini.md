@@ -104,7 +104,7 @@ Exact `--auth-choice` flags: [CLI automation](https://docs.openclaw.ai/start/wiz
 
 ## 9.5 Local Ollama
 
-Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN, point the Gateway at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)) — do not hairpin through Edgible. Callers that are **not** on that LAN wait for [3. LLM on Edgible](../llm-on-edgible/README.md).
+Prompts stay on hardware you own. If OpenClaw and Ollama **share a LAN** (Gateway in the Mac’s UTM guest), point at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)) — do not hairpin through Edgible. If the Gateway is on a **different** home VM (the layout in [3. LLM on Edgible](../llm-on-edgible/README.md)), skip 9.5.2–9.5.3 and use [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md).
 
 ### 9.5.1 Same machine as OpenClaw (enough RAM)
 
@@ -170,9 +170,9 @@ openclaw models list --provider ollama
 
 Ollama often hides models that `/api/show` does not mark as **tool-capable** with **≥16K** context. Fallback can still use the config id. To pin local in chat: `/model ollama/qwen2.5:7b`.
 
-## 9.6 A published model (later)
+## 9.6 A published model (another home VM)
 
-Do not create an Ollama or vLLM Edgible app in this series. That is [3. LLM on Edgible](../llm-on-edgible/README.md): Ollama on the Mac, forwarder on the VM, app **api-key**.
+If OpenClaw is **not** next to the Mac, do not use `$HOST:11434`. Register `https://ollama.<org>.edgible.com` with the **api-key** secret: [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md). Do not set that app to **None**.
 
 ## 9.7 Fallback chain
 

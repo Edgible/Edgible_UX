@@ -11,7 +11,7 @@ Ubuntu guest   socat                  127.0.0.1:11434   ← chapter 2.3 (Linux)
                     ↑
 Ubuntu guest   Edgible agent          app ollama, api-key  ← 2.4–2.5 (Linux CLI)
                     ↑
-Any off-LAN    curl + Bearer          https://ollama.<org>.edgible.com
+Any off-box     n8n / OpenClaw / curl   https://ollama.<org>.edgible.com  (+ Bearer)
 ```
 
 | Section | Where | macOS-specific? |
@@ -209,7 +209,7 @@ curl -sS "https://ollama.YOUR-ORG.edgible.com/api/generate" \
   -d '{"model":"qwen2.5:7b","prompt":"Reply with exactly: ok","stream":false}'
 ```
 
-OpenClaw **on this same VM** can still call `http://$HOST:11434` on the virt LAN and skip Edgible. The published URL is for callers that are **not** on that Mac.
+n8n and OpenClaw run on **other** VMs (another home computer). They call this HTTPS origin with Bearer. Do **not** give them UTM `$HOST:11434` — that LAN is only the Mac guest → Mac hop.
 
 ## 2.6 Optional — a real chat UI (not curl)
 
@@ -249,4 +249,4 @@ Same idea works in **Cherry Studio** or any “custom OpenAI endpoint” app. **
 
 ## Next
 
-[3. n8n uses that URL](03-n8n-uses-ollama.md) (not written yet). Series: [README](README.md).
+[3. n8n uses that URL](03-n8n-uses-ollama.md). Series: [README](README.md).

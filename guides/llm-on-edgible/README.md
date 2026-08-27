@@ -4,30 +4,34 @@
 
 **How to read a chapter:** one-line hook under the title, a short **why**, then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
 
-**The model you control,** published as `https://<app>.<org>.edgible.com`, then n8n and OpenClaw call it. Auth is **api-key** (machines send `Authorization: Bearer`). Never **None** — that would let strangers burn the GPU. **org** is for a human UI on another hostname, not for `curl` / n8n / OpenClaw.
+**The use case:** a **self-hosted** LLM on one home machine, called from a **different** self-hosted machine (n8n, OpenClaw, `curl`, Chatbox). Weights and GPU stay where the model runs. The remote box only sends HTTPS + `Authorization: Bearer`. No port-forward, no mesh VPN, no putting n8n or OpenClaw on the GPU box.
+
+That is why auth is **api-key** on `https://<app>.<org>.edgible.com`. **None** would let strangers burn the GPU. **org** is a human login — not what a workflow or Gateway sends. Same-LAN `http://192.168.64.1:11434` is only the UTM guest talking to the Mac; it is **not** this use case.
 
 ## Pattern (for the time being)
 
-The serving agent does **not** run on **macOS** yet. Ollama must stay on the Mac (Metal / GPU). The Ubuntu guest (UTM) runs Edgible. Two machines, one physical Mac:
+The serving agent does **not** run on **macOS** yet. Ollama stays on the Mac (Metal / GPU). The Ubuntu guest (UTM) only **publishes** it (and the website). **n8n** and **OpenClaw** each run on a **different VM**, on a **different** home computer.
 
 | Machine | OS | You run |
 | --- | --- | --- |
-| **Host** | **macOS** (MacBook / Mac mini) | Ollama.app, `ollama …`, `launchctl`, `open -a`, `lsof` |
-| **Guest** | **Ubuntu** in UTM | `edgible …`, `apt`, `socat`, `systemctl`, `ip route` |
+| **Mac host** | **macOS** | Ollama.app, `ollama …`, `launchctl`, `open -a`, `lsof` |
+| **Mac guest** | **Ubuntu** in UTM | `edgible …`, socat forwarder, website — **not** n8n, **not** OpenClaw |
+| **Other home PC** | n8n’s VM | n8n editor / workflows ([chapter 3](03-n8n-uses-ollama.md)) |
+| **Other home PC** | OpenClaw’s VM | Gateway / Control UI ([chapter 4](04-openclaw-uses-ollama.md)) |
 
-Do not install Ollama in the VM. Do not run `launchctl` / `open -a Ollama` in Ubuntu — those are **macOS-only**.
+Do not install Ollama in the UTM guest. Do not run `launchctl` / `open -a Ollama` in Ubuntu — those are **macOS-only**. Do not point n8n or OpenClaw at UTM `192.168.64.1` / `$HOST:11434` from the other computer.
 
-Edgible cannot aim at the Mac’s IP. It proxies `127.0.0.1` **on the VM**. Chapter 2 puts a loopback forwarder on the guest so that port is Ollama on the host. When a macOS agent exists, this hop can go away.
+Edgible cannot aim at the Mac’s IP. It proxies `127.0.0.1` **on the UTM guest**. Chapter 2 puts a loopback forwarder there so that port is Ollama on the Mac. When a macOS agent exists, this hop can go away.
 
-Do **not** port-forward **11434** on the router. Same-LAN HTTP from the guest to the Mac is enough for the forwarder.
+Do **not** port-forward **11434** on the router. Same-LAN HTTP is only the guest → Mac hop for the forwarder. n8n and OpenClaw use the published **api-key** URL.
 
-**Need first:** [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) (`mini-pc`, Hello World on cellular). Leave the VM and **hello-world** running. [1. n8n on Edgible](../n8n-on-edgible/README.md) and [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) can wait until chapters 3–4.
+**Need first:** [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) on the **Mac guest** (`mini-pc`, Hello World on cellular). Leave that VM and **hello-world** running. [1. n8n on Edgible](../n8n-on-edgible/README.md) and [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish **those** apps from **their** VMs — not from the Mac.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
 | 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
 | 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional **[Chatbox](02-edgible-to-ollama.md#26-optional--a-real-chat-ui-not-curl)** on the Mac |
-| 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Not written yet |
-| 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | Not written yet |
+| 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | n8n Ollama self-hosted `https://ollama.<org>…/v1` + Bearer; **`qwen2.5:7b`**; one chain Execute |
+| 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/qwen2.5:7b` via Edgible **api-key** (no `/v1`); agent hello |
 
-OpenClaw chapter 9 stays cloud keys plus a **small** same-LAN Ollama failover (no Edgible app). n8n stays editor **org** and webhook **None**. The published inference URL lives here.
+OpenClaw chapter 9 is cloud keys plus optional **same-LAN** Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 9.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor **org** and webhook **None** on **its** VM. The published inference URL lives here.
