@@ -219,15 +219,18 @@ Do **not** put Open WebUI (or any other chat server) in the 4 GB Ubuntu guest. T
 
 **Local only (not the Edgible story):** the **Ollama** menu-bar app on the Mac can chat to `localhost`. That does not prove the public HTTPS + **api-key** path.
 
-**Published endpoint (the Edgible story):** [Chatbox](https://chatboxai.app) (Mac/Windows/Linux). Create a custom **OpenAI API** provider:
+**Published endpoint (the Edgible story):** [Chatbox](https://chatboxai.app) (Mac/Windows/Linux).
 
-| Field | Value |
-| --- | --- |
-| API host / base URL | `https://ollama.YOUR-ORG.edgible.com/v1` |
-| API key | the **secret** from 2.5 (`EDGIBLE_APP_KEY`), not the key **id** |
-| Model | `qwen2.5:7b` (must match `ollama ls`) |
+1. **Settings** (bottom left of the sidebar) → **Model Provider**.
+2. **Add** → type **OpenAI API compatible** (not Chatbox’s own cloud, not “OpenAI” with `api.openai.com`).
+3. **API Key** = the **secret** from 2.5. **API Host** = `https://ollama.YOUR-ORG.edgible.com` (Chatbox usually appends `/v1/chat/completions` itself — if chat fails, try the same URL **with** `/v1`).
+4. **Add a model.** The id must be exactly what `ollama ls` shows, e.g. `qwen2.5:7b`. Save. Use **Check** if the UI has it — you want connection OK, not 401.
+5. **Leave Settings.** Click the **back** chevron, or click **Chatbox** in the sidebar, until you see the big empty chat pane and an input at the bottom. There is no button labelled “New conversation”.
+6. If you still only see Settings: look **left** for the sidebar. It may be hidden — **☰** (top left) or drag the window wider. In the sidebar the button is **New Chat** (sometimes a **`+`**). You can skip that: if a blank thread is already open, just use the **input box at the bottom**.
+7. In that thread, open the **model picker** (usually above the input, or at the top of the pane). Pick **your custom provider** + **`qwen2.5:7b`**. If it still says GPT-4 / Chatbox AI, you are on their cloud, not Ollama.
+8. Type `Say hello in one sentence` and send. First 7B reply can take several seconds (GPU on the Mac).
 
-If the app appends `/v1` itself, use the origin **without** `/v1`. A 401 is a bad secret; HTML login means you pointed at an **org** hostname; empty model list means Ollama is down or the forwarder is down.
+A 401 is a bad secret; HTML login means **org** hostname; empty models / Check fail means Ollama or the forwarder is down. Streaming then a hang: Mac Ollama quit or the VM slept.
 
 Same idea works in **Cherry Studio** or any “custom OpenAI endpoint” app. **Open WebUI** is the prettier *browser* UI, but it is another Docker stack — run it on a machine with spare RAM, not this VM. A second Edgible app with **org** in front of Open WebUI is a later pattern (human UI vs **api-key** API), not this chapter.
 
