@@ -212,6 +212,40 @@ If `sandbox-api` never goes healthy: `docker compose logs sandbox-certs` then `s
 
 If the stack is **already up** without SearXNG: add `SEARXNG_SECRET` to `.env`, write `searxng-settings.yml`, add the `searxng` service and `N8N_INSTANCE_AI_SEARXNG_URL` as above, then `docker compose up -d`.
 
+### 3.4.1 Health check
+
+On the **n8n** VM, from `~/n8n`. This is what the UI uses: probes from **inside** the n8n container, plus n8n on loopback.
+
+```bash
+cd ~/n8n
+echo "=== compose ==="
+docker compose ps -a
+echo
+echo "=== from n8n container ==="
+docker compose exec -T n8n wget -qO- http://sandbox-api:8080/healthz && echo
+docker compose exec -T n8n wget -qO- "http://searxng:8080/search?q=n8n&format=json" | head -c 200 && echo
+echo
+echo "=== n8n on this VM ==="
+curl -sf http://127.0.0.1:5678/healthz && echo
+echo
+echo "=== runner registered ==="
+docker compose logs sandbox-api 2>/dev/null | grep -i runner | tail -3
+```
+
+You want: `sandbox-api` **healthy**, n8n **running**, `searxng` **running**, `sandbox-certs` **exited 0** (one-shot). Healthz `{"status":"ok"}`. SearXNG JSON that includes `"results"`. n8n `/healthz` **200**. A log line that the runner registered.
+
+Optional — Ollama from the **same** container (replace host and secret):
+
+```bash
+docker compose exec -T n8n wget -qO- \
+  --header="Authorization: Bearer YOUR-EDGIBLE-SECRET" \
+  "https://ollama.YOUR-ORG.edgible.com/v1/models" | head -c 400 && echo
+```
+
+You want JSON listing **`qwen2.5:7b`**. 401 = bad secret. Timeout/HTML = Mac Ollama/forwarder down or wrong host.
+
+Do **not** publish sandbox or SearXNG ports to prove this. `ss` on the VM should still show **5678** on **127.0.0.1** only.
+
 ## 3.5 One chain
 
 Assistant can wait until 3.4 is green. A workflow does not need the sandbox.
