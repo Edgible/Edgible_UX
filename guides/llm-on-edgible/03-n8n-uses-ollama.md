@@ -74,10 +74,9 @@ N8N_INSTANCE_AI_SANDBOX_API_KEY=${A}
 EOF
 ```
 
-Do not commit `.env`. Then write the whole Compose file:
+Do not commit `.env`. Save this as **`~/n8n/docker-compose.yml`** (whole file):
 
-```bash
-cat > docker-compose.yml << 'EOF'
+```yaml
 volumes:
   n8n_data:
   sandbox-tls:
@@ -169,7 +168,12 @@ services:
       N8N_INSTANCE_AI_SANDBOX_IMAGE: ghcr.io/n8n-io/n8n-sandbox-service-sandbox:latest
     volumes:
       - n8n_data:/home/node/.n8n
-EOF
+```
+
+`${SANDBOX_API_KEYS}` and the other `${…}` lines are Compose substituting from `.env`, not shell.
+
+```bash
+cd ~/n8n
 docker compose up -d
 docker compose ps
 docker compose exec n8n wget -qO- http://sandbox-api:8080/healthz
