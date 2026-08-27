@@ -108,7 +108,7 @@ edgible app delete --name hello-world
 docker stop hello-world && docker rm hello-world
 ```
 
-Leave `~/hello-world` on disk unless you want that HTML gone too. Do **not** `edgible agent uninstall` here — that serving device is still [guide 1](../n8n-on-edgible/README.md) / [guide 3](../llm-on-edgible/README.md).
+Leave `~/hello-world` on disk unless you want that HTML gone too. Do **not** `edgible agent uninstall` here — that serving device is still [guide 1](../n8n-on-edgible/README.md) (until [n8n teardown](../n8n-on-edgible/06-n8n-teardown.md)) / [guide 3](../llm-on-edgible/README.md).
 
 ### Verify
 

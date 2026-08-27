@@ -26,7 +26,7 @@ Do **not** port-forward **11434** on the router. Same-LAN HTTP from the guest to
 | # | Chapter | Smoke test |
 | --- | --- | --- |
 | 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
-| 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | VM loopback `curl` matches the Mac; cellular `curl` with Bearer hits `https://ollama.<org>…` (**api-key**, not **None**) |
+| 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional **[Chatbox](02-edgible-to-ollama.md#26-optional--a-real-chat-ui-not-curl)** on the Mac |
 | 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Not written yet |
 | 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | Not written yet |
 

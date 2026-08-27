@@ -1,6 +1,6 @@
 # 2. Edgible publishes Ollama
 
-**GPU stays on the Mac. The VM only forwards. Edgible publishes the guest loopback.**
+**GPU stays on the Mac. The VM only forwards. After `curl`, optional [Chatbox](https://chatboxai.app) is the nice demo.**
 
 Edgible on the Ubuntu guest can only proxy a **local** port (`127.0.0.1` on **mini-pc**). Ollama is on the Mac, so the guest listens on loopback **11434** and forwards to the host’s Ollama. Then you create an Edgible app on that port with **api-key**. Machines that cannot log into org send `Authorization: Bearer`. Never **None**.
 
@@ -20,6 +20,7 @@ Any off-LAN    curl + Bearer          https://ollama.<org>.edgible.com
 | **2.3** | **Ubuntu VM** | No. `ip route`, `apt`, `socat`, `systemctl`, `ss` |
 | **2.4–2.5** (CLI) | **Ubuntu VM** | No. `edgible app …` (agent already on the guest) |
 | **2.5** (`curl` HTTPS) | Phone **cellular** or any laptop off the LAN | No |
+| **2.6** (optional chat UI) | **macOS** (or any PC) — not the thin Ubuntu guest | Chatbox is a Mac/Windows app. Do not Docker Open WebUI in the 4 GB VM. |
 
 ## 2.1 The job
 
@@ -30,6 +31,7 @@ You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest t
 - From the VM, `curl http://127.0.0.1:11434/api/tags` returns JSON that includes `qwen2.5:7b` (or your tag).
 - `edgible app list` shows **ollama** with **api-key** (not **None**, not **org** alone).
 - From a phone on **cellular** (or a laptop off the LAN), `curl` with `Authorization: Bearer` to `https://ollama.<org>.edgible.com/api/tags` returns that JSON — not an Edgible login HTML page.
+- Optional: [Chatbox](https://chatboxai.app) on the Mac chats using that same HTTPS URL and secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
 - Hello World still loads. Port **11434** is not forwarded on the router.
 
 **Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md) and [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) (`mini-pc` healthy, Hello World on cellular). Leave the VM, **hello-world**, and Mac Ollama running.
@@ -196,6 +198,8 @@ curl -sS "https://ollama.YOUR-ORG.edgible.com/api/tags" \
 
 You want the tags JSON. An HTML login page means the app is **org**. HTTP **401** means the Bearer is missing or wrong. `localhost` or `:11434` in the URL means you copied the wrong origin.
 
+For a chat window instead of `curl`, skip the optional generate below and go to [2.6 Chatbox](#26-optional--a-real-chat-ui-not-curl).
+
 Optional — prove a completion (slow on a 7B; still GPU on the Mac):
 
 ```bash
@@ -207,6 +211,26 @@ curl -sS "https://ollama.YOUR-ORG.edgible.com/api/generate" \
 
 OpenClaw **on this same VM** can still call `http://$HOST:11434` on the virt LAN and skip Edgible. The published URL is for callers that are **not** on that Mac.
 
+## 2.6 Optional — a real chat UI (not curl)
+
+`curl` proves the door. For a demo, use a **desktop** client that speaks **OpenAI-compatible** `/v1` and a **Bearer** key. GPU stays on the Mac; the app only calls `https://ollama.<org>.edgible.com`.
+
+Do **not** put Open WebUI (or any other chat server) in the 4 GB Ubuntu guest. That RAM is for Edgible + the website, not another LLM UI.
+
+**Local only (not the Edgible story):** the **Ollama** menu-bar app on the Mac can chat to `localhost`. That does not prove the public HTTPS + **api-key** path.
+
+**Published endpoint (the Edgible story):** [Chatbox](https://chatboxai.app) (Mac/Windows/Linux). Create a custom **OpenAI API** provider:
+
+| Field | Value |
+| --- | --- |
+| API host / base URL | `https://ollama.YOUR-ORG.edgible.com/v1` |
+| API key | the **secret** from 2.5 (`EDGIBLE_APP_KEY`), not the key **id** |
+| Model | `qwen2.5:7b` (must match `ollama ls`) |
+
+If the app appends `/v1` itself, use the origin **without** `/v1`. A 401 is a bad secret; HTML login means you pointed at an **org** hostname; empty model list means Ollama is down or the forwarder is down.
+
+Same idea works in **Cherry Studio** or any “custom OpenAI endpoint” app. **Open WebUI** is the prettier *browser* UI, but it is another Docker stack — run it on a machine with spare RAM, not this VM. A second Edgible app with **org** in front of Open WebUI is a later pattern (human UI vs **api-key** API), not this chapter.
+
 ### Verify
 
 - [ ] Mac `OLLAMA_HOST` is `0.0.0.0:11434`; guest `curl` to `$HOST:11434/api/tags` is JSON.
@@ -214,6 +238,7 @@ OpenClaw **on this same VM** can still call `http://$HOST:11434` on the virt LAN
 - [ ] App **ollama** is **api-key**, certificate issued.
 - [ ] You saved the **secret** from `create` (not the key **id** from `list`).
 - [ ] Cellular (or off-LAN) `curl` with Bearer returns `/api/tags` JSON.
+- [ ] Optional: Chatbox (or similar) on the Mac chats via `https://ollama.<org>…/v1` and the same secret.
 - [ ] Hello World still loads. Port **11434** is not forwarded on the router.
 - [ ] You did not set this app to **None**.
 
