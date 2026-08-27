@@ -44,8 +44,8 @@ services:
     environment:
       - N8N_PORT=5678
       - N8N_PROXY_HOPS=1
-      - GENERIC_TIMEZONE=Europe/London
-      - TZ=Europe/London
+      - GENERIC_TIMEZONE=Australia/Adelaide
+      - TZ=Australia/Adelaide
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
     volumes:
       - n8n_data:/home/node/.n8n

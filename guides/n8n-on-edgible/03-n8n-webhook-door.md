@@ -53,8 +53,8 @@ On the VM, edit `~/n8n/docker-compose.yml`. Keep the loopback publish. Add/set:
       - N8N_HOST=n8n.YOUR-ORG.edgible.com
       - N8N_EDITOR_BASE_URL=https://n8n.YOUR-ORG.edgible.com/
       - WEBHOOK_URL=https://n8n-hooks.YOUR-ORG.edgible.com/
-      - GENERIC_TIMEZONE=Europe/London
-      - TZ=Europe/London
+      - GENERIC_TIMEZONE=Australia/Adelaide
+      - TZ=Australia/Adelaide
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 ```
 
