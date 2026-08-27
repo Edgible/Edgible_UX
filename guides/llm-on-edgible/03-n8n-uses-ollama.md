@@ -1,32 +1,36 @@
 # 3. n8n uses the published Ollama URL
 
-**n8n is a remote self-hosted caller.** Two different Ollama URLs, same Edgible **secret**. The AI settings **sandbox** stays on **this** n8n VM (your Docker), not Daytona.
+**n8n on another home VM can use your Edgible Ollama in two different ways.** Same Mac GPU, same **api-key** secret. Different n8n features, different URLs.
 
-The Mac (and its Ubuntu guest) only **serve** Ollama and the website. n8n runs on a **different** self-hosted VM (for example on a Windows host). That is the use case: workflow box → published LLM, GPU stays on the Mac. Do not put the Edgible secret on a public webhook. Do not set the **ollama** app to **None**.
+## Two use cases
 
-| Where | Credential | Base URL | `/v1` |
-| --- | --- | --- | --- |
-| **AI Assistant** / instance “chat AI” (self-hosted Ollama) | OpenAI-compatible | `https://ollama.YOUR-ORG.edgible.com/v1` | **Yes** — it calls `/v1/models` |
-| **Workflow** **Ollama Chat Model** | Ollama | `https://ollama.YOUR-ORG.edgible.com` | **No** — it calls `/api/tags` and `/api/chat` |
+| | **1. Invoke the LLM from a workflow** | **2. n8n AI Assistant (“chat AI”)** |
+| --- | --- | --- |
+| **What it is** | A node on the canvas (e.g. **Basic LLM Chain** + **Ollama Chat Model**). Cron, webhooks, other nodes can call the model. | n8n’s **instance chat**: it helps build/edit workflows and can run generated code in a **sandbox**. |
+| **Edgible URL** | `https://ollama.<org>.edgible.com` — **no `/v1`** (native `/api/chat`) | `https://ollama.<org>.edgible.com/v1` — **with `/v1`** |
+| **Also needs** | One Ollama credential. **Enable Thinking → off** on the node. Model expression `{{ 'qwen2.5:7b' }}`. | Self-hosted **n8n-sandbox** (+ optional SearXNG) on the **n8n** VM, not Daytona. |
+| **Smoke test** | **Execute workflow** → a sentence. Mac `ollama ps` on GPU. | Chat **Hello** gets a reply (not a thinking error). |
+| **With `qwen2.5:7b`** | **Works.** This is the proven path. | **Not a full pass yet.** Endpoint/sandbox can test OK, but Assistant **sends thinking** and there is **no Think-off control** on that page. `qwen2.5:7b` then errors. Finish later with a small thinking tag (e.g. `qwen3:8b`) or when n8n can send `think: false` here. |
 
-Same Bearer **secret** from [2.5](02-edgible-to-ollama.md) on both. Mixing them (Assistant URL on the workflow node, or the reverse) is “couldn’t connect” or an empty model list.
+Do not mix the two URLs. Do not put the Edgible secret on **n8n-hooks**. Do not set the **ollama** app to **None**. Do not run n8n or the sandbox on the Mac UTM guest.
 
-The wizard’s next step after a successful Ollama test is a **sandbox**. That is n8n’s **AI Assistant** (it writes workflows and runs the code it generated). Self-hosting it is the same Edgible idea: isolation on **your** box, no extra SaaS. Official steps: [Install using Docker Compose](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose/) and [Set up AI Assistant](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-ai-assistant/).
+The Mac only **serves** Ollama (and the website). n8n is the remote self-hosted caller.
 
 ## 3.1 The job
 
-You point n8n at the published URL, pick **`qwen2.5:7b`**, add n8n’s **own** sandbox stack on the **n8n** VM, and run one chain. GPU stays on the Mac.
+Do **use case 1** in this chapter (workflow). Wire **use case 2** as far as credentials + sandbox + SearXNG; do not treat Assistant **Hello** on `qwen2.5:7b` as the smoke test.
 
 **Done when**
 
-- The Ollama endpoint **tests successfully**.
-- The model is **`qwen2.5:7b`** (or your `ollama ls` tag), not **qwen3-coder**.
-- `sandbox-api` is **healthy**; from the n8n container, `http://sandbox-api:8080/healthz` is `{"status":"ok"}`.
-- One **Execute** of a chain returns a sentence. Mac `ollama ps` shows GPU.
+- Workflow: **Execute** returns a sentence; model is `{{ 'qwen2.5:7b' }}`; Mac GPU.
+- Assistant (optional plumbing): `/v1` connection test OK; `sandbox-api` healthz OK; SearXNG URL set if you added it.
+- You did **not** require Assistant chat to succeed on the 7B.
 
-**Need first:** n8n’s editor on **this** VM (or its Edgible **org** URL). [Chapter 2](02-edgible-to-ollama.md) — cellular `curl` to `/api/tags` with Bearer already works. Docker Compose v2. About **4 GB RAM / 2 vCPUs** spare on the **n8n** VM (the runner is Docker-in-Docker).
+**Need first:** n8n editor on the **n8n** VM. [Chapter 2](02-edgible-to-ollama.md). Docker Compose v2. ~**4 GB / 2 vCPUs** spare on that VM for the sandbox runner.
 
-**Not this chapter:** installing n8n on the Mac guest, pulling **qwen3-coder**, Open WebUI or this sandbox on the 4 GB UTM VM, Daytona, publishing sandbox ports on Edgible, or OpenClaw.
+**Not this chapter:** n8n on the Mac guest, `qwen3-coder`, Open WebUI/sandbox on the 4 GB UTM VM, Daytona, OpenClaw.
+
+Official sandbox docs: [Docker Compose](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose/) and [AI Assistant](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-ai-assistant/).
 
 ## 3.2 n8n does not require qwen3-coder
 
