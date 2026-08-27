@@ -58,8 +58,9 @@ You want a row for **qwen2.5:7b** (size on the order of **4–5 GB**). `ls` is t
 
 | Tag | Later | Notes |
 | --- | --- | --- |
-| `qwen2.5:7b` | OpenClaw chat / tools; n8n HTTP | **Required** for this chapter. 7B-class, tool-friendly. |
-| `llama3.1:8b` | Same roles, second chat brain | Alternate 7B-class if Qwen misbehaves. |
+| `qwen2.5:7b` | OpenClaw chat / tools; n8n **workflow** | **Required** for this chapter. 7B-class, tool-friendly. |
+| `gpt-oss:20b` | n8n **AI Assistant** chat | **Must support thinking** (~13 GB). Chat AI always sends thinking; a 7B fails Hello. Proven with sandbox + **SearXNG** (search-backed chat). Pull for [chapter 3](03-n8n-uses-ollama.md) use case 2. Not for OpenClaw failover. |
+| `llama3.1:8b` | Same roles as 7B, second chat brain | Alternate 7B-class if Qwen misbehaves. |
 | `llama3.2:3b` | n8n smoke, cheap retries | Smaller, weaker at tools. Fine for “did n8n get a completion?” |
 | `nomic-embed-text` | n8n embeddings / RAG | Not a chat model. Tiny. Pull if you will index text in n8n. |
 
@@ -70,7 +71,7 @@ ollama pull nomic-embed-text
 ollama ls
 ```
 
-Do **not** pull `gpt-oss:20b` / `qwen3.5:27b` as the default kit — they crowd the Mac next to the VM and make OpenClaw failover feel hung ([OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md)).
+Do **not** put `gpt-oss:20b` / `qwen3.5:27b` in **OpenClaw fallbacks** — they make a Gemini 429 feel hung ([OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md)). `gpt-oss:20b` is the n8n Assistant chat model, not the OpenClaw default.
 
 5. In another Terminal, while the 7B is loaded (or run the prompt again):
 
