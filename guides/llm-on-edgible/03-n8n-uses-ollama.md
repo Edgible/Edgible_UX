@@ -60,21 +60,33 @@ mkdir -p ~/n8n
 cd ~/n8n
 ```
 
-`.env` — three random strings; the **first and last must be identical**:
+`.env` — four random strings; **`SANDBOX_API_KEYS` and `N8N_INSTANCE_AI_SANDBOX_API_KEY` must be identical**:
 
 ```bash
 A=$(openssl rand -hex 24)
 B=$(openssl rand -hex 24)
 C=$(openssl rand -hex 24)
+D=$(openssl rand -hex 24)
 cat > .env << EOF
 SANDBOX_API_KEYS=${A}
 SANDBOX_API_RUNNER_REGISTRATION_TOKEN=${B}
 SANDBOX_API_RUNNER_API_KEY=${C}
 N8N_INSTANCE_AI_SANDBOX_API_KEY=${A}
+SEARXNG_SECRET=${D}
 EOF
 ```
 
-Do not commit `.env`. Save this as **`~/n8n/docker-compose.yml`** (whole file):
+Do not commit `.env`. Save this as **`~/n8n/searxng-settings.yml`** (stock SearXNG only serves HTML; n8n needs JSON):
+
+```yaml
+use_default_settings: true
+search:
+  formats:
+    - html
+    - json
+```
+
+Save this as **`~/n8n/docker-compose.yml`** (whole file):
 
 ```yaml
 volumes:
@@ -146,6 +158,13 @@ services:
     volumes:
       - sandbox-tls:/tls:ro
 
+  searxng:
+    image: ghcr.io/searxng/searxng:latest
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET}
+    volumes:
+      - ./searxng-settings.yml:/etc/searxng/settings.yml:ro
+
   n8n:
     image: docker.n8n.io/n8nio/n8n
     restart: unless-stopped
@@ -166,6 +185,7 @@ services:
       N8N_INSTANCE_AI_SANDBOX_PROVIDER: n8n-sandbox
       N8N_INSTANCE_AI_SANDBOX_API_URL: http://sandbox-api:8080
       N8N_INSTANCE_AI_SANDBOX_IMAGE: ghcr.io/n8n-io/n8n-sandbox-service-sandbox:latest
+      N8N_INSTANCE_AI_SEARXNG_URL: http://searxng:8080
     volumes:
       - n8n_data:/home/node/.n8n
 ```
@@ -186,9 +206,11 @@ Do **not** set `N8N_INSTANCE_AI_MODEL` to Anthropic — Ollama stays in the UI. 
 
 Then AI settings → sandbox **n8n-sandbox** (not Daytona). **Service URL** = `http://sandbox-api:8080`. **API key** = `SANDBOX_API_KEYS` from `.env` (`grep SANDBOX_API_KEYS .env`). Save. You want a successful test.
 
+Web search: provider **SearXNG**. **URL** = `http://searxng:8080`. No API key. Same Compose network as n8n — not `localhost`, not Edgible. Leave **Brave** empty unless you buy that. Do **not** publish SearXNG’s port or create an Edgible app for it.
+
 If `sandbox-api` never goes healthy: `docker compose logs sandbox-certs` then `sandbox-api`. Runner crash-loop: token mismatch in `.env`. Sandbox test fails: key/URL mismatch, or n8n not on this Compose file.
 
-Optional later: **SearXNG** on n8n’s Compose page (needs a second settings file). Not required for Ollama or a first chain.
+If the stack is **already up** without SearXNG: add `SEARXNG_SECRET` to `.env`, write `searxng-settings.yml`, add the `searxng` service and `N8N_INSTANCE_AI_SEARXNG_URL` as above, then `docker compose up -d`.
 
 ## 3.5 One chain
 
@@ -207,6 +229,7 @@ First run can take several seconds (Mac cold load). You want a short sentence an
 - [ ] Endpoint is `https://ollama.<org>.edgible.com/v1` and the **secret**, test OK.
 - [ ] Model is **`qwen2.5:7b`**, not qwen3-coder.
 - [ ] Sandbox on the **n8n** VM: healthz OK; AI settings test OK; **no** Edgible app on 8080.
+- [ ] Optional: SearXNG URL `http://searxng:8080` in AI settings; **no** public SearXNG port.
 - [ ] Execute returns text; Mac `ollama ps` is GPU.
 - [ ] **ollama** app is still **api-key**. The Mac guest still is not running n8n.
 
