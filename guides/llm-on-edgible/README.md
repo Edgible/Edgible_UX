@@ -31,7 +31,7 @@ Do **not** port-forward **11434** on the router. Same-LAN HTTP is only the guest
 | --- | --- | --- |
 | 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
 | 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional **[Chatbox](02-edgible-to-ollama.md#26-optional--a-real-chat-ui-not-curl)** on the Mac |
-| 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | n8n `…/v1` + Bearer; self-hosted **n8n-sandbox** on the n8n VM; **`qwen2.5:7b`** chain |
+| 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Assistant **with** `/v1`; workflow Ollama **without**; `{{ 'qwen2.5:7b' }}` chain; n8n-sandbox |
 | 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/qwen2.5:7b` via Edgible **api-key** (no `/v1`); agent hello |
 
 OpenClaw chapter 9 is cloud keys plus optional **same-LAN** Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 9.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor **org** and webhook **None** on **its** VM. The published inference URL lives here.

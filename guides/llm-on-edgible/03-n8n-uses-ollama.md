@@ -1,8 +1,15 @@
 # 3. n8n uses the published Ollama URL
 
-**n8n is a remote self-hosted caller.** It uses `https://ollama.<org>.edgible.com/v1` with Bearer — not the Mac’s LAN. The AI settings **sandbox** stays on **this** n8n VM (your Docker), not Daytona.
+**n8n is a remote self-hosted caller.** Two different Ollama URLs, same Edgible **secret**. The AI settings **sandbox** stays on **this** n8n VM (your Docker), not Daytona.
 
-The Mac (and its Ubuntu guest) only **serve** Ollama and the website. n8n runs on a **different** self-hosted VM (for example on a Windows host). That is the use case: workflow box → published LLM, GPU stays on the Mac. n8n’s **Ollama self-hosted** endpoint speaks Ollama’s **OpenAI-compatible** API (`/v1/models`, `/v1/chat/completions`). Origin + **`/v1`** + the secret. Do not put that secret on a public webhook. Do not set the **ollama** app to **None**.
+The Mac (and its Ubuntu guest) only **serve** Ollama and the website. n8n runs on a **different** self-hosted VM (for example on a Windows host). That is the use case: workflow box → published LLM, GPU stays on the Mac. Do not put the Edgible secret on a public webhook. Do not set the **ollama** app to **None**.
+
+| Where | Credential | Base URL | `/v1` |
+| --- | --- | --- | --- |
+| **AI Assistant** / instance “chat AI” (self-hosted Ollama) | OpenAI-compatible | `https://ollama.YOUR-ORG.edgible.com/v1` | **Yes** — it calls `/v1/models` |
+| **Workflow** **Ollama Chat Model** | Ollama | `https://ollama.YOUR-ORG.edgible.com` | **No** — it calls `/api/tags` and `/api/chat` |
+
+Same Bearer **secret** from [2.5](02-edgible-to-ollama.md) on both. Mixing them (Assistant URL on the workflow node, or the reverse) is “couldn’t connect” or an empty model list.
 
 The wizard’s next step after a successful Ollama test is a **sandbox**. That is n8n’s **AI Assistant** (it writes workflows and runs the code it generated). Self-hosting it is the same Edgible idea: isolation on **your** box, no extra SaaS. Official steps: [Install using Docker Compose](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose/) and [Set up AI Assistant](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-ai-assistant/).
 
@@ -25,25 +32,29 @@ You point n8n at the published URL, pick **`qwen2.5:7b`**, add n8n’s **own** s
 
 Ollama’s n8n page uses **`qwen3-coder`** as an example. Use **`qwen2.5:7b`** from `ollama ls` on the Mac. Do **not** pull `qwen3-coder` (~**19 GB**).
 
-## 3.3 Credential (Edgible + `/v1`)
+## 3.3 Two credentials
 
-In **your** n8n editor (n8n VM — not the Mac):
+**AI Assistant / chat AI** — Settings, self-hosted Ollama:
 
-1. Add an **Ollama** credential / **self-hosted** endpoint.
-2. **Endpoint / Base URL** = `https://ollama.YOUR-ORG.edgible.com/v1`  
-   Copy the host from `edgible app list` on the **Mac guest**. **Include `/v1`.** No `:11434`. No `/api`.
-3. **API Key** = the **secret** from [2.5](02-edgible-to-ollama.md) (not the key **id**).
-4. **Save.** Connection test succeeds.
+1. Endpoint = `https://ollama.YOUR-ORG.edgible.com/v1` (**with** `/v1`).
+2. API Key = the **secret** from [2.5](02-edgible-to-ollama.md).
+3. Save. Connection test succeeds.
 
-`/v1` is required: this form calls `/v1/models`, not `/api/tags`.
+**Workflow Ollama Chat Model** — a **separate** Ollama credential (do not reuse the Assistant URL):
 
-Do **not** use `localhost:11434` or a UTM `192.168.64.1` from this VM — those are the Mac’s loopback / virt LAN.
+1. Base URL = `https://ollama.YOUR-ORG.edgible.com` (**no** `/v1`, no `:11434`).
+2. Same **secret**.
+3. Save. Connection test succeeds.
 
-Then set the **model** to **`qwen2.5:7b`**. Leave the sandbox fields until 3.4.
+Do **not** use `localhost:11434` or UTM `192.168.64.1` from this VM.
 
-### Classic Ollama Chat Model (no `/v1`)
+Leave sandbox until 3.4. Model id for the workflow node is §3.5 (`{{ 'qwen2.5:7b' }}`).
 
-Some n8n builds still have a credential that GETs `/api/tags`. That one must **not** have `/v1`. Prefer **3.3** when the UI is “self-hosted” and the test only passed with `/v1`.
+`qwen2.5:7b` does **not** support Ollama **thinking**. n8n’s **AI Assistant chat** often has **no** Think toggle and still sends `think: true` — that is the “doesn’t support thinking” error. There is nothing to click on that page.
+
+Turn thinking off only on a **workflow** node: **Ollama Chat Model** → **Options** → **Enable Thinking** → **off**.
+
+For Assistant chat, either use the workflow instead, or pull a small **thinking** tag on the Mac (`qwen3:8b`, still 7B-class — not `qwen3-coder`). Do not pull `qwen3-coder` (~19 GB).
 
 ## 3.4 Self-hosted sandbox (n8n VM)
 
@@ -248,20 +259,26 @@ Do **not** publish sandbox or SearXNG ports to prove this. `ss` on the VM should
 
 ## 3.5 One chain
 
-Assistant can wait until 3.4 is green. A workflow does not need the sandbox.
+Assistant chat is a different product (and may still send thinking). This smoke test is a **workflow**. You do **not** need **Chat Trigger**.
 
-1. **Add workflow.** **Manual Trigger**.
-2. Add **Basic LLM Chain** (or **AI Agent**).
-3. Attach the chat model that uses the credential from 3.3.
-4. **Model:** **`qwen2.5:7b`**. Turn **Enable Thinking** **off** if the 7B has no thinking mode.
-5. Prompt: `Say hello in one sentence`. **Save.** **Execute workflow.**
+1. **Add workflow.** Search **Manual** → **Manual Trigger** (or keep n8n’s “Execute workflow” start node).
+2. Search **LLM Chain** → **Basic LLM Chain**. Connect trigger → chain.
+3. On the chain’s **Model** stub, **Ollama Chat Model**. Credential Base URL is the Edgible origin **without** `/v1` (not the Assistant endpoint).
+4. **Model** dropdown often stays empty and shows grey **llama3.2** (n8n’s placeholder, not your Mac). Open the field **fx** / **Expression** and set exactly:
 
-First run can take several seconds (Mac cold load). You want a short sentence and Mac `ollama ps` on **GPU**.
+```text
+{{ 'qwen2.5:7b' }}
+```
+
+5. **Options → Enable Thinking → off**.
+6. Chain prompt: `Say hello in one sentence`. **Save.** **Execute workflow.**
+
+First run can take several seconds (Mac cold load). You want a short sentence in the chain output and Mac `ollama ps` on **GPU**.
 
 ### Verify
 
-- [ ] Endpoint is `https://ollama.<org>.edgible.com/v1` and the **secret**, test OK.
-- [ ] Model is **`qwen2.5:7b`**, not qwen3-coder.
+- [ ] Assistant (if used): endpoint **with** `/v1`. Workflow Ollama node: Base URL **without** `/v1`. Same Edgible **secret**.
+- [ ] Model expression is `{{ 'qwen2.5:7b' }}` (not grey llama3.2, not qwen3-coder).
 - [ ] Sandbox on the **n8n** VM: healthz OK; AI settings test OK; **no** Edgible app on 8080.
 - [ ] Optional: SearXNG URL `http://searxng:8080` in AI settings; **no** public SearXNG port.
 - [ ] Execute returns text; Mac `ollama ps` is GPU.
