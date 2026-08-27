@@ -214,4 +214,4 @@ Groups suppress that notice; `/status` still has Fallback. The notice is **not**
 
 ## Next
 
-That's the series. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).
+That's the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and **openclaw-ui** gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).

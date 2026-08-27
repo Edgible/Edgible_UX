@@ -8,12 +8,14 @@
 
 ## Pattern (for the time being)
 
-The serving agent does **not** run on macOS yet. Ollama on Apple Silicon (or a Mac GPU) must stay on **bare metal** or the guest will infer on CPU. So this series uses two processes on **one** Mac:
+The serving agent does **not** run on **macOS** yet. Ollama must stay on the Mac (Metal / GPU). The Ubuntu guest (UTM) runs Edgible. Two machines, one physical Mac:
 
-| Where | What | Why |
+| Machine | OS | You run |
 | --- | --- | --- |
-| **Bare metal** (macOS) | Ollama | Metal / GPU. Weights never go in the VM. |
-| **Ubuntu VM** (UTM, same Mac) | Edgible serving agent | Publishes a **local** port on the guest. Hello World already proved this box. |
+| **Host** | **macOS** (MacBook / Mac mini) | Ollama.app, `ollama …`, `launchctl`, `open -a`, `lsof` |
+| **Guest** | **Ubuntu** in UTM | `edgible …`, `apt`, `socat`, `systemctl`, `ip route` |
+
+Do not install Ollama in the VM. Do not run `launchctl` / `open -a Ollama` in Ubuntu — those are **macOS-only**.
 
 Edgible cannot aim at the Mac’s IP. It proxies `127.0.0.1` **on the VM**. Chapter 2 puts a loopback forwarder on the guest so that port is Ollama on the host. When a macOS agent exists, this hop can go away.
 
@@ -23,7 +25,7 @@ Do **not** port-forward **11434** on the router. Same-LAN HTTP from the guest to
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
-| 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ps` shows GPU, not a CPU-only crawl |
+| 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
 | 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | VM loopback `curl` matches the Mac; cellular `curl` with Bearer hits `https://ollama.<org>…` (**api-key**, not **None**) |
 | 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Not written yet |
 | 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | Not written yet |

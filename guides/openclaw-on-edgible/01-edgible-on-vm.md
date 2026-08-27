@@ -387,7 +387,7 @@ This is the real check: the page must load when you are **not** on the same LAN 
 
 If it fails at first, wait a minute, re-run `edgible app status`, and retry. You are not opening a port on the router; the VM is still NAT-only.
 
-Leave this app running until the teardown chapter (or `edgible app delete --name hello-world` when you are done with it).
+Leave this app running until [10. Tear down OpenClaw](10-openclaw-teardown.md) (or `edgible app delete --name hello-world` when you are done with it — skip that if n8n or LLM-on-Edgible still needs the page).
 
 ### Verify
 

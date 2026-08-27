@@ -19,6 +19,7 @@ Publishing plus two locks on one process (editor **org**, webhooks **None**) is 
 | 7 | [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md) | Linked device `hello` with `[OpenClaw]`; optional ACP `--bind here` |
 | 8 | [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) | `/acp doctor` then spawn; Control UI uses steer; WhatsApp can bind |
 | 9 | [9. Models beyond free Gemini](09-models-beyond-free-gemini.md) | `openclaw agent --model … hello` on DeepSeek / Ollama / another key; optional fallbacks |
+| 10 | [10. Tear down OpenClaw](10-openclaw-teardown.md) | **openclaw-ui** gone; nothing on **18789**; n8n / ollama / serving agent left unless you opt in |
 
 Do **not** use `! edgible whoami` as the OpenClaw check in chapter 2. That is **host bash** (`commands.bash`), off by default, and needs elevated allowlists. Chapter 5 is `/skill edgible whoami`. Chapter 6 can enable `!` if you want a host shell from Telegram.
 

@@ -5,14 +5,21 @@
 Edgible on the Ubuntu guest can only proxy a **local** port (`127.0.0.1` on **mini-pc**). Ollama is on the Mac, so the guest listens on loopback **11434** and forwards to the host’s Ollama. Then you create an Edgible app on that port with **api-key**. Machines that cannot log into org send `Authorization: Bearer`. Never **None**.
 
 ```
-Mac     Ollama (Metal)     0.0.0.0:11434
-              ↑  UTM NAT / virt LAN (often 192.168.64.1)
-Ubuntu  socat              127.0.0.1:11434
-              ↑
-Edgible agent              app ollama, **api-key**
-              ↑
-Cellular curl              https://ollama.<org>.edgible.com
+macOS host     Ollama.app (Metal)     0.0.0.0:11434     ← chapter 2.2 (macOS)
+                    ↑  UTM virt LAN (often 192.168.64.1)
+Ubuntu guest   socat                  127.0.0.1:11434   ← chapter 2.3 (Linux)
+                    ↑
+Ubuntu guest   Edgible agent          app ollama, api-key  ← 2.4–2.5 (Linux CLI)
+                    ↑
+Any off-LAN    curl + Bearer          https://ollama.<org>.edgible.com
 ```
+
+| Section | Where | macOS-specific? |
+| --- | --- | --- |
+| **2.2** | **macOS host** | **Yes.** `launchctl`, `killall Ollama`, `open -a`, menu bar, `lsof`, `ifconfig`, UTM `192.168.64.1` |
+| **2.3** | **Ubuntu VM** | No. `ip route`, `apt`, `socat`, `systemctl`, `ss` |
+| **2.4–2.5** (CLI) | **Ubuntu VM** | No. `edgible app …` (agent already on the guest) |
+| **2.5** (`curl` HTTPS) | Phone **cellular** or any laptop off the LAN | No |
 
 ## 2.1 The job
 
@@ -29,24 +36,51 @@ You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest t
 
 **Not this chapter:** n8n nodes, OpenClaw `models set`, **None** on this app, or installing Ollama in the guest.
 
-## 2.2 Mac — listen on the virt LAN
+## 2.2 macOS host — listen on the virt LAN
 
-Ollama defaults to **Mac localhost**. The guest’s `127.0.0.1` is the *guest*. On the **Mac**:
+**macOS only.** Terminal.app on the Mac, **not** the Ubuntu guest. `launchctl`, `open -a`, and “could not find ollama app” do not exist on Linux.
+
+Ollama.app defaults to **Mac localhost**. The guest’s `127.0.0.1` is the *guest*.
 
 ```bash
 launchctl setenv OLLAMA_HOST "0.0.0.0:11434"
-killall Ollama; open -a Ollama
+killall Ollama
+open -a Ollama
 ```
 
-If `ollama ps` is empty, run the one-word hello from [chapter 1](01-ollama-on-bare-metal.md) again.
+Wait until the llama icon is in the **menu bar** (a few seconds). Then:
+
+```bash
+ollama ps
+```
+
+`Error: ollama server not responding - could not find ollama app` means the **app is not running**. `open -a Ollama` again, or Finder → **Applications → Ollama**. If your prompt is the **VM** (`ubuntu@…` / a guest hostname), you are in the wrong place — `ollama` belongs on the Mac.
+
+If `ollama ps` is empty (app is up, no model loaded), run the one-word hello from [chapter 1](01-ollama-on-bare-metal.md) again.
 
 This bind is reachable from the UTM network. It is **not** an invitation to port-forward **11434** on the home router. After a Mac logout, you may need to run `launchctl setenv` and restart Ollama again.
 
 Allow **Ollama** incoming in the Mac firewall if the next `curl` fails.
 
-## 2.3 VM — reach the Mac, then bind loopback
+**Test (macOS host)** — localhost `curl` is not this check; that already worked in chapter 1. `lsof` and `ifconfig` are macOS (on Ubuntu you would use `ss` / `ip`).
 
-On the **Ubuntu guest**:
+```bash
+lsof -nP -iTCP:11434 -sTCP:LISTEN
+```
+
+You want `*:11434` or `0.0.0.0:11434`. **`127.0.0.1:11434`** means `OLLAMA_HOST` did not stick — run 2.2 again (menu-bar Ollama must actually quit and reopen).
+
+Then hit the Mac’s **UTM/host** address, not `127.0.0.1`. On Apple Virtualization that is often `192.168.64.1`:
+
+```bash
+curl -sS "http://192.168.64.1:11434/api/tags"
+```
+
+JSON with your tags means the bind is on the virt LAN. Connection refused: wrong IP (`ifconfig` and look for `192.168.64.`) or firewall. The guest `curl` in 2.3 is the same proof from the other side.
+
+## 2.3 Ubuntu VM — reach the Mac, then bind loopback
+
+**Ubuntu guest only** (UTM). `ip route`, `apt`, and `systemctl` are Linux. Do not paste this into macOS Terminal.
 
 ```bash
 HOST=$(ip route | awk '/default/ {print $3; exit}')
@@ -95,9 +129,20 @@ ss -ltnp | grep 11434
 
 You want the same JSON as the host `curl`, and `ss` showing **`127.0.0.1:11434`**. **`0.0.0.0:11434`** on the guest means the forwarder bound the wrong address — keep loopback.
 
-## 2.4 Create the Edgible app
+**Test (Ubuntu VM)** — tags, then a one-shot generate through the forwarder (not `$HOST`, not Edgible):
 
-On the **VM**:
+```bash
+curl -sS http://127.0.0.1:11434/api/tags
+curl -sS http://127.0.0.1:11434/api/generate \
+  -H "Content-Type: application/json" \
+  -d '{"model":"qwen2.5:7b","prompt":"Reply with exactly: ok","stream":false}'
+```
+
+First command: JSON listing **qwen2.5:7b**. Second: a `response` that includes `ok` (GPU still on the Mac; this can take a few seconds). Connection refused: `systemctl status ollama-forward`. Empty tags / model not found: chapter 1 pull, then 2.2 bind. `ss` must still be **`127.0.0.1:11434`**.
+
+## 2.4 Create the Edgible app (Ubuntu VM)
+
+On the **Ubuntu guest** (Edgible CLI is already there from Hello World). Not macOS.
 
 ```bash
 edgible device list
@@ -117,9 +162,11 @@ Leave extra hostnames blank. **Allow other organizations?** **No**. Never **None
 
 Wait for the certificate: console → **ollama** → **Certificates**, or `edgible app list` / `edgible app status`. Copy `https://ollama.YOUR-ORG.edgible.com` exactly (no path, no `:11434`).
 
-## 2.5 API key and cellular smoke
+## 2.5 API key (Ubuntu VM) and cellular smoke (any off-LAN device)
 
-Create a key (name it e.g. `laptop-curl`). The secret is shown **once** — store it in a local env var on the machine you curl from. Do **not** paste it into Hello World, chat, or a public gist.
+Create and list keys with `edgible` on the **Ubuntu guest**. The HTTPS `curl` is **not** macOS-specific — phone on cellular, or any laptop that is not on the VM’s LAN.
+
+Create a key (name it e.g. `laptop-curl`).
 
 ```bash
 edgible app list
@@ -127,6 +174,18 @@ edgible app api-keys create --app-id <ollama-app-id> --name laptop-curl
 ```
 
 (`edgible application api-keys create` is the same command.)
+
+The **secret** (the long token in the `create` output) is printed **once**. Copy it immediately into a local env var on the machine you will `curl` from, e.g. `export EDGIBLE_APP_KEY='…'`. Do **not** paste it into Hello World, chat, or a public gist. If you dismiss the output, Edgible will not show that value again — create a new key.
+
+Then list keys so you can tell **id** from **secret**:
+
+```bash
+edgible app api-keys list --app-id <ollama-app-id>
+```
+
+(`edgible app api-key list` if your CLI uses the singular alias.)
+
+List rows are metadata: name, **key id**, created / expiry. That **id** is **not** the API key. `Authorization: Bearer` must be the **secret** from `create`, not the id from `list`. Using the id as Bearer returns **401**. Lost secret → `api-keys delete` that id, then `create` again.
 
 From a **phone on cellular** or a laptop **not** on the VM’s LAN:
 
@@ -153,6 +212,7 @@ OpenClaw **on this same VM** can still call `http://$HOST:11434` on the virt LAN
 - [ ] Mac `OLLAMA_HOST` is `0.0.0.0:11434`; guest `curl` to `$HOST:11434/api/tags` is JSON.
 - [ ] `ollama-forward.service` is **active**; guest `curl` to `http://127.0.0.1:11434/api/tags` is the same JSON; `ss` is **127.0.0.1:11434**.
 - [ ] App **ollama** is **api-key**, certificate issued.
+- [ ] You saved the **secret** from `create` (not the key **id** from `list`).
 - [ ] Cellular (or off-LAN) `curl` with Bearer returns `/api/tags` JSON.
 - [ ] Hello World still loads. Port **11434** is not forwarded on the router.
 - [ ] You did not set this app to **None**.

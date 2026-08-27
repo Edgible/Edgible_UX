@@ -264,5 +264,5 @@ Leave ACP **installed** if you will use it again; `allowedAgents: ["cursor"]` st
 
 ## Next
 
-That's the series for the site A/B. Other chat models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md). Telegram is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). The **edgible** skill is [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md).
+That's the series for the site A/B. Other chat models: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Teardown: [10. Tear down OpenClaw](10-openclaw-teardown.md). [Index](README.md). WhatsApp as the bindable client is [7. WhatsApp linked device for OpenClaw](07-whatsapp-pocket-client.md). Telegram is [6. Telegram pocket client for OpenClaw](06-telegram-pocket-client.md). The **edgible** skill is [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md).
 
