@@ -1,0 +1,86 @@
+site_name: Edgible Guides
+site_url: https://guides.edgible.com/
+site_description: >-
+  Hands-on guides for publishing self-hosted services with Edgible. Each chapter
+  is one job with one smoke test: n8n with split auth modes, an OpenClaw Control
+  UI reachable from a phone, and a self-hosted Ollama called by remote machines.
+site_author: Edgible
+
+repo_url: https://github.com/Edgible/Edgible_UX
+repo_name: Edgible/Edgible_UX
+edit_uri: edit/main/
+
+# Populated by scripts/build.sh, which stages the canonical markdown from the
+# repo root. Editing files under build/ has no effect.
+docs_dir: build/docs
+site_dir: site
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - content.code.copy
+    - content.action.edit
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  # GitHub-compatible heading slugs, so anchors in the markdown resolve both on
+  # github.com and on the built site.
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Edgible/Edgible_UX
+
+nav:
+  - Start here: README.md
+  - What Edgible does: capabilities.md
+  - 1. n8n on Edgible:
+      - guides/n8n-on-edgible/README.md
+      - guides/n8n-on-edgible/01-n8n-on-the-vm.md
+      - guides/n8n-on-edgible/02-n8n-editor-through-edgible.md
+      - guides/n8n-on-edgible/03-n8n-webhook-door.md
+      - guides/n8n-on-edgible/04-n8n-cron.md
+      - guides/n8n-on-edgible/05-n8n-public-webhook.md
+      - guides/n8n-on-edgible/06-n8n-teardown.md
+  - 2. OpenClaw on Edgible:
+      - guides/openclaw-on-edgible/README.md
+      - guides/openclaw-on-edgible/01-edgible-on-vm.md
+      - guides/openclaw-on-edgible/02-openclaw-on-the-box.md
+      - guides/openclaw-on-edgible/03-publish-openclaw-control-ui.md
+      - guides/openclaw-on-edgible/04-openclaw-changes-edgible-site.md
+      - guides/openclaw-on-edgible/05-edgible-openclaw-skill.md
+      - guides/openclaw-on-edgible/06-telegram-pocket-client.md
+      - guides/openclaw-on-edgible/07-whatsapp-pocket-client.md
+      - guides/openclaw-on-edgible/08-cursor-agent.md
+      - guides/openclaw-on-edgible/09-models-beyond-free-gemini.md
+      - guides/openclaw-on-edgible/10-openclaw-teardown.md
+  - 3. LLM on Edgible:
+      - guides/llm-on-edgible/README.md
+      - guides/llm-on-edgible/01-ollama-on-bare-metal.md
+      - guides/llm-on-edgible/02-edgible-to-ollama.md
+      - guides/llm-on-edgible/03-n8n-uses-ollama.md
+      - guides/llm-on-edgible/04-openclaw-uses-ollama.md

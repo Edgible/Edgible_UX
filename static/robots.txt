@@ -1,0 +1,8 @@
+# guides.edgible.com
+# Answer engines and coding agents are welcome here. This is public
+# documentation and being quoted accurately is the point.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://guides.edgible.com/sitemap.xml
