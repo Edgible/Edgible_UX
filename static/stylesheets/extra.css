@@ -86,6 +86,22 @@
   color: var(--edgible-blue);
 }
 
+/* The logo is a wordmark rather than a square mark, so it needs more width than
+   Material's default logo box allows. */
+.md-header__button.md-logo {
+  padding-right: 0.4rem;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.4rem;
+  width: auto;
+}
+
+.md-footer-meta__inner {
+  align-items: center;
+}
+
 /* The search field sits on the header, so it takes tints of the header colour
    rather than Material's default. */
 .md-search__form {

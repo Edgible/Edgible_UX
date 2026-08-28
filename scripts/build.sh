@@ -23,6 +23,7 @@ cp -R guides "$STAGE/guides"
 cp static/robots.txt "$STAGE/robots.txt"
 cp -R static/stylesheets "$STAGE/stylesheets"
 cp -R static/fonts "$STAGE/fonts"
+cp -R static/images "$STAGE/images"
 
 python3 scripts/gen_llms.py "$STAGE"
 
