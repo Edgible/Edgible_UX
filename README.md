@@ -10,6 +10,8 @@ Three guides. Guides 1 and 2 publish the app from the box that runs it ([Edgible
 - **2. OpenClaw on Edgible** — Control UI on `https://` with **org**, from a phone, no port-forward and no mesh VPN on the laptop.
 - **3. LLM on Edgible** — self-hosted Ollama (GPU on the Mac), published **api-key**, called from a **remote** self-hosted n8n or OpenClaw VM.
 
+**New here, or want the pitch in one page?** [What Edgible does — and where these guides prove it](capabilities.md) maps every feature and differentiator to the chapter that demonstrates it.
+
 ## Contents
 
 - [1. n8n on Edgible](guides/n8n-on-edgible/README.md) — six chapters (org editor, None webhooks, cron, smoke GET, teardown). Need the VM first; this series does not use OpenClaw.
