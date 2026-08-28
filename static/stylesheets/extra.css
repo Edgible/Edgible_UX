@@ -1,0 +1,54 @@
+/* Edgible brand palette. Source: www.edgible.com docs/COLORS.md
+ *
+ * Material sets these variables from [data-md-color-scheme][data-md-color-primary]
+ * compound selectors, so the rules below have to match on both attributes to
+ * win the cascade. */
+
+:root {
+  --edgible-blue: #000033;
+  --edgible-orange-light: #ffa07a;
+  --edgible-orange-dark: #8b4513;
+}
+
+[data-md-color-scheme="default"][data-md-color-primary],
+[data-md-color-scheme="slate"][data-md-color-primary] {
+  --md-primary-fg-color: var(--edgible-blue);
+  --md-primary-fg-color--light: #1a1a4d;
+  --md-primary-fg-color--dark: #000022;
+  --md-primary-bg-color: #ffffff;
+  --md-primary-bg-color--light: rgba(255, 255, 255, 0.7);
+}
+
+/* Footer. Material uses two shades: the nav strip with previous/next links, and
+   a darker band under it for the copyright line. */
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+  --md-footer-bg-color: var(--edgible-blue);
+  --md-footer-bg-color--dark: #000022;
+}
+
+[data-md-color-scheme="default"][data-md-color-primary] {
+  --md-accent-fg-color: var(--edgible-orange-dark);
+  --md-typeset-a-color: var(--edgible-orange-dark);
+}
+
+/* The brown fails contrast on the dark scheme, so use the light orange. */
+[data-md-color-scheme="slate"][data-md-color-primary] {
+  --md-accent-fg-color: var(--edgible-orange-light);
+  --md-typeset-a-color: var(--edgible-orange-light);
+}
+
+[data-md-color-scheme="default"] .md-typeset h1,
+[data-md-color-scheme="default"] .md-typeset h2 {
+  color: var(--edgible-blue);
+}
+
+/* The search field sits on the header, so it takes tints of the header colour
+   rather than Material's default. */
+.md-search__form {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.md-search__form:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
