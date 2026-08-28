@@ -1,14 +1,14 @@
 # 6. Telegram pocket client for OpenClaw
 
-**A chat app you already have, wired to the agent on your shelf.**
+**Message the agent on your VM from a chat app you already use.**
 
 ## 6.0 Why
 
-Control UI is the right door for anything serious, but it is a heavy one: a browser, a token paste and a device approve for every new phone or profile. A one-line question on the walk home should not cost that, and if the only way to reach your agent is a tab you have to set up, you will stop reaching for it.
+Control UI is the right client for anything serious, but each new phone or browser profile costs a token paste and a device approve. A one-line question does not need that setup.
 
-Telegram is the cheap door, and it is important to be clear about what it is not. It is **not** an Edgible app — the tempting mistake is to look for a port or a hostname to publish, and there is none. The Gateway dials **out** to Telegram’s API on TCP 443, exactly as it already dials out to Edgible, so nothing new is exposed and nothing new is forwarded. Publishing a chat channel through a hostname would only add an inbound door for a path that never needed one.
+Telegram is the cheap client, and it is not an Edgible app. There is no port and no hostname to publish. The Gateway dials out to Telegram’s API on TCP 443, as it already dials out to Edgible, so nothing new is exposed and nothing new is forwarded. Publishing a chat channel at a hostname would add an inbound path this never needed.
 
-What you pay is privacy and precision: your messages traverse Telegram’s servers, and slash commands in a chat window are a clumsy place to approve a shell write. So Telegram is the pocket client for questions and quick checks, and Control UI stays the place for exec approvals and the first run of anything new.
+The costs are privacy and precision: your messages traverse Telegram’s servers, and slash commands in a chat window are a clumsy place to approve a shell write. Use Telegram for questions and quick checks. Use Control UI for exec approvals and the first run of anything new.
 
 ```
 you, on a phone        Telegram app ──► api.telegram.org
@@ -23,16 +23,16 @@ you, in a browser      https://openclaw-ui.<org>.edgible.com   ← org login (ch
 
 ## 6.1 The job
 
-You create a bot, store its token on the VM, and DM **that bot** (not BotFather). OpenClaw replies. The Gateway dials **out** to `api.telegram.org` on TCP 443. There is **no** `openclaw channels login telegram` — you paste a BotFather token into config. Do not publish Telegram (or WhatsApp, Discord, Ollama) through Edgible. Do not port-forward 18789.
+You create a bot, store its token on the VM, and DM that bot (not BotFather). OpenClaw replies. The Gateway dials out to `api.telegram.org` on TCP 443. There is no `openclaw channels login telegram`; you paste a BotFather token into config. Do not publish Telegram (or WhatsApp, Discord, Ollama) through Edgible. Do not port-forward 18789.
 
 Control UI remains the cleaner place for `/skill` and exec approvals. WhatsApp is the bindable ACP client. Telegram is official Bot API.
 
 **Done when**
 
 - A bot from [@BotFather](https://t.me/BotFather); token on the Gateway host only (literal `123:AAH…`, not `$TELEGRAM_BOT_TOKEN`).
-- `channels.telegram.apiRoot` **unset**.
+- `channels.telegram.apiRoot` is unset.
 - `openclaw channels status --probe` shows Telegram working.
-- You DMed **your** bot, not BotFather.
+- You DMed your bot, not BotFather.
 - A DM to your bot gets an OpenClaw reply (identity ritual counts); pairing approved if asked.
 - You can tell Gateway `/whoami` (instant sender id) from `/skill edgible whoami` (Edgible CLI, through the model).
 - You did not publish a Telegram port through Edgible.
@@ -45,13 +45,13 @@ Control UI remains the cleaner place for `/skill` and exec approvals. WhatsApp i
 
 On your phone or [web.telegram.org](https://web.telegram.org/), open **@BotFather** (Telegram’s official bot).
 
-1. `/newbot` — pick a display name and a username ending in `bot`.
+1. `/newbot`, then pick a display name and a username ending in `bot`.
 2. Copy the **HTTP API token** (`digits:AAH…`). Treat it like a password.
 3. Later: `/mybots` → your bot → **API Token** if you lost it. **Revoke** if it leaked.
 
-Logging into Telegram as yourself does **not** put this token anywhere. OpenClaw only sees it when you `config set` it on the VM.
+Logging into Telegram as yourself does not put this token anywhere. OpenClaw only sees it when you `config set` it on the VM.
 
-DM **the bot you just created**. BotFather will not forward your `hello` to OpenClaw.
+DM the bot you just created. BotFather will not forward your `hello` to OpenClaw.
 
 ---
 
@@ -64,7 +64,7 @@ openclaw config set channels.telegram.enabled true
 openclaw config set channels.telegram.botToken 'PASTE_TOKEN_HERE'
 ```
 
-**Do not set `apiRoot`.** If you run `openclaw config get channels.telegram.apiRoot` and see `Config path not found`, that is **correct**. The default is `https://api.telegram.org`. Setting `apiRoot` to the full `https://api.telegram.org/bot<TOKEN>` URL makes grammY double the `/bot…` path. Logs then show:
+Do not set `apiRoot`. If you run `openclaw config get channels.telegram.apiRoot` and see `Config path not found`, that is correct. The default is `https://api.telegram.org`. Setting `apiRoot` to the full `https://api.telegram.org/bot<TOKEN>` URL makes grammY double the `/bot…` path. Logs then show:
 
 ```text
 telegram deleteMyCommands / setMyCommands failed: 404 Not Found
@@ -77,7 +77,7 @@ openclaw doctor --fix
 openclaw config unset channels.telegram.apiRoot
 ```
 
-`apiRoot` is only for a **self-hosted** Bot API server (file-size limits, blocked regions). Everyone else leaves it unset.
+`apiRoot` is only for a self-hosted Bot API server (file-size limits, blocked regions). Everyone else leaves it unset.
 
 Check the token is real (do not paste the value into chat):
 
@@ -98,7 +98,7 @@ You want Telegram enabled, configured, a bot username, token from config.
 
 ## 6.4 Pairing and first `hello`
 
-**Smoke test.** Default DM policy is **pairing**. Send `hello` to **your bot**. On the VM:
+**Smoke test.** Default DM policy is pairing. Send `hello` to your bot. On the VM:
 
 ```bash
 openclaw pairing list telegram
@@ -112,9 +112,9 @@ If there is no reply: token, `apiRoot`, pairing, or the Gateway not running. `op
 ### Verify
 
 - [ ] A bot from [@BotFather](https://t.me/BotFather); token on the Gateway host only (literal `123:AAH…`, not `$TELEGRAM_BOT_TOKEN`).
-- [ ] `channels.telegram.apiRoot` **unset**.
+- [ ] `channels.telegram.apiRoot` is unset.
 - [ ] `openclaw channels status --probe` shows Telegram working.
-- [ ] You DMed **your** bot, not BotFather.
+- [ ] You DMed your bot, not BotFather.
 - [ ] A DM to your bot gets an OpenClaw reply (identity ritual counts); pairing approved if asked.
 - [ ] You can tell Gateway `/whoami` (instant sender id) from `/skill edgible whoami` (Edgible CLI, through the model).
 - [ ] You did not publish a Telegram port through Edgible.
@@ -123,29 +123,29 @@ If there is no reply: token, `apiRoot`, pairing, or the Gateway not running. `op
 
 ## 6.5 Gateway commands vs the Edgible skill
 
-Telegram slash commands that OpenClaw handles **in the Gateway** (no model) must be a **standalone** message:
+Telegram slash commands that OpenClaw handles in the Gateway (no model) must be a standalone message:
 
 | You send | What it is |
 | --- | --- |
-| `/whoami` or `/id` | **Your Telegram sender id** (`telegram:123…`). Instant. |
-| `/status` | Runtime + **selected** model; **Fallback** line if this session answered on a backup. |
+| `/whoami` or `/id` | Your Telegram sender id (`telegram:123…`). Instant. |
+| `/status` | Runtime and selected model; a Fallback line if this session answered on a backup. |
 | `/model status` | Endpoints / picker detail. |
 | `/stop` | Abort a stuck OpenClaw turn. |
-| `/skill edgible whoami` | **Edgible CLI** `edgible whoami`. Full model turn (slow). |
+| `/skill edgible whoami` | The Edgible CLI `edgible whoami`. Full model turn (slow). |
 
 If `/whoami` spins, a previous `/skill` turn is probably still queued (`/stop` then `/id` alone), or Telegram treated the slash as chat and the model loaded the Edgible skill because the description mentions `whoami`. A real `/whoami` is a short identity line in a second or two.
 
-**Your numeric user id** is the number in `/whoami`. Use that for allowlists (`id:123456789`), not `@username`. If the command never comes back: [@userinfobot](https://t.me/userinfobot) `/start`, or `openclaw pairing list telegram`.
+Your numeric user id is the number in `/whoami`. Use that for allowlists (`id:123456789`), not `@username`. If the command never comes back: [@userinfobot](https://t.me/userinfobot) `/start`, or `openclaw pairing list telegram`.
 
 ---
 
 ## 6.6 Which model, and 429s
 
-This chapter assumes the [chapter 2](02-openclaw-on-the-box.md) **Gemini Flash** primary. A 429 is quota, not a broken Telegram install.
+This chapter assumes the [chapter 2](02-openclaw-on-the-box.md) Gemini Flash primary. A 429 is quota, not a broken Telegram install.
 
-Failover (same turn, no resend) only if you set `agents.defaults.model.fallbacks` in [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). A pinned Control UI `/model` is **strict** — leave the picker on **Default**.
+Failover (same turn, no resend) only if you set `agents.defaults.model.fallbacks` in [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). A pinned Control UI `/model` is strict, so leave the picker on **Default**.
 
-In a **DM**, a switch can show:
+In a DM, a switch can show:
 
 ```text
 ↪️ Model Fallback: ollama/qwen2.5:7b (selected google/…; rate_limit)
@@ -153,7 +153,7 @@ In a **DM**, a switch can show:
 
 Groups suppress that notice; `/status` still has the state.
 
-`/skill` is slow when the **model** is slow. `edgible whoami` on the VM is milliseconds.
+`/skill` is slow when the model is slow. `edgible whoami` on the VM is milliseconds.
 
 ```bash
 openclaw config get agents.defaults.model
@@ -165,7 +165,7 @@ You want `primary` = Flash until you change it in [chapter 9](09-models-beyond-f
 
 ## 6.7 Logs do not echo your Telegram text
 
-Default `openclaw logs --follow` is **info**. Inbound message bodies are not printed (privacy). A successful `/whoami` can be almost silent. Follow logs on the **VM**, not the Mac.
+Default `openclaw logs --follow` is `info`. Inbound message bodies are not printed (privacy). A successful `/whoami` can be almost silent. Follow logs on the VM, not the Mac.
 
 ```bash
 openclaw channels logs --channel telegram
@@ -199,7 +199,7 @@ You already installed the skill in [chapter 5](05-edgible-openclaw-skill.md). Af
 /skill edgible whoami
 ```
 
-You want the same Profile / Environment / Account / Organization as the VM `edgible whoami`. If that never ran in Control UI, go back to [chapter 5](05-edgible-openclaw-skill.md) — Telegram `/skill` is the slower copy of the same OpenClaw turn.
+You want the same Profile / Environment / Account / Organization as the VM `edgible whoami`. If that never ran in Control UI, go back to [chapter 5](05-edgible-openclaw-skill.md). Telegram `/skill` is the slower copy of the same OpenClaw turn.
 
 Do not confuse with Gateway `/whoami` (your Telegram id).
 
@@ -226,7 +226,7 @@ Telegram is unchanged.
 
 ## 6.10 Optional: host bash (`!` / `/bash`)
 
-Off by default. It is a **host shell from chat**, not the Edgible skill.
+Off by default. It is a host shell from chat, not the Edgible skill.
 
 ```bash
 openclaw config set commands.bash true
@@ -237,7 +237,7 @@ openclaw config set tools.elevated.allowFrom.telegram '["id:YOUR_TELEGRAM_USER_I
 openclaw gateway restart
 ```
 
-Standalone message: `! edgible whoami` or `/bash edgible whoami`. Limit Telegram to **your** `id:`. Do not enable this in a group.
+Standalone message: `! edgible whoami` or `/bash edgible whoami`. Limit Telegram to your `id:`. Do not enable this in a group.
 
 ---
 

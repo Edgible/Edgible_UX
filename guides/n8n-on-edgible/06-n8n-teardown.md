@@ -1,24 +1,24 @@
 # 6. Tear down n8n
 
-**Shut the public door before you walk away from the demo.**
+**Remove both public hostnames before you stop watching the VM.**
 
 ## 6.0 Why
 
-A demo webhook left active is a live public endpoint on a box you own, and an active schedule keeps firing on a VM you have stopped watching — so tearing down is part of the exercise, not an afterthought. This is also a shared box: it may still be running [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md), so the default here is **n8n only** and the order matters — the **None** hostname comes down before the **org** one. Leave **openclaw-ui**, **ollama** and **hello-world** alone, and leave the Edgible serving agent installed.
+A demo webhook left active is a live public endpoint on a box you own, and an active schedule keeps firing after you stop watching the VM. This is also a shared box: it may still be running [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md), so the default here is n8n only. The order matters: the `None` hostname comes down before the `org` one. Leave `openclaw-ui`, `ollama` and `hello-world` alone, and leave the Edgible serving agent installed.
 
-**Where you run this:** unpublishing in the **n8n editor** on the **org** hostname; `edgible` and Docker on the **Ubuntu guest**; the final dead-URL check on a **phone on cellular**.
+**Where you run this:** unpublishing in the **n8n editor** on the `org` hostname; `edgible` and Docker on the **Ubuntu guest**; the final dead-URL check on a **phone on cellular**.
 
 ## 6.1 The job
 
-You stop production schedules and public webhooks, remove the two n8n hostnames, and stop the Docker process on loopback **5678**. Cellular **n8n** / **n8n-hooks** should fail. OpenClaw and Hello World still work if you left them.
+You stop production schedules and public webhooks, remove the two n8n hostnames, and stop the Docker process on loopback `5678`. Cellular n8n / `n8n-hooks` should fail. OpenClaw and Hello World still work if you left them.
 
 **Done when**
 
-- `edgible app list` has **no** **n8n** and **no** **n8n-hooks**.
-- `ss -ltnp | grep 5678` is empty — nothing listens on **5678**.
-- The **n8n-hooks** `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
-- **openclaw-ui** / **ollama** / **hello-world** are unchanged if you had created them (unless you chose 6.5).
-- Port **5678** is still not forwarded.
+- `edgible app list` has no n8n and no `n8n-hooks`.
+- `ss -ltnp | grep 5678` is empty; nothing listens on `5678`.
+- The `n8n-hooks` `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
+- `openclaw-ui` / `ollama` / `hello-world` are unchanged if you had created them (unless you chose 6.5).
+- Port `5678` is still not forwarded.
 
 **Need first:** You finished enough of this series that n8n exists (at least [chapter 1](01-n8n-on-the-vm.md)). Skip apps you never created.
 
@@ -26,15 +26,15 @@ You stop production schedules and public webhooks, remove the two n8n hostnames,
 
 ## 6.2 Unpublish workflows (org editor)
 
-Do this **before** deleting the editor app, while you can still open `https://n8n.<org>.edgible.com`.
+Do this before deleting the editor app, while you can still open `https://n8n.<org>.edgible.com`.
 
 In n8n 2.x: open each workflow → **⋯** → **Unpublish** (cron from [chapter 4](04-n8n-cron.md), webhook from [chapter 5](05-n8n-public-webhook.md)). Overview → **Workflows** → **⋯** on the row does the same. Older 1.x: turn **Active** off.
 
-Unpublish stops production ticks and the public path. It does not delete the workflow. If the editor is already gone, skip this — deleting **n8n-hooks** is what closes the internet door.
+Unpublish stops production ticks and the public path. It does not delete the workflow. If the editor is already gone, skip this. Deleting `n8n-hooks` is what removes the public endpoint.
 
 ## 6.3 Delete the Edgible apps
 
-**n8n-hooks** first (the **None** hostname), then **n8n** (**org**). Same process, two locks — take the public door down first.
+`n8n-hooks` first (the `None` hostname), then n8n (`org`). One process, two auth modes. Delete the `None` hostname first.
 
 ```bash
 edgible app list
@@ -43,7 +43,7 @@ edgible app delete --name n8n
 edgible app list
 ```
 
-Skip a name if `delete` says it does not exist. You want neither **n8n** nor **n8n-hooks**. Do **not** delete **hello-world**, **openclaw-ui**, or **ollama**.
+Skip a name if `delete` says it does not exist. You want neither n8n nor `n8n-hooks`. Do not delete `hello-world`, `openclaw-ui`, or `ollama`.
 
 ## 6.4 Stop the container (Ubuntu VM)
 
@@ -53,11 +53,11 @@ docker compose down
 ss -ltnp | grep 5678
 ```
 
-**Smoke test.** Empty `ss` is success, and the **n8n-hooks** URL on cellular should no longer return your JSON.
+**Smoke test.** Empty `ss` is success, and the `n8n-hooks` URL on cellular should no longer return your JSON.
 
 The compose file in `~/n8n` can stay on disk.
 
-Optional — wipe n8n’s volume (owner account, credentials, workflow JSON on this VM):
+Optional: wipe n8n’s volume (owner account, credentials, workflow JSON on this VM):
 
 ```bash
 cd ~/n8n
@@ -68,22 +68,22 @@ That does not remove the Edgible apps; do 6.3 first (or the hostnames 404 onto n
 
 ## 6.5 Optional — Hello World too
 
-Only if you also want the shared public page gone. **Skip** if OpenClaw or LLM-on-Edgible still uses this VM.
+Only if you also want the shared public page gone. Skip this if OpenClaw or LLM-on-Edgible still uses this VM.
 
 ```bash
 edgible app delete --name hello-world
 docker stop hello-world && docker rm hello-world
 ```
 
-Do **not** `edgible agent uninstall` here.
+Do not `edgible agent uninstall` here.
 
 ### Verify
 
-- [ ] `edgible app list` has **no** **n8n** and **no** **n8n-hooks**.
-- [ ] `ss -ltnp | grep 5678` is empty — nothing listens on **5678**.
-- [ ] The **n8n-hooks** `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
-- [ ] **openclaw-ui** / **ollama** / **hello-world** are unchanged if you had created them (unless you chose 6.5).
-- [ ] Port **5678** is still not forwarded.
+- [ ] `edgible app list` has no n8n and no `n8n-hooks`.
+- [ ] `ss -ltnp | grep 5678` is empty; nothing listens on `5678`.
+- [ ] The `n8n-hooks` `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
+- [ ] `openclaw-ui` / `ollama` / `hello-world` are unchanged if you had created them (unless you chose 6.5).
+- [ ] Port `5678` is still not forwarded.
 
 ---
 

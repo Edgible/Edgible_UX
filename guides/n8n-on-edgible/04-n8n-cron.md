@@ -1,14 +1,14 @@
 # 4. A cron workflow
 
-**Your first working automation, and nobody on the internet can trigger it.**
+**Your first working automation, with no public endpoint to trigger it.**
 
 ## 4.0 Why
 
-Before you open a public door in the next chapter, it is worth proving that n8n itself runs — and the cleanest way to do that is a workflow nothing outside can reach. A schedule needs no inbound URL at all: you edit it over the **org** hostname, and n8n fires it on the box on its own clock. If this run fails, you know the problem is n8n or your workflow, not an Edgible hostname or a lock.
+Before you publish a public endpoint in the next chapter, prove that n8n itself runs. A workflow nothing outside can reach is the cleanest way to do that. A schedule needs no inbound URL: you edit it over the `org` hostname, and n8n fires it on the box on its own clock. If this run fails, the problem is n8n or your workflow, not an Edgible hostname or auth mode.
 
-That is the quieter half of per-app auth: not every workflow is a door. The **n8n-hooks** app exists only for calls that arrive from outside, and this chapter would work exactly the same if you had never created it. Reaching for a public hostname or a forwarded port to make a timer fire is effort spent widening your attack surface for nothing.
+Not every workflow needs a public endpoint. The `n8n-hooks` app exists only for calls that arrive from outside, and this chapter works the same if you never created it. A public hostname or a forwarded port to make a timer fire only widens your attack surface.
 
-**Where you run this:** the **n8n editor in a browser** on the **org** hostname — phone or host browser, either is fine. No shell, no Edgible console.
+**Where you run this:** the **n8n editor in a browser** on the `org` hostname, phone or host browser, either is fine. No shell, no Edgible console.
 
 ## 4.1 The job
 
@@ -31,7 +31,7 @@ In the n8n editor (org URL):
 
 1. **Add workflow**.
 2. Delete the start stub if n8n added a manual trigger you do not want. Add **Schedule Trigger** (or **Schedule**).
-3. Interval: **every 1 minute** for the smoke test (you will change this).
+3. Interval: every 1 minute for the smoke test (you will change this).
 4. Add **Edit Fields** / **Set**. One field, e.g. `at` = `{{ $now }}` (or n8n’s current “current date” expression).
 5. **Save**. **Active** (toggle on).
 
@@ -39,7 +39,7 @@ In the n8n editor (org URL):
 
 Open **Executions**. You want a green row, not a red error.
 
-Then edit the trigger: every **hour**, or **deactivate**, so a trial VM is not ticking all day.
+Then edit the trigger: every hour, or deactivate it, so a trial VM is not ticking all day.
 
 ### Verify
 

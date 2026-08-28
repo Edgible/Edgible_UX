@@ -1,14 +1,14 @@
 # 1. Edgible on an Ubuntu VM
 
-**Your own box, answering the whole internet — and no hole in your router.**
+**Your own box, reachable from the internet, with no inbound port on your router.**
 
 ## 1.0 Why
 
-You have a machine you trust: a mini-PC on a shelf, or the VM standing in for one in this chapter. Nothing outside your house can reach it, which is why every interesting thing you might run on it — a workflow canvas, an agent, a model — stays a toy for whoever is sitting at the keyboard. This chapter is where that changes, and it is the first chapter of all three series because everything later assumes the door already exists.
+You have a machine you trust: a mini-PC at home, or the VM standing in for one in this chapter. Nothing outside your own network can reach it. A workflow canvas, an agent or a model on that box is usable only by whoever is sitting at the keyboard. This chapter is the first in all three series because everything later assumes a published hostname already exists.
 
-The usual ways of opening that door are the ones to avoid. Forwarding a port on the router puts a process you have not hardened in front of everyone who scans your address, and you inherit dynamic DNS and certificates as homework. A mesh VPN works, but every device that will ever need the service has to be enrolled first, which rules out a colleague, a phone you borrowed, or a webhook from Stripe. Renting a cloud box solves reachability by giving up the whole premise: the data is no longer on hardware you own.
+The usual ways of publishing one are the ones to avoid. Forwarding a port on the router puts a process you have not hardened in front of everyone who scans your address, and you inherit dynamic DNS and certificates as homework. A mesh VPN works, but every device that will ever need the service has to be enrolled first, which rules out a colleague, a phone you borrowed, or a webhook from Stripe. Renting a cloud box solves reachability by giving up the whole premise: the data is no longer on hardware you own.
 
-Edgible takes the third route. A serving agent on the guest dials **out** on TCP 443 and holds that connection open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app — each hostname — carries its own lock: **org** for “only my organisation gets past a browser login”, **api-key** for a bearer secret, **None** for open to the world. Hello World at the end of this chapter is deliberately **None**, because it is a throwaway page and because a page that loads on a phone with Wi‑Fi off is the only honest proof that the door works.
+Edgible takes the third route. A serving agent on the guest dials out on TCP 443 and holds that connection open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app, and so each hostname, carries its own auth mode: `org` for “only my organisation gets past a browser login”, `api-key` for a bearer secret, `None` for open to the world. Hello World at the end of this chapter is `None` because it is a throwaway page. A page that loads on a phone with Wi‑Fi off is the proof that publishing worked.
 
 ```
 you, on cellular       https://hello-world.<org>.edgible.com   ← None (throwaway page)
@@ -21,11 +21,11 @@ Ubuntu guest           Edgible serving agent ──► 127.0.0.1:8081
 your router            no forwarded port — nothing dials in
 ```
 
-**Where you run this:** signup and the console in the **host browser**; the VM manager on the **host**; everything else — `edgible`, Docker, `curl` — on the **Ubuntu guest**; the final check on a **phone on cellular**.
+**Where you run this:** signup and the console in the **host browser**; the VM manager on the host; everything else (`edgible`, Docker, `curl`) on the **Ubuntu guest**; the final check on a **phone on cellular**.
 
 ## 1.1 The job
 
-You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serving device, and publish Hello World. The “mini-PC” is that guest: **VirtualBox** (Windows/Linux) or **UTM** (Mac). OpenClaw is the next chapter.
+You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serving device, and publish Hello World. The “mini-PC” is that guest: VirtualBox (Windows/Linux) or UTM (Mac). OpenClaw is the next chapter.
 
 **Done when**
 
@@ -33,9 +33,9 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 - Ubuntu 24.04 on the VM, outbound HTTPS only (no port forwarding).
 - `edgible whoami` on the VM prints Profile / Environment / Account / Organization.
 - Serving device `mini-pc` with **Health check OK**.
-- `https://hello-world.<org>.edgible.com` loads on a **phone (cellular)**.
+- `https://hello-world.<org>.edgible.com` loads on a phone (cellular).
 
-**Need first:** the invite email. Host kit is 1.2. NAT is enough — outbound TCP 443 only.
+**Need first:** the invite email. Host kit is 1.2. NAT is enough: outbound TCP 443 only.
 
 **Not this chapter:** OpenClaw, n8n, Control UI on the internet, Telegram, or the Edgible skill.
 
@@ -43,12 +43,12 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 
 | Item | Notes |
 | --- | --- |
-| Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A **temporary password** arrives in a second email. |
-| VM manager | **VirtualBox** or **UTM** — see 1.4. |
-| Ubuntu **24.04 LTS** ISO | Match the CPU: **amd64** on typical PCs; **arm64** on Apple Silicon. |
-| Sudo on the guest | You will install the **Edgible serving agent** (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. Once it registers, your org lists it as a **serving device** named `mini-pc` — the *agent* is the software running on the box, the *device* is that entry in your organisation. |
+| Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A temporary password arrives in a second email. |
+| VM manager | VirtualBox or UTM; see 1.4. |
+| Ubuntu 24.04 LTS ISO | Match the CPU: `amd64` on typical PCs; `arm64` on Apple Silicon. |
+| Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. Once it registers, your org lists it as a serving device named `mini-pc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
 
-NAT is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 80, 443, or 18789. A **Gemini** key and Cursor are later chapters.
+NAT is enough. The VM only needs outbound TCP 443. Do not port-forward 22, 80, 443, or 18789. A Gemini key and Cursor are later chapters.
 
 ---
 
@@ -56,34 +56,34 @@ NAT is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 8
 
 **Outcome:** An Edgible account and organisation you can sign into at the console.
 
-Do this on your **laptop/desktop browser** (the host), not inside the VM. The Edgible **login and console** live at [https://app.prod.edgible.com/](https://app.prod.edgible.com/) — not the marketing site. You pick a permanent password here; that is what you will type later on the VM for `edgible auth login`.
+Do this on your laptop or desktop browser (the host), not inside the VM. The Edgible login and console live at [https://app.prod.edgible.com/](https://app.prod.edgible.com/), not the marketing site. You pick a permanent password here; that is what you will type later on the VM for `edgible auth login`.
 
 1. Open the invitation email and follow the signup link. If there is no link, open [https://app.prod.edgible.com/](https://app.prod.edgible.com/) and choose **Create your account** / sign up.
-2. On **Create your account**, enter first name, last name, and email (use the address the invite was sent to unless the invite says otherwise). Submit. Edgible does **not** ask for a password yet — it emails you a temporary one.
-3. Check that inbox (and spam) for the **temporary password** email. Stay on the **Check your email** page in the browser; it is waiting for that password.
+2. On **Create your account**, enter first name, last name, and email (use the address the invite was sent to unless the invite says otherwise). Submit. Edgible does not ask for a password yet. It emails you a temporary one.
+3. Check that inbox (and spam) for the temporary password email. Stay on the **Check your email** page in the browser; it is waiting for that password.
 4. Paste the temporary password from the email and continue.
-5. You **must change your password** before continuing. Enter a new password (at least 8 characters), confirm it, and save. From this point on, the temporary password is dead — use only the new one.
-6. You are then asked to **create an organisation**. Do that now. A default name such as *Your name’s organization* is fine for this trial.
-  An **organisation** is the workspace that owns your serving devices, applications, and public hostnames. Your **account** is you (email and password). The organisation is the *place* those machines and apps live — so a device registered later is not floating on a personal login, and you could later add another person or another box to the same org. Early trials are one person, one org: create it and keep going.
+5. You have to change your password before continuing. Enter a new password (at least 8 characters), confirm it, and save. From this point on the temporary password is dead. Use only the new one.
+6. You are then asked to create an organisation. Do that now. A default name such as *Your name’s organization* is fine for this trial.
+  An organisation is the workspace that owns your serving devices, applications, and public hostnames. Your account is you (email and password). The organisation is the *place* those machines and apps live, so a device registered later is not attached to a personal login, and you can add another person or another box to the same org. Early trials are one person, one org: create it and keep going.
 7. You should land on the **Dashboard** at [https://app.prod.edgible.com/](https://app.prod.edgible.com/). An empty device list is fine.
 
-Keep the **email** and the **new password** somewhere you can paste into the VM. To return later, always use [https://app.prod.edgible.com/](https://app.prod.edgible.com/).
+Keep the email and the new password somewhere you can paste into the VM. To return later, always use [https://app.prod.edgible.com/](https://app.prod.edgible.com/).
 
 ### Verify
 
 - [ ] You can sign in at [https://app.prod.edgible.com/](https://app.prod.edgible.com/) and see the Dashboard.
-- [ ] You have created an **organisation**.
-- [ ] You know the account **email** and the **new** password (not the temporary one).
+- [ ] You have created an organisation.
+- [ ] You know the account email and the new password (not the temporary one).
 
 ---
 
 ## 1.4 Create the virtual machine
 
-**Outcome:** An Ubuntu 24 virtual machine in a VM manager — a stand-in for the mini-PC.
+**Outcome:** An Ubuntu 24 virtual machine in a VM manager, standing in for the mini-PC.
 
-A **virtual machine (VM)** is a full computer that runs as an app on the laptop or PC in front of you. It stands in for the mini-PC on the shelf: Ubuntu 24 inside, Edgible (and later OpenClaw) on that guest, not on your host OS.
+A virtual machine (VM) is a full computer that runs as an app on the laptop or PC in front of you. It stands in for the mini-PC: Ubuntu 24 inside, Edgible (and later OpenClaw) on that guest, not on your host OS.
 
-To create one you need a **VM manager** (hypervisor) — the app that hosts the VM. Install that first, then create a virtual machine **based on Ubuntu 24.04 LTS** that runs inside it.
+To create one you need a VM manager (hypervisor): the app that hosts the VM. Install that first, then create a virtual machine based on Ubuntu 24.04 LTS that runs inside it.
 
 
 | Your computer       | VM manager                                |
@@ -92,19 +92,19 @@ To create one you need a **VM manager** (hypervisor) — the app that hosts the 
 | Mac                 | [UTM](https://mac.getutm.app/)            |
 
 
-Use **Ubuntu Server** (not Desktop). You will work in a terminal, like a mini-PC.
+Use Ubuntu Server (not Desktop). You will work in a terminal, like a mini-PC.
 
-**Recommended minimums** for this guide (sized so the same guest can run OpenClaw later, not only the Edgible serving agent):
+Recommended minimums for this guide (sized so the same guest can run OpenClaw later, not only the Edgible serving agent):
 
 
 | Resource | Recommended minimum | Floor if you are short on host RAM/disk                                                                      |
 | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Memory   | **4 GB**            | **2 GB** can boot Ubuntu and the Edgible serving agent; OpenClaw will struggle.                                      |
-| Disk     | **40 GB**           | **20 GB** is enough for this chapter only; images and OpenClaw need the rest. Dynamically allocated is fine. |
-| CPUs     | **2**               | **1** works; two is the minimum we recommend.                                                                |
+| Memory   | 4 GB            | 2 GB can boot Ubuntu and the Edgible serving agent; OpenClaw will struggle.                                      |
+| Disk     | 40 GB           | 20 GB is enough for this chapter only; images and OpenClaw need the rest. Dynamically allocated is fine. |
+| CPUs     | 2               | 1 works; two is the minimum we recommend.                                                                |
 
 
-Download the ISO from [Ubuntu Server](https://ubuntu.com/download/server): **amd64** for typical VirtualBox on Intel/AMD PCs, **arm64** for UTM **Virtualize** on Apple Silicon.
+Download the ISO from [Ubuntu Server](https://ubuntu.com/download/server): `amd64` for typical VirtualBox on Intel/AMD PCs, `arm64` for UTM **Virtualize** on Apple Silicon.
 
 During the Ubuntu installer:
 
@@ -117,7 +117,7 @@ During the Ubuntu installer:
 1. Install [VirtualBox](https://www.virtualbox.org/) if needed.
 2. **New** VM: type Linux, version **Ubuntu (64-bit)**.
 3. Set memory, CPUs, and disk to the recommended minimums above (VDI, dynamically allocated is fine).
-4. Attach the **amd64** Ubuntu 24.04 Server ISO to the optical drive.
+4. Attach the `amd64` Ubuntu 24.04 Server ISO to the optical drive.
 5. Network: **NAT** (default). That is enough for outbound HTTPS.
 6. Start the VM and complete the Ubuntu installer. Reboot when asked; remove the ISO if the VM tries to install again.
 7. Log in at the VM console with the user you created.
@@ -127,8 +127,8 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 ### 1.4.2 UTM (Mac)
 
 1. Install [UTM](https://mac.getutm.app/) if needed.
-2. **Create a New Virtual Machine** → **Virtualize** (Apple Silicon) or **Virtualize** on Intel Mac with an amd64 ISO. Do **not** use **Emulate** unless you have no other choice (it is slow).
-3. Operating System: **Linux**. Boot ISO: Ubuntu 24.04 Server **arm64** on Apple Silicon, **amd64** on Intel.
+2. **Create a New Virtual Machine** → **Virtualize** (Apple Silicon) or **Virtualize** on Intel Mac with an amd64 ISO. Do not use **Emulate** unless you have no other choice (it is slow).
+3. Operating System: **Linux**. Boot ISO: Ubuntu 24.04 Server `arm64` on Apple Silicon, `amd64` on Intel.
 4. Set memory, CPU cores, and disk to the recommended minimums above.
 5. Network: **Shared Network** (NAT). That is enough.
 6. Start, complete the Ubuntu installer, reboot, log in at the console.
@@ -136,7 +136,7 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 ### Verify
 
 - [ ] You can log into Ubuntu 24.04 in the VM console.
-- [ ] `lsb_release -a` shows **24.04**.
+- [ ] `lsb_release -a` shows 24.04.
 - [ ] `sudo -n true` works, or `sudo -v` accepts your password.
 
 ---
@@ -145,15 +145,15 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 
 **Outcome:** An updated VM with outbound internet and Docker installed.
 
-This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and **Docker** (OpenClaw will need it; Edgible can publish a compose app later). Work **inside the VM** (console is enough).
+This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and Docker (OpenClaw will need it; Edgible can publish a compose app later). Work inside the VM (console is enough).
 
-**SSH from the host (optional).** NAT does not give you a stable guest IP on the LAN. You can stay in the VM window, or in VirtualBox add **Settings → Network → Advanced → Port forwarding** for **host 2222 → guest 22** only, then:
+SSH from the host is optional. NAT does not give you a stable guest IP on the LAN. You can stay in the VM window, or in VirtualBox add **Settings → Network → Advanced → Port forwarding** for host 2222 → guest 22 only, then:
 
 ```bash
 ssh -p 2222 ubuntu@127.0.0.1
 ```
 
-Use your VM username if it is not `ubuntu`. Do **not** forward 80, 443, or 18789.
+Use your VM username if it is not `ubuntu`. Do not forward 80, 443, or 18789.
 
 ### 1.5.1 Update Ubuntu
 
@@ -167,13 +167,13 @@ If the upgrade installed a new kernel, reboot the VM (`sudo reboot`), then log i
 
 ### 1.5.2 Confirm outbound internet
 
-The VM only needs **outbound** HTTPS. A generic check is enough:
+The VM only needs outbound HTTPS. A generic check is enough:
 
 ```bash
 curl -fsSI https://www.google.com | head -n 5
 ```
 
-You want a successful TLS response (for example HTTP **200** or **301**), not “Could not resolve host” or a hang. If this fails, fix NAT/shared network in the VM manager before installing anything else.
+You want a successful TLS response (for example HTTP `200` or `301`), not “Could not resolve host” or a hang. If this fails, fix NAT/shared network in the VM manager before installing anything else.
 
 ### 1.5.3 Install Docker
 
@@ -198,7 +198,7 @@ docker version
 docker run --rm hello-world
 ```
 
-If you see permission denied on `/var/run/docker.sock`, the group is not active yet — `newgrp docker` or a new login, or use `sudo docker` until then.
+If you see permission denied on `/var/run/docker.sock`, the group is not active yet. Run `newgrp docker`, start a new login, or use `sudo docker` until then.
 
 ### Verify
 
@@ -213,13 +213,13 @@ If you see permission denied on `/var/run/docker.sock`, the group is not active 
 
 **Outcome:** The `edgible` command on the VM.
 
-Still **inside the guest**:
+Still inside the guest:
 
 ```bash
 curl -fsSL https://get.edgible.com/install.sh | bash
 ```
 
-The CLI needs **Node.js 20+**. The installer offers to install it if it is missing. Accept that.
+The CLI needs Node.js 20+. The installer offers to install it if it is missing. Accept that.
 
 Reload your PATH if `edgible` is not found (new shell, or `source ~/.bashrc`).
 
@@ -231,7 +231,7 @@ edgible --help
 ### Verify
 
 - [ ] `edgible --version` prints a version.
-- [ ] You did **not** install the CLI on the Mac/PC host for this guide. The serving device is the VM.
+- [ ] You did not install the CLI on the Mac/PC host for this guide. The serving device is the VM.
 
 ---
 
@@ -239,7 +239,7 @@ edgible --help
 
 **Outcome:** The CLI on the VM logged into your organisation.
 
-Use the email and **new** password from **1.3** (not the temporary password from the email). On the VM:
+Use the email and new password from 1.3 (not the temporary password from the email). On the VM:
 
 ```bash
 edgible auth login \
@@ -249,14 +249,14 @@ edgible auth login \
 
 Or run `edgible auth login` and follow the prompts.
 
-This writes tokens and the active organization id under your **guest** home directory.
+This writes tokens and the active organization id under your guest home directory.
 
 ```bash
 edgible whoami
 edgible config list
 ```
 
-Note the **organization** id. You will need it when you author YAML in a later chapter.
+Note the organization id. You will need it when you author YAML in a later chapter.
 
 If you belong to more than one org:
 
@@ -277,7 +277,7 @@ edgible auth select-org
 
 **Outcome:** A serving device (`mini-pc`) connected to Edgible, with no inbound ports opened on your router.
 
-The Edgible serving agent must run **on the VM** as systemd. It registers a device named `mini-pc` in your org. It is not OpenClaw.
+The Edgible serving agent must run on the VM as systemd. It registers a device named `mini-pc` in your org. It is not OpenClaw.
 
 ```bash
 sudo edgible agent install \
@@ -287,14 +287,14 @@ sudo edgible agent install \
   --non-interactive
 ```
 
-Expect **30–60 seconds**. Then:
+Expect 30–60 seconds. Then:
 
 ```bash
 sudo edgible agent start
 sudo systemctl status edgible-agent --no-pager
 ```
 
-That process connects **outbound** to the control plane (WebSocket over HTTPS). It does not open a port on your router.
+That process connects outbound to the control plane (WebSocket over HTTPS). It does not open a port on your router.
 
 Wait a few seconds, then:
 
@@ -315,9 +315,9 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 
 ### Verify
 
-- [ ] `systemctl status edgible-agent` shows **active (running)**.
+- [ ] `systemctl status edgible-agent` shows `active (running)`.
 - [ ] `edgible device health --name mini-pc` prints **Health check OK**.
-- [ ] Dashboard lists a serving device named **mini-pc**.
+- [ ] Dashboard lists a serving device named `mini-pc`.
 
 ---
 
@@ -325,9 +325,9 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 
 **Outcome:** An application hosted on your laptop / mini-PC that is accessible from the internet.
 
-The Edgible serving agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying **Hello World**: a throwaway nginx page you open from a **phone**, before you touch OpenClaw.
+The Edgible serving agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying Hello World: a throwaway nginx page you open from a phone, before you touch OpenClaw.
 
-Choose **None** (public access) when asked how the application should be protected. That is acceptable **only** because this page is a public Hello World. Do not use None for OpenClaw or anything private.
+Choose `None` (public access) when asked how the application should be protected. That is acceptable only because this page is a public Hello World. Do not use None for OpenClaw or anything private.
 
 ### 1.9.1 Run nginx on the VM
 
@@ -354,11 +354,11 @@ docker run -d --name hello-world \
 curl -s http://127.0.0.1:8081/
 ```
 
-You should see the Hello World HTML. That is **local only** — your phone cannot reach `8081` on the VM, and you did not port-forward it.
+You should see the Hello World HTML. That is local only. Your phone cannot reach `8081` on the VM, and you did not port-forward it.
 
 ### 1.9.2 Publish it with Edgible
 
-The nginx container is already listening on **8081**. Create an **existing** app — Edgible will discover that port. No YAML file.
+The nginx container is already listening on `8081`. Create an existing app. Edgible will discover that port. No YAML file.
 
 ```bash
 edgible app create existing
@@ -369,23 +369,23 @@ edgible app create existing
 | Prompt | Answer |
 |--------|--------|
 | Application name | `hello-world` |
-| Upgrade protocol from HTTP to HTTPS? | **Yes** (if asked) |
-| Custom domains / additional hostnames | leave **blank** (Enter) |
-| How should access to this application be protected? | **None** (public access) |
-| Use Edgible managed gateway? | **Yes** (if asked — say Yes so you are not asked for a gateway ID) |
-| Select serving device | **mini-pc** |
-| Select local workload | **hello-world** (the nginx container) |
-| Select port | **8081** |
+| Upgrade protocol from HTTP to HTTPS? | Yes (if asked) |
+| Custom domains / additional hostnames | leave blank (Enter) |
+| How should access to this application be protected? | `None` (public access) |
+| Use Edgible managed gateway? | Yes (if asked, so you are not asked for a gateway ID) |
+| Select serving device | `mini-pc` |
+| Select local workload | `hello-world` (the nginx container) |
+| Select port | `8081` |
 
-When it succeeds, the CLI prints an application **URL**. Standard shape is `https://<app>.<org>.edgible.com` — for this app, something like `https://hello-world.your-org.edgible.com`. Always copy the exact host the CLI prints. Do **not** open that HTTPS URL yet — the certificate is still being issued.
+When it succeeds, the CLI prints an application URL. Standard shape is `https://<app>.<org>.edgible.com`, so for this app something like `https://hello-world.your-org.edgible.com`. Always copy the exact host the CLI prints. Do not open that HTTPS URL yet. The certificate is still being issued.
 
 ### 1.9.3 Wait for the certificate (console)
 
-First publish typically takes **30–90 seconds**. Use the console to watch it, rather than hammering the URL.
+First publish typically takes 30–90 seconds. Use the console to watch it, rather than hammering the URL.
 
-1. On the **host** browser, open [https://app.prod.edgible.com/](https://app.prod.edgible.com/).
-2. Open the **hello-world** application you just created.
-3. Find the **Certificates** section. It will move from pending / issuing to **issued** (or equivalent ready state) when TLS is in place.
+1. On the host browser, open [https://app.prod.edgible.com/](https://app.prod.edgible.com/).
+2. Open the `hello-world` application you just created.
+3. Find the **Certificates** section. It will move from pending / issuing to issued (or equivalent ready state) when TLS is in place.
 4. When the certificate looks ready, copy the HTTPS URL from the console (or from `edgible app list` / `edgible app status` on the VM).
 
 Then, from the VM:
@@ -396,33 +396,33 @@ edgible app status
 curl -sS https://<the-hostname>/
 ```
 
-You should see Hello World over **HTTPS**. If curl complains about the certificate, wait and refresh **Certificates** in the console; do not fall back to `http://`.
+You should see Hello World over HTTPS. If curl complains about the certificate, wait and refresh **Certificates** in the console; do not fall back to `http://`.
 
 ### 1.9.4 Hit it from your phone
 
-**Smoke test.** The page must load when you are **not** on the same LAN as the laptop.
+**Smoke test.** The page must load when you are not on the same LAN as the laptop.
 
-1. On the phone, turn **Wi‑Fi off** (use cellular).
-2. Open a browser to the **URL** from `edgible app list`.
-3. You should see the same **Hello World** as `curl` on the VM.
+1. On the phone, turn Wi‑Fi off (use cellular).
+2. Open a browser to the URL from `edgible app list`.
+3. You should see the same Hello World as `curl` on the VM.
 
 If it fails at first, wait a minute, re-run `edgible app status`, and retry. You are not opening a port on the router; the VM is still NAT-only.
 
-Leave this app running until [10. Tear down OpenClaw](10-openclaw-teardown.md) (or `edgible app delete --name hello-world` when you are done with it — skip that if n8n or LLM-on-Edgible still needs the page).
+Leave this app running until [10. Tear down OpenClaw](10-openclaw-teardown.md) (or `edgible app delete --name hello-world` when you are done with it; skip that if n8n or LLM-on-Edgible still needs the page).
 
 ### Verify
 
 - [ ] `edgible whoami` prints Profile / Environment / Account / Organization.
 - [ ] `curl http://127.0.0.1:8081/` shows Hello World on the VM.
-- [ ] `edgible app list` shows **hello-world** with a `hello-world.<org>.edgible.com` URL.
-- [ ] In the console, **hello-world** → **Certificates** shows the cert as issued / ready.
-- [ ] `curl` to the **https** URL shows Hello World on the VM.
-- [ ] The same page loads on a phone on **cellular**.
+- [ ] `edgible app list` shows `hello-world` with a `hello-world.<org>.edgible.com` URL.
+- [ ] In the console, `hello-world` → **Certificates** shows the cert as issued / ready.
+- [ ] `curl` to the `https` URL shows Hello World on the VM.
+- [ ] The same page loads on a phone on cellular.
 
 ---
 
 ## Next
 
-[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) — continue **guide 2** (Gateway on loopback, Gemini Flash, local hello / Control UI). Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
+[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) continues guide 2 (Gateway on loopback, Gemini Flash, local hello / Control UI). Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
 
-Or **guide 1** (workflows, no agent): [n8n on Edgible](../n8n-on-edgible/README.md) — same VM, Hello World still up.
+Or guide 1 (workflows, no agent): [n8n on Edgible](../n8n-on-edgible/README.md), same VM, Hello World still up.
