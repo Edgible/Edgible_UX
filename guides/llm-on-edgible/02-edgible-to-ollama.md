@@ -1,8 +1,14 @@
 # 2. Edgible publishes Ollama
 
-**GPU stays on the Mac. The VM only forwards. After `curl`, optional [Chatbox](https://chatboxai.app) is the nice demo.**
+**Your GPU stays home. The internet only gets a key.**
 
-Edgible on the Ubuntu guest can only proxy a **local** port (`127.0.0.1` on **mini-pc**). Ollama is on the Mac, so the guest listens on loopback **11434** and forwards to the host’s Ollama. Then you create an Edgible app on that port with **api-key**. Machines that cannot log into org send `Authorization: Bearer`. Never **None**.
+## 2.0 Why
+
+After chapter 1 the model answers beautifully — and only to whoever is sitting at the Mac. Nothing else in the house can reach it, let alone n8n or OpenClaw on another computer. The tempting fixes are all worse than they look: forwarding **11434** on the router hands strangers an unauthenticated inference endpoint on your own hardware, a mesh VPN means every future caller has to enrol first, and installing Ollama inside the 4 GB guest throws away Metal for CPU inference. Handing a remote box the UTM address (`192.168.64.1`) fails for a different reason — that virt LAN only exists between the Mac and its own guest.
+
+Edgible’s serving agent runs on the **Ubuntu guest**, and it can only proxy a **local** port (`127.0.0.1` on `mini-pc`). So the shape is: the Mac binds Ollama to the virt LAN, the guest binds loopback **11434** and forwards to the host, and the Edgible app publishes that loopback port. The guest dials **out** on 443; nothing inbound is opened anywhere.
+
+Auth is per app — per hostname — so this one hostname decides who may spend your GPU. It is **api-key**: **None** would let anyone on the internet burn your Metal for free, and **org** is a human browser login that `curl`, an n8n node and an OpenClaw Gateway cannot complete. Callers send `Authorization: Bearer` and the weights never leave the Mac.
 
 ```
 macOS host     Ollama.app (Metal)     0.0.0.0:11434     ← chapter 2.2 (macOS)
@@ -22,17 +28,22 @@ Any off-box     n8n / OpenClaw / curl   https://ollama.<org>.edgible.com  (+ Bea
 | **2.5** (`curl` HTTPS) | Phone **cellular** or any laptop off the LAN | No |
 | **2.6** (optional chat UI) | **macOS** (or any PC) — not the thin Ubuntu guest | Chatbox is a Mac/Windows app. Do not Docker Open WebUI in the 4 GB VM. |
 
+**Where you run this:** both machines, section by section — see the table above. In short: **2.2** on the **macOS host**, **2.3–2.5** (`edgible` CLI) on the **Ubuntu guest**, the HTTPS `curl` from a **phone on cellular** or any off-LAN laptop, and optional **2.6** on the **Mac** (or any PC with spare RAM).
+
 ## 2.1 The job
 
 You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest to the host, install a loopback forwarder, publish **11434** through Edgible as **api-key**, and hit the HTTPS URL from **cellular** with a Bearer token.
 
 **Done when**
 
-- From the VM, `curl http://127.0.0.1:11434/api/tags` returns JSON that includes `qwen2.5:7b` (or your tag).
-- `edgible app list` shows **ollama** with **api-key** (not **None**, not **org** alone).
+- Mac `OLLAMA_HOST` is `0.0.0.0:11434`; guest `curl` to `$HOST:11434/api/tags` is JSON.
+- `ollama-forward.service` is **active**; guest `curl` to `http://127.0.0.1:11434/api/tags` returns the same JSON, including `qwen2.5:7b` (or your tag); `ss` is **127.0.0.1:11434**.
+- `edgible app list` shows **ollama** with **api-key** (not **None**, not **org** alone), certificate issued.
+- You saved the **secret** from `create` (not the key **id** from `list`).
 - From a phone on **cellular** (or a laptop off the LAN), `curl` with `Authorization: Bearer` to `https://ollama.<org>.edgible.com/api/tags` returns that JSON — not an Edgible login HTML page.
-- Optional: [Chatbox](https://chatboxai.app) on the Mac chats using that same HTTPS URL and secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
+- Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
 - Hello World still loads. Port **11434** is not forwarded on the router.
+- You did not set this app to **None**.
 
 **Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md) and [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) (`mini-pc` healthy, Hello World on cellular). Leave the VM, **hello-world**, and Mac Ollama running.
 
@@ -64,7 +75,7 @@ This bind is reachable from the UTM network. It is **not** an invitation to port
 
 Allow **Ollama** incoming in the Mac firewall if the next `curl` fails.
 
-**Test (macOS host)** — localhost `curl` is not this check; that already worked in chapter 1. `lsof` and `ifconfig` are macOS (on Ubuntu you would use `ss` / `ip`).
+**Smoke test (macOS host).** Localhost `curl` is not this check; that already worked in chapter 1. `lsof` and `ifconfig` are macOS (on Ubuntu you would use `ss` / `ip`).
 
 ```bash
 lsof -nP -iTCP:11434 -sTCP:LISTEN
@@ -131,7 +142,7 @@ ss -ltnp | grep 11434
 
 You want the same JSON as the host `curl`, and `ss` showing **`127.0.0.1:11434`**. **`0.0.0.0:11434`** on the guest means the forwarder bound the wrong address — keep loopback.
 
-**Test (Ubuntu VM)** — tags, then a one-shot generate through the forwarder (not `$HOST`, not Edgible):
+**Smoke test (Ubuntu VM).** Tags, then a one-shot generate through the forwarder (not `$HOST`, not Edgible):
 
 ```bash
 curl -sS http://127.0.0.1:11434/api/tags
@@ -189,7 +200,7 @@ edgible app api-keys list --app-id <ollama-app-id>
 
 List rows are metadata: name, **key id**, created / expiry. That **id** is **not** the API key. `Authorization: Bearer` must be the **secret** from `create`, not the id from `list`. Using the id as Bearer returns **401**. Lost secret → `api-keys delete` that id, then `create` again.
 
-From a **phone on cellular** or a laptop **not** on the VM’s LAN:
+**Smoke test (phone on cellular).** From a **phone on cellular** or a laptop **not** on the VM’s LAN:
 
 ```bash
 curl -sS "https://ollama.YOUR-ORG.edgible.com/api/tags" \
@@ -237,11 +248,11 @@ Same idea works in **Cherry Studio** or any “custom OpenAI endpoint” app. **
 ### Verify
 
 - [ ] Mac `OLLAMA_HOST` is `0.0.0.0:11434`; guest `curl` to `$HOST:11434/api/tags` is JSON.
-- [ ] `ollama-forward.service` is **active**; guest `curl` to `http://127.0.0.1:11434/api/tags` is the same JSON; `ss` is **127.0.0.1:11434**.
-- [ ] App **ollama** is **api-key**, certificate issued.
+- [ ] `ollama-forward.service` is **active**; guest `curl` to `http://127.0.0.1:11434/api/tags` returns the same JSON, including `qwen2.5:7b` (or your tag); `ss` is **127.0.0.1:11434**.
+- [ ] `edgible app list` shows **ollama** with **api-key** (not **None**, not **org** alone), certificate issued.
 - [ ] You saved the **secret** from `create` (not the key **id** from `list`).
-- [ ] Cellular (or off-LAN) `curl` with Bearer returns `/api/tags` JSON.
-- [ ] Optional: Chatbox (or similar) on the Mac chats via `https://ollama.<org>…/v1` and the same secret.
+- [ ] From a phone on **cellular** (or a laptop off the LAN), `curl` with `Authorization: Bearer` to `https://ollama.<org>.edgible.com/api/tags` returns that JSON — not an Edgible login HTML page.
+- [ ] Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
 - [ ] Hello World still loads. Port **11434** is not forwarded on the router.
 - [ ] You did not set this app to **None**.
 

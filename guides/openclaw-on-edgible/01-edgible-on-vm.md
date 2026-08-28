@@ -1,6 +1,27 @@
 # 1. Edgible on an Ubuntu VM
 
-**A public HTTPS page on a box you own — cellular, no port-forward, no mesh VPN.**
+**Your own box, answering the whole internet — and no hole in your router.**
+
+## 1.0 Why
+
+You have a machine you trust: a mini-PC on a shelf, or the VM standing in for one in this chapter. Nothing outside your house can reach it, which is why every interesting thing you might run on it — a workflow canvas, an agent, a model — stays a toy for whoever is sitting at the keyboard. This chapter is where that changes, and it is the first chapter of all three series because everything later assumes the door already exists.
+
+The usual ways of opening that door are the ones to avoid. Forwarding a port on the router puts a process you have not hardened in front of everyone who scans your address, and you inherit dynamic DNS and certificates as homework. A mesh VPN works, but every device that will ever need the service has to be enrolled first, which rules out a colleague, a phone you borrowed, or a webhook from Stripe. Renting a cloud box solves reachability by giving up the whole premise: the data is no longer on hardware you own.
+
+Edgible takes the third route. A serving agent on the guest dials **out** on TCP 443 and holds that connection open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app — each hostname — carries its own lock: **org** for “only my organisation gets past a browser login”, **api-key** for a bearer secret, **None** for open to the world. Hello World at the end of this chapter is deliberately **None**, because it is a throwaway page and because a page that loads on a phone with Wi‑Fi off is the only honest proof that the door works.
+
+```
+you, on cellular       https://hello-world.<org>.edgible.com   ← None (throwaway page)
+                                 ▲
+                                 │  outbound 443, held open
+Ubuntu guest           Edgible serving agent ──► 127.0.0.1:8081
+                                 │
+                       nginx  (Hello World)
+
+your router            no forwarded port — nothing dials in
+```
+
+**Where you run this:** signup and the console in the **host browser**; the VM manager on the **host**; everything else — `edgible`, Docker, `curl` — on the **Ubuntu guest**; the final check on a **phone on cellular**.
 
 ## 1.1 The job
 
@@ -25,7 +46,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 | Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A **temporary password** arrives in a second email. |
 | VM manager | **VirtualBox** or **UTM** — see 1.4. |
 | Ubuntu **24.04 LTS** ISO | Match the CPU: **amd64** on typical PCs; **arm64** on Apple Silicon. |
-| Sudo on the guest | You will install the **Edgible serving agent** (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. |
+| Sudo on the guest | You will install the **Edgible serving agent** (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. Once it registers, your org lists it as a **serving device** named `mini-pc` — the *agent* is the software running on the box, the *device* is that entry in your organisation. |
 
 NAT is enough. The VM only needs **outbound TCP 443**. Do not port-forward 22, 80, 443, or 18789. A **Gemini** key and Cursor are later chapters.
 
@@ -42,7 +63,7 @@ Do this on your **laptop/desktop browser** (the host), not inside the VM. The Ed
 3. Check that inbox (and spam) for the **temporary password** email. Stay on the **Check your email** page in the browser; it is waiting for that password.
 4. Paste the temporary password from the email and continue.
 5. You **must change your password** before continuing. Enter a new password (at least 8 characters), confirm it, and save. From this point on, the temporary password is dead — use only the new one.
-6. You are then asked to **create an organisation**. Do that now. A default name such as *Your name's organization* is fine for this trial.
+6. You are then asked to **create an organisation**. Do that now. A default name such as *Your name’s organization* is fine for this trial.
   An **organisation** is the workspace that owns your serving devices, applications, and public hostnames. Your **account** is you (email and password). The organisation is the *place* those machines and apps live — so a device registered later is not floating on a personal login, and you could later add another person or another box to the same org. Early trials are one person, one org: create it and keep going.
 7. You should land on the **Dashboard** at [https://app.prod.edgible.com/](https://app.prod.edgible.com/). An empty device list is fine.
 
@@ -379,7 +400,7 @@ You should see Hello World over **HTTPS**. If curl complains about the certifica
 
 ### 1.9.4 Hit it from your phone
 
-This is the real check: the page must load when you are **not** on the same LAN as the laptop.
+**Smoke test.** The page must load when you are **not** on the same LAN as the laptop.
 
 1. On the phone, turn **Wi‑Fi off** (use cellular).
 2. Open a browser to the **URL** from `edgible app list`.

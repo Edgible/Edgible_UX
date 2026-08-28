@@ -2,7 +2,7 @@
 
 **Guide 2.** Each chapter is one job and one smoke test. Do them in order. If [1. n8n on Edgible](../n8n-on-edgible/README.md) already left Hello World up, skip [chapter 1](01-edgible-on-vm.md) and start at [chapter 2](02-openclaw-on-the-box.md).
 
-**How to read a chapter:** one-line hook under the title, then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
+**How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
 **OpenClaw** chats and uses tools on a box you own. **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). The Edgible story here is the **Control UI**: phone browser, **org** login, no tunnel on the laptop. Telegram / WhatsApp are chat doors; they are not Edgible apps.
 

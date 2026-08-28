@@ -2,7 +2,7 @@
 
 **Guide 3.** Each chapter is one job and one smoke test. Do them in order.
 
-**How to read a chapter:** one-line hook under the title, a short **why**, then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
+**How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
 **The use case:** a **self-hosted** LLM on one home machine, called from a **different** self-hosted machine (n8n, OpenClaw, `curl`, Chatbox). Weights and GPU stay where the model runs. The remote box only sends HTTPS + `Authorization: Bearer`. No port-forward, no mesh VPN, no putting n8n or OpenClaw on the GPU box.
 
@@ -32,6 +32,6 @@ Do **not** port-forward **11434** on the router. Same-LAN HTTP is only the guest
 | 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
 | 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional **[Chatbox](02-edgible-to-ollama.md#26-optional--a-real-chat-ui-not-curl)** on the Mac |
 | 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | **Use case 1:** workflow on `qwen2.5:7b` (thinking off). **Use case 2:** Assistant `gpt-oss:20b` + sandbox + SearXNG; Hello, then edgible.com / n8n summary |
-| 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/qwen2.5:7b` via Edgible **api-key** (no `/v1`); agent hello |
+| 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/gpt-oss:20b` via Edgible **api-key** (no `/v1`); agent hello, then a code change |
 
 OpenClaw chapter 9 is cloud keys plus optional **same-LAN** Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 9.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor **org** and webhook **None** on **its** VM. The published inference URL lives here.

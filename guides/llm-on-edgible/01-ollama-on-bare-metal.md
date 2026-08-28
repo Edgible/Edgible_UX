@@ -1,10 +1,14 @@
 # 1. Ollama on bare metal
 
-**The model runs on macOS, with the GPU. The Ubuntu VM does not see it yet.**
+**First it has to think on your own metal.**
 
-**This whole chapter is macOS.** Use **Terminal.app** (or iTerm) on the MacBook / Mac mini — the **host**, not an SSH session into the UTM guest. `ollama`, the menu-bar **Ollama** app, and Metal are macOS. There is no `apt install ollama` here.
+## 1.0 Why
 
-A UTM Ubuntu guest cannot use the Mac’s GPU. If you install Ollama *inside* the VM, you get CPU inference and you steal RAM from the guest. Edgible and the loopback forwarder are [chapter 2](02-edgible-to-ollama.md).
+Nothing can be published until something is actually answering, and the machine that answers has to be the one with the GPU. On this topology that is the **Mac host** — `ollama`, the menu-bar **Ollama** app and Metal are all macOS, and there is no `apt install ollama` anywhere in this chapter. So use **Terminal.app** (or iTerm) on the MacBook or Mac mini, never an SSH session into the UTM guest.
+
+The tempting shortcut is to install Ollama *inside* the Ubuntu guest, where Edgible’s serving agent already lives. Don’t: a UTM guest cannot touch the Mac’s GPU, so you get slow CPU inference and you take RAM away from the 4 GB guest that has to run Edgible and the website. Keep the weights and the GPU on the Mac, leave Ollama on its default **Mac localhost** bind, and let [chapter 2](02-edgible-to-ollama.md) do the forwarding and the publishing.
+
+**Where you run this:** every command in this chapter runs on the **macOS host** (Terminal.app on the Mac), not in the Ubuntu guest.
 
 ## 1.1 The job
 
@@ -12,17 +16,18 @@ You install Ollama on the Mac that hosts the Ubuntu VM, pull a 7B-class chat mod
 
 **Done when**
 
+- Ollama is installed on **macOS**, not in the Ubuntu guest (`which ollama` on the Mac).
 - `ollama run qwen2.5:7b "Say hello in one word"` prints a short reply on the **Mac** (Terminal or the Ollama app).
 - `ollama ls` lists **qwen2.5:7b** (and any extras you pulled).
 - `ollama ps` shows that chat model with a **GPU** processor (not 100% CPU).
-- You did **not** install Ollama in the Ubuntu guest.
+- You did not change `OLLAMA_HOST` yet.
 - Port **11434** is not forwarded on the router.
 
 **Need first:** A Mac with enough RAM left **after** the Ubuntu VM: a **7B** wants on the order of **8 GB+** for weights. The VM from [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) can stay running; you do not use it in this chapter. [Ollama for Mac](https://ollama.com/download).
 
 **Not this chapter:** `OLLAMA_HOST=0.0.0.0`, socat, an Edgible app, n8n, OpenClaw, or `curl` from the VM.
 
-## 1.2 Words you'll use
+## 1.2 Words you’ll use
 
 | Word | Here |
 | --- | --- |
@@ -44,7 +49,7 @@ ollama pull qwen2.5:7b
 ollama run qwen2.5:7b "Say hello in one word"
 ```
 
-You want a single word (or a short line) in a few seconds, not a multi-minute crawl.
+**Smoke test (macOS host).** You want a single word (or a short line) in a few seconds, not a multi-minute crawl.
 
 3. See what is installed:
 
@@ -59,7 +64,7 @@ You want a row for **qwen2.5:7b** (size on the order of **4–5 GB**). `ls` is t
 | Tag | Later | Notes |
 | --- | --- | --- |
 | `qwen2.5:7b` | OpenClaw chat / tools; n8n **workflow** | **Required** for this chapter. 7B-class, tool-friendly. |
-| `gpt-oss:20b` | n8n **AI Assistant** chat | **Must support thinking** (~13 GB). Chat AI always sends thinking; a 7B fails Hello. Proven with sandbox + **SearXNG** (search-backed chat). Pull for [chapter 3](03-n8n-uses-ollama.md) use case 2. Not for OpenClaw failover. |
+| `gpt-oss:20b` | n8n **AI Assistant** chat | **Must support thinking** (~13 GB). The AI Assistant always sends thinking; a 7B fails Hello. Proven with sandbox + **SearXNG** (search-backed chat). Pull for [chapter 3](03-n8n-uses-ollama.md) use case 2. Not for OpenClaw failover. |
 | `llama3.1:8b` | Same roles as 7B, second chat brain | Alternate 7B-class if Qwen misbehaves. |
 | `llama3.2:3b` | n8n smoke, cheap retries | Smaller, weaker at tools. Fine for “did n8n get a completion?” |
 | `nomic-embed-text` | n8n embeddings / RAG | Not a chat model. Tiny. Pull if you will index text in n8n. |
@@ -86,9 +91,9 @@ Leave Ollama’s default bind (**Mac localhost**). The VM still cannot reach it;
 ### Verify
 
 - [ ] Ollama is installed on **macOS**, not in the Ubuntu guest (`which ollama` on the Mac).
-- [ ] `ollama run qwen2.5:7b "Say hello in one word"` replies.
-- [ ] `ollama ls` shows **qwen2.5:7b** (plus any extras you chose).
-- [ ] `ollama ps` shows **GPU** for the chat tag you ran.
+- [ ] `ollama run qwen2.5:7b "Say hello in one word"` prints a short reply on the **Mac** (Terminal or the Ollama app).
+- [ ] `ollama ls` lists **qwen2.5:7b** (and any extras you pulled).
+- [ ] `ollama ps` shows that chat model with a **GPU** processor (not 100% CPU).
 - [ ] You did not change `OLLAMA_HOST` yet.
 - [ ] Port **11434** is not forwarded on the router.
 

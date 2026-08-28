@@ -1,8 +1,12 @@
 # 6. Tear down n8n
 
-**Close both Edgible doors and stop the container. Leave OpenClaw, Ollama, and the serving agent.**
+**Shut the public door before you walk away from the demo.**
 
-This VM may still be [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md). Default teardown is **n8n only**: unpublish workflows, delete **n8n-hooks** then **n8n**, `docker compose down`. Do **not** delete **openclaw-ui**, **ollama**, or **hello-world**. Do **not** uninstall the Edgible serving agent.
+## 6.0 Why
+
+A demo webhook left active is a live public endpoint on a box you own, and an active schedule keeps firing on a VM you have stopped watching — so tearing down is part of the exercise, not an afterthought. This is also a shared box: it may still be running [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md), so the default here is **n8n only** and the order matters — the **None** hostname comes down before the **org** one. Leave **openclaw-ui**, **ollama** and **hello-world** alone, and leave the Edgible serving agent installed.
+
+**Where you run this:** unpublishing in the **n8n editor** on the **org** hostname; `edgible` and Docker on the **Ubuntu guest**; the final dead-URL check on a **phone on cellular**.
 
 ## 6.1 The job
 
@@ -11,9 +15,9 @@ You stop production schedules and public webhooks, remove the two n8n hostnames,
 **Done when**
 
 - `edgible app list` has **no** **n8n** and **no** **n8n-hooks**.
-- `ss -ltnp | grep 5678` is empty.
-- Phone **n8n-hooks** webhook URL does not return your JSON (no app, or connection fails).
-- **openclaw-ui** / **ollama** / **hello-world** still listed if you had created them.
+- `ss -ltnp | grep 5678` is empty — nothing listens on **5678**.
+- The **n8n-hooks** `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
+- **openclaw-ui** / **ollama** / **hello-world** are unchanged if you had created them (unless you chose 6.5).
 - Port **5678** is still not forwarded.
 
 **Need first:** You finished enough of this series that n8n exists (at least [chapter 1](01-n8n-on-the-vm.md)). Skip apps you never created.
@@ -49,7 +53,9 @@ docker compose down
 ss -ltnp | grep 5678
 ```
 
-Empty `ss` is success. The compose file in `~/n8n` can stay on disk.
+**Smoke test.** Empty `ss` is success, and the **n8n-hooks** URL on cellular should no longer return your JSON.
+
+The compose file in `~/n8n` can stay on disk.
 
 Optional — wipe n8n’s volume (owner account, credentials, workflow JSON on this VM):
 
@@ -73,11 +79,11 @@ Do **not** `edgible agent uninstall` here.
 
 ### Verify
 
-- [ ] `edgible app list` has no **n8n** and no **n8n-hooks**.
-- [ ] Nothing listens on **5678**.
-- [ ] Cellular **n8n-hooks** `/webhook/…` does not return the smoke JSON.
-- [ ] **openclaw-ui**, **ollama**, **hello-world** unchanged if they existed (unless you chose 6.5).
-- [ ] Port **5678** is not forwarded.
+- [ ] `edgible app list` has **no** **n8n** and **no** **n8n-hooks**.
+- [ ] `ss -ltnp | grep 5678` is empty — nothing listens on **5678**.
+- [ ] The **n8n-hooks** `/webhook/…` URL on cellular does not return the smoke JSON (no app, or the connection fails).
+- [ ] **openclaw-ui** / **ollama** / **hello-world** are unchanged if you had created them (unless you chose 6.5).
+- [ ] Port **5678** is still not forwarded.
 
 ---
 

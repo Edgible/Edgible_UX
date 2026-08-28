@@ -1,8 +1,16 @@
 # 9. Models beyond free Gemini
 
-**Flash proved hello. This is how you live on a paid or local model — with a fallback.**
+**Free tiers are enough to prove a hello, not enough to live on.**
 
-Cloud keys and a **small** same-LAN Ollama failover belong here. Publishing a **big** local or remote LLM through Edgible, then pointing n8n **and** OpenClaw at that URL, is [3. LLM on Edgible](../llm-on-edgible/README.md) — not this chapter.
+## 9.0 Why
+
+A free Gemini key is a demo budget. It carries the hellos in [chapter 2](02-openclaw-on-the-box.md) and a handful of skill calls, and then the hourly page rotation from [chapter 4](04-openclaw-changes-edgible-site.md) or [chapter 8](08-cursor-agent.md) starts eating the daily cap. The reason to care is that the failure does not look like a quota: Telegram goes quiet, a cron silently stops rewriting the page, a chat turn hangs, and you go hunting for a broken install that is not broken.
+
+Most of the ways people try to fix that make it worse. Re-running full onboarding to add one provider rebuilds Gateway settings you spent two chapters getting right. Pinning a model in the Control UI picker feels like control but is **strict** — a pinned model never fails over, so the one thing you wanted is the one thing you lose. Guessing a model id from a provider’s marketing page gets “model not found”. And reaching for a 20B-class local model as the “snappy” backup turns a rate-limit into what feels like a hang. The shape that works is dull: a key in the env file the daemon actually reads, an id the catalog actually printed, thinking off, and a short fallback list of comparable models.
+
+Scope matters here too. Cloud keys and a **small** same-LAN Ollama failover belong in this chapter. Publishing a **big** local or remote LLM at its own hostname, then pointing n8n **and** OpenClaw at that URL, is [3. LLM on Edgible](../llm-on-edgible/README.md) — and when you get there, that hostname carries an **api-key** secret, never **None**.
+
+**Where you run this:** provider consoles in the **host browser**; keys, `models` commands and the hello on the **Ubuntu guest**; the Mac-side Ollama in [9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac) on the **host**; the fallback notice in a **Telegram DM**.
 
 ## 9.1 The job
 
@@ -13,9 +21,12 @@ A Cursor subscription is **not** a chat model. That is [8. Cursor Agent](08-curs
 **Done when**
 
 - `openclaw models list --provider <that-provider>` prints the id you will use.
-- `openclaw agent --agent main --thinking off --model <provider/id> --message "Say hello in one sentence."` replies on the VM.
-- `openclaw config get agents.defaults.model` shows that id as **primary** if you switched the default (Control UI picker still **Default**).
-- Optional: `fallbacks` includes Gemini Flash and/or a small Ollama tag; a DM can show `↪️ Model Fallback: … (rate_limit)`.
+- `openclaw agent --agent main --thinking off --model <provider/id> --message "Say hello in one sentence."` replies on the VM (identity ritual counts).
+- `openclaw models status` shows the new primary; cooldown empty or understood.
+- Control UI picker is **Default**. `/status` in Telegram matches.
+- `/think off` (or `openclaw config set agents.defaults.thinkingDefault off`).
+- If you set fallbacks: `openclaw config get agents.defaults.model` lists them; you did **not** use a 20B/27B as the snappy backup.
+- Hello World and openclaw-ui still load. You did not publish **11434** or **18789** on the router.
 
 **Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway up, Gemini hello already worked). The rest of the series can stay on Flash until you do this.
 
@@ -61,7 +72,7 @@ openclaw models set deepseek/deepseek-v4-flash
 openclaw gateway restart
 ```
 
-Use the Flash id `list` printed. Then:
+**Smoke test.** Use the Flash id `list` printed. Then:
 
 ```bash
 openclaw agent --agent main --thinking off \
@@ -203,15 +214,16 @@ Groups suppress that notice; `/status` still has Fallback. The notice is **not**
 
 ## 9.8 Verify
 
-- [ ] `openclaw agent … --model <id> … hello` replies (identity ritual counts).
+- [ ] `openclaw models list --provider <that-provider>` prints the id you will use.
+- [ ] `openclaw agent --agent main --thinking off --model <provider/id> --message "Say hello in one sentence."` replies on the VM (identity ritual counts).
 - [ ] `openclaw models status` shows the new primary; cooldown empty or understood.
 - [ ] Control UI picker is **Default**. `/status` in Telegram matches.
 - [ ] `/think off` (or `openclaw config set agents.defaults.thinkingDefault off`).
-- [ ] If you set fallbacks: `config get agents.defaults.model` lists them; you did **not** use a 20B/27B as the snappy backup.
+- [ ] If you set fallbacks: `openclaw config get agents.defaults.model` lists them; you did **not** use a 20B/27B as the snappy backup.
 - [ ] Hello World and openclaw-ui still load. You did not publish **11434** or **18789** on the router.
 
 ---
 
 ## Next
 
-That's the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and **openclaw-ui** gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).
+That’s the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and **openclaw-ui** gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).

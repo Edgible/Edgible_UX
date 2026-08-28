@@ -1,6 +1,26 @@
 # 7. WhatsApp linked device for OpenClaw
 
-**WhatsApp as a linked device — and the client that can bind Cursor.**
+**The app everyone already has — and the only door that can hold Cursor.**
+
+## 7.0 Why
+
+Telegram works, but it asks anyone you want to include to install something first. WhatsApp is already on the phone, which makes it the door people actually use — and there is a second, purely mechanical reason to have it. Control UI is webchat, and webchat cannot **bind** a conversation to a Cursor session, so every follow-up in [chapter 8](08-cursor-agent.md) needs a steer command carrying a uuid. A bound WhatsApp thread just becomes the Cursor session until you close it, and you type normal sentences.
+
+The price is that this is a **linked device** on your own account rather than a bot: no bot badge, replies that look like you talking to yourself, and a QR you must physically see to scan. That is why the reply prefix exists, and why a dedicated second number is cleaner if you have one. As with Telegram, none of this is an Edgible app — the Gateway dials out, and the tempting instinct to publish a hostname or forward a port for a chat channel is the wrong instinct.
+
+```
+you, on a phone        WhatsApp (linked device) ──► WhatsApp servers
+                                                          ▲
+                                                          │  outbound 443
+Ubuntu guest           OpenClaw Gateway ──────────────────┘
+                                 │  bound thread
+                                 ▼
+                       Cursor over ACP ──► ~/hello-world  (the public page)
+
+you, in a browser      https://openclaw-ui.<org>.edgible.com  ← org login, cannot bind
+```
+
+**Where you run this:** the plugin, config and the QR on the **Ubuntu guest** (the QR needs the **guest desktop** terminal); the chat in **WhatsApp on a phone**; the page refresh in a **phone browser on cellular**.
 
 ## 7.1 The job
 
@@ -11,8 +31,11 @@ A dedicated second number is cleaner. **Self-chat** on your personal number work
 **Done when**
 
 - `openclaw channels status --probe` shows WhatsApp linked.
-- WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`**.
-- Optional: `/acp spawn cursor --bind here …` succeeds (no webchat bind error); public On this day retitles without `/acp steer`.
+- WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`** (pairing approved if asked).
+- Optional: `/acp spawn cursor --bind here …` succeeds in WhatsApp (no webchat bind error).
+- Optional: public On this day page shows **Who this is / Why we remember them / One odd fact** after a hard-refresh.
+- Optional: you did not use `/acp steer` for this change.
+- `permissionMode` is **approve-reads** again. openclaw-ui is still **org**. Port **18789** is still not forwarded.
 
 **Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md). For ACP bind, [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md) through doctor. For the retitle demo, the designed page from [4](04-openclaw-changes-edgible-site.md) or [8](08-cursor-agent.md).
 
@@ -53,7 +76,7 @@ openclaw gateway restart
 
 ## 7.4 First WhatsApp `hello`
 
-From the phone, message **yourself** (or a second phone messaging the linked account). If OpenClaw asks to pair:
+**Smoke test.** From the phone, message **yourself** (or a second phone messaging the linked account). If OpenClaw asks to pair:
 
 ```bash
 openclaw pairing list whatsapp
@@ -96,9 +119,9 @@ Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellula
 
 - [ ] `openclaw channels status --probe` shows WhatsApp linked.
 - [ ] WhatsApp `hello` gets a reply that starts with **`[OpenClaw]`** (pairing approved if asked).
-- [ ] `/acp spawn cursor --bind here …` succeeds in WhatsApp (no webchat bind error).
-- [ ] Public On this day page shows **Who this is / Why we remember them / One odd fact** after a hard-refresh.
-- [ ] You did not use `/acp steer` for this change.
+- [ ] Optional: `/acp spawn cursor --bind here …` succeeds in WhatsApp (no webchat bind error).
+- [ ] Optional: public On this day page shows **Who this is / Why we remember them / One odd fact** after a hard-refresh.
+- [ ] Optional: you did not use `/acp steer` for this change.
 - [ ] `permissionMode` is **approve-reads** again. openclaw-ui is still **org**. Port **18789** is still not forwarded.
 
 ---

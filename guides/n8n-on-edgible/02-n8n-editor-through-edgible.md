@@ -1,8 +1,26 @@
 # 2. n8n editor through Edgible
 
-**The canvas, from a phone, behind `https://` and org login.**
+**Your workflow canvas, on your phone, on the far side of a login.**
 
-Edgible auth is per **app** (the hostname), not per path on one URL. This hostname is the privileged door — canvas, credentials, every workflow. Keep it **org**. Stripe and GitHub cannot sit through that login, so they get a **different** hostname in the next chapter. Do not “fix” webhooks by setting this app to **None**.
+## 2.0 Why
+
+Right now n8n only exists for whoever is sitting at the VM. Chapter 1 deliberately left it on loopback, so the canvas is stuck on that one machine — no phone, no laptop in another room, and nothing a colleague could ever reach.
+
+The obvious fixes are the ones you should not take. Forwarding **5678** on the router puts a credential store holding every API key you own on the open internet. A mesh VPN means every device that ever needs the canvas has to enrol first. Edgible is the third option: the guest dials **out** on 443, and a public HTTPS hostname appears with a lock already on it.
+
+The lock matters more than the URL. Edgible auth is per **app** — that is, per hostname — not per path within one URL. This hostname is the privileged door: canvas, credentials, every workflow you will ever write. So it stays **org**, meaning only your organisation can get past it. Stripe and GitHub cannot complete a browser login, which is exactly why they get a **second, separate** hostname in [chapter 3](03-n8n-webhook-door.md) rather than a hole in this one. Setting this app to **None** to make webhooks work is the one mistake this series is built to prevent.
+
+```
+you, on cellular       https://n8n.<org>.edgible.com     ← org login   (this chapter)
+                                 │
+Ubuntu guest           Edgible agent ──► 127.0.0.1:5678
+                                 │
+                       n8n  (canvas · credentials · every workflow)
+                                 ▲
+Stripe / GitHub        https://n8n-hooks.<org>.edgible.com  ← None     (chapter 3)
+```
+
+**Where you run this:** `edgible` on the **Ubuntu guest**; the certificate check in the **host browser**; the smoke test on a **phone on cellular**.
 
 ## 2.1 The job
 
@@ -10,9 +28,10 @@ You publish n8n’s **editor** through Edgible. n8n stays on loopback **5678**. 
 
 **Done when**
 
-- Phone on **cellular** opens `https://n8n.<org>.edgible.com`.
-- Edgible **org** login, then n8n owner signup (first time) or sign-in, then the **canvas**.
-- Hello World still loads. Port **5678** is still not forwarded.
+- `edgible app list` shows **n8n** on an `n8n.<org>.edgible.com` URL, protection **org**.
+- The certificate for **n8n** is issued.
+- Phone on **cellular** opens that URL: Edgible **org** login, then n8n owner signup (first time) or sign-in, then the **canvas**.
+- Hello World still loads, and port **5678** is still not forwarded.
 
 **Need first:** [1. n8n on the VM](01-n8n-on-the-vm.md) and [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) (`mini-pc`, Hello World). Leave **hello-world** and the n8n container running.
 
@@ -55,7 +74,7 @@ Copy the **https://n8n.<org>.edgible.com** URL (no path). Always copy the exact 
 
 ## 2.4 Open it on the phone
 
-Cellular, not the VM’s Wi‑Fi.
+**Smoke test.** Cellular, not the VM’s Wi‑Fi.
 
 1. Open that HTTPS URL.
 2. Sign in to **Edgible** (org).
@@ -66,12 +85,10 @@ If the tab loads a shell but the canvas stays blank, Edgible may not be proxying
 
 ### Verify
 
-- [ ] `edgible app list` shows **n8n** with an `n8n.<org>.edgible.com` URL.
+- [ ] `edgible app list` shows **n8n** on an `n8n.<org>.edgible.com` URL, protection **org**, not None.
 - [ ] Console **Certificates** for **n8n** is issued.
-- [ ] Protection is **org**, not None.
 - [ ] Phone on **cellular**: Edgible login, then n8n signup/sign-in, then the canvas.
-- [ ] Hello World URL still works.
-- [ ] Port **5678** is still not forwarded.
+- [ ] Hello World still loads, and port **5678** is still not forwarded.
 
 ---
 

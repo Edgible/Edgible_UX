@@ -1,8 +1,12 @@
 # 10. Tear down OpenClaw
 
-**Stop the agent and its Edgible door. Leave n8n, Ollama, and the serving agent unless you say otherwise.**
+**Close the agent’s door without taking the rest of the box with it.**
 
-This VM may still be [1. n8n on Edgible](../n8n-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md). Default teardown is **OpenClaw only**: Telegram / WhatsApp, **openclaw-ui**, Gateway, optional `~/.openclaw`. Do **not** delete **n8n**, **n8n-hooks**, or **ollama**. Do **not** uninstall the Edgible serving agent. **hello-world** stays up unless you opt in at the end.
+## 10.0 Why
+
+This guest is probably shared: it may still be serving [1. n8n on Edgible](../n8n-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md). So the tempting sweep — uninstall the serving agent, delete every app, drop Hello World — breaks guides you have not finished, which is why the default here is **OpenClaw only**: Telegram / WhatsApp, **openclaw-ui**, the Gateway, and optionally `~/.openclaw`. One rule survives to the end: never flip the Control UI hostname to **None** on the way out to “check” something — delete the app instead.
+
+**Where you run this:** `openclaw` and `edgible` on the **Ubuntu guest**; Automations in **Control UI**; BotFather in the **Telegram app**; the final check in a **phone browser on cellular**.
 
 ## 10.1 The job
 
@@ -11,10 +15,12 @@ You close chat doors, delete the **openclaw-ui** app, stop the Gateway, and opti
 **Done when**
 
 - `edgible app list` has **no** **openclaw-ui**.
-- `ss -ltnp | grep 18789` is empty.
+- `ss -ltnp | grep 18789` is empty — nothing listens on **18789**.
 - Phone **openclaw-ui** URL does not chat (cert gone or connection fails).
+- Telegram bot does not reply (disabled / token revoked). WhatsApp unlinked if you had it.
 - **n8n** / **n8n-hooks** / **ollama** still listed if you had created them.
-- Port **18789** is still not forwarded.
+- **hello-world** still loads unless you chose 10.7.
+- Port **18789** is not forwarded.
 
 **Need first:** You finished enough of this series that OpenClaw exists (at least [chapter 2](02-openclaw-on-the-box.md)). Skip steps for things you never installed.
 
@@ -58,7 +64,7 @@ edgible app delete --name openclaw-ui
 edgible app list
 ```
 
-You want **openclaw-ui** gone. **hello-world** (and n8n / ollama) still there.
+**Smoke test.** You want **openclaw-ui** gone. **hello-world** (and n8n / ollama) still there.
 
 Never **None** on **18789** on the way out — delete the app; do not “make it public then remove it.”
 
@@ -108,14 +114,15 @@ edgible app delete --name hello-world
 docker stop hello-world && docker rm hello-world
 ```
 
-Leave `~/hello-world` on disk unless you want that HTML gone too. Do **not** `edgible agent uninstall` here — that serving device is still [guide 1](../n8n-on-edgible/README.md) (until [n8n teardown](../n8n-on-edgible/06-n8n-teardown.md)) / [guide 3](../llm-on-edgible/README.md).
+Leave `~/hello-world` on disk unless you want that HTML gone too. Do **not** `edgible agent uninstall` here — that serving agent is still [guide 1](../n8n-on-edgible/README.md) (until [n8n teardown](../n8n-on-edgible/06-n8n-teardown.md)) / [guide 3](../llm-on-edgible/README.md).
 
 ### Verify
 
-- [ ] `edgible app list` has no **openclaw-ui**.
-- [ ] Nothing listens on **18789**.
+- [ ] `edgible app list` has **no** **openclaw-ui**.
+- [ ] `ss -ltnp | grep 18789` is empty — nothing listens on **18789**.
+- [ ] Phone **openclaw-ui** URL does not chat (cert gone or connection fails).
 - [ ] Telegram bot does not reply (disabled / token revoked). WhatsApp unlinked if you had it.
-- [ ] **n8n**, **n8n-hooks**, **ollama** unchanged if they existed.
+- [ ] **n8n** / **n8n-hooks** / **ollama** still listed if you had created them.
 - [ ] **hello-world** still loads unless you chose 10.7.
 - [ ] Port **18789** is not forwarded.
 

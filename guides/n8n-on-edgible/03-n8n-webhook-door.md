@@ -1,8 +1,26 @@
 # 3. Public webhook door
 
-**Same n8n process. Second hostname. Callers that cannot log into your org.**
+**One n8n, two front doors — and only one of them has a lock.**
 
-This is the Edgible trick. One container, port **5678**, two apps: **n8n** stays **org**; **n8n-hooks** is **None**. GitHub never sees a login page; you never put the editor on the public internet. If you only have one hostname, you either lock the webhooks or unlock the canvas. `WEBHOOK_URL` only tells n8n which origin to print — traffic still lands on the same process.
+## 3.0 Why
+
+A robot cannot log in. Stripe, GitHub and a `curl` from a café have no browser, no password and no patience for your organisation’s sign-in page, so on the **org** hostname from chapter 2 every one of them stops at the login screen. That is the lock doing its job, not a bug — but it also means you have no inbound door at all yet.
+
+There are two tempting ways out and both are wrong. Setting the editor app to **None** does open the door, and it opens it onto your canvas, your credentials and every workflow you will ever write — this is the cardinal sin the series exists to prevent. Carving out one public path on the org hostname is not on offer either: Edgible auth is a property of the **app**, that is the hostname, not of a path inside it. So with a single hostname you can only choose which side to break: locked webhooks, or an unlocked canvas.
+
+Edgible’s answer is that hostnames are cheap and locks are per hostname. You point a **second** app at the very same container on port **5678**, name it **n8n-hooks**, and give it **None**. One process, two doors, two different locks. All `WEBHOOK_URL` does after that is tell n8n which origin to *print* on its webhook nodes; the traffic still lands on the same process either way.
+
+```
+you, on cellular       https://n8n.<org>.edgible.com        ← org login
+                                 │
+Ubuntu guest           Edgible serving agent ──► 127.0.0.1:5678
+                                 │
+                       n8n  (one process · canvas · credentials · workflows)
+                                 ▲
+Stripe / GitHub        https://n8n-hooks.<org>.edgible.com  ← None   (this chapter)
+```
+
+**Where you run this:** `edgible` and the compose edit on the **Ubuntu guest**; the certificate check in the **host browser**; the editor re-check on your **phone**.
 
 ## 3.1 The job
 
@@ -13,8 +31,11 @@ Anyone who learns a workflow’s webhook path can hit it. Use a throwaway path, 
 **Done when**
 
 - `edgible app list` shows **n8n** (**org**) and **n8n-hooks** (**None**), both port **5678**.
+- Both certificates are issued.
 - `~/n8n/docker-compose.yml` has `WEBHOOK_URL=https://n8n-hooks.<org>.edgible.com/` (trailing slash, **no** `:5678`).
-- `docker compose up -d` has been run again. n8n still opens on the **org** URL.
+- `N8N_EDITOR_BASE_URL` / `N8N_HOST` are the **editor** host.
+- `docker compose up -d` has been run again, and the phone still opens the **org** editor.
+- Hello World still loads. Port **5678** not forwarded.
 
 **Need first:** [2. n8n editor through Edgible](02-n8n-editor-through-edgible.md). Leave both n8n Docker and **hello-world** running.
 
@@ -66,15 +87,15 @@ docker compose up -d
 docker compose ps
 ```
 
-Hard-refresh the **org** editor on the phone. Canvas should still load. Webhook nodes will still be empty until [chapter 5](05-n8n-public-webhook.md); you are only setting the base URL.
+**Smoke test.** Hard-refresh the **org** editor on the phone. Canvas should still load. Webhook nodes will still be empty until [chapter 5](05-n8n-public-webhook.md); you are only setting the base URL.
 
 ### Verify
 
-- [ ] **n8n** is **org**; **n8n-hooks** is **None**.
-- [ ] Both certificates issued.
-- [ ] Compose `WEBHOOK_URL` is the **hooks** origin with a trailing slash.
+- [ ] `edgible app list` shows **n8n** (**org**) and **n8n-hooks** (**None**), both port **5678**.
+- [ ] Both certificates are issued.
+- [ ] `~/n8n/docker-compose.yml` has `WEBHOOK_URL=https://n8n-hooks.<org>.edgible.com/` (trailing slash, **no** `:5678`).
 - [ ] `N8N_EDITOR_BASE_URL` / `N8N_HOST` are the **editor** host.
-- [ ] Phone can still open the org editor.
+- [ ] `docker compose up -d` has been run again, and the phone still opens the **org** editor.
 - [ ] Hello World still loads. Port **5678** not forwarded.
 
 ---

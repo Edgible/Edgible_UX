@@ -1,6 +1,25 @@
 # 6. Telegram pocket client for OpenClaw
 
-**Pocket chat with OpenClaw. Telegram is a door; Edgible stays the HTTPS one.**
+**A chat app you already have, wired to the agent on your shelf.**
+
+## 6.0 Why
+
+Control UI is the right door for anything serious, but it is a heavy one: a browser, a token paste and a device approve for every new phone or profile. A one-line question on the walk home should not cost that, and if the only way to reach your agent is a tab you have to set up, you will stop reaching for it.
+
+Telegram is the cheap door, and it is important to be clear about what it is not. It is **not** an Edgible app — the tempting mistake is to look for a port or a hostname to publish, and there is none. The Gateway dials **out** to Telegram’s API on TCP 443, exactly as it already dials out to Edgible, so nothing new is exposed and nothing new is forwarded. Publishing a chat channel through a hostname would only add an inbound door for a path that never needed one.
+
+What you pay is privacy and precision: your messages traverse Telegram’s servers, and slash commands in a chat window are a clumsy place to approve a shell write. So Telegram is the pocket client for questions and quick checks, and Control UI stays the place for exec approvals and the first run of anything new.
+
+```
+you, on a phone        Telegram app ──► api.telegram.org
+                                              ▲
+                                              │  outbound 443 (no inbound door)
+Ubuntu guest           OpenClaw Gateway ──────┘
+                                 ▲
+you, in a browser      https://openclaw-ui.<org>.edgible.com   ← org login (chapter 3)
+```
+
+**Where you run this:** BotFather and the DM in the **Telegram app on a phone**; the token, config and logs on the **Ubuntu guest**.
 
 ## 6.1 The job
 
@@ -12,8 +31,11 @@ Control UI remains the cleaner place for `/skill` and exec approvals. WhatsApp i
 
 - A bot from [@BotFather](https://t.me/BotFather); token on the Gateway host only (literal `123:AAH…`, not `$TELEGRAM_BOT_TOKEN`).
 - `channels.telegram.apiRoot` **unset**.
-- A DM to **your bot** gets an OpenClaw reply; pairing approved if asked.
+- `openclaw channels status --probe` shows Telegram working.
+- You DMed **your** bot, not BotFather.
+- A DM to your bot gets an OpenClaw reply (identity ritual counts); pairing approved if asked.
 - You can tell Gateway `/whoami` (instant sender id) from `/skill edgible whoami` (Edgible CLI, through the model).
+- You did not publish a Telegram port through Edgible.
 
 **Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + a model). Prove the skill in [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md) before Telegram `/skill`. Control UI through Edgible is optional for Telegram itself.
 
@@ -76,7 +98,7 @@ You want Telegram enabled, configured, a bot username, token from config.
 
 ## 6.4 Pairing and first `hello`
 
-Default DM policy is **pairing**. Send `hello` to **your bot**. On the VM:
+**Smoke test.** Default DM policy is **pairing**. Send `hello` to **your bot**. On the VM:
 
 ```bash
 openclaw pairing list telegram
@@ -89,9 +111,12 @@ If there is no reply: token, `apiRoot`, pairing, or the Gateway not running. `op
 
 ### Verify
 
+- [ ] A bot from [@BotFather](https://t.me/BotFather); token on the Gateway host only (literal `123:AAH…`, not `$TELEGRAM_BOT_TOKEN`).
+- [ ] `channels.telegram.apiRoot` **unset**.
+- [ ] `openclaw channels status --probe` shows Telegram working.
 - [ ] You DMed **your** bot, not BotFather.
-- [ ] `channels status --probe` shows Telegram working.
-- [ ] `hello` gets a reply (identity ritual counts).
+- [ ] A DM to your bot gets an OpenClaw reply (identity ritual counts); pairing approved if asked.
+- [ ] You can tell Gateway `/whoami` (instant sender id) from `/skill edgible whoami` (Edgible CLI, through the model).
 - [ ] You did not publish a Telegram port through Edgible.
 
 ---

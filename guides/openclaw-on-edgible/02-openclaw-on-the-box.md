@@ -2,21 +2,44 @@
 
 **OpenClaw on *your* VM that can say hello — still not on the internet.**
 
+## 2.0 Why
+
+[Chapter 1](01-edgible-on-vm.md) proved Edgible can put a process on your box in front of the internet, but the process it published was a throwaway page. Nothing on this guest is yet worth reaching from a phone. This chapter installs the thing that is: an agent that chats, runs shell commands, and writes files on hardware you own.
+
+Two shortcuts are tempting here and both are worse than they look. Running OpenClaw on your laptop instead of the guest means the agent dies when you shut the lid, and its shell tool is pointed at your personal machine rather than a box you are willing to hand it. Binding the Gateway to `0.0.0.0` and forwarding **18789** looks like the fast route to phone access, but the Control UI is an admin console over a process with a shell — that is the one port you never want a scanner to find. So the Gateway stays on loopback for this whole chapter, and the public hostname waits for [chapter 3](03-publish-openclaw-control-ui.md), where Edgible reaches it over loopback and puts a login in front.
+
+That leaves one thing to get right locally: the model. Google’s free AI Studio key is enough to prove a hello, but OpenClaw’s Google default is often a Pro or preview id whose free-tier quota is almost nothing — the **429** most people blame on their install. Pinning a **Flash** id here is what makes every later chapter’s chat work.
+
+```
+the internet          (nothing new — no hostname for the agent, no forwarded port)
+
+Ubuntu guest          OpenClaw Gateway ──► 127.0.0.1:18789   ← this chapter
+                             │  outbound 443
+                             ▼
+                      Google AI Studio (Gemini Flash)
+
+                      Edgible serving agent ──► 127.0.0.1:8081 → nginx (still public)
+```
+
+**Where you run this:** the AI Studio key in the **host browser**; the install, the model pin and the hello on the **Ubuntu guest**; the optional Control UI check needs a **guest desktop**; Hello World still checked on a **phone on cellular**.
+
 ## 2.1 The job
 
 You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays on **loopback** (`127.0.0.1:18789`). Pin Gemini **Flash** on the free AI Studio key (not Pro/preview — that is the 429). DeepSeek, Ollama, OpenAI, and fallbacks are [9. Models beyond free Gemini](09-models-beyond-free-gemini.md).
 
 **Done when**
 
-- Gateway running on the VM, bind **loopback**, port **18789**.
-- A **Flash** default (not Pro/preview).
-- `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` replies in the VM terminal.
-- Optional: `openclaw dashboard` opens **local** Control UI and chat works (guest desktop only).
-- Hello World on the phone still loads.
+- `openclaw --version` prints a version on the VM.
+- `openclaw gateway status` shows the Gateway running on **18789**, bind **loopback**.
+- `openclaw models status` shows a **Flash** (not Pro/preview) default.
+- `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
+- Hello World on the phone still loads (Edgible tunnel unchanged).
+- `curl` to `http://127.0.0.1:18789/` on the VM returns **200**.
+- Optional, guest **desktop** only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
 **Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World still up).
 
-**Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), other model providers ([9](09-models-beyond-free-gemini.md)), or `! edgible whoami` (host bash — off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash--bash) if you want it later).
+**Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), other model providers ([9](09-models-beyond-free-gemini.md)), or `! edgible whoami` (host bash — off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash---bash) if you want it later).
 
 ## 2.2 Google Gemini (free)
 
@@ -179,7 +202,7 @@ openclaw logs --follow
 
 ### 2.3.5 Chat from the VM terminal
 
-The Gateway must be up. Do **not** pass `--local` (that fights the running Gateway).
+**Smoke test.** The Gateway must be up. Do **not** pass `--local` (that fights the running Gateway).
 
 ```bash
 openclaw agent --agent main --thinking off --message "Say hello in one sentence."
@@ -237,12 +260,12 @@ If there is no GUI, there is no in-guest browser — skip to Edgible, or forward
 ### 2.3.8 Verify
 
 - [ ] `openclaw --version` prints a version on the VM.
-- [ ] `openclaw gateway status` shows running on **18789** (loopback).
-- [ ] After **2.3.3**, `openclaw models status` shows a **Flash** (not Pro/preview) default.
+- [ ] `openclaw gateway status` shows the Gateway running on **18789**, bind **loopback**.
+- [ ] `openclaw models status` shows a **Flash** (not Pro/preview) default.
 - [ ] `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
 - [ ] Hello World on the phone still loads (Edgible tunnel unchanged).
 - [ ] `curl` to `http://127.0.0.1:18789/` on the VM returns **200**.
-- [ ] From a VM **desktop** terminal: Gateway running, then `openclaw dashboard` opens the Control UI and chat works.
+- [ ] Optional, guest **desktop** only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
 ---
 

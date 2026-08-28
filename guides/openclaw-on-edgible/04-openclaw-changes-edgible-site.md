@@ -1,6 +1,14 @@
 # 4. OpenClaw changes the public Edgible site
 
-**You tell OpenClaw to change a public Edgible page. Refresh. A chatbot in a tab cannot.**
+**Ask for a change, and a second later the whole internet sees it.**
+
+## 4.0 Why
+
+So far the two halves of this series have only proved themselves separately: Edgible publishes a page, OpenClaw answers a question. Neither has touched the other. A chatbot in a browser tab can describe an edit beautifully and change nothing, and you would have no way to tell the difference — which is exactly why the proof here has to be something a stranger could load.
+
+The demo everyone reaches for first is the inbox or the calendar, and it is the wrong one twice over: it needs your private mail to be interesting, and the page it would end up on is a **None** hostname open to the world. Rewriting the public Hello World page instead is verifiable by anyone with the URL, and there is nothing on it to leak. Edgible’s role stays deliberately small — it is still only the door; the HTML is written by an agent on a box you own, which is the part no hosted chatbot can do.
+
+**Where you run this:** the chat in **Control UI on a phone on cellular**; the refresh in the **phone browser**; ground truth with `cat` on the **Ubuntu guest**.
 
 ## 4.1 The job
 
@@ -8,9 +16,13 @@ From Control UI on the phone, you tell **OpenClaw** to rewrite the Hello World s
 
 **Done when**
 
-- Cellular hard-refresh of Hello World shows **OpenClaw was here** (or On this day, if you continued).
+- Phone Control UI says it wrote the page.
+- Phone browser on **hello-world** (cellular) shows **OpenClaw was here**, not the original Hello World.
 - `cat ~/hello-world/index.html` on the VM matches what you see.
-- Optional: an hourly job rotates a different person born on this calendar day.
+- Optional: Hello World names someone **born on this calendar day**, with a short summary.
+- Optional: a second run (next hour or Run now) shows a **different** person, not a repeat.
+- Optional: Control UI / Automations lists an **hourly** job.
+- Optional: no personal mail, files, or calendar in the page source (`cat ~/hello-world/index.html`).
 - Port **18789** is still not forwarded.
 
 **Need first:** [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) on cellular. Leave the **hello-world** nginx container running ([1.9](01-edgible-on-vm.md)).
@@ -29,7 +41,7 @@ Change the hello-world app to say "OpenClaw was here!"
 
 That one line is enough on this setup (Gemini Flash + tools). Approve a write if asked.
 
-Then **leave the Control UI**, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](01-edgible-on-vm.md), Wi‑Fi still off), and **hard-refresh**. You should see **OpenClaw was here** — not the original Hello World.
+**Smoke test.** Now **leave the Control UI**, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](01-edgible-on-vm.md), Wi‑Fi still off), and **hard-refresh**. You should see **OpenClaw was here** — not the original Hello World.
 
 If it only *describes* the change, or the public page is unchanged, it guessed (docker exec into a read-only mount, wrong path, or no tool call). Then be explicit:
 
@@ -86,10 +98,10 @@ Gemini is enough to *research and dump HTML*. Optional [chapter 8](08-cursor-age
 
 ### Verify
 
-- [ ] Hello World names someone **born on this calendar day**, with a short summary.
-- [ ] A second run (next hour or Run now) shows a **different** person, not a repeat.
-- [ ] Control UI / Automations lists an **hourly** job.
-- [ ] No personal mail, files, or calendar in the page source (`cat ~/hello-world/index.html`).
+- [ ] Optional: Hello World names someone **born on this calendar day**, with a short summary.
+- [ ] Optional: a second run (next hour or Run now) shows a **different** person, not a repeat.
+- [ ] Optional: Control UI / Automations lists an **hourly** job.
+- [ ] Optional: no personal mail, files, or calendar in the page source (`cat ~/hello-world/index.html`).
 - [ ] Port **18789** is still not forwarded.
 
 ---

@@ -1,22 +1,37 @@
 # 4. OpenClaw uses the published Ollama URL
 
-**OpenClaw is a remote self-hosted caller.** The Gateway uses `https://ollama.<org>.edgible.com` with Bearer — not the Mac’s LAN.
+**A different computer, in another room, thinking on your GPU.**
 
-OpenClaw and n8n each have their **own** VM on a **different** home computer from the Mac. The Mac guest only publishes Ollama (**api-key**). Do not point this Gateway at `192.168.64.1` or UTM `$HOST` — that virt LAN is not this box. Do not put the Edgible secret on Control UI **None**. Do not set the **ollama** app to **None**.
+## 4.0 Why
 
-[OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md) **9.5** is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 7B.
+OpenClaw and n8n each have their **own** VM on a **different** home computer from the Mac, and an agent that drives tools needs a model it can actually reach. The Gateway cannot be pointed at `192.168.64.1` or UTM `$HOST` — that virt LAN is only the Mac and its own guest, not this box. It cannot use an **org** hostname either, because there is no human to complete a browser login mid-turn, and the **ollama** app must never be **None** or strangers get your GPU. So the Gateway calls the published **api-key** origin with a Bearer secret, and the secret stays in this VM’s config — never behind a Control UI left on **None**.
+
+[OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md) **9.5** is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 20B.
+
+```
+OpenClaw VM (other PC)   Gateway ──► https://ollama.<org>.edgible.com   (+ Bearer, no /v1)
+                                              │
+Ubuntu guest             Edgible serving agent ──► 127.0.0.1:11434 (socat)
+                                              │
+macOS host               Ollama.app (Metal) — gpt-oss:20b loads here
+```
+
+**Where you run this:** every `openclaw` command runs on the **OpenClaw VM** (a different home computer); only `ollama ls` / `ollama ps` / `ollama show` run on the **macOS host**, and the hostname and secret are copied from the **Ubuntu guest**.
 
 ## 4.1 The job
 
-On the **OpenClaw** VM, register the Edgible origin as the Ollama provider, list `ollama/qwen2.5:7b`, and get one hello.
+On the **OpenClaw** VM, register the Edgible origin as the Ollama provider, list `ollama/gpt-oss:20b`, and get one hello.
+
+**Why this tag.** `qwen2.5:7b` is fine for the `curl` and n8n workflow smoke tests, but OpenClaw drives **tools** — read a file, edit it, run a command. A 7B drops tool calls on multi-step work. **`gpt-oss:20b`** (~13 GB, thinking-capable) is the local tag that holds a code-change turn. Keep the 7B as a **fallback**, not the model you hand real work to.
 
 **Done when**
 
-- `openclaw models list --provider ollama` prints `ollama/qwen2.5:7b` (or your tag).
-- `openclaw agent --agent main --thinking off --model ollama/qwen2.5:7b --message "Say hello in one sentence."` replies.
-- Mac `ollama ps` shows that tag on **GPU**.
+- `baseUrl` is the **ollama.** Edgible host, **no** `/v1` for `api ollama`, **secret** not id.
+- `openclaw models list --provider ollama` prints `ollama/gpt-oss:20b`.
+- `openclaw agent --agent main --thinking off --model ollama/gpt-oss:20b --message "Say hello in one sentence."` replies, and Mac `ollama ps` shows that tag on **GPU**.
+- **ollama** app is still **api-key**. This VM is not the Mac guest.
 
-**Need first:** Gateway up on **this** VM ([2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) applied here, not on the Mac). [Chapter 2](02-edgible-to-ollama.md) — cellular `curl` with Bearer already works.
+**Need first:** Gateway up on **this** VM ([2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) applied here, not on the Mac). [Chapter 2](02-edgible-to-ollama.md) — cellular `curl` with Bearer already works. **`gpt-oss:20b` pulled on the Mac** — `ollama ls` on the host must show it ([chapter 3](03-n8n-uses-ollama.md) pulls it for the Assistant). ~**13 GB** of Mac RAM free after the UTM guest.
 
 **Not this chapter:** installing Ollama on the OpenClaw VM, n8n, or LAN `http://$HOST:11434`.
 
@@ -31,44 +46,50 @@ openclaw config set models.providers.ollama.baseUrl "https://ollama.YOUR-ORG.edg
 openclaw config set models.providers.ollama.api ollama
 openclaw config set models.providers.ollama.apiKey "<secret-from-chapter-2.5>"
 openclaw config set models.providers.ollama.models \
-  '[{"id":"qwen2.5:7b","name":"qwen2.5:7b"}]' --strict-json
+  '[{"id":"gpt-oss:20b","name":"gpt-oss:20b"},{"id":"qwen2.5:7b","name":"qwen2.5:7b"}]' --strict-json
 openclaw gateway restart
 openclaw models list --provider ollama
 ```
 
 Copy the host from `edgible app list` on the **Mac guest**. The **secret** is from `api-keys create`, not the key **id**. Prefer putting the secret in `~/.openclaw/.env` if you already keep provider keys there, so it is not sitting in shell history.
 
-`list` must print `ollama/qwen2.5:7b`. HTML / login: the **ollama** app is **org**. 401: wrong secret. Empty list / timeout: Mac Ollama quit, forwarder down, or the Mac VM slept.
+`list` must print `ollama/gpt-oss:20b` (and the 7B). HTML / login: the **ollama** app is **org**. 401: wrong secret. Empty list / timeout: Mac Ollama quit, forwarder down, or the Mac VM slept.
 
 Then either:
 
 ```bash
-openclaw models set ollama/qwen2.5:7b
+openclaw models set ollama/gpt-oss:20b
 ```
 
-or keep Gemini/DeepSeek as primary and put `ollama/qwen2.5:7b` in **fallbacks** ([9.7](../openclaw-on-edgible/09-models-beyond-free-gemini.md)). `/think off` (or `thinkingDefault off`) still applies.
+or keep Gemini/DeepSeek as primary and put `ollama/gpt-oss:20b` in **fallbacks** ([9.7](../openclaw-on-edgible/09-models-beyond-free-gemini.md)). `/think off` (or `thinkingDefault off`) still applies.
 
-Ollama may hide tags that `/api/show` does not mark as tool-capable with **≥16K** context. Fallback can still use the config id. Pin in chat: `/model ollama/qwen2.5:7b`.
+**Thinking.** Unlike the 7B, this tag can think — `ollama show gpt-oss:20b` lists **thinking** under capabilities. Use `--thinking off` for the hello below so a cold 20B does not look like a hang. Leave thinking **on** when you want it planning a code change.
+
+**Do not make the 20B a snappy fallback.** 13 GB on a cold load makes a cloud 429 feel like a hang ([9.5.2](../openclaw-on-edgible/09-models-beyond-free-gemini.md#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Fallback stays `ollama/qwen2.5:7b`; reach for the 20B as an explicit primary or `/model`.
+
+Ollama may hide tags that `/api/show` does not mark as tool-capable with **≥16K** context. Fallback can still use the config id. Pin in chat: `/model ollama/gpt-oss:20b`.
 
 If `list` fails but n8n’s **`/v1`** test works, OpenClaw may be hitting the OpenAI-compatible surface — try `api` `openai-completions` and `baseUrl` `https://ollama.YOUR-ORG.edgible.com/v1` with the same secret. Prefer native `ollama` when `list` already works.
 
 ## 4.3 Hello
 
 ```bash
-openclaw agent --agent main --thinking off --model ollama/qwen2.5:7b --message "Say hello in one sentence."
+openclaw agent --agent main --thinking off --model ollama/gpt-oss:20b --message "Say hello in one sentence."
 ```
 
-First run can take several seconds (Mac cold load). You want a short sentence and Mac `ollama ps` on **GPU**.
+**Smoke test (OpenClaw VM).** First run can take **tens of seconds** — 13 GB has to load into Mac RAM. You want a short sentence and Mac `ollama ps` on **GPU**. Ask again straight after and it should be quick; that is the model staying resident.
+
+Once hello works, give it real work in chat (`/model ollama/gpt-oss:20b`, thinking on) — e.g. rename a function across a file and read back the diff. That is the tool loop the 7B fumbles.
 
 ### Verify
 
 - [ ] `baseUrl` is the **ollama.** Edgible host, **no** `/v1` for `api ollama`, **secret** not id.
-- [ ] `models list --provider ollama` shows `qwen2.5:7b`.
-- [ ] Agent hello replies; Mac GPU.
+- [ ] `openclaw models list --provider ollama` prints `ollama/gpt-oss:20b`.
+- [ ] `openclaw agent --agent main --thinking off --model ollama/gpt-oss:20b --message "Say hello in one sentence."` replies, and Mac `ollama ps` shows that tag on **GPU**.
 - [ ] **ollama** app is still **api-key**. This VM is not the Mac guest.
 
 ---
 
 ## Next
 
-That's this series. [Index](README.md).
+That’s this series. [Index](README.md).

@@ -1,6 +1,24 @@
 # 5. OpenClaw skill for the Edgible CLI
 
-**Chat can run `edgible` on the box — the same CLI, from OpenClaw.**
+**Teach the agent to run the hosting, not just talk about it.**
+
+## 5.0 Why
+
+Ask OpenClaw to publish a port or list your apps right now and you will get a confident, invented command. It has a shell on the box, but nothing has told it that `edgible` exists, what its subcommands are, or that it is already logged into your organisation — so it guesses, and a guess that runs is worse than a refusal.
+
+The two obvious fixes are both bad. Turning on host bash hands chat an unrestricted shell to get one CLI, which is a much bigger door than the job needs. Reading output on the guest and pasting it back into chat yourself defeats the point of asking from a phone at all. A skill is the narrow version: a described, named command surface the model can call, running as the user that is already authenticated, with the guide’s safety rules — never **None** on the Control UI port — baked into the skill repo rather than your memory.
+
+Prove it in the shell first and Control UI second, in that order. When Telegram’s `/skill` misbehaves three chapters from now, you want to already know that the binary, the login and the model turn each work, so the only new suspect is the channel.
+
+```
+you, in chat           Control UI (org door)  ·  Telegram DM  ·  WhatsApp
+                                 │
+Ubuntu guest           OpenClaw Gateway ──► edgible skill ──► edgible CLI (your org)
+                                 │
+                       the same box that serves your Edgible apps
+```
+
+**Where you run this:** the install and the shell check on the **Ubuntu guest**; the chat check in **Control UI** — local dashboard on a guest desktop, or the phone on cellular from [chapter 3](03-publish-openclaw-control-ui.md).
 
 ## 5.1 The job
 
@@ -67,7 +85,7 @@ Optional: `edgible doctor` (diagnostics). That is a real top-level command, not 
 
 ## 5.4 Control UI: skill pass-through
 
-Open Control UI ([3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) or local dashboard). New session (`/new`). Leave the model picker on **Default**. Send **exactly**:
+**Smoke test.** Open Control UI ([3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) or local dashboard). New session (`/new`). Leave the model picker on **Default**. Send **exactly**:
 
 ```text
 /skill edgible whoami
@@ -95,6 +113,14 @@ Also useful:
 `/skill` is a full model turn. It can be slow on Gemini free tier (429). The CLI itself is milliseconds. If chat hangs, `/stop`, then retry in Control UI — not Telegram — for the first skill check. A paid or local primary is [9. Models beyond free Gemini](09-models-beyond-free-gemini.md).
 
 Exec may wait for approval (`approve-reads`). Approve `edgible whoami`.
+
+### Verify
+
+- [ ] `openclaw skills list` shows **edgible** (not the old three `edgible-app-*` skills).
+- [ ] VM: `edgible whoami` prints org/account.
+- [ ] Control UI: `/skill edgible whoami` repeats that in the **bubble** (not only a tool card).
+- [ ] Control UI: `/whoami` is OpenClaw identity, not the Edgible block.
+- [ ] `/skill edgible doctor` is a doctor report, not an app list.
 
 ---
 

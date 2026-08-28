@@ -1,10 +1,27 @@
 # 3. n8n uses the published Ollama URL
 
-**n8n on another home VM can use your Edgible Ollama in two different ways.** Same Mac GPU, same **api-key** secret. Different n8n features, different URLs.
+**One published URL, two very different ways for n8n to use it.**
 
-## Two use cases
+## 3.0 Why
 
-| | **1. Invoke the LLM from a workflow** | **2. n8n AI Assistant (“chat AI”)** |
+n8n is on its **own** VM on a **different** home computer, so on its own it has no local model at all — and the fix is not to give it one. Installing Ollama next to n8n means CPU inference on a box with no GPU; pointing it at the Mac’s UTM address (`192.168.64.1`) cannot work because that virt LAN exists only between the Mac and its own guest; a mesh VPN would mean enrolling every machine that ever wants a completion. The published **api-key** hostname from [chapter 2](02-edgible-to-ollama.md) already solves it: n8n sends HTTPS plus a Bearer secret, and the weights and the Metal GPU never leave the Mac.
+
+The twist is that n8n wants that one hostname in two different shapes. Workflow nodes speak Ollama’s native API at the bare origin; the built-in **AI Assistant** speaks OpenAI-compatible `/v1`. Same secret, same GPU, two credentials and two models — and the Assistant additionally needs a sandbox and a search backend running beside n8n. Do not mix the two URLs, do not put the Edgible secret on **n8n-hooks**, do not set the **ollama** app to **None**, and do not run n8n or the sandbox on the Mac UTM guest. The Mac only **serves** Ollama (and the website); n8n is the remote self-hosted caller.
+
+```
+n8n VM (other PC)   Basic LLM Chain node ──► https://ollama.<org>.edgible.com      (+ Bearer)
+n8n VM (other PC)   AI Assistant chat  ──►  https://ollama.<org>.edgible.com/v1   (+ Bearer)
+                                                        │
+Ubuntu guest        Edgible serving agent ──► 127.0.0.1:11434 (socat)
+                                                        │
+macOS host          Ollama.app (Metal) — weights and GPU stay here
+```
+
+**Where you run this:** almost everything is on the **n8n VM** (its browser UI and `docker compose` in `~/n8n`); only `ollama show` / `ollama ps` and any missing `ollama pull` run on the **macOS host**.
+
+### Two use cases
+
+| | **1. Invoke the LLM from a workflow** | **2. n8n AI Assistant** |
 | --- | --- | --- |
 | **What it is** | A node on the canvas (e.g. **Basic LLM Chain** + **Ollama Chat Model**). Cron, webhooks, other nodes can call the model. | n8n’s **instance chat**: it helps build/edit workflows and can run generated code in a **sandbox**. |
 | **Edgible URL** | `https://ollama.<org>.edgible.com` — **no `/v1`** (native `/api/chat`) | `https://ollama.<org>.edgible.com/v1` — **with `/v1`** |
@@ -13,26 +30,26 @@
 | **Smoke test** | **Execute workflow** → a sentence. Mac `ollama ps` on GPU. | **Hello**, then: visit **edgible.com** and summarise using the product **with n8n**. |
 | **Model** | **`qwen2.5:7b`** — proven. | **`gpt-oss:20b`** — proven for real Assistant chat (including search), not only Hello. **Not** `qwen2.5:7b`. |
 
-Do not mix the two URLs. Do not put the Edgible secret on **n8n-hooks**. Do not set the **ollama** app to **None**. Do not run n8n or the sandbox on the Mac UTM guest.
-
-The Mac only **serves** Ollama (and the website). n8n is the remote self-hosted caller.
-
 ## 3.1 The job
 
 Do **both** use cases. Same Edgible secret, **two models**.
 
 **Done when**
 
-- Workflow: **Execute** returns a sentence; model is `{{ 'qwen2.5:7b' }}`; thinking **off**; Mac GPU.
-- Assistant: model is **thinking-capable**; `/v1` OK; **`gpt-oss:20b`**; sandbox + **SearXNG** OK; **Hello** replies; then a prompt like *visit edgible.com and summarise using it with n8n* gets a real-site answer (GPU still on the Mac).
+- Assistant: `ollama show` lists **thinking**; `/v1`; **`gpt-oss:20b`**; **Hello** replies; **edgible.com + n8n** (or similar) uses the web. Workflow: Base URL **without** `/v1`; `{{ 'qwen2.5:7b' }}`; thinking **off**. Same Edgible **secret**.
+- Workflow model is not grey llama3.2, not qwen3-coder. Assistant model is **not** a non-thinking 7B.
+- Sandbox on the **n8n** VM: healthz OK; AI settings test OK; **no** Edgible app on 8080.
+- SearXNG URL `http://searxng:8080` in AI settings; **no** public SearXNG port.
+- Execute returns text; Assistant Hello and a search turn return text; Mac `ollama ps` is GPU.
+- **ollama** app is still **api-key**. The Mac guest still is not running n8n.
 
-**Need first:** n8n editor on the **n8n** VM. [Chapter 2](02-edgible-to-ollama.md). Docker Compose v2. ~**4 GB / 2 vCPUs** spare on that VM for the sandbox runner. For chat AI: a tag with **thinking** in `ollama show` (this chapter uses **`gpt-oss:20b`**).
+**Need first:** n8n editor on the **n8n** VM. [Chapter 2](02-edgible-to-ollama.md). Docker Compose v2. ~**4 GB / 2 vCPUs** spare on that VM for the sandbox runner. For the **AI Assistant**: a tag with **thinking** in `ollama show` (this chapter uses **`gpt-oss:20b`**).
 
 **Not this chapter:** n8n on the Mac guest, `qwen3-coder`, Open WebUI/sandbox on the 4 GB UTM VM, Daytona, OpenClaw.
 
 Official sandbox docs: [Docker Compose](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose/) and [AI Assistant](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-ai-assistant/).
 
-## 3.2 Two models — chat AI must support thinking
+## 3.2 Two models — the Assistant must support thinking
 
 Ollama’s n8n page uses **`qwen3-coder`** as an example. Do **not** pull it (~**19 GB**).
 
@@ -44,22 +61,22 @@ On the **Mac**:
 ollama show gpt-oss:20b
 ```
 
-You want **`thinking`** under capabilities. If that word is missing, do not use the tag for chat AI.
+You want **`thinking`** under capabilities. If that word is missing, do not use the tag for the AI Assistant.
 
 | n8n feature | Tag | Thinking | Why |
 | --- | --- | --- | --- |
 | Workflow | **`qwen2.5:7b`** | **Off** (node option) | Fast 7B. Cannot think — turn it **off** on the node. |
 | AI Assistant chat | **`gpt-oss:20b`** | **Required** (model capability) | n8n sends thinking. This tag can (~**13 GB**). Proven for Assistant work including **web search** via SearXNG. |
 
-**Cannot** use for chat AI (no thinking): `qwen2.5:7b`, `llama3.1:8b`, `llama3.2:*`, `mistral:7b`, `phi*`, `deepseek-coder:*`, `codellama:*`. Those are fine for **workflows** with thinking off.
+**Cannot** use for the AI Assistant (no thinking): `qwen2.5:7b`, `llama3.1:8b`, `llama3.2:*`, `mistral:7b`, `phi*`, `deepseek-coder:*`, `codellama:*`. Those are fine for **workflows** with thinking off.
 
-**Can** use for chat AI if `ollama show` lists thinking: **`gpt-oss:20b`** (this chapter), `qwen3.5:27b` (heavier, ~17 GB).
+**Can** use for the AI Assistant if `ollama show` lists thinking: **`gpt-oss:20b`** (this chapter), `qwen3.5:27b` (heavier, ~17 GB).
 
 If `gpt-oss:20b` is missing: `ollama pull gpt-oss:20b` on the **Mac** — not in the UTM guest. Then `ollama show` until you see **thinking**.
 
 ## 3.3 Two credentials
 
-**AI Assistant / chat AI** — Settings, self-hosted Ollama. Pick the model **before** you chat:
+**AI Assistant** — Settings, self-hosted Ollama. Pick the model **before** you chat:
 
 1. On the Mac, confirm **thinking**: `ollama show gpt-oss:20b` lists **thinking**. If you pick `qwen2.5:7b` here, **Hello** fails with “doesn’t support thinking” even if the connection test passed.
 2. Endpoint = `https://ollama.YOUR-ORG.edgible.com/v1` (**with** `/v1`). No `?think=` — that does nothing.
@@ -240,7 +257,7 @@ Do **not** set `N8N_INSTANCE_AI_MODEL` to Anthropic — Ollama stays in the UI. 
 
 Then AI settings → sandbox **n8n-sandbox** (not Daytona). **Service URL** = `http://sandbox-api:8080`. **API key** = `SANDBOX_API_KEYS` from `.env` (`grep SANDBOX_API_KEYS .env`). Save. You want a successful test.
 
-Web search is part of chat AI, not an extra. Provider **SearXNG**. **URL** = `http://searxng:8080`. No API key. Same Compose network as n8n — not `localhost`, not Edgible. Leave **Brave** empty unless you buy that. Do **not** publish SearXNG’s port or create an Edgible app for it. Without this URL, Assistant cannot look anything up; **`gpt-oss:20b`** will still chat from weights only.
+Web search is part of the AI Assistant, not an extra. Provider **SearXNG**. **URL** = `http://searxng:8080`. No API key. Same Compose network as n8n — not `localhost`, not Edgible. Leave **Brave** empty unless you buy that. Do **not** publish SearXNG’s port or create an Edgible app for it. Without this URL, Assistant cannot look anything up; **`gpt-oss:20b`** will still chat from weights only.
 
 If `sandbox-api` never goes healthy: `docker compose logs sandbox-certs` then `sandbox-api`. Runner crash-loop: token mismatch in `.env`. Sandbox test fails: key/URL mismatch, or n8n not on this Compose file.
 
@@ -296,9 +313,9 @@ This is **use case 1**. You do **not** need **Chat Trigger**. Assistant Hello is
 5. **Options → Enable Thinking → off**.
 6. Chain prompt: `Say hello in one sentence`. **Save.** **Execute workflow.**
 
-First run can take several seconds (Mac cold load). You want a short sentence in the chain output and Mac `ollama ps` on **GPU**.
+**Smoke test (n8n VM).** First run can take several seconds (Mac cold load). You want a short sentence in the chain output and Mac `ollama ps` on **GPU**.
 
-## 3.6 Assistant Hello (chat AI)
+## 3.6 Assistant Hello
 
 This is **use case 2**. Sandbox from 3.4 must already test OK. The Assistant model must **support thinking** (§3.2) — n8n will send it. **`gpt-oss:20b`** over Edgible `/v1`, with sandbox + SearXNG on the n8n VM, is the proven stack — including questions that need a **web search**, not only Hello.
 
@@ -310,7 +327,7 @@ This is **use case 2**. Sandbox from 3.4 must already test OK. The Assistant mod
 Visit www.edgible.com and summarise how I can use the product with n8n.
 ```
 
-You want a summary that matches the site (self-host, publish n8n, that kind of story) — not a generic n8n blurb, not a refusal to look anything up. Similar prompts that name a URL and ask for a product summary are the same test. Mac `ollama ps` shows **`gpt-oss:20b`** on **GPU**.
+**Smoke test (n8n VM).** You want a summary that matches the site (self-host, publish n8n, that kind of story) — not a generic n8n blurb, not a refusal to look anything up. Similar prompts that name a URL and ask for a product summary are the same test. Mac `ollama ps` shows **`gpt-oss:20b`** on **GPU**.
 
 First run can take a while (20B cold load). If Hello errors on thinking, the model is wrong — not the URL, not the sandbox, not `N8N_INSTANCE_AI_THINKING_ENABLED`. If Hello works but search does not, fix SearXNG (§3.4), not the model.
 

@@ -1,8 +1,26 @@
 # 5. A webhook a stranger can hit
 
-**This is the Edgible demo: HTTPS in, no port-forward.**
+**A stranger reaches your box, and you never touched the router.**
 
-Hit **n8n-hooks** (**None**) from cellular. The same path on the **org** editor host would stop at Edgible login — that is the point, not a bug. Same process, two doors; only the door that must be public is public. Unpublish when you are done playing.
+## 5.0 Why
+
+Chapter 3 built the unlocked door and chapter 4 proved n8n runs; this is where the two meet and something outside your house actually gets in. Until now every success has been you, logged in as yourself. A webhook is different: the caller is a stranger — Stripe, GitHub, a phone on cellular — and if that call cannot land, none of the integrations people actually want n8n for will work.
+
+The proof only counts if you make it from outside. Loading the URL from the VM, or from a laptop on the same Wi‑Fi, tests almost nothing. And the URL matters: the same path on the **org** editor hostname will stop at the Edgible login, which is correct behaviour and not the test. Only the **n8n-hooks** hostname on **None** answers strangers, and that is the whole shape of the demo — HTTPS in from anywhere, with no forwarded port and no VPN enrolment for the caller.
+
+The flip side of an unlocked door is that it is unlocked. Anyone who learns the path can call it, so keep the path unguessable, return nothing sensitive, and unpublish when you are done playing.
+
+```
+a stranger, cellular   ──► https://n8n-hooks.<org>.edgible.com/webhook/…   ← None
+                                          │
+Ubuntu guest                Edgible serving agent ──► 127.0.0.1:5678
+                                          │
+                            n8n  (Webhook node → JSON reply)
+
+you, logged in         ──► https://n8n.<org>.edgible.com   ← org  (canvas only)
+```
+
+**Where you run this:** build the workflow in the **n8n editor** on the **org** hostname; make the call from a **phone on cellular** or an off-LAN laptop shell.
 
 ## 5.1 The job
 
@@ -10,10 +28,13 @@ You add a **Webhook** node whose **production** URL is on **n8n-hooks** (None), 
 
 **Done when**
 
-- The Webhook node shows a production URL that starts with `https://n8n-hooks.` and has **no** `:5678` and **no** `localhost`.
+- The Webhook node shows a production URL on `https://n8n-hooks.<org>.edgible.com/webhook/…` with **no** `:5678` and **no** `localhost`.
 - The workflow is **Active**.
 - A GET in the phone browser (cellular) **or** `curl` off the LAN returns JSON such as `{"ok":true}`.
-- The editor URL (`n8n.<org>…`) still requires **org**. Hitting the **editor** host with `/webhook/…` is not the test (org will block strangers).
+- **Executions** recorded the call.
+- The **n8n** app is still **org** — hitting the **editor** host with `/webhook/…` is not the test — and **n8n-hooks** is still **None**.
+- Hello World still loads. Port **5678** not forwarded.
+- You deactivated the smoke webhook (or accept that the path is public).
 
 **Need first:** [3. Public webhook door](03-n8n-webhook-door.md) (`WEBHOOK_URL` set, hooks cert issued) and the canvas from [2](02-n8n-editor-through-edgible.md).
 
@@ -43,7 +64,7 @@ If the URL still shows `localhost:5678` or `:5678`, `WEBHOOK_URL` is wrong — g
 
 ## 5.3 Hit it from outside the VM
 
-**Phone (cellular):** paste the production URL in the browser. You want the JSON (or a download of it). Wi‑Fi on the same LAN as the VM is **not** this test.
+**Smoke test.** Phone on **cellular**: paste the production URL in the browser. You want the JSON (or a download of it). Wi‑Fi on the same LAN as the VM is **not** this test.
 
 **Or** from a laptop on cellular / another network:
 
@@ -59,11 +80,11 @@ Deactivate the workflow when you are done playing. A public GET that only return
 
 ### Verify
 
-- [ ] Production URL is `https://n8n-hooks.<org>.edgible.com/webhook/…` (your path).
-- [ ] Workflow **Active**.
-- [ ] Cellular (or off-LAN curl) returns the JSON.
-- [ ] Executions recorded the call.
-- [ ] **n8n** app is still **org**. **n8n-hooks** is still **None**.
+- [ ] The Webhook node shows a production URL on `https://n8n-hooks.<org>.edgible.com/webhook/…` with **no** `:5678` and **no** `localhost`.
+- [ ] The workflow is **Active**.
+- [ ] A GET in the phone browser (cellular) **or** `curl` off the LAN returns JSON such as `{"ok":true}`.
+- [ ] **Executions** recorded the call.
+- [ ] The **n8n** app is still **org** — hitting the **editor** host with `/webhook/…` is not the test — and **n8n-hooks** is still **None**.
 - [ ] Hello World still loads. Port **5678** not forwarded.
 - [ ] You deactivated the smoke webhook (or accept that the path is public).
 
@@ -71,4 +92,4 @@ Deactivate the workflow when you are done playing. A public GET that only return
 
 ## Next
 
-That's this series for the demo. Teardown: [6. Tear down n8n](06-n8n-teardown.md). [Index](README.md). Edgible VM setup lives in [OpenClaw chapter 1](../openclaw-on-edgible/01-edgible-on-vm.md) (shared box). **Guide 2** is [OpenClaw on Edgible](../openclaw-on-edgible/README.md) — do not wire n8n to OpenClaw for this demo. **Guide 3** is [LLM on Edgible](../llm-on-edgible/README.md).
+That’s this series for the demo. Teardown: [6. Tear down n8n](06-n8n-teardown.md). [Index](README.md). Edgible VM setup lives in [OpenClaw chapter 1](../openclaw-on-edgible/01-edgible-on-vm.md) (shared box). **Guide 2** is [OpenClaw on Edgible](../openclaw-on-edgible/README.md) — do not wire n8n to OpenClaw for this demo. **Guide 3** is [LLM on Edgible](../llm-on-edgible/README.md).

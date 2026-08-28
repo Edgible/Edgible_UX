@@ -2,7 +2,7 @@
 
 **Guide 1.** Each chapter is one job and one smoke test. Do them in order.
 
-**How to read a chapter:** one-line hook under the title, a short **why** (the auth split), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that. **Next** at the end.
+**How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
 **n8n** runs workflows on a box you own (webhooks, cron, glue between APIs). **Edgible** is the public `https://<app>.<org>.edgible.com` door (outbound 443 only — no port-forward, no mesh VPN). This series does **not** use OpenClaw.
 
