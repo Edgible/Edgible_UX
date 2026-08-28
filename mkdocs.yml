@@ -17,7 +17,7 @@ site_dir: site
 
 theme:
   name: material
-  # Nexa is self-hosted in static/fonts, so nothing is fetched from Google.
+  # Jost is self-hosted in static/fonts, so nothing is fetched from Google.
   font: false
   features:
     - navigation.sections

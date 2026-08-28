@@ -4,38 +4,24 @@
  * compound selectors, so the rules below have to match on both attributes to
  * win the cascade. */
 
-/* Nexa, the Edgible brand face. Converted from the OTFs used on
- * www.edgible.com to WOFF2, which halves the transfer size. Nexa ships no
- * italic, so browsers synthesise an oblique. */
+/* Jost, a Futura revival, standing in for the Edgible brand face Nexa. Nexa is
+ * licensed and cannot ship in a public repo; Jost is under the SIL Open Font
+ * License, so it can. Licence text: fonts/Jost-OFL.txt.
+ *
+ * These are variable fonts covering weights 100 to 900 in one file each. */
 @font-face {
-  font-family: "Nexa";
-  src: url("../fonts/Nexa-Light.woff2") format("woff2");
-  font-weight: 300;
+  font-family: "Jost";
+  src: url("../fonts/Jost-var.woff2") format("woff2");
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Nexa";
-  src: url("../fonts/Nexa-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Nexa";
-  src: url("../fonts/Nexa-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Nexa";
-  src: url("../fonts/Nexa-ExtraBold.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
+  font-family: "Jost";
+  src: url("../fonts/Jost-Italic-var.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
   font-display: swap;
 }
 
@@ -44,7 +30,7 @@
   --edgible-orange-light: #ffa07a;
   --edgible-orange-dark: #8b4513;
 
-  --md-text-font: "Nexa";
+  --md-text-font: "Jost";
 }
 
 /* Commands and output must stay monospace: column alignment in the ASCII
@@ -53,7 +39,7 @@
   --md-code-font: "SFMono-Regular", "SF Mono", "Menlo", "Consolas", monospace;
 }
 
-/* Nexa is a geometric sans with a small x-height, so it reads light at
+/* Jost is a geometric sans with a small x-height, so it reads light at
    Material's default body size. */
 .md-typeset {
   font-size: 0.82rem;
