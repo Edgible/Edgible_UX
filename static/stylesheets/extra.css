@@ -4,10 +4,67 @@
  * compound selectors, so the rules below have to match on both attributes to
  * win the cascade. */
 
+/* Nexa, the Edgible brand face. Converted from the OTFs used on
+ * www.edgible.com to WOFF2, which halves the transfer size. Nexa ships no
+ * italic, so browsers synthesise an oblique. */
+@font-face {
+  font-family: "Nexa";
+  src: url("../fonts/Nexa-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("../fonts/Nexa-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("../fonts/Nexa-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nexa";
+  src: url("../fonts/Nexa-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --edgible-blue: #000033;
   --edgible-orange-light: #ffa07a;
   --edgible-orange-dark: #8b4513;
+
+  --md-text-font: "Nexa";
+}
+
+/* Commands and output must stay monospace: column alignment in the ASCII
+   diagrams depends on it. */
+:root {
+  --md-code-font: "SFMono-Regular", "SF Mono", "Menlo", "Consolas", monospace;
+}
+
+/* Nexa is a geometric sans with a small x-height, so it reads light at
+   Material's default body size. */
+.md-typeset {
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 [data-md-color-scheme="default"][data-md-color-primary],

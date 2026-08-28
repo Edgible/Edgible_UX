@@ -22,6 +22,7 @@ cp capabilities.md "$STAGE/capabilities.md"
 cp -R guides "$STAGE/guides"
 cp static/robots.txt "$STAGE/robots.txt"
 cp -R static/stylesheets "$STAGE/stylesheets"
+cp -R static/fonts "$STAGE/fonts"
 
 python3 scripts/gen_llms.py "$STAGE"
 
