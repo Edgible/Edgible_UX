@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Install git hooks that rebuild ./site after a commit or a pull.
+# Install git hooks that rebuild the guides after a commit or a pull.
 #
-# nginx serves ./site from a read-only bind mount, so a rebuild is picked up
-# immediately. There is no container to restart.
+# The hook always runs scripts/build.sh, which is the strict link check. If the
+# container is already running it also rebuilds and restarts the image, so what
+# is published matches the commit.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -21,9 +22,21 @@ if [ -x .venv/bin/mkdocs ]; then
     PATH="$REPO/.venv/bin:\$PATH"
 fi
 export PATH
-./scripts/build.sh >/tmp/edgible-guides-build.log 2>&1 \\
-    && echo "guides: site rebuilt" \\
-    || echo "guides: BUILD FAILED, see /tmp/edgible-guides-build.log" >&2
+LOG=/tmp/edgible-guides-build.log
+
+if ! ./scripts/build.sh >"\$LOG" 2>&1; then
+    echo "guides: BUILD FAILED, see \$LOG" >&2
+    exit 0
+fi
+echo "guides: site rebuilt"
+
+if command -v docker >/dev/null 2>&1 && [ -n "\$(docker compose ps -q guides 2>/dev/null)" ]; then
+    if docker compose up -d --build >>"\$LOG" 2>&1; then
+        echo "guides: container updated"
+    else
+        echo "guides: container update FAILED, see \$LOG" >&2
+    fi
+fi
 EOF
     chmod +x "$HOOKS/$hook"
 done

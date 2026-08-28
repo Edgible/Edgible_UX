@@ -51,8 +51,15 @@ auth mode, machine) inside the section that uses it, even though that repeats.
 ## Checks before committing
 
 ```bash
+docker compose up -d --build      # builds and serves on 127.0.0.1:8088
+```
+
+The image build runs `mkdocs --strict`, so a broken internal link fails it. To
+check without Docker:
+
+```bash
 pip install -r requirements.txt   # once
-./scripts/build.sh                # runs mkdocs --strict; fails on broken links
+./scripts/build.sh
 ```
 
 If you add or rename a chapter, update `nav:` in `mkdocs.yml`, the series

@@ -12,8 +12,6 @@ cd "$(dirname "$0")/.."
 STAGE="build/docs"
 OUT="site"
 
-# Never delete $OUT itself: it is bind-mounted into the running nginx container,
-# and replacing the directory breaks the mount. MkDocs clears its contents.
 rm -rf "$STAGE"
 mkdir -p "$STAGE" "$OUT"
 
@@ -40,4 +38,4 @@ done < <(find guides -name '*.md')
 echo
 echo "Built $OUT"
 echo "Preview:  python3 -m http.server -d $OUT 8000"
-echo "Publish:  docker compose up -d   # then edgible app create"
+echo "Publish:  docker compose up -d --build   # then edgible app create"
