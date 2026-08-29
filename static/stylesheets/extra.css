@@ -171,10 +171,12 @@
   height: 1.3rem;
 }
 
+/* The logo is absolutely positioned at top .8rem, so at 1.3rem tall it ends at
+   2.1rem. The title text must start below that or the two overlap. */
 @media screen and (max-width: 76.234375em) {
   .md-nav--primary .md-nav__title {
-    height: 3.6rem;
-    padding-top: 1.4rem;
+    height: 4.2rem;
+    padding-top: 2.5rem;
     line-height: 1.4rem;
   }
 }
@@ -235,6 +237,18 @@
   background: url("../images/edgible-symbol-white.png") no-repeat center;
   background-size: contain;
   opacity: 0.85;
+}
+
+/* Table of contents panel. Lighter than the code background so the two greys
+   read as different surfaces rather than competing. Applied to the inner
+   element, not the sidebar, so the sticky positioning is untouched. */
+@media screen and (min-width: 76.25em) {
+  [data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__inner {
+    background-color: #f5f6fa;
+    border: 1px solid #e6e9f2;
+    border-radius: 0.2rem;
+    padding: 0.4rem 0.2rem 0.6rem;
+  }
 }
 
 /* The search field sits on the header, so it takes tints of the header colour
