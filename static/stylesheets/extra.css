@@ -277,6 +277,9 @@
 .md-footer-meta__inner > .md-social {
   order: 1;
   margin-left: 0;
+  /* Material's .4rem right margin plus the credit's own gap reads as a gulf
+     between the icon and the text that belongs with it. */
+  margin-right: 0;
   padding-left: 0;
 }
 
@@ -287,7 +290,7 @@
   display: flex;
   flex-direction: column;
   line-height: 1.4;
-  margin-left: 0.6rem;
+  margin-left: 0.3rem;
   font-size: 0.6rem;
   color: var(--md-footer-fg-color--light);
 }
