@@ -1,15 +1,19 @@
 {#-
-  Overrides the Material partial for two reasons: the MkDocs credit needs to be
-  a separate element so it can sit beside the social links, and the copyright
-  needs to break across two lines on narrow screens. Lines come from
-  extra.copyright_lines; config.copyright is the fallback.
+  Overrides the Material partial for three reasons: the MkDocs credit needs to
+  be a separate element so it can sit beside the social links, the copyright
+  needs to break across two lines on narrow screens, and the Edgible symbol has
+  to be a link to the main site rather than a background image. Copyright lines
+  come from extra.copyright_lines; config.copyright is the fallback.
 -#}
+{% set homepage = config.extra.homepage | d("https://www.edgible.com", true) %}
 {% if not config.extra.generator == false %}
   <div class="md-credit">
-    Made with
-    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
-      Material for MkDocs
-    </a>
+    <span class="md-credit__line">Made with</span>
+    <span class="md-credit__line">
+      <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+        Material for MkDocs
+      </a>
+    </span>
   </div>
 {% endif %}
 <div class="md-copyright">
@@ -22,4 +26,7 @@
       <span class="md-copyright__line">{{ config.copyright }}</span>
     {% endif %}
   </div>
+  <a class="md-symbol" href="{{ homepage }}" title="{{ config.site_author }}">
+    <img src="{{ 'images/edgible-symbol-white.png' | url }}" alt="{{ config.site_author }}">
+  </a>
 </div>

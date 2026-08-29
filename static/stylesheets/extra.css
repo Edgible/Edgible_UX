@@ -180,6 +180,10 @@
 [data-md-color-scheme="slate"] {
   --md-footer-bg-color: var(--edgible-blue);
   --md-footer-bg-color--dark: #000022;
+  /* Material's footer text is 70% and 45% white. Against this navy, at the small
+     size the footer uses, both are too faint to read. */
+  --md-footer-fg-color--light: rgba(255, 255, 255, 0.88);
+  --md-footer-fg-color--lighter: rgba(255, 255, 255, 0.75);
 }
 
 [data-md-color-scheme="default"][data-md-color-primary] {
@@ -276,11 +280,16 @@
   padding-left: 0;
 }
 
+/* The credit stacks over two lines and takes the copyright's size and colour, so
+   the two blocks at either end of the row read as a pair. */
 .md-footer-meta__inner > .md-credit {
   order: 2;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
   margin-left: 0.6rem;
   font-size: 0.6rem;
-  color: var(--md-primary-bg-color--light);
+  color: var(--md-footer-fg-color--light);
 }
 
 .md-footer-meta__inner > .md-credit a {
@@ -297,6 +306,7 @@
   justify-content: flex-end;
   margin-left: auto;
   font-size: 0.6rem;
+  color: var(--md-footer-fg-color--light);
 }
 
 .md-copyright .md-copyright__highlight {
@@ -307,16 +317,25 @@
   color: inherit;
 }
 
-.md-copyright::after {
-  content: "";
+/* A link rather than a background image, so it can carry the reader to the main
+   Edgible site the way the header logo does. */
+.md-copyright .md-symbol {
+  display: block;
   flex: 0 0 auto;
   margin-left: 0.7rem;
   margin-right: 0.6rem;
+  line-height: 0;
+  opacity: 0.85;
+}
+
+.md-copyright .md-symbol:hover {
+  opacity: 1;
+}
+
+.md-copyright .md-symbol img {
+  display: block;
   width: 1.4rem;
   height: 1.4rem;
-  background: url("../images/edgible-symbol-white.png") no-repeat center;
-  background-size: contain;
-  opacity: 0.85;
 }
 
 /* A phone has room for one row only, so the MkDocs credit goes: the GitHub icon

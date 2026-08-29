@@ -66,6 +66,9 @@ extra_css:
   - stylesheets/extra.css
 
 extra:
+  # Material links the header and drawer logo here. These guides are a satellite
+  # of the main site, so the logo goes there rather than to this site's index.
+  homepage: https://www.edgible.com
   # Rendered as two lines by overrides/partials/copyright.html so the footer
   # holds together on a phone.
   copyright_lines:
