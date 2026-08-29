@@ -50,6 +50,9 @@
 
 :root {
   --edgible-blue: #000033;
+  /* Table headers only. The navy is reserved for the header and footer bands,
+     and a table inside the content column needs to read as content. */
+  --edgible-blue-mid: #2e4a9e;
   --edgible-orange-light: #ffa07a;
   --edgible-orange-dark: #8b4513;
 
@@ -94,6 +97,58 @@
   background-color: transparent;
   border-color: transparent;
   padding: 0;
+}
+
+/* Tables. Material ships them borderless with a plain header, which leaves the
+   feature tables hard to scan across a row. Give the header a medium blue, band
+   the rows faintly, and make hover clearly stronger than that banding so the row
+   under the cursor is unambiguous. */
+.md-typeset table:not([class]) {
+  border-radius: 0.2rem;
+  /* Clips the header's corners to the rounded table edge. */
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--edgible-blue-mid);
+  color: #ffffff;
+  font-weight: 600;
+  min-width: auto;
+}
+
+/* Material draws cell separators as a top border on every row, which doubles up
+   under the header. */
+.md-typeset table:not([class]) thead + tbody tr:first-child td {
+  border-top: none;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) {
+  border: 1px solid #d5daea;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) tbody tr:nth-child(2n) {
+  background-color: #f5f6fa;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) tbody tr:hover {
+  background-color: #e2e6f1;
+  box-shadow: none;
+}
+
+/* Lighter again on the dark scheme, where #2e4a9e sits too close to the page
+   background to separate the header from the first row. */
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) th {
+  background-color: #3f5fbf;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tbody tr:nth-child(2n) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.09);
+  box-shadow: none;
 }
 
 /* Jost is a geometric sans with a small x-height, so it reads light at
@@ -191,6 +246,19 @@
 .md-header__button.md-logo svg {
   height: 1rem;
   width: auto;
+}
+
+/* Material stacks three separate gaps under the header: a 1.5rem top margin on
+   the main grid, 1.2rem of content padding, and an empty 0.8rem ::before spacer.
+   That reads as a band of white space above every page title, so the grid margin
+   comes down and the spacer goes. The sidebars sit inside the same grid, so nav
+   and table of contents move up with the content. */
+.md-main__inner {
+  margin-top: 0.8rem;
+}
+
+.md-content__inner::before {
+  display: none;
 }
 
 /* Footer row, left to right: GitHub icon, MkDocs credit, then the copyright and

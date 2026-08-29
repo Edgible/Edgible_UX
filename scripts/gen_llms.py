@@ -40,6 +40,10 @@ def hook(path: Path) -> str:
                 if candidate:
                     text = re.sub(r"[*_`]", "", candidate)
                     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
+                    # Chapter hooks are one sentence, but a page can open with a
+                    # full paragraph. One sentence is enough for an index entry.
+                    # Splitting only before a capital keeps 127.0.0.1 intact.
+                    text = re.split(r"\.\s+(?=[A-Z])", text)[0]
                     return text.rstrip(".")
             break
     return ""
@@ -66,7 +70,11 @@ def build_index() -> str:
     out.append("")
     out.append("## Start here")
     out.append("")
-    out.append(f"- [Start here]({url_for('index.md')}): reading order for the three guides")
+    index = REPO / "README.md"
+    out.append(
+        f"- [{heading(index)}]({url_for('index.md')}): what Edgible does, "
+        "what the guides cover, and where to start"
+    )
     cap = REPO / "capabilities.md"
     out.append(f"- [{heading(cap)}]({url_for('capabilities.md')}): {hook(cap)}")
     out.append("")

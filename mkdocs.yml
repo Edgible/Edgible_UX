@@ -76,7 +76,7 @@ extra:
       link: https://github.com/Edgible/Edgible_UX
 
 nav:
-  - Start here: README.md
+  - Welcome: README.md
   - What Edgible does: capabilities.md
   - 1. n8n on Edgible:
       - guides/n8n-on-edgible/README.md

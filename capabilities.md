@@ -1,7 +1,5 @@
 # What Edgible does, and where these guides prove it
 
-Every claim on this page has a numbered chapter and a smoke test behind it.
-
 Edgible publishes a service running on a machine you own at a public HTTPS hostname, using only an outbound connection on TCP 443. The alternatives each cost something. Port-forwarding exposes the service, and anything it holds, to the open internet. A mesh VPN requires enrolling every device that will ever need access. A reverse proxy with certbot and dynamic DNS means you operate TLS and a domain yourself. With Edgible the machine dials out, and a hostname appears with a certificate already issued and an auth mode already applied.
 
 ## The three differentiators
@@ -14,7 +12,7 @@ Edgible publishes a service running on a machine you own at a public HTTPS hostn
 
 ## Feature, benefit, and where it is demonstrated
 
-How is the observable proof: what you watch happen.
+Where names the chapter that demonstrates the feature. How is the observable proof: what you watch happen.
 
 | Feature | Benefit | Where | How |
 | --- | --- | --- | --- |
@@ -51,4 +49,4 @@ Port-forwarding and the firewall rules around it. Dynamic DNS. Certbot and renew
 
 ---
 
-Start at the [README](README.md) for reading order, or go to [1. n8n on Edgible](guides/n8n-on-edgible/README.md).
+Start at [Welcome](README.md) for where to begin, or go straight to [1. n8n on Edgible](guides/n8n-on-edgible/README.md).

@@ -1,19 +1,36 @@
-# Edgible_UX
+# Welcome
 
-Tutorials and getting-started guides for [Edgible](https://edgible.com). This repo is documentation. It is not the OpenClaw skill, and not the Edgible CLI.
+Edgible publishes a service running on a machine you own at a public HTTPS hostname. This site is a growing library of guides that show that happening, one use case at a time, with commands you can paste and results you can check.
 
-The OpenClaw skill (`/skill edgible`) lives in [openclaw-edgible](https://github.com/Edgible/openclaw-edgible). To install and check it, see [5. OpenClaw skill for the Edgible CLI](guides/openclaw-on-edgible/05-edgible-openclaw-skill.md). Do not copy skill folders from this repo.
+## What Edgible does
 
-There are three guides. Guides 1 and 2 publish an app from the machine that runs it; [Edgible on an Ubuntu VM](guides/openclaw-on-edgible/01-edgible-on-vm.md) is the shared Hello World chapter for all three series, not the start of OpenClaw. Guide 3 covers the remote caller case: Ollama stays on one home machine, and n8n and OpenClaw on other self-hosted VMs call it. Telegram and WhatsApp are OpenClaw chat clients, not Edgible apps, and not an n8n chapter.
+The machine you are serving from dials out on TCP 443 and keeps that connection open. A hostname then appears, with a certificate already issued and an access rule already applied. Nothing listens for inbound connections, so there is no port to forward and no firewall hole to maintain.
 
-- **1. n8n on Edgible.** Publishing plus per-app auth: one process, an `org` editor and a `None` webhook hostname.
-- **2. OpenClaw on Edgible.** Control UI over HTTPS with `org`, from a phone, with no port-forward and no mesh VPN on the laptop.
-- **3. LLM on Edgible.** Self-hosted Ollama with the GPU on the Mac, published with `api-key`, called from a remote self-hosted n8n or OpenClaw VM.
+Each published hostname carries its own auth mode: `org` puts a login from your organisation in front of it, `api-key` accepts a bearer secret from machines that cannot log in, and `None` leaves it open for callers like payment or repository webhooks. Because the rule belongs to the hostname rather than to the service, one running process can be published more than once with different protection on each hostname.
 
-For a one-page summary, [What Edgible does, and where these guides prove it](capabilities.md) maps each feature to the chapter that demonstrates it.
+What you do not have to run: dynamic DNS, certbot and its renewal cron, a hand-written nginx or Caddy config, or a mesh VPN that every device needs enrolling into.
 
-## Contents
+## Why these guides are worth your time
 
-- [1. n8n on Edgible](guides/n8n-on-edgible/README.md). Six chapters: `org` editor, `None` webhooks, cron, smoke GET, teardown. Set up the VM first. This series does not use OpenClaw.
-- [2. OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). Ten short chapters: VM and Edgible, OpenClaw, Control UI, public page, skill, Telegram, WhatsApp, Cursor, models, teardown. Skip the VM chapter if you already did it for n8n.
-- [3. LLM on Edgible](guides/llm-on-edgible/README.md). Publish a self-hosted Ollama, then call it from a remote n8n (`/v1`) and OpenClaw (native API) with a bearer secret.
+Product pages assert things. These guides show them, on ordinary hardware, in the order you would actually do them.
+
+- Every chapter is one job. It states what you will have when you finish, and ends with a checklist that mirrors it item for item, so you always know whether the step worked.
+- Commands are literal and complete, and each chapter says which machine to run them on.
+- Every claim has an observable check behind it. When a guide says a service is reachable without a forwarded port, the test is loading it on a phone with Wi-Fi turned off.
+- Each series ends with a teardown chapter, so a guide you tried out of curiosity leaves nothing running.
+
+Nothing here needs a paid account with a third party to complete, and the services being published are stock software, unmodified.
+
+## The guides
+
+New guides get added over time, each taking a service people genuinely self-host and putting it online the same way. The three available now:
+
+- [1. n8n on Edgible](guides/n8n-on-edgible/README.md). A workflow platform whose editor holds all your credentials, kept behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
+- [2. OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). An AI agent you can reach from your phone over HTTPS, with its Gateway still bound to loopback on the machine and no VPN on the phone. Ten short chapters.
+- [3. LLM on Edgible](guides/llm-on-edgible/README.md). A self-hosted Ollama that keeps the model weights and the GPU at home, published with `api-key` and called over HTTPS by other machines you own. Four chapters.
+
+## Where to start
+
+If you have never published anything with Edgible, start with [Edgible on an Ubuntu VM](guides/openclaw-on-edgible/01-edgible-on-vm.md). It installs the serving agent and gets one page online, and it is the shared first chapter for all three guides rather than the start of the OpenClaw one. From there, pick whichever guide is closest to something you already run.
+
+If you would rather see the feature list first, [What Edgible does, and where these guides prove it](capabilities.md) maps each capability to the chapter that demonstrates it.

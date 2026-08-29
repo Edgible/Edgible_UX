@@ -10,7 +10,8 @@ not the OpenClaw skill; the skill lives in
 The markdown at the repo root is canonical. `build/` and `site/` are generated
 by `scripts/build.sh` and are not checked in, so never edit files there.
 
-- `README.md`: reading order for the three guides.
+- `README.md`: the landing page. What Edgible does, why the guides are worth
+  reading, and where to start. The guide list here grows as guides are added.
 - `capabilities.md`: each Edgible feature mapped to the chapter that proves it.
 - `guides/<series>/README.md`: chapter list for that series.
 - `guides/<series>/NN-*.md`: one chapter, one job, one smoke test.
