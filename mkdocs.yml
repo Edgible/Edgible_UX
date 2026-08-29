@@ -66,6 +66,11 @@ extra_css:
   - stylesheets/extra.css
 
 extra:
+  # Rendered as two lines by overrides/partials/copyright.html so the footer
+  # holds together on a phone.
+  copyright_lines:
+    - Copyright © 2026
+    - Edgible Pty Ltd.
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/Edgible/Edgible_UX

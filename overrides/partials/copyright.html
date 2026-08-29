@@ -1,7 +1,8 @@
 {#-
-  Overrides the Material partial so the MkDocs credit is a separate element.
-  Upstream puts it inside .md-copyright, which makes it impossible to place the
-  credit beside the social links and the copyright beside the hexagon.
+  Overrides the Material partial for two reasons: the MkDocs credit needs to be
+  a separate element so it can sit beside the social links, and the copyright
+  needs to break across two lines on narrow screens. Lines come from
+  extra.copyright_lines; config.copyright is the fallback.
 -#}
 {% if not config.extra.generator == false %}
   <div class="md-credit">
@@ -12,9 +13,13 @@
   </div>
 {% endif %}
 <div class="md-copyright">
-  {% if config.copyright %}
-    <div class="md-copyright__highlight">
-      {{ config.copyright }}
-    </div>
-  {% endif %}
+  <div class="md-copyright__highlight">
+    {% if config.extra.copyright_lines %}
+      {% for line in config.extra.copyright_lines %}
+        <span class="md-copyright__line">{{ line }}</span>
+      {% endfor %}
+    {% elif config.copyright %}
+      <span class="md-copyright__line">{{ config.copyright }}</span>
+    {% endif %}
+  </div>
 </div>

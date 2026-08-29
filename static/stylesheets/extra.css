@@ -193,16 +193,15 @@
   width: auto;
 }
 
-/* The copyright and the hexagon travel together at the right of the footer:
-   margin-left:auto on the copyright pushes the pair over, and the mark keeps a
-   margin off the right edge rather than sitting hard against it. */
+/* Footer row, left to right: GitHub icon, MkDocs credit, then the copyright and
+   the hexagon pushed to the right. Wrapping is allowed so a phone gets two rows
+   instead of four squeezed columns. */
 .md-footer-meta__inner {
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 0.5rem;
 }
 
-/* Footer row, left to right: GitHub icon, MkDocs credit, then the copyright and
-   the hexagon pushed to the right. The ::after needs an explicit order because
-   a pseudo element defaults to 0 and would otherwise precede these children. */
 .md-footer-meta__inner > .md-social {
   order: 1;
   margin-left: 0;
@@ -212,7 +211,7 @@
 .md-footer-meta__inner > .md-credit {
   order: 2;
   margin-left: 0.6rem;
-  font-size: 0.64rem;
+  font-size: 0.6rem;
   color: var(--md-primary-bg-color--light);
 }
 
@@ -220,17 +219,30 @@
   color: inherit;
 }
 
+/* The hexagon hangs off the copyright rather than the row, so the mark and the
+   text it belongs to wrap as one unit. The mark keeps a margin off the right
+   edge rather than sitting hard against it. */
 .md-footer-meta__inner > .md-copyright {
   order: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   margin-left: auto;
-  text-align: right;
+  font-size: 0.6rem;
 }
 
-.md-footer-meta__inner::after {
+.md-copyright .md-copyright__highlight {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  line-height: 1.4;
+  color: inherit;
+}
+
+.md-copyright::after {
   content: "";
-  order: 4;
   flex: 0 0 auto;
-  margin-left: 0.9rem;
+  margin-left: 0.7rem;
   margin-right: 0.6rem;
   width: 1.4rem;
   height: 1.4rem;
@@ -238,6 +250,10 @@
   background-size: contain;
   opacity: 0.85;
 }
+
+/* Material gives the copyright a full-width basis on narrow viewports, so on a
+   phone the row above splits in two: social plus credit, then the copyright and
+   its hexagon on their own line. */
 
 /* Table of contents panel. Lighter than the code background so the two greys
    read as different surfaces rather than competing. Applied to the inner
