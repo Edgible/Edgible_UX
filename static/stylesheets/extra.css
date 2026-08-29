@@ -25,6 +25,29 @@
   font-display: swap;
 }
 
+/* Iosevka for code. Its advance width is 0.5em against the 0.6em of most
+ * monospace faces, so the N.0 diagrams fit the content column without shrinking
+ * the text. Self-hosted so widths are identical on every platform, which matters
+ * when a diagram is sized to fit. SIL Open Font License: fonts/Iosevka-OFL.txt.
+ *
+ * Subset from @fontsource/iosevka to the characters these guides use plus
+ * Latin-1, arrows and box drawing: 2 MB down to 40 KB. */
+@font-face {
+  font-family: "Iosevka";
+  src: url("../fonts/Iosevka-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Iosevka";
+  src: url("../fonts/Iosevka-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --edgible-blue: #000033;
   --edgible-orange-light: #ffa07a;
@@ -36,7 +59,7 @@
 /* Commands and output must stay monospace: column alignment in the ASCII
    diagrams depends on it. */
 :root {
-  --md-code-font: "SFMono-Regular", "SF Mono", "Menlo", "Consolas", monospace;
+  --md-code-font: "Iosevka", "SFMono-Regular", "SF Mono", "Menlo", monospace;
 }
 
 /* Material's default code background is #f5f5f5, which reads as white next to
