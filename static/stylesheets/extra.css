@@ -242,7 +242,7 @@
 /* Table of contents panel. Lighter than the code background so the two greys
    read as different surfaces rather than competing. Applied to the inner
    element, not the sidebar, so the sticky positioning is untouched. */
-@media screen and (min-width: 76.25em) {
+@media screen and (min-width: 60em) {
   [data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__inner {
     background-color: #f5f6fa;
     border: 1px solid #e6e9f2;
