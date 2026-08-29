@@ -338,14 +338,9 @@
   height: 1.4rem;
 }
 
-/* A phone has room for one row only, so the MkDocs credit goes: the GitHub icon
-   and the copyright are the parts worth keeping. The copyright also has to give
-   up Material's full-width basis to share that row. */
+/* Stacked over two lines, the credit is narrow enough to keep on a phone. The
+   copyright has to give up Material's full-width basis to share the row. */
 @media screen and (max-width: 44.9375em) {
-  .md-footer-meta__inner > .md-credit {
-    display: none;
-  }
-
   .md-footer-meta__inner > .md-copyright {
     flex: 0 1 auto;
     width: auto;
