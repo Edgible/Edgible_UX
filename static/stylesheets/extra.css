@@ -66,8 +66,8 @@
    white body text. A cooler, slightly deeper grey separates commands, output
    and the N.0 diagrams from the prose. */
 [data-md-color-scheme="default"] {
-  --md-code-bg-color: #eef0f6;
-  --edgible-code-border: #dcdfea;
+  --md-code-bg-color: #e2e6f1;
+  --edgible-code-border: #c8cee1;
 }
 
 [data-md-color-scheme="default"] .md-typeset pre > code,
@@ -143,6 +143,27 @@
   color: var(--edgible-blue);
 }
 
+/* Material hides the logo below 76.234375em and shows the drawer button
+   instead. Keep the logo at every width, and reorder it to sit immediately
+   right of that button: in the DOM the logo comes first, so flex order has to
+   move it. Everything else keeps its document order via the shared order: 3. */
+.md-header__inner > * {
+  order: 3;
+}
+
+.md-header__inner > label.md-header__button {
+  order: 1;
+}
+
+.md-header__inner > .md-header__button.md-logo {
+  order: 2;
+  display: block;
+}
+
+.md-header__inner > .md-header__title {
+  order: 3;
+}
+
 /* The logo is a wordmark rather than a square mark, so it needs more width than
    Material's default logo box allows. */
 .md-header__button.md-logo {
@@ -155,16 +176,34 @@
   width: auto;
 }
 
-/* The hexagon mark sits at the far right of the footer. margin-left:auto pushes
-   it past the copyright and the Material credit, which share the flex row. */
+/* The copyright and the hexagon travel together at the right of the footer:
+   margin-left:auto on the copyright pushes the pair over, and the mark keeps a
+   margin off the right edge rather than sitting hard against it. */
 .md-footer-meta__inner {
   align-items: center;
 }
 
+/* Social links move ahead of the copyright so the copyright sits directly
+   beside the hexagon. The ::after needs an explicit order because a pseudo
+   element defaults to 0 and would otherwise precede the ordered children. */
+.md-footer-meta__inner > .md-social,
+.md-footer-meta__inner > .md-footer-social {
+  order: 1;
+  margin-left: auto;
+}
+
+.md-footer-meta__inner > .md-copyright {
+  order: 2;
+  margin-left: 0.9rem;
+  text-align: right;
+}
+
 .md-footer-meta__inner::after {
   content: "";
-  margin-left: auto;
+  order: 3;
   flex: 0 0 auto;
+  margin-left: 0.9rem;
+  margin-right: 0.6rem;
   width: 1.4rem;
   height: 1.4rem;
   background: url("../images/edgible-symbol-white.png") no-repeat center;
