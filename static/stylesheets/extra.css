@@ -99,6 +99,40 @@
   padding: 0;
 }
 
+/* The last-updated line. Quiet enough not to compete with the Next section it
+   follows, but present on every page. */
+.md-page-updated {
+  margin: 0 0.8rem 1.2rem;
+  font-size: 0.6rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* The copy-as-markdown action. Material styles the anchors in the action row,
+   but not a button, so this borrows the same look and swaps the icon for a tick
+   while the clipboard write is fresh. */
+.md-content__button.md-copy-md {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: currentcolor;
+}
+
+.md-copy-md .md-copy-md__done,
+.md-copy-md .md-copy-md__failed,
+.md-copy-md[data-md-copied] .md-copy-md__idle,
+.md-copy-md[data-md-copy-failed] .md-copy-md__idle {
+  display: none;
+}
+
+/* A browser can refuse the clipboard write. Saying so is better than a tick
+   that lies; the link beside the button still opens the markdown. */
+.md-copy-md[data-md-copied] .md-copy-md__done,
+.md-copy-md[data-md-copy-failed] .md-copy-md__failed {
+  display: block;
+  color: var(--md-accent-fg-color);
+}
+
 /* Tables. Material ships them borderless with a plain header, which leaves the
    feature tables hard to scan across a row. Give the header a medium blue, band
    the rows faintly, and make hover clearly stronger than that banding so the row

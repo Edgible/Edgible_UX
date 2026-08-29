@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{#-
+  The date each page's markdown last changed, from git via scripts/add_dates.py.
+  A reader deciding whether a chapter still matches the product needs to see it,
+  and the time element gives a crawler or an agent something machine-readable.
+-#}
+{% block content %}
+  {{ super() }}
+  {% if page.meta and page.meta.updated %}
+    <div class="md-page-updated">
+      Last updated
+      <time datetime="{{ page.meta.updated }}">{{ page.meta.updated_display }}</time>
+    </div>
+  {% endif %}
+{% endblock %}

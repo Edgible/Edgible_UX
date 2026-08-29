@@ -65,6 +65,9 @@ markdown_extensions:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/copy-markdown.js
+
 extra:
   # Material links the header and drawer logo here. These guides are a satellite
   # of the main site, so the logo goes there rather than to this site's index.

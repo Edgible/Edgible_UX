@@ -1,0 +1,35 @@
+{#-
+  Extends the Material partial. The upstream edit action is kept as-is; the two
+  Edgible actions in front of it hand the page to an AI tool, either by copying
+  the markdown source to the clipboard or by opening it. Readers arriving with
+  an agent want the source, not the rendered page.
+-#}
+{% set md_url = page.file.src_uri | url %}
+<button
+  class="md-content__button md-icon md-copy-md"
+  data-md-copy-markdown="{{ md_url }}"
+  title="Copy this page as markdown, to paste into an AI tool"
+>
+  <span class="md-copy-md__idle">
+    {% include ".icons/material/content-copy.svg" %}
+  </span>
+  <span class="md-copy-md__done">
+    {% include ".icons/material/check.svg" %}
+  </span>
+  <span class="md-copy-md__failed">
+    {% include ".icons/material/alert-outline.svg" %}
+  </span>
+</button>
+<a
+  href="{{ md_url }}"
+  title="View the markdown source of this page"
+  class="md-content__button md-icon"
+>
+  {% include ".icons/material/language-markdown-outline.svg" %}
+</a>
+{% if page.edit_url and "content.action.edit" in features %}
+  <a href="{{ page.edit_url }}" title="{{ lang.t('action.edit') }}" class="md-content__button md-icon">
+    {% set icon = config.theme.icon.edit or "material/file-edit-outline" %}
+    {% include ".icons/" ~ icon ~ ".svg" %}
+  </a>
+{% endif %}

@@ -5,7 +5,7 @@ FROM python:3.12-slim AS build
 WORKDIR /src
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends bash findutils \
+    && apt-get install -y --no-install-recommends bash findutils git \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./
@@ -17,6 +17,9 @@ COPY static ./static
 COPY scripts ./scripts
 COPY README.md capabilities.md ./
 COPY guides ./guides
+# scripts/add_dates.py reads commit dates, so the build needs the history. Last,
+# because it changes on every commit and would otherwise bust the layers above.
+COPY .git ./.git
 
 # Fails the image build on a broken internal link, because mkdocs runs --strict.
 RUN ./scripts/build.sh

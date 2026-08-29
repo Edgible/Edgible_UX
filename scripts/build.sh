@@ -22,10 +22,14 @@ cp capabilities.md "$STAGE/capabilities.md"
 cp -R guides "$STAGE/guides"
 cp static/robots.txt "$STAGE/robots.txt"
 cp -R static/stylesheets "$STAGE/stylesheets"
+cp -R static/javascripts "$STAGE/javascripts"
 cp -R static/fonts "$STAGE/fonts"
 cp -R static/images "$STAGE/images"
 
 python3 scripts/gen_llms.py "$STAGE"
+
+# After gen_llms, so the front matter is not mistaken for a page's hook.
+python3 scripts/add_dates.py meta "$STAGE"
 
 mkdocs build --strict
 
@@ -37,6 +41,8 @@ while IFS= read -r file; do
   mkdir -p "$OUT/$(dirname "$file")"
   cp "$file" "$OUT/$file"
 done < <(find guides -name '*.md')
+
+python3 scripts/add_dates.py append "$OUT"
 
 echo
 echo "Built $OUT"
