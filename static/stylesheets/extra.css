@@ -39,6 +39,40 @@
   --md-code-font: "SFMono-Regular", "SF Mono", "Menlo", "Consolas", monospace;
 }
 
+/* Material's default code background is #f5f5f5, which reads as white next to
+   white body text. A cooler, slightly deeper grey separates commands, output
+   and the N.0 diagrams from the prose. */
+[data-md-color-scheme="default"] {
+  --md-code-bg-color: #eef0f6;
+  --edgible-code-border: #dcdfea;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code,
+[data-md-color-scheme="default"] .md-typeset .highlight > pre {
+  border: 1px solid var(--edgible-code-border);
+  border-radius: 0.15rem;
+}
+
+/* Inline fragments sit inside sentences, so they need padding to avoid
+   crowding the surrounding words. */
+[data-md-color-scheme="default"] .md-typeset code:not(pre code) {
+  border: 1px solid var(--edgible-code-border);
+  border-radius: 0.15rem;
+  padding: 0.05em 0.35em;
+}
+
+/* Code inside a link or a heading keeps the surrounding colour rather than
+   turning into a grey chip. */
+.md-typeset a code:not(pre code),
+.md-typeset h1 code,
+.md-typeset h2 code,
+.md-typeset h3 code,
+.md-typeset h4 code {
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0;
+}
+
 /* Jost is a geometric sans with a small x-height, so it reads light at
    Material's default body size. */
 .md-typeset {
@@ -94,12 +128,25 @@
 
 .md-header__button.md-logo img,
 .md-header__button.md-logo svg {
-  height: 1.4rem;
+  height: 1rem;
   width: auto;
 }
 
+/* The hexagon mark sits at the far right of the footer. margin-left:auto pushes
+   it past the copyright and the Material credit, which share the flex row. */
 .md-footer-meta__inner {
   align-items: center;
+}
+
+.md-footer-meta__inner::after {
+  content: "";
+  margin-left: auto;
+  flex: 0 0 auto;
+  width: 1.4rem;
+  height: 1.4rem;
+  background: url("../images/edgible-symbol-white.png") no-repeat center;
+  background-size: contain;
+  opacity: 0.85;
 }
 
 /* The search field sits on the header, so it takes tints of the header colour

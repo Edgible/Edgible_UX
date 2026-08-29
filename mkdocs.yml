@@ -51,6 +51,11 @@ markdown_extensions:
   - toc:
       permalink: true
       slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+  # The Verify lists are markdown task lists; without this they render as
+  # literal "[ ]" text. Clickable so a reader can tick off each check.
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.inlinehilite
