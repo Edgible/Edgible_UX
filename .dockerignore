@@ -1,0 +1,7 @@
+# .git is deliberately not ignored: scripts/add_dates.py reads commit dates
+# during the image build.
+.venv/
+build/
+site/
+__pycache__/
+.DS_Store
