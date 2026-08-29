@@ -164,6 +164,21 @@
   order: 3;
 }
 
+/* The drawer header repeats the logo at 2.4rem, which is oversized for a
+   wordmark. Shrink it and close up the banner it sits in. */
+.md-nav__title .md-nav__button.md-logo img,
+.md-nav__title .md-nav__button.md-logo svg {
+  height: 1.3rem;
+}
+
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title {
+    height: 3.6rem;
+    padding-top: 1.4rem;
+    line-height: 1.4rem;
+  }
+}
+
 /* The logo is a wordmark rather than a square mark, so it needs more width than
    Material's default logo box allows. */
 .md-header__button.md-logo {
@@ -183,24 +198,35 @@
   align-items: center;
 }
 
-/* Social links move ahead of the copyright so the copyright sits directly
-   beside the hexagon. The ::after needs an explicit order because a pseudo
-   element defaults to 0 and would otherwise precede the ordered children. */
-.md-footer-meta__inner > .md-social,
-.md-footer-meta__inner > .md-footer-social {
+/* Footer row, left to right: GitHub icon, MkDocs credit, then the copyright and
+   the hexagon pushed to the right. The ::after needs an explicit order because
+   a pseudo element defaults to 0 and would otherwise precede these children. */
+.md-footer-meta__inner > .md-social {
   order: 1;
-  margin-left: auto;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.md-footer-meta__inner > .md-credit {
+  order: 2;
+  margin-left: 0.6rem;
+  font-size: 0.64rem;
+  color: var(--md-primary-bg-color--light);
+}
+
+.md-footer-meta__inner > .md-credit a {
+  color: inherit;
 }
 
 .md-footer-meta__inner > .md-copyright {
-  order: 2;
-  margin-left: 0.9rem;
+  order: 3;
+  margin-left: auto;
   text-align: right;
 }
 
 .md-footer-meta__inner::after {
   content: "";
-  order: 3;
+  order: 4;
   flex: 0 0 auto;
   margin-left: 0.9rem;
   margin-right: 0.6rem;

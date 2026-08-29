@@ -19,6 +19,7 @@ copyright: Copyright &copy; 2026 Edgible Pty Ltd.
 
 theme:
   name: material
+  custom_dir: overrides
   # Jost is self-hosted in static/fonts, so nothing is fetched from Google.
   font: false
   logo: images/edgible-logo-white.png

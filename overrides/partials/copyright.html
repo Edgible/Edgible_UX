@@ -1,0 +1,20 @@
+{#-
+  Overrides the Material partial so the MkDocs credit is a separate element.
+  Upstream puts it inside .md-copyright, which makes it impossible to place the
+  credit beside the social links and the copyright beside the hexagon.
+-#}
+{% if not config.extra.generator == false %}
+  <div class="md-credit">
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  </div>
+{% endif %}
+<div class="md-copyright">
+  {% if config.copyright %}
+    <div class="md-copyright__highlight">
+      {{ config.copyright }}
+    </div>
+  {% endif %}
+</div>
