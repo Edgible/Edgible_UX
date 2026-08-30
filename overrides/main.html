@@ -32,6 +32,19 @@
 -#}
 {% block extrahead %}
   {{ super() }}
+  {#-
+    Umami, self-hosted on a machine Edgible publishes, which is the same thing
+    the website guide teaches. It is cookieless and stores no personal data, so
+    there is no consent banner to add. data-domains keeps a local build or a
+    preview server from reporting into the live numbers, and defer means it
+    never delays the page.
+  -#}
+  <script
+    defer
+    src="https://umami.emergile.com/script.js"
+    data-website-id="63ca5026-fe9d-4616-8055-d9976350771e"
+    data-domains="guides.edgible.com"
+  ></script>
   {%- set page_url = page.canonical_url if page else config.site_url -%}
   {%- set title_parts = page.title.split(". ", 1) if page and page.title else [] -%}
   {%- set bare_title = title_parts[1] if title_parts | length == 2 and title_parts[0] | int > 0 else (page.title if page else "") -%}
