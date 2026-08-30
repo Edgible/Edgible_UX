@@ -42,6 +42,13 @@ mkdocs build --strict
 # Canonical URLs and image dimensions, which MkDocs cannot get right on its own.
 python3 scripts/polish_html.py "$OUT"
 
+# IndexNow proves ownership by asking for a file named after the key, holding the
+# key. The key is public by design, so it lives in the repo; publishing it here
+# rather than committing the served copy keeps the name and the contents from
+# drifting apart.
+INDEXNOW_KEY="$(tr -d '[:space:]' < static/indexnow.key)"
+printf '%s' "$INDEXNOW_KEY" > "$OUT/$INDEXNOW_KEY.txt"
+
 # Serve the raw markdown next to the rendered HTML.
 cp README.md "$OUT/README.md"
 cp README.md "$OUT/index.md"

@@ -25,6 +25,24 @@ by `scripts/build.sh` and are not checked in, so never edit files there.
   series links to it from its `Need first:` line rather than repeating it.
 - `guides/<series>/NN-*.md`: one chapter, one job, one smoke test.
 
+## What the build publishes besides pages
+
+`scripts/build.sh` writes several files that no page links to, and each exists
+for a reader that is not a person.
+
+- `robots.txt` and `sitemap.xml`, the second with a date per page from git.
+- `llms.txt` and `llms-full.txt`, from `scripts/gen_llms.py`.
+- A copy of every page's markdown at the same path as its HTML, served
+  `noindex` so the pair does not compete in search results.
+- `<key>.txt` at the root, from `static/indexnow.key`, which is how IndexNow
+  checks that whoever submits URLs controls the site. The key is public by
+  design. The deploy repo submits the sitemap's URLs after each deploy, which
+  covers Bing, Yandex, Seznam and Naver; Google takes no part in IndexNow and is
+  reached through Search Console instead.
+- Per-page structured data and titles come from `overrides/main.html`, and
+  `scripts/polish_html.py` fixes the canonical URL of the home page and fills in
+  image dimensions. Neither is something MkDocs can do here.
+
 ## Chapter structure
 
 Every chapter follows the same shape, and new chapters must match it:
