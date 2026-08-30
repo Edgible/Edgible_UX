@@ -6,7 +6,7 @@
 
 OpenClaw and n8n each have their own VM on a different home computer from the Mac, and an agent that drives tools needs a model it can actually reach. The Gateway cannot be pointed at `192.168.64.1` or UTM `$HOST`. That virt LAN is only the Mac and its own guest, not this box. It cannot use an `org` hostname either, because there is no human to complete a browser login mid-turn, and with `None` anyone on the internet could run inference on your GPU. So the Gateway calls the published `api-key` origin with a Bearer secret, and the secret stays in this VM’s config, not behind a Control UI left on `None`.
 
-[OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md) 9.5 is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 20B.
+[OpenClaw chapter 8](../openclaw-on-edgible/08-models-beyond-free-gemini.md) 8.5 is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 20B.
 
 ```
 OpenClaw VM (other PC)   Gateway ──► https://ollama.<org>.edgible.com   (+ Bearer, no /v1)
@@ -61,11 +61,11 @@ Then either:
 openclaw models set ollama/gpt-oss:20b
 ```
 
-or keep Gemini/DeepSeek as primary and put `ollama/gpt-oss:20b` in fallbacks ([9.7](../openclaw-on-edgible/09-models-beyond-free-gemini.md)). `/think off` (or `thinkingDefault off`) still applies.
+or keep Gemini/DeepSeek as primary and put `ollama/gpt-oss:20b` in fallbacks ([8.7](../openclaw-on-edgible/08-models-beyond-free-gemini.md)). `/think off` (or `thinkingDefault off`) still applies.
 
 **Thinking.** Unlike the 7B, this tag can think: `ollama show gpt-oss:20b` lists thinking under capabilities. Use `--thinking off` for the hello below so a cold 20B does not look like a hang. Leave thinking on when you want it planning a code change.
 
-Do not make the 20B a fallback. 13 GB on a cold load makes a cloud 429 feel like a hang ([9.5.2](../openclaw-on-edgible/09-models-beyond-free-gemini.md#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Fallback stays `ollama/qwen2.5:7b`; reach for the 20B as an explicit primary or `/model`.
+Do not make the 20B a fallback. 13 GB on a cold load makes a cloud 429 feel like a hang ([8.5.2](../openclaw-on-edgible/08-models-beyond-free-gemini.md#852-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Fallback stays `ollama/qwen2.5:7b`; reach for the 20B as an explicit primary or `/model`.
 
 Ollama may hide tags that `/api/show` does not mark as tool-capable with ≥16K context. Fallback can still use the config id. Pin in chat: `/model ollama/gpt-oss:20b`.
 

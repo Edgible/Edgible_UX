@@ -66,7 +66,7 @@ ollama pull nomic-embed-text
 ollama ls
 ```
 
-Do not put `gpt-oss:20b` / `qwen3.5:27b` in OpenClaw fallbacks. They make a Gemini 429 feel hung ([OpenClaw chapter 9](../openclaw-on-edgible/09-models-beyond-free-gemini.md)). `gpt-oss:20b` is the n8n Assistant chat model, not the OpenClaw default.
+Do not put `gpt-oss:20b` / `qwen3.5:27b` in OpenClaw fallbacks. They make a Gemini 429 feel hung ([OpenClaw chapter 8](../openclaw-on-edgible/08-models-beyond-free-gemini.md)). `gpt-oss:20b` is the n8n Assistant chat model, not the OpenClaw default.
 
 5. In another Terminal, while the 7B is loaded (or run the prompt again):
 

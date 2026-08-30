@@ -19,9 +19,9 @@ Product pages assert things. These guides show them, on ordinary hardware, in th
 - Every chapter is one job. It states what you will have when you finish, and ends with a checklist that mirrors it item for item, so you always know whether the step worked.
 - Commands are literal and complete, and each chapter says which machine to run them on.
 - Every claim has an observable check behind it. When a guide says a service is reachable without a forwarded port, the test is loading it on a phone with Wi-Fi turned off.
-- Each series ends with a teardown chapter, so a guide you tried out of curiosity leaves nothing running.
+- Each use case series ends with a teardown chapter, so a guide you tried out of curiosity leaves nothing running.
 
-Nothing here needs a paid account with a third party to complete, and the services being published are stock software, unmodified.
+The services being published are stock software, unmodified. Almost everything here runs on free accounts and open source; the two exceptions say so at the top of the chapter, in [Cursor Agent](guides/openclaw-on-edgible/07-cursor-agent.md) and [Models beyond free Gemini](guides/openclaw-on-edgible/08-models-beyond-free-gemini.md), and both are optional.
 
 ## The guides
 
@@ -29,8 +29,8 @@ New guides get added over time, each taking a service people genuinely self-host
 
 - [Website on Edgible](guides/website-on-edgible/README.md). A static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
 - [n8n on Edgible](guides/n8n-on-edgible/README.md). A workflow platform whose editor holds all your credentials, kept behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
-- [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). An AI agent you can reach from your phone over HTTPS, with its Gateway still bound to loopback on the machine and no VPN on the phone. Ten short chapters.
-- [LLM on Edgible](guides/llm-on-edgible/README.md). A self-hosted Ollama that keeps the model weights and the GPU at home, published with `api-key` and called over HTTPS by other machines you own. Four chapters.
+- [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). An AI agent you can reach from your phone over HTTPS, with its Gateway still bound to loopback on the machine and no VPN on the phone. Nine short chapters.
+- [LLM on Edgible](guides/llm-on-edgible/README.md). A self-hosted Ollama that keeps the model weights and the GPU at home, published with `api-key` and called over HTTPS by other machines you own. Five chapters.
 
 ## Where to start
 

@@ -6,7 +6,7 @@
 
 Two of the four hostnames this series created are `None`, which means anyone who has the URL can reach them for as long as they exist. A demo left running is a live public endpoint on a box you own, and the Umami login page sits behind one of them.
 
-This is also a shared machine. It may still be running [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) or [LLM on Edgible](../llm-on-edgible/README.md), so the default here is this series only: `hello-world` and the Edgible serving agent stay unless you opt in at the end.
+This is also a shared machine. It may still be running [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) or [LLM on Edgible](../llm-on-edgible/README.md), so the default here is this series only: `hello-world` and the Edgible serving agent stay, unless you take the optional step at the end.
 
 If you built something you actually use, skip this chapter. It is the only series here whose result is worth keeping.
 
@@ -22,7 +22,8 @@ You delete the apps public-first, stop the containers, then decide separately wh
 - All four hostnames fail to load from a phone on cellular.
 - `docker ps` shows none of `site`, `umami`, `umami-db` or `uptime-kuma`.
 - Nothing is listening on `8080`, `3000` or `3001`.
-- `hello-world` still loads, and `edgible device health` is still OK, unless you opted out.
+- The tracking snippet is out of your site's source, so no page requests a script that no longer resolves.
+- `hello-world` still loads, and `edgible device health` is still OK, unless you took the optional step in 6.5.
 
 **Need first:** nothing beyond having done the series. Doing this out of order is fine, but delete the `None` apps before the `org` ones.
 
@@ -92,14 +93,14 @@ sudo edgible agent uninstall
 
 Leave those alone if any other guide is still in progress.
 
-### Verify
+## Verify
 
 - [ ] `edgible app list` shows none of `site`, `analytics`, `umami`, `status`.
 - [ ] All four hostnames fail to load on a phone on cellular.
 - [ ] `docker ps` shows none of the four containers.
 - [ ] Nothing is listening on `8080`, `3000` or `3001`.
 - [ ] The tracking snippet is out of your site's source.
-- [ ] `hello-world` still loads and `edgible device health` is OK, unless you opted out in 6.5.
+- [ ] `hello-world` still loads and `edgible device health` is OK, unless you took the optional step in 6.5.
 
 ## Next
 

@@ -54,11 +54,13 @@ cat > ~/site/public/index.html <<'HTML'
 HTML
 ```
 
-Copy a build from your laptop, which is what you will do from then on. Run this on the laptop, not the guest, with your own guest username and address:
+Copy a build from your laptop, which is what you will do from then on. Run this on the laptop, not the guest. It uses the host 2222 to guest 22 forward from [Start here, 1.5](../start-here/01-edgible-on-vm.md#15-prepare-the-virtual-machine), because a NAT guest has no address of its own on your LAN:
 
 ```bash
-rsync -av --delete ./dist/ ubuntu@mini-pc:~/site/public/
+rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/
 ```
+
+Use your own guest username, and if the guest is a separate machine on your LAN rather than a VM, its own address and the default SSH port.
 
 Or build on the guest, if the generator runs there and you would rather not copy anything. That needs the toolchain installed on the guest, which is more to keep updated, so most people copy.
 

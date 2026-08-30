@@ -22,7 +22,7 @@ You stop production schedules and public webhooks, remove the two n8n hostnames,
 
 **Need first:** You finished enough of this series that n8n exists (at least [chapter 1](01-n8n-on-the-vm.md)). Skip apps you never created.
 
-**Not this chapter:** deleting the Ubuntu VM, OpenClaw teardown ([OpenClaw chapter 10](../openclaw-on-edgible/10-openclaw-teardown.md)), or `edgible auth logout`.
+**Not this chapter:** deleting the Ubuntu VM, OpenClaw teardown ([OpenClaw chapter 9](../openclaw-on-edgible/09-openclaw-teardown.md)), or `edgible auth logout`.
 
 ## 6.2 Unpublish workflows (org editor)
 

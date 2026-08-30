@@ -34,4 +34,4 @@ Do not port-forward `11434` on the router. Same-LAN HTTP is only the guest → M
 | 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Use case 1: workflow on `qwen2.5:7b` (thinking off). Use case 2: Assistant `gpt-oss:20b` + sandbox + SearXNG; Hello, then edgible.com / n8n summary |
 | 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/gpt-oss:20b` via Edgible `api-key` (no `/v1`); agent hello, then a code change |
 
-OpenClaw chapter 9 is cloud keys plus optional same-LAN Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 9.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor `org` and webhook `None` on its own VM. The published inference URL lives here.
+OpenClaw chapter 8 is cloud keys plus optional same-LAN Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 8.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor `org` and webhook `None` on its own VM. The published inference URL lives here.

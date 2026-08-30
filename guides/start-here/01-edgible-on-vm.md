@@ -147,13 +147,28 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 
 This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and Docker (every later guide runs its service in a container). Work inside the VM (console is enough).
 
-SSH from the host is optional. NAT does not give you a stable guest IP on the LAN. You can stay in the VM window, or in VirtualBox add **Settings → Network → Advanced → Port forwarding** for host 2222 → guest 22 only, then:
+SSH from the host is worth setting up now. NAT does not give you a stable guest IP on the LAN, so `ssh ubuntu@mini-pc` will not resolve: the device name you register with Edgible later is a record in Edgible, not a hostname on your network. Instead, forward one host port to the guest's SSH port.
+
+In VirtualBox: **Settings → Network → Advanced → Port forwarding**, host 2222 → guest 22. In UTM: **Edit → Network → Port Forwarding**, host 2222 → guest 22. Then, from the host:
+
+```bash
+sudo apt-get install -y openssh-server   # on the guest, if it is not already there
+```
 
 ```bash
 ssh -p 2222 ubuntu@127.0.0.1
 ```
 
 Use your VM username if it is not `ubuntu`. Do not forward 80 or 443.
+
+Later chapters copy files to the guest and tunnel a port back to your laptop's browser, and both use this forward:
+
+```bash
+rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/
+ssh -p 2222 -L 3000:127.0.0.1:3000 ubuntu@127.0.0.1
+```
+
+If your guest is a separate physical machine on your LAN rather than a VM, use its own address and the default port instead, for example `ubuntu@192.168.1.20`.
 
 ### 1.5.1 Update Ubuntu
 
@@ -408,7 +423,7 @@ You should see Hello World over HTTPS. If curl complains about the certificate, 
 
 If it fails at first, wait a minute, re-run `edgible app status`, and retry. You are not opening a port on the router; the VM is still NAT-only.
 
-Leave this app running. The guides that follow use it as the check that publishing still works, and each has a teardown chapter that removes it when you are finished.
+Leave this app running. The guides that follow use it as the check that publishing still works. Each of them ends with a teardown chapter that removes its own services, with a final optional step for removing Hello World once you are finished with all of them.
 
 ### Verify
 

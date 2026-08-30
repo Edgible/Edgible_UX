@@ -1,12 +1,12 @@
-# 2. OpenClaw on the VM (loopback Gateway)
+# 1. OpenClaw on the VM (loopback Gateway)
 
 **OpenClaw on your own VM, answering locally, not yet published.**
 
-## 2.0 Why
+## 1.0 Why
 
-[Chapter 1](../start-here/01-edgible-on-vm.md) published a process on your box to the internet, but that process was a throwaway page. This chapter installs something worth reaching from a phone: an agent that chats, runs shell commands, and writes files on hardware you own.
+[Start here](../start-here/01-edgible-on-vm.md) published a process on your box to the internet, but that process was a throwaway page. This chapter installs something worth reaching from a phone: an agent that chats, runs shell commands, and writes files on hardware you own.
 
-Two shortcuts do not work here. Running OpenClaw on your laptop instead of the guest means the agent stops when you shut the lid, and its shell tool points at your personal machine rather than a box you are willing to hand it. Binding the Gateway to `0.0.0.0` and forwarding `18789` is the fast route to phone access, but the Control UI is an admin console over a process with a shell, so that port should not be reachable from a scanner. The Gateway stays on loopback for this whole chapter. The published hostname waits for [chapter 3](03-publish-openclaw-control-ui.md), where Edgible reaches it over loopback and puts a login in front.
+Two shortcuts do not work here. Running OpenClaw on your laptop instead of the guest means the agent stops when you shut the lid, and its shell tool points at your personal machine rather than a box you are willing to hand it. Binding the Gateway to `0.0.0.0` and forwarding `18789` is the fast route to phone access, but the Control UI is an admin console over a process with a shell, so that port should not be reachable from a scanner. The Gateway stays on loopback for this whole chapter. The published hostname waits for [chapter 2](02-publish-openclaw-control-ui.md), where Edgible reaches it over loopback and puts a login in front.
 
 That leaves the model. Google’s free AI Studio key is enough to prove a hello, but OpenClaw’s Google default is often a Pro or preview id whose free-tier quota is almost nothing. That is the `429` most people blame on their install. Pinning a Flash id here is what makes every later chapter’s chat work.
 
@@ -23,9 +23,9 @@ Ubuntu guest          OpenClaw Gateway ──► 127.0.0.1:18789   ← this chap
 
 **Where you run this:** the AI Studio key in the **host browser**; the install, the model pin and the hello on the **Ubuntu guest**; the optional Control UI check needs a **guest desktop**; Hello World still checked on a **phone on cellular**.
 
-## 2.1 The job
+## 1.1 The job
 
-You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays on loopback (`127.0.0.1:18789`). Pin Gemini Flash on the free AI Studio key (not Pro/preview; that is the 429). DeepSeek, Ollama, OpenAI, and fallbacks are [9. Models beyond free Gemini](09-models-beyond-free-gemini.md).
+You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays on loopback (`127.0.0.1:18789`). Pin Gemini Flash on the free AI Studio key (not Pro/preview; that is the 429). DeepSeek, Ollama, OpenAI, and fallbacks are [8. Models beyond free Gemini](08-models-beyond-free-gemini.md).
 
 **Done when**
 
@@ -37,13 +37,13 @@ You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays 
 - `curl` to `http://127.0.0.1:18789/` on the VM returns `200`.
 - Optional, guest desktop only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
-**Need first:** [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (Hello World still up).
+**Need first:** [Start here: Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (Hello World still up).
 
-**Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), other model providers ([9](09-models-beyond-free-gemini.md)), or `! edgible whoami` (host bash, off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash---bash) if you want it later).
+**Not this chapter:** publishing Control UI ([2](02-publish-openclaw-control-ui.md)), the Edgible skill ([4](04-edgible-openclaw-skill.md)), other model providers ([8](08-models-beyond-free-gemini.md)), or `! edgible whoami` (host bash, off by default; [5.10](05-telegram-pocket-client.md#510-optional-host-bash---bash) if you want it later).
 
-## 2.2 Google Gemini (free)
+## 1.2 Google Gemini (free)
 
-**Outcome:** An AI Studio key the VM can call. This chapter assumes Gemini. Other providers wait until [chapter 9](09-models-beyond-free-gemini.md).
+**Outcome:** An AI Studio key the VM can call. This chapter assumes Gemini. Other providers wait until [chapter 8](08-models-beyond-free-gemini.md).
 
 OpenClaw onboarding will not finish until a real completion succeeds. ChatGPT Free (chatgpt.com) is not that: it is a website, not an API key.
 
@@ -70,9 +70,9 @@ curl -sS "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_A
 
 You want a model name such as `models/gemini-2.5-flash`, not `API_KEY_INVALID` or a hang. (If you piped the full JSON to `head` instead, `curl: (23) Failure writing output to destination` after that JSON is still success; `head` closed the pipe early.) If the request itself fails on the VM, fix outbound HTTPS before installing OpenClaw.
 
-DeepSeek, Groq, OpenAI, Ollama, and fallbacks: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md), after this Gateway hello works.
+DeepSeek, Groq, OpenAI, Ollama, and fallbacks: [8. Models beyond free Gemini](08-models-beyond-free-gemini.md), after this Gateway hello works.
 
-### 2.2.1 Verify
+### 1.2.1 Verify
 
 - [ ] You have an AI Studio key (`AIza…`), not ChatGPT Free.
 - [ ] The VM `curl` to Google’s `models` list printed a model name.
@@ -80,7 +80,7 @@ DeepSeek, Groq, OpenAI, Ollama, and fallbacks: [9. Models beyond free Gemini](09
 
 ---
 
-## 2.3 Install OpenClaw locally
+## 1.3 Install OpenClaw locally
 
 **Outcome:** OpenClaw Gateway running on the VM; you can send `hello` from the guest terminal and get a reply. It is not on the internet yet.
 
@@ -88,7 +88,7 @@ Still inside the VM. Leave `hello-world` and the Edgible serving agent running. 
 
 This VM is Ubuntu Server, so there is no desktop browser. Local proof is the CLI, not `openclaw dashboard`.
 
-### 2.3.1 Install the OpenClaw CLI
+### 1.3.1 Install the OpenClaw CLI
 
 OpenClaw needs Node.js 22.22.3+ (the installer can provision it). That is newer than Edgible’s Node 20 floor; let this installer handle it.
 
@@ -106,7 +106,7 @@ openclaw --version
 
 Official reference: [Install](https://docs.openclaw.ai/install).
 
-### 2.3.2 Onboard with your model (Gemini default)
+### 1.3.2 Onboard with your model (Gemini default)
 
 If `GEMINI_API_KEY` is empty in this shell, paste it again (hidden):
 
@@ -131,13 +131,13 @@ openclaw onboard --non-interactive --accept-risk \
 
 `--gateway-bind loopback` keeps the Control UI on `127.0.0.1:18789` only. Do not bind `0.0.0.0` and do not port-forward 18789 on the router.
 
-`--skip-skills` keeps this first `hello` about the Gateway + Gemini, not extra downloads. The Edgible CLI skill is [chapter 5](05-edgible-openclaw-skill.md). Telegram is [chapter 6](06-telegram-pocket-client.md). Other model keys: [chapter 9](09-models-beyond-free-gemini.md).
+`--skip-skills` keeps this first `hello` about the Gateway + Gemini, not extra downloads. The Edgible CLI skill is [chapter 4](04-edgible-openclaw-skill.md). Telegram is [chapter 5](05-telegram-pocket-client.md). Other model keys: [chapter 8](08-models-beyond-free-gemini.md).
 
-### 2.3.3 Pin a Flash model (required on Gemini free tier)
+### 1.3.3 Pin a Flash model (required on Gemini free tier)
 
 OpenClaw’s Google default is often a Pro or preview model. Free-tier quota on those is tiny. That is the `429` you hit if you skip this.
 
-Google’s API name from 2.2 (`models/gemini-2.5-flash`) is not always OpenClaw’s id. Do not guess. List what *this* install knows, then set a Flash or Flash-Lite row from that list (avoid Pro / preview):
+Google’s API name from 1.2 (`models/gemini-2.5-flash`) is not always OpenClaw’s id. Do not guess. List what *this* install knows, then set a Flash or Flash-Lite row from that list (avoid Pro / preview):
 
 ```bash
 openclaw models list --provider google
@@ -168,7 +168,7 @@ openclaw gateway restart
 
 To keep semantic memory on the same Gemini key instead: `openclaw config set agents.defaults.memorySearch.provider gemini` (uses extra quota). Verify with `openclaw memory status --deep`.
 
-### 2.3.4 Confirm the Gateway
+### 1.3.4 Confirm the Gateway
 
 ```bash
 openclaw gateway status
@@ -200,7 +200,7 @@ openclaw logs --follow
 
 (`Ctrl+C` stops following logs.)
 
-### 2.3.5 Chat from the VM terminal
+### 1.3.5 Chat from the VM terminal
 
 **Smoke test.** The Gateway must be up. Do not pass `--local` (that fights the running Gateway).
 
@@ -216,9 +216,9 @@ The first turn is often OpenClaw’s identity ritual (`Who am I? Who are you?`) 
 openclaw agent --agent main --thinking off --message "You are OpenClaw on my Ubuntu VM. I am Bruce. Say hello in one sentence."
 ```
 
-If the model was not found, go back to 2.3.3. You set an id OpenClaw does not have.
+If the model was not found, go back to 1.3.3. You set an id OpenClaw does not have.
 
-If you see 429 / quota exceeded, OpenClaw is fine. Google’s free tier refused the request. You are still on Pro/preview, or you already used the daily cap. Pin Flash (2.3.3), wait a minute (RPM) or until tomorrow (daily). If logs say `google` is in cooldown, wait that out. To keep going on a paid or local model: [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Usage: [Google AI Studio](https://aistudio.google.com/).
+If you see 429 / quota exceeded, OpenClaw is fine. Google’s free tier refused the request. You are still on Pro/preview, or you already used the daily cap. Pin Flash (1.3.3), wait a minute (RPM) or until tomorrow (daily). If logs say `google` is in cooldown, wait that out. To keep going on a paid or local model: [8. Models beyond free Gemini](08-models-beyond-free-gemini.md). Usage: [Google AI Studio](https://aistudio.google.com/).
 
 Optional TUI on the VM console:
 
@@ -226,7 +226,7 @@ Optional TUI on the VM console:
 openclaw tui
 ```
 
-### 2.3.6 Control UI in a browser (before Edgible)
+### 1.3.6 Control UI in a browser (before Edgible)
 
 If this Ubuntu VM has a desktop, do not hunt for the token and paste a URL by hand. From a terminal on the VM desktop (so it can open Firefox/Chromium):
 
@@ -250,14 +250,14 @@ That launches the VM browser onto the Control UI (a short-lived handoff; you wil
 
 If there is no GUI, there is no in-guest browser. Skip to Edgible, or forward host `127.0.0.1:18789` → guest `18789` in UTM/VirtualBox and use the Mac browser. Do not port-forward 18789 on the router.
 
-### 2.3.7 Do not do these yet
+### 1.3.7 Do not do these yet
 
-- Telegram / Discord. They already dial out; they are not the Edgible job. Skill: [chapter 5](05-edgible-openclaw-skill.md). Telegram: [chapter 6](06-telegram-pocket-client.md). WhatsApp: [chapter 7](07-whatsapp-pocket-client.md).
-- DeepSeek / Ollama / OpenAI as the chat model: [chapter 9](09-models-beyond-free-gemini.md), after this hello works.
+- Telegram / Discord. They already dial out; they are not the Edgible job. Skill: [chapter 4](04-edgible-openclaw-skill.md). Telegram: [chapter 5](05-telegram-pocket-client.md). WhatsApp: [chapter 6](06-whatsapp-pocket-client.md).
+- DeepSeek / Ollama / OpenAI as the chat model: [chapter 8](08-models-beyond-free-gemini.md), after this hello works.
 - Mesh VPNs, ingress tunnels, or other tools that publish a local port.
 - `gateway.auth` set to none.
 
-### 2.3.8 Verify
+### 1.3.8 Verify
 
 - [ ] `openclaw --version` prints a version on the VM.
 - [ ] `openclaw gateway status` shows the Gateway running on `18789`, bind loopback.
@@ -271,5 +271,5 @@ If there is no GUI, there is no in-guest browser. Skip to Edgible, or forward ho
 
 ## Next
 
-[3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md). Other models (not this chapter): [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). Skill: [5. OpenClaw skill for the Edgible CLI](05-edgible-openclaw-skill.md). Series: [README](README.md).
+[2. OpenClaw Control UI through Edgible](02-publish-openclaw-control-ui.md). Other models (not this chapter): [8. Models beyond free Gemini](08-models-beyond-free-gemini.md). Skill: [4. OpenClaw skill for the Edgible CLI](04-edgible-openclaw-skill.md). Series: [README](README.md).
 

@@ -1,22 +1,22 @@
-# 9. Models beyond free Gemini
+# 8. Models beyond free Gemini
 
 **Free tiers prove a hello. Paid or local models are what you run on.**
 
-## 9.0 Why
+## 8.0 Why
 
-A free Gemini key is a demo budget. It carries the hellos in [chapter 2](02-openclaw-on-the-box.md) and a handful of skill calls, and then the hourly page rotation from [chapter 4](04-openclaw-changes-edgible-site.md) or [chapter 8](08-cursor-agent.md) starts eating the daily cap. The failure does not look like a quota: Telegram goes quiet, a cron stops rewriting the page, and a chat turn hangs, so the install looks broken when it is not.
+A free Gemini key is a demo budget. It carries the hellos in [chapter 1](01-openclaw-on-the-box.md) and a handful of skill calls, and then the hourly page rotation from [chapter 3](03-openclaw-changes-edgible-site.md) or [chapter 7](07-cursor-agent.md) starts eating the daily cap. The failure does not look like a quota: Telegram goes quiet, a cron stops rewriting the page, and a chat turn hangs, so the install looks broken when it is not.
 
 Common fixes make it worse. Re-running full onboarding to add one provider rebuilds Gateway settings you spent two chapters getting right. Pinning a model in the Control UI picker is strict: a pinned model never fails over. Guessing a model id from a provider’s marketing page gets “model not found”. A 20B-class local model as the backup turns a rate limit into what feels like a hang. What works: a key in the env file the daemon reads, an id the catalog printed, thinking off, and a short fallback list of comparable models.
 
 Cloud keys and a small same-LAN Ollama failover belong in this chapter. Publishing a large local or remote LLM at its own hostname, then pointing n8n and OpenClaw at that URL, is [LLM on Edgible](../llm-on-edgible/README.md). That hostname carries an `api-key` secret, never `None`.
 
-**Where you run this:** provider consoles in the **host browser**; keys, `models` commands and the hello on the **Ubuntu guest**; the Mac-side Ollama in [9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac) on the host; the fallback notice in a **Telegram DM**.
+**Where you run this:** provider consoles in the **host browser**; keys, `models` commands and the hello on the **Ubuntu guest**; the Mac-side Ollama in [8.5.2](#852-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac) on the host; the fallback notice in a **Telegram DM**.
 
-## 9.1 The job
+## 8.1 The job
 
-[2. OpenClaw on the VM](02-openclaw-on-the-box.md) onboarded free Gemini Flash. That is enough for the series. Free-tier `429`s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider without reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, or a small Ollama on the same LAN. Optional: a fallback list so a 429 still answers. A published model URL is [LLM on Edgible](../llm-on-edgible/README.md).
+[1. OpenClaw on the VM](01-openclaw-on-the-box.md) onboarded free Gemini Flash. That is enough for the series. Free-tier `429`s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider without reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, or a small Ollama on the same LAN. Optional: a fallback list so a 429 still answers. A published model URL is [LLM on Edgible](../llm-on-edgible/README.md).
 
-A Cursor subscription is not a chat model. That is [8. Cursor Agent](08-cursor-agent.md) (ACP). Do not paste a Cursor key into `openclaw models set`.
+A Cursor subscription is not a chat model. That is [7. Cursor Agent](07-cursor-agent.md) (ACP). Do not paste a Cursor key into `openclaw models set`.
 
 **Done when**
 
@@ -28,11 +28,11 @@ A Cursor subscription is not a chat model. That is [8. Cursor Agent](08-cursor-a
 - If you set fallbacks: `openclaw config get agents.defaults.model` lists them; you did not use a 20B/27B as the snappy backup.
 - Hello World and openclaw-ui still load. You did not publish `11434` or `18789` on the router.
 
-**Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway up, Gemini hello already worked). The rest of the series can stay on Flash until you do this.
+**Need first:** [1. OpenClaw on the VM (loopback Gateway)](01-openclaw-on-the-box.md) (Gateway up, Gemini hello already worked). The rest of the series can stay on Flash until you do this.
 
 **Not this chapter:** installing OpenClaw, publishing Control UI, pairing Telegram, hiring Cursor, or publishing an Ollama / vLLM Edgible app ([LLM on Edgible](../llm-on-edgible/README.md)).
 
-## 9.2 Rules that stay
+## 8.2 Rules that stay
 
 Do this on the VM (Gateway host). Put keys in `~/.openclaw/.env` so systemd sees them. Do not re-run full `openclaw onboard` unless you want to redo Gateway setup.
 
@@ -51,7 +51,7 @@ openclaw models status
 openclaw status --usage
 ```
 
-## 9.3 DeepSeek V4 Flash (cheap paid default)
+## 8.3 DeepSeek V4 Flash (cheap paid default)
 
 Best first paid try for this tutorial load (hellos, `/skill`, small cron): not Gemini Flash, not Grok Fast, not DeepSeek R1 / “thinking” SKUs.
 
@@ -94,9 +94,9 @@ JSON with a short completion means the guest can reach DeepSeek. If curl works a
 
 Optional wizard (only if you never added the provider): `openclaw onboard --auth-choice deepseek-api-key`. Skip it if the Gateway is already how you like it.
 
-## 9.4 Other cloud keys
+## 8.4 Other cloud keys
 
-Same pattern: env var in `~/.openclaw/.env`, `gateway restart`, `models list --provider …`, `models set`, then the `--model` hello from 9.3.
+Same pattern: env var in `~/.openclaw/.env`, `gateway restart`, `models list --provider …`, `models set`, then the `--model` hello from 8.3.
 
 | You want | Typical env | List / set (confirm with `list`) |
 | --- | --- | --- |
@@ -113,11 +113,11 @@ Claude vs Cursor: a Cursor product sub does not fill `ANTHROPIC_API_KEY`. Sonnet
 
 Cost for these tutorials (fat OpenClaw prompt, short replies): DeepSeek Flash is cents. Grok mid-tier is dollars. Sonnet is tens of times DeepSeek on output, and hourly On this day cron is the only thing that can add up. Keep cron on Flash or DeepSeek Flash.
 
-## 9.5 Local Ollama
+## 8.5 Local Ollama
 
-Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN (Gateway in the Mac’s UTM guest), point at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Do not hairpin through Edgible. If the Gateway is on a different home VM (the layout in [LLM on Edgible](../llm-on-edgible/README.md)), skip 9.5.2–9.5.3 and use [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md).
+Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN (Gateway in the Mac’s UTM guest), point at the LAN URL ([8.5.2](#852-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Do not hairpin through Edgible. If the Gateway is on a different home VM (the layout in [LLM on Edgible](../llm-on-edgible/README.md)), skip 8.5.2–8.5.3 and use [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md).
 
-### 9.5.1 Same machine as OpenClaw (enough RAM)
+### 8.5.1 Same machine as OpenClaw (enough RAM)
 
 | RAM on the VM / mini-PC | What to expect |
 | ----------------------- | -------------- |
@@ -131,9 +131,9 @@ ollama pull llama3.2:1b
 ollama run llama3.2:1b "Say hello in one word"
 ```
 
-Onboard-style (only if you are not already on Gemini): `--auth-choice ollama --custom-model-id llama3.2:1b`. Otherwise register the provider as in 9.5.3.
+Onboard-style (only if you are not already on Gemini): `--auth-choice ollama --custom-model-id llama3.2:1b`. Otherwise register the provider as in 8.5.3.
 
-### 9.5.2 Ollama on the Mac, OpenClaw in the VM (32 GB Mac)
+### 8.5.2 Ollama on the Mac, OpenClaw in the VM (32 GB Mac)
 
 Do not put the weights in the 8 GB guest. Install [Ollama for Mac](https://ollama.com/download). After the VM’s 8 GB, you have on the order of 16 GB left for a model.
 
@@ -162,7 +162,7 @@ curl -sS "http://${HOST}:11434/api/tags"
 
 You want JSON with your tag, not connection refused. UTM NAT is often `192.168.64.1` if `$HOST` is wrong. Do not curl `127.0.0.1` on the VM.
 
-### 9.5.3 Point the Gateway at Mac Ollama
+### 8.5.3 Point the Gateway at Mac Ollama
 
 There is no real Ollama key; `ollama-local` is a dummy. An explicit `models.providers.ollama` block turns off auto-discovery. Register the tag from `/api/tags`:
 
@@ -177,15 +177,15 @@ openclaw gateway restart
 openclaw models list --provider ollama
 ```
 
-`list` must print `ollama/qwen2.5:7b` (or your tag). Then either `openclaw models set ollama/qwen2.5:7b` (local primary) or leave DeepSeek/Gemini as primary and put Ollama in fallbacks (9.7).
+`list` must print `ollama/qwen2.5:7b` (or your tag). Then either `openclaw models set ollama/qwen2.5:7b` (local primary) or leave DeepSeek/Gemini as primary and put Ollama in fallbacks (8.7).
 
 Ollama often hides models that `/api/show` does not mark as tool-capable with ≥16K context. Fallback can still use the config id. To pin local in chat: `/model ollama/qwen2.5:7b`.
 
-## 9.6 A published model (another home VM)
+## 8.6 A published model (another home VM)
 
 If OpenClaw is not next to the Mac, do not use `$HOST:11434`. Register `https://ollama.<org>.edgible.com` with the `api-key` secret: [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md). Do not set that app to `None`.
 
-## 9.7 Fallback chain
+## 8.7 Fallback chain
 
 Example: DeepSeek Flash primary, Gemini Flash then local 7B when DeepSeek is down:
 
@@ -202,7 +202,7 @@ openclaw config get agents.defaults.model
 
 You want `primary` = DeepSeek Flash and `fallbacks` listing ids that `list` printed.
 
-Failover applies to the configured default and to cron ([chapter 4](04-openclaw-changes-edgible-site.md)). It does not apply if you pick a model in the Control UI or `/model`. Leave the picker on **Default**.
+Failover applies to the configured default and to cron ([chapter 3](03-openclaw-changes-edgible-site.md)). It does not apply if you pick a model in the Control UI or `/model`. Leave the picker on **Default**.
 
 In a Telegram DM, a switch can show once per state change:
 
@@ -212,7 +212,7 @@ In a Telegram DM, a switch can show once per state change:
 
 Groups suppress that notice; `/status` still has Fallback. The notice is not a live ticker at the instant of the 429. Expect typing until the fallback has tokens.
 
-## 9.8 Verify
+## 8.8 Verify
 
 - [ ] `openclaw models list --provider <that-provider>` prints the id you will use.
 - [ ] `openclaw agent --agent main --thinking off --model <provider/id> --message "Say hello in one sentence."` replies on the VM (identity ritual counts).
@@ -226,4 +226,4 @@ Groups suppress that notice; `/status` still has Fallback. The notice is not a l
 
 ## Next
 
-That’s the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and `openclaw-ui` gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [LLM on Edgible](../llm-on-edgible/README.md).
+That’s the series for models. [9. Tear down OpenClaw](09-openclaw-teardown.md) when you want the agent and `openclaw-ui` gone. [Index](README.md). Cursor ACP (not a chat key) is [7. Cursor Agent from OpenClaw on the Edgible site](07-cursor-agent.md). A published LLM is [LLM on Edgible](../llm-on-edgible/README.md).

@@ -100,7 +100,7 @@ Still `127.0.0.1:8080`. Nothing is listening for the internet.
 Because chapter 1 bind-mounted the directory, publishing a change is a copy. From your laptop:
 
 ```bash
-rsync -av --delete ./dist/ ubuntu@mini-pc:~/site/public/
+rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/
 ```
 
 Then hard-refresh the public URL. No rebuild, no container restart, no Edgible command: the app points at a port, and what that port serves is your business. Delete a file and it is gone from the site, which is what `--delete` is for and also why it is worth having the site in version control somewhere.

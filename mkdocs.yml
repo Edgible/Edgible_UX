@@ -113,15 +113,15 @@ nav:
       - guides/n8n-on-edgible/06-n8n-teardown.md
   - OpenClaw on Edgible:
       - guides/openclaw-on-edgible/README.md
-      - guides/openclaw-on-edgible/02-openclaw-on-the-box.md
-      - guides/openclaw-on-edgible/03-publish-openclaw-control-ui.md
-      - guides/openclaw-on-edgible/04-openclaw-changes-edgible-site.md
-      - guides/openclaw-on-edgible/05-edgible-openclaw-skill.md
-      - guides/openclaw-on-edgible/06-telegram-pocket-client.md
-      - guides/openclaw-on-edgible/07-whatsapp-pocket-client.md
-      - guides/openclaw-on-edgible/08-cursor-agent.md
-      - guides/openclaw-on-edgible/09-models-beyond-free-gemini.md
-      - guides/openclaw-on-edgible/10-openclaw-teardown.md
+      - guides/openclaw-on-edgible/01-openclaw-on-the-box.md
+      - guides/openclaw-on-edgible/02-publish-openclaw-control-ui.md
+      - guides/openclaw-on-edgible/03-openclaw-changes-edgible-site.md
+      - guides/openclaw-on-edgible/04-edgible-openclaw-skill.md
+      - guides/openclaw-on-edgible/05-telegram-pocket-client.md
+      - guides/openclaw-on-edgible/06-whatsapp-pocket-client.md
+      - guides/openclaw-on-edgible/07-cursor-agent.md
+      - guides/openclaw-on-edgible/08-models-beyond-free-gemini.md
+      - guides/openclaw-on-edgible/09-openclaw-teardown.md
   - LLM on Edgible:
       - guides/llm-on-edgible/README.md
       - guides/llm-on-edgible/01-ollama-on-bare-metal.md

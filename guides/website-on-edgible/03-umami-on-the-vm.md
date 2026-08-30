@@ -19,7 +19,7 @@ Ubuntu guest      umami container ──► postgres container
 nothing published yet
 ```
 
-**Where you run this:** everything on the **Ubuntu guest**, except the Umami login, which is a browser on the **host** reaching the guest, or the guest's own desktop if it has one.
+**Where you run this:** everything on the **Ubuntu guest**, except the Umami login, which is a browser on your **laptop** reaching the guest through an SSH tunnel.
 
 ## 3.1 The job
 
@@ -116,13 +116,15 @@ The heartbeat answers, and the port is on `127.0.0.1:3000`. As with the site, th
 
 Umami ships with `admin` / `umami`, so this is the first thing to do, before it is reachable from anywhere but this machine.
 
-If the guest has a desktop, open `http://127.0.0.1:3000` there. If it does not, forward the port over SSH from your laptop and use the laptop's browser:
+Umami is a web interface and the guest is Ubuntu Server, with no browser on it. Carry the port to a machine that has one, over the host 2222 to guest 22 forward from [Start here, 1.5](../start-here/01-edgible-on-vm.md#15-prepare-the-virtual-machine). From your laptop:
 
 ```bash
-ssh -L 3000:127.0.0.1:3000 ubuntu@mini-pc
+ssh -p 2222 -L 3000:127.0.0.1:3000 ubuntu@127.0.0.1
 ```
 
-Then open `http://127.0.0.1:3000` on the laptop, which the tunnel carries to the guest. Close the tunnel when you are done.
+Leave that session open and, on the laptop, open `http://127.0.0.1:3000`. The tunnel carries it to the guest. Close the session when you are done, and the port goes with it.
+
+If your guest does have a desktop, opening `http://127.0.0.1:3000` on it works just as well and needs no tunnel.
 
 1. Sign in as `admin` with password `umami`.
 2. Open **Settings**, then **Profile**, then **Change password**.
@@ -149,7 +151,7 @@ Copy the website ID somewhere. Do not paste the snippet into your site yet: the 
 - [ ] `docker compose -f ~/umami/docker-compose.yml ps` shows `umami` and `db` running and healthy.
 - [ ] `curl http://127.0.0.1:3000/api/heartbeat` answers.
 - [ ] `ss -ltnp | grep 3000` shows `127.0.0.1:3000`.
-- [ ] `grep APP_SECRET ~/umami/.env` is not the upstream placeholder.
+- [ ] `grep APP_SECRET ~/umami/.env` shows the value you generated, not an empty or default one.
 - [ ] You can sign in with your new password, and `admin` / `umami` no longer works.
 - [ ] Umami lists your site, and you have its website ID.
 - [ ] Port `3000` is not forwarded on the router.

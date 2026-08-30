@@ -100,7 +100,7 @@ In your site's HTML, inside `<head>`, using your tracking hostname and the websi
 Put this in the source your generator uses, not only in the built output, or the next build will drop it. Then deploy as in 2.5:
 
 ```bash
-rsync -av --delete ./dist/ ubuntu@mini-pc:~/site/public/
+rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/
 ```
 
 **Smoke test.** On a phone with Wi‑Fi off, load `https://site.<your-org>.edgible.com`. Then open the dashboard on `https://umami.<your-org>.edgible.com` and look at **Realtime**. Your visit shows up within a few seconds.
