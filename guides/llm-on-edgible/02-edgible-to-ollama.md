@@ -10,15 +10,8 @@ Edgible’s serving agent runs on the Ubuntu guest, and it can only proxy a loca
 
 The auth mode is set per app, and each app is one hostname, so this hostname decides who may use your GPU. It is `api-key`. With `None`, anyone on the internet could run inference on your GPU, and `org` is a human browser login that `curl`, an n8n node and an OpenClaw Gateway cannot complete. Callers send `Authorization: Bearer`, and the weights stay on the Mac.
 
-```
-macOS host     Ollama.app (Metal)     0.0.0.0:11434     ← chapter 2.2 (macOS)
-                    ↑  UTM virt LAN (often 192.168.64.1)
-Ubuntu guest   socat                  127.0.0.1:11434   ← chapter 2.3 (Linux)
-                    ↑
-Ubuntu guest   serving agent          app ollama, api-key  ← 2.4–2.5 (Linux CLI)
-                    ↑
-Any off-box     n8n / OpenClaw / curl   https://ollama.<org>.edgible.com  (+ Bearer)
-```
+![An off-box client calls ollama.<org>.edgible.com with a bearer key. It arrives at the serving agent on the Ubuntu guest, where socat forwards 127.0.0.1:11434 across the virt LAN to Ollama.app on the macOS host, so the weights and the GPU stay there.](../../images/diagrams/llm-on-edgible-02-light.svg#only-light)
+![An off-box client calls ollama.<org>.edgible.com with a bearer key. It arrives at the serving agent on the Ubuntu guest, where socat forwards 127.0.0.1:11434 across the virt LAN to Ollama.app on the macOS host, so the weights and the GPU stay there.](../../images/diagrams/llm-on-edgible-02-dark.svg#only-dark)
 
 | Section | Where | macOS-specific? |
 | --- | --- | --- |

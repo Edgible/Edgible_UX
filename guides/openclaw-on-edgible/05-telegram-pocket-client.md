@@ -10,14 +10,8 @@ Telegram is the cheap client, and it is not an Edgible app. There is no port and
 
 The costs are privacy and precision: your messages traverse Telegram’s servers, and slash commands in a chat window are a clumsy place to approve a shell write. Use Telegram for questions and quick checks. Use Control UI for exec approvals and the first run of anything new.
 
-```
-you, on a phone        Telegram app ──► api.telegram.org
-                                              ▲
-                                              │  outbound 443 (no inbound door)
-Ubuntu guest           OpenClaw Gateway ──────┘
-                                 ▲
-you, in a browser      https://openclaw-ui.<org>.edgible.com   ← org login (chapter 2)
-```
+![Messaging your Telegram bot from a phone reaches the OpenClaw Gateway on 127.0.0.1:18789, because the Gateway connects out to api.telegram.org and collects the messages. There is no inbound door for the bot.](../../images/diagrams/openclaw-on-edgible-05-light.svg#only-light)
+![Messaging your Telegram bot from a phone reaches the OpenClaw Gateway on 127.0.0.1:18789, because the Gateway connects out to api.telegram.org and collects the messages. There is no inbound door for the bot.](../../images/diagrams/openclaw-on-edgible-05-dark.svg#only-dark)
 
 **Where you run this:** BotFather and the DM in the **Telegram app on a phone**; the token, config and logs on the **Ubuntu guest**.
 

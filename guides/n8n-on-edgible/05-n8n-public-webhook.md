@@ -10,15 +10,8 @@ Make the call from outside. Loading the URL from the VM, or from a laptop on the
 
 The `None` auth mode accepts anyone who learns the path. Keep the path unguessable, return nothing sensitive, and unpublish when you are finished.
 
-```
-a stranger, cellular   ──► https://n8n-hooks.<org>.edgible.com/webhook/…   ← None
-                                          │
-Ubuntu guest                Edgible serving agent ──► 127.0.0.1:5678
-                                          │
-                            n8n  (Webhook node → JSON reply)
-
-you, logged in         ──► https://n8n.<org>.edgible.com   ← org  (canvas only)
-```
+![A stranger on cellular with no account hits a webhook path on the open n8n-hooks hostname and gets a JSON reply from the n8n Webhook node on 127.0.0.1:5678, while the canvas stays behind an org login.](../../images/diagrams/n8n-on-edgible-05-light.svg#only-light)
+![A stranger on cellular with no account hits a webhook path on the open n8n-hooks hostname and gets a JSON reply from the n8n Webhook node on 127.0.0.1:5678, while the canvas stays behind an org login.](../../images/diagrams/n8n-on-edgible-05-dark.svg#only-dark)
 
 **Where you run this:** build the workflow in the **n8n editor** on the `org` hostname; make the call from a **phone on cellular** or an off-LAN laptop shell.
 

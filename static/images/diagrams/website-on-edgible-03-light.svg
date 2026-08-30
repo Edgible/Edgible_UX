@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-labelledby="t d">
+<title id="t">Umami is not published yet. The umami container answers on 127.0.0.1:3000 on the Ubuntu guest and writes to a postgres container whose named volume holds the visitor data.</title>
+<desc id="d">Umami is not published yet. The umami container answers on 127.0.0.1:3000 on the Ubuntu guest and writes to a postgres container whose named volume holds the visitor data.</desc>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c9cdd8;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="280" rx="10" fill="#f4f5f7"/>
+<rect class="card" x="36" y="80" width="112" height="120" rx="8"/>
+<text class="label" x="92" y="126" text-anchor="middle">The internet</text>
+<text class="small" x="92" y="146" text-anchor="middle">cannot reach</text>
+<text class="small" x="92" y="164" text-anchor="middle">this yet</text>
+<rect x="250" y="111" width="250" height="58" rx="8" fill="none" stroke="#c9cdd8" stroke-width="1.5" stroke-dasharray="6 5"/>
+<text class="small" x="375" y="137" text-anchor="middle">nothing published yet</text>
+<text class="small" x="375" y="155" text-anchor="middle">reachable on loopback only</text>
+<rect class="card" x="612" y="40" width="340" height="200" rx="8"/>
+<path d="M620 40 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
+<text class="head" x="632" y="60">UBUNTU GUEST</text>
+<text class="monoxs" x="632" y="100">127.0.0.1:3000</text>
+<text class="monoxs" x="758" y="100">umami container</text>
+<text class="monoxs" x="632" y="126">postgres</text>
+<text class="monoxs" x="758" y="126">named volume: the data</text>
+<line x1="632" y1="140" x2="932" y2="140" stroke="#e0e3ea" stroke-width="1.5"/>
+<text class="small" x="632" y="158">the visitor data lands here</text>
+<text class="small" x="632" y="184">router: no forwarded port</text>
+<path d="M612 140 H512" fill="none" stroke="#8a90a6" stroke-width="2" stroke-dasharray="6 5"/>
+</svg>

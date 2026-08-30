@@ -10,15 +10,8 @@ Forwarding `5678` on the router puts a credential store holding every API key yo
 
 Edgible auth is per app, that is, per hostname, not per path within one URL. This hostname serves the canvas, the credentials and every workflow you will ever write, so it stays `org` and only your organisation can get past it. Stripe and GitHub cannot complete a browser login, so they get a second, separate hostname in [chapter 3](03-n8n-public-webhook-hostname.md) instead. Do not set this app to `None` to make webhooks work.
 
-```
-you, on cellular       https://n8n.<org>.edgible.com     ← org login   (this chapter)
-                                 │
-Ubuntu guest           serving agent ──► 127.0.0.1:5678
-                                 │
-                       n8n  (canvas · credentials · every workflow)
-                                 ▲
-Stripe / GitHub        https://n8n-hooks.<org>.edgible.com  ← None     (chapter 3)
-```
+![The n8n editor is published as n8n.<org>.edgible.com behind an org login, and chapter 3 adds an open webhook hostname. Both arrive at the one n8n process on 127.0.0.1:5678 on the Ubuntu guest.](../../images/diagrams/n8n-on-edgible-02-light.svg#only-light)
+![The n8n editor is published as n8n.<org>.edgible.com behind an org login, and chapter 3 adds an open webhook hostname. Both arrive at the one n8n process on 127.0.0.1:5678 on the Ubuntu guest.](../../images/diagrams/n8n-on-edgible-02-dark.svg#only-dark)
 
 **Where you run this:** `edgible` on the **Ubuntu guest**; the certificate check in the **host browser**; the smoke test on a **phone on cellular**.
 

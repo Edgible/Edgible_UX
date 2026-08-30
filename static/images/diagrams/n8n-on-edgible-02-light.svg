@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 254" width="960" height="254" role="img" aria-labelledby="t d">
+<title id="t">The n8n editor is published as n8n.&lt;org&gt;.edgible.com behind an org login, and chapter 3 adds an open webhook hostname. Both arrive at the one n8n process on 127.0.0.1:5678 on the Ubuntu guest.</title>
+<desc id="d">The n8n editor is published as n8n.&lt;org&gt;.edgible.com behind an org login, and chapter 3 adds an open webhook hostname. Both arrive at the one n8n process on 127.0.0.1:5678 on the Ubuntu guest.</desc>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c9cdd8;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="254" rx="10" fill="#f4f5f7"/>
+<rect class="card" x="36" y="67" width="112" height="120" rx="8"/>
+<text class="label" x="92" y="113" text-anchor="middle">You</text>
+<text class="small" x="92" y="133" text-anchor="middle">on cellular</text>
+<text class="small" x="92" y="151" text-anchor="middle">Wi-Fi off</text>
+<rect class="card" x="250" y="60" width="250" height="58" rx="8"/>
+<rect x="250" y="60" width="6" height="58" rx="3" fill="#000033"/>
+<text class="mono" x="272" y="86">n8n.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="106">org login</text>
+<text class="small" x="486" y="106" text-anchor="end">this chapter</text>
+<path d="M148 123 C 200 123, 200 89, 250 89" fill="none" stroke="#8a90a6" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="250" y="136" width="250" height="58" rx="8"/>
+<rect x="250" y="136" width="6" height="58" rx="3" fill="#2f6fb0"/>
+<text class="mono" x="272" y="162">n8n-hooks.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="182">open to anyone</text>
+<text class="small" x="486" y="182" text-anchor="end">chapter 3</text>
+<path d="M148 131 C 200 131, 200 165, 250 165" fill="none" stroke="#2f6fb0" stroke-width="2"/>
+<rect class="card" x="612" y="40" width="340" height="174" rx="8"/>
+<path d="M620 40 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
+<text class="head" x="632" y="60">UBUNTU GUEST</text>
+<text class="monoxs" x="632" y="100">127.0.0.1:5678</text>
+<text class="monoxs" x="758" y="100">n8n, one process</text>
+<line x1="632" y1="114" x2="932" y2="114" stroke="#e0e3ea" stroke-width="1.5"/>
+<text class="small" x="632" y="132">canvas, credentials, workflows</text>
+<text class="small" x="632" y="158">one port behind both hostnames</text>
+<path d="M612 127 H512" fill="none" stroke="#000033" stroke-width="2.5"/>
+<text class="small" x="556" y="117" text-anchor="middle">outbound 443</text>
+</svg>

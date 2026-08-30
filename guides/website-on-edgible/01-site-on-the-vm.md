@@ -10,14 +10,8 @@ Nothing here is specific to how you build the site. A folder of static files is 
 
 The site binds to `127.0.0.1:8080`, not `0.0.0.0`. Anything on your home network could reach `0.0.0.0`, and you would be relying on the router to keep the rest of the internet out. Loopback plus the Edgible serving agent is the pattern every guide here uses: one process, reachable locally, published deliberately.
 
-```
-Ubuntu guest      nginx container ──► serves ~/site/public
-                        ▲
-                        │  127.0.0.1:8080 (loopback only)
-                  curl on the guest
-
-your router       no forwarded port, and nothing published yet
-```
+![Nothing is published yet. An nginx container on the Ubuntu guest serves ~/site/public on 127.0.0.1:8080, reachable only from the guest itself.](../../images/diagrams/website-on-edgible-01-light.svg#only-light)
+![Nothing is published yet. An nginx container on the Ubuntu guest serves ~/site/public on 127.0.0.1:8080, reachable only from the guest itself.](../../images/diagrams/website-on-edgible-01-dark.svg#only-dark)
 
 **Where you run this:** everything on the **Ubuntu guest**. Building the site can happen wherever you normally build it, including your laptop.
 

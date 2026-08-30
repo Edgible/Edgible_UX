@@ -10,16 +10,8 @@ The usual ways of publishing one are the ones to avoid. Forwarding a port on the
 
 Edgible takes the third route. A serving agent on the guest opens an outbound connection on TCP 443 and holds it open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app, and so each hostname, carries its own auth mode: `org` for “only my organisation gets past a browser login”, `api-key` for a bearer secret, `None` for open to the world. Hello World at the end of this chapter is `None` because it is a throwaway page. A page that loads on a phone with Wi‑Fi off is the proof that publishing worked.
 
-```
-you, on cellular       https://hello-world.<org>.edgible.com   ← None (throwaway page)
-                                 ▲
-                                 │  outbound 443, held open
-Ubuntu guest           Edgible serving agent ──► 127.0.0.1:8081
-                                 │
-                       nginx  (Hello World)
-
-your router            no forwarded port, nothing connects in
-```
+![A phone on cellular opens hello-world.<org>.edgible.com, which is open to anyone. It arrives at nginx bound to 127.0.0.1:8081 on the Ubuntu guest, reached over the outbound connection the serving agent holds open, so the router has no forwarded port.](../../images/diagrams/start-here-01-light.svg#only-light)
+![A phone on cellular opens hello-world.<org>.edgible.com, which is open to anyone. It arrives at nginx bound to 127.0.0.1:8081 on the Ubuntu guest, reached over the outbound connection the serving agent holds open, so the router has no forwarded port.](../../images/diagrams/start-here-01-dark.svg#only-dark)
 
 **Where you run this:** signup and the console in the **host browser**; the VM manager on the host; everything else (`edgible`, Docker, `curl`) on the **Ubuntu guest**; the final check on a **phone on cellular**.
 

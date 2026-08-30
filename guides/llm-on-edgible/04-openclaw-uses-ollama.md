@@ -8,13 +8,8 @@ OpenClaw and n8n each have their own VM on a different home computer from the Ma
 
 [OpenClaw chapter 8](../openclaw-on-edgible/08-models-beyond-free-gemini.md) 8.5 is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 20B.
 
-```
-OpenClaw VM (other PC)   Gateway ──► https://ollama.<org>.edgible.com   (+ Bearer, no /v1)
-                                              │
-Ubuntu guest             Edgible serving agent ──► 127.0.0.1:11434 (socat)
-                                              │
-macOS host               Ollama.app (Metal), gpt-oss:20b loads here
-```
+![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives through socat on the Ubuntu guest at Ollama.app on the macOS host, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-light.svg#only-light)
+![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives through socat on the Ubuntu guest at Ollama.app on the macOS host, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-dark.svg#only-dark)
 
 **Where you run this:** every `openclaw` command runs on the **OpenClaw VM** (a different home computer); only `ollama ls` / `ollama ps` / `ollama show` run on the **macOS host**, and the hostname and secret are copied from the **Ubuntu guest**.
 

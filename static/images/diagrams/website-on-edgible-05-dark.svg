@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 362" width="960" height="362" role="img" aria-labelledby="t d">
+<title id="t">Uptime Kuma on 127.0.0.1:3001 on the Ubuntu guest is published as status.&lt;org&gt;.edgible.com behind an org login, and checks your public site hostname by going out to the internet and back in.</title>
+<desc id="d">Uptime Kuma on 127.0.0.1:3001 on the Ubuntu guest is published as status.&lt;org&gt;.edgible.com behind an org login, and checks your public site hostname by going out to the internet and back in.</desc>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#e7e7f0}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#a5a8bd}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#e7e7f0}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#a5a8bd}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#22223c;stroke:#3a3a5c;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="362" rx="10" fill="#1a1a2e"/>
+<rect class="card" x="36" y="67" width="112" height="120" rx="8"/>
+<text class="label" x="92" y="113" text-anchor="middle">You</text>
+<text class="small" x="92" y="133" text-anchor="middle">on a phone</text>
+<text class="small" x="92" y="151" text-anchor="middle">or laptop</text>
+<rect class="card" x="250" y="98" width="250" height="58" rx="8"/>
+<rect x="250" y="98" width="6" height="58" rx="3" fill="#c3c6d8"/>
+<text class="mono" x="272" y="124">status.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="144">org login</text>
+<text class="small" x="486" y="144" text-anchor="end">this chapter</text>
+<path d="M148 127 C 200 127, 200 127, 250 127" fill="none" stroke="#767a93" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="612" y="40" width="340" height="174" rx="8"/>
+<path d="M620 40 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#3a56ad"/>
+<text class="head" x="632" y="60">UBUNTU GUEST</text>
+<text class="monoxs" x="632" y="100">127.0.0.1:3001</text>
+<text class="monoxs" x="758" y="100">uptime-kuma</text>
+<line x1="632" y1="114" x2="932" y2="114" stroke="#33334f" stroke-width="1.5"/>
+<text class="small" x="632" y="132">the monitor answers to you</text>
+<text class="small" x="632" y="158">router: no forwarded port</text>
+<path d="M612 127 H512" fill="none" stroke="#e7e7f0" stroke-width="2.5"/>
+<text class="small" x="556" y="117" text-anchor="middle">outbound 443</text>
+<rect class="card" x="250" y="258" width="370" height="64" rx="8"/>
+<text class="label" x="270" y="284">site.&lt;org&gt;.edgible.com</text>
+<text class="small" x="270" y="306">your own public hostname, checked from the outside</text>
+<path d="M652 214 V290 H620" fill="none" stroke="#e7e7f0" stroke-width="2"/>
+<text class="small" x="664" y="280">the monitor's own check, out and back in</text>
+</svg>

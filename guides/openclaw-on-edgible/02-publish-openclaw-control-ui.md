@@ -10,16 +10,8 @@ Three shortcuts do not work. Binding the Gateway to `0.0.0.0` and forwarding `18
 
 Edgible auth mode is per app, and so per hostname. This hostname is the privileged one, so it stays `org`: only your organisation gets past the browser login. OpenClaw adds two checks of its own that the local `openclaw dashboard` handoff cannot cover on a different origin: a gateway token you paste once per browser, and a device pairing you approve on the guest. Expect all three, in that order.
 
-```
-you, on cellular       https://openclaw-ui.<org>.edgible.com   ← org login   (this chapter)
-                                 │                              + gateway token
-                                 │                              + device approve
-Ubuntu guest           Edgible serving agent ──► 127.0.0.1:18789
-                                 │
-                       OpenClaw Gateway  (chat · shell · files on this box)
-
-your router            18789 still not forwarded
-```
+![The OpenClaw Control UI is published as openclaw-ui.<org>.edgible.com behind an org login, then a gateway token and a device approval. It arrives at the Gateway on 127.0.0.1:18789, which stays unforwarded.](../../images/diagrams/openclaw-on-edgible-02-light.svg#only-light)
+![The OpenClaw Control UI is published as openclaw-ui.<org>.edgible.com behind an org login, then a gateway token and a device approval. It arrives at the Gateway on 127.0.0.1:18789, which stays unforwarded.](../../images/diagrams/openclaw-on-edgible-02-dark.svg#only-dark)
 
 **Where you run this:** `edgible` and `openclaw` on the **Ubuntu guest**; the certificate check in the **host browser**; the smoke test on a **phone on cellular**.
 

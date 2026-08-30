@@ -10,15 +10,8 @@ Auth is a property of the hostname, not of a path, so this is not one decision w
 
 This chapter also has an honest limitation in it, in 4.5, about the visitor country column. It is a consequence of how Edgible works and it is not configurable away.
 
-```
-every visitor         https://analytics.<org>.edgible.com   ← None  (/script.js, /api/send)
-you                   https://umami.<org>.edgible.com       ← org   (the dashboard)
-                                 │
-                                 ▼
-Ubuntu guest          Edgible serving agent ──► 127.0.0.1:3000
-                                 │
-                        umami ──► postgres
-```
+![Two hostnames reach the same Umami on 127.0.0.1:3000. The tracking script on analytics.<org>.edgible.com is open to every visitor; the dashboard on umami.<org>.edgible.com needs an org login.](../../images/diagrams/website-on-edgible-04-light.svg#only-light)
+![Two hostnames reach the same Umami on 127.0.0.1:3000. The tracking script on analytics.<org>.edgible.com is open to every visitor; the dashboard on umami.<org>.edgible.com needs an org login.](../../images/diagrams/website-on-edgible-04-dark.svg#only-dark)
 
 **Where you run this:** `edgible` on the **Ubuntu guest**, the console in the **host browser**, the tracking snippet wherever you edit your site, the final check on a **phone on cellular**.
 

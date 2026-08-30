@@ -10,16 +10,8 @@ Two shortcuts do not work here. Running OpenClaw on your laptop instead of the g
 
 That leaves the model. Google’s free AI Studio key is enough to prove a hello, but OpenClaw’s Google default is often a Pro or preview id whose free-tier quota is almost nothing. That is the `429` most people blame on their install. Pinning a Flash id here is what makes every later chapter’s chat work.
 
-```
-the internet          (nothing new: no hostname for the agent, no forwarded port)
-
-Ubuntu guest          OpenClaw Gateway ──► 127.0.0.1:18789   ← this chapter
-                             │  outbound 443
-                             ▼
-                      Google AI Studio (Gemini Flash)
-
-                      Edgible serving agent ──► 127.0.0.1:8081 → nginx (still public)
-```
+![The OpenClaw Gateway runs on 127.0.0.1:18789 on the Ubuntu guest with no hostname of its own in this chapter, and connects out to Google AI Studio for Gemini Flash. Only the Hello World page from Start here is published.](../../images/diagrams/openclaw-on-edgible-01-light.svg#only-light)
+![The OpenClaw Gateway runs on 127.0.0.1:18789 on the Ubuntu guest with no hostname of its own in this chapter, and connects out to Google AI Studio for Gemini Flash. Only the Hello World page from Start here is published.](../../images/diagrams/openclaw-on-edgible-01-dark.svg#only-dark)
 
 **Where you run this:** the AI Studio key in the **host browser**; the install, the model pin and the hello on the **Ubuntu guest**; the optional Control UI check needs a **guest desktop**; Hello World still checked on a **phone on cellular**.
 

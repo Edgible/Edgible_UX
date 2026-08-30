@@ -10,14 +10,8 @@ Self-hosting analytics has a second, practical benefit. Blockers filter requests
 
 This chapter runs Umami and its Postgres database on the guest, on loopback, and stops there. It is not published yet, because publishing it correctly is a more interesting decision than it first looks, and chapter 4 is about that decision.
 
-```
-Ubuntu guest      umami container ──► postgres container
-                        ▲                    (named volume: the data)
-                        │  127.0.0.1:3000 (loopback only)
-                  curl on the guest
-
-nothing published yet
-```
+![Umami is not published yet. The umami container answers on 127.0.0.1:3000 on the Ubuntu guest and writes to a postgres container whose named volume holds the visitor data.](../../images/diagrams/website-on-edgible-03-light.svg#only-light)
+![Umami is not published yet. The umami container answers on 127.0.0.1:3000 on the Ubuntu guest and writes to a postgres container whose named volume holds the visitor data.](../../images/diagrams/website-on-edgible-03-dark.svg#only-dark)
 
 **Where you run this:** everything on the **Ubuntu guest**, except the Umami login, which is a browser on your **laptop** reaching the guest through an SSH tunnel.
 

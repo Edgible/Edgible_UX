@@ -8,16 +8,8 @@ The site answers on `127.0.0.1:8080`, which is useful to nobody but you. This ch
 
 This is also the chapter where the auth mode is genuinely `None` and that is the correct answer, not a shortcut. A marketing site is meant to be read by strangers, including ones who will never have a login. Later chapters in this series publish two things that are not meant to be public, so you will see the same command with a different answer.
 
-```
-a stranger, anywhere    https://site.<org>.edgible.com   ← None (a public site)
-                                 ▲
-                                 │  outbound 443, held open
-Ubuntu guest            Edgible serving agent ──► 127.0.0.1:8080
-                                 │
-                        nginx ──► ~/site/public
-
-your router             no forwarded port
-```
+![A stranger anywhere opens site.<org>.edgible.com, open to anyone with no login. It arrives at nginx on 127.0.0.1:8080 on the Ubuntu guest, serving files that stay on your own disk, with no forwarded port.](../../images/diagrams/website-on-edgible-02-light.svg#only-light)
+![A stranger anywhere opens site.<org>.edgible.com, open to anyone with no login. It arrives at nginx on 127.0.0.1:8080 on the Ubuntu guest, serving files that stay on your own disk, with no forwarded port.](../../images/diagrams/website-on-edgible-02-dark.svg#only-dark)
 
 **Where you run this:** `edgible` on the **Ubuntu guest**, the console in the **host browser**, the final check on a **phone on cellular**.
 

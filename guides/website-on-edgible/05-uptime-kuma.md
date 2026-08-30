@@ -10,12 +10,8 @@ Uptime Kuma checks a URL on a schedule and notifies you when the answer changes.
 
 There is one thing this arrangement cannot do, and 5.5 is about not fooling yourself over it.
 
-```
-Ubuntu guest      uptime-kuma ──► https://site.<org>.edgible.com  (out and back in)
-                        ▲
-                        │  127.0.0.1:3001 (loopback only)
-                  published as status.<org>.edgible.com ← org
-```
+![Uptime Kuma on 127.0.0.1:3001 on the Ubuntu guest is published as status.<org>.edgible.com behind an org login, and checks your public site hostname by going out to the internet and back in.](../../images/diagrams/website-on-edgible-05-light.svg#only-light)
+![Uptime Kuma on 127.0.0.1:3001 on the Ubuntu guest is published as status.<org>.edgible.com behind an org login, and checks your public site hostname by going out to the internet and back in.](../../images/diagrams/website-on-edgible-05-dark.svg#only-dark)
 
 **Where you run this:** everything on the **Ubuntu guest**, with the Uptime Kuma interface in the **host browser** once it is published.
 

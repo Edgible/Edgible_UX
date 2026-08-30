@@ -10,13 +10,8 @@ Two obvious fixes are worse. Turning on host bash gives chat an unrestricted she
 
 Prove it in the shell first, Control UI second. If Telegram’s `/skill` fails three chapters from now, you will already know the binary, the login and the model turn work, so the remaining suspect is the channel.
 
-```
-you, in chat           Control UI (org door)  ·  Telegram DM  ·  WhatsApp
-                                 │
-Ubuntu guest           OpenClaw Gateway ──► edgible skill ──► edgible CLI (your org)
-                                 │
-                       the same box that serves your Edgible apps
-```
+![Asking in chat, through the Control UI, Telegram or WhatsApp, reaches the OpenClaw Gateway on 127.0.0.1:18789, which runs the edgible skill and so the edgible CLI in your own org, on the box that serves your apps.](../../images/diagrams/openclaw-on-edgible-04-light.svg#only-light)
+![Asking in chat, through the Control UI, Telegram or WhatsApp, reaches the OpenClaw Gateway on 127.0.0.1:18789, which runs the edgible skill and so the edgible CLI in your own org, on the box that serves your apps.](../../images/diagrams/openclaw-on-edgible-04-dark.svg#only-dark)
 
 **Where you run this:** the install and the shell check on the **Ubuntu guest**; the chat check in **Control UI**: local dashboard on a guest desktop, or the phone on cellular from [chapter 2](02-publish-openclaw-control-ui.md).
 

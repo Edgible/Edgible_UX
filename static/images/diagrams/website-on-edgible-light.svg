@@ -27,18 +27,18 @@
 <text class="mono" x="272" y="294">status.&lt;org&gt;.edgible.com</text>
 <text class="small" x="272" y="314">org login</text>
 <path d="M148 195 C 200 195, 200 297, 250 297" fill="none" stroke="#8a90a6" stroke-width="2" stroke-dasharray="5 4"/>
-<rect class="card" x="612" y="70" width="312" height="226" rx="8"/>
-<path d="M620 70 h296 a8 8 0 0 1 8 8 v22 h-312 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
+<rect class="card" x="612" y="70" width="340" height="226" rx="8"/>
+<path d="M620 70 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
 <text class="head" x="632" y="90">ONE MACHINE YOU OWN</text>
 <text class="monoxs" x="632" y="130">127.0.0.1:8080</text>
-<text class="monoxs" x="762" y="130">nginx, the site</text>
+<text class="monoxs" x="758" y="130">nginx, the site</text>
 <text class="monoxs" x="632" y="156">127.0.0.1:3000</text>
-<text class="monoxs" x="762" y="156">Umami</text>
+<text class="monoxs" x="758" y="156">Umami</text>
 <text class="monoxs" x="632" y="182">127.0.0.1:3001</text>
-<text class="monoxs" x="762" y="182">Uptime Kuma</text>
-<line x1="632" y1="196" x2="904" y2="196" stroke="#e0e3ea" stroke-width="1.5"/>
+<text class="monoxs" x="758" y="182">Uptime Kuma</text>
+<line x1="632" y1="196" x2="932" y2="196" stroke="#e0e3ea" stroke-width="1.5"/>
 <text class="small" x="632" y="214">visitor data on your disk</text>
 <text class="small" x="632" y="240">router: no forwarded port</text>
 <path d="M612 183 H512" fill="none" stroke="#000033" stroke-width="2.5"/>
-<text class="small" x="556" y="173" text-anchor="middle">outbound 443 only</text>
+<text class="small" x="556" y="173" text-anchor="middle">outbound 443</text>
 </svg>

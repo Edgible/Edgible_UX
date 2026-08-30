@@ -10,15 +10,8 @@ Two ways out are wrong. Setting the editor app to `None` does accept those calls
 
 Edgible’s answer is that hostnames are cheap and auth modes are per hostname. You point a second app at the same container on port `5678`, name it `n8n-hooks`, and give it `None`. One process, two hostnames, two auth modes. All `WEBHOOK_URL` does after that is tell n8n which origin to print on its webhook nodes; the traffic lands on the same process either way.
 
-```
-you, on cellular       https://n8n.<org>.edgible.com        ← org login
-                                 │
-Ubuntu guest           Edgible serving agent ──► 127.0.0.1:5678
-                                 │
-                       n8n  (one process · canvas · credentials · workflows)
-                                 ▲
-Stripe / GitHub        https://n8n-hooks.<org>.edgible.com  ← None   (this chapter)
-```
+![Services that cannot log in, such as Stripe and GitHub, reach the open n8n-hooks.<org>.edgible.com, while the editor stays behind an org login on n8n.<org>.edgible.com. Both arrive at one n8n process on 127.0.0.1:5678.](../../images/diagrams/n8n-on-edgible-03-light.svg#only-light)
+![Services that cannot log in, such as Stripe and GitHub, reach the open n8n-hooks.<org>.edgible.com, while the editor stays behind an org login on n8n.<org>.edgible.com. Both arrive at one n8n process on 127.0.0.1:5678.](../../images/diagrams/n8n-on-edgible-03-dark.svg#only-dark)
 
 **Where you run this:** `edgible` and the compose edit on the **Ubuntu guest**; the certificate check in the **host browser**; the editor re-check on your phone.
 

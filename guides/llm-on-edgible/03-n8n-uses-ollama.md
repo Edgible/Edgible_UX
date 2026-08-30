@@ -8,14 +8,8 @@ n8n is on its own VM on a different home computer, so it has no local model. Do 
 
 n8n uses that one hostname in two shapes. Workflow nodes speak Ollama’s native API at the bare origin; the built-in **AI Assistant** speaks OpenAI-compatible `/v1`. Same secret, same GPU, two credentials and two models. The Assistant also needs a sandbox and a search backend running beside n8n. Do not mix the two URLs, do not put the Edgible secret on `n8n-hooks`, do not set the `ollama` app to `None`, and do not run n8n or the sandbox on the Mac UTM guest. The Mac serves Ollama (and the website); n8n is the remote self-hosted caller.
 
-```
-n8n VM (other PC)   Basic LLM Chain node ──► https://ollama.<org>.edgible.com      (+ Bearer)
-n8n VM (other PC)   AI Assistant chat  ──►  https://ollama.<org>.edgible.com/v1   (+ Bearer)
-                                                        │
-Ubuntu guest        Edgible serving agent ──► 127.0.0.1:11434 (socat)
-                                                        │
-macOS host          Ollama.app (Metal), weights and GPU stay here
-```
+![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.](../../images/diagrams/llm-on-edgible-03-light.svg#only-light)
+![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.](../../images/diagrams/llm-on-edgible-03-dark.svg#only-dark)
 
 **Where you run this:** almost everything is on the **n8n VM** (its browser UI and `docker compose` in `~/n8n`); only `ollama show` / `ollama ps` and any missing `ollama pull` run on the **macOS host**.
 

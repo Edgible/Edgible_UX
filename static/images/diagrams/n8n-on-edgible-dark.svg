@@ -17,15 +17,15 @@
 <text class="mono" x="272" y="175">n8n-hooks.&lt;org&gt;.edgible.com</text>
 <text class="small" x="272" y="195">open to anyone</text>
 <path d="M148 144 C 200 144, 200 178, 250 178" fill="none" stroke="#7db2e8" stroke-width="2"/>
-<rect class="card" x="612" y="40" width="312" height="200" rx="8"/>
-<path d="M620 40 h296 a8 8 0 0 1 8 8 v22 h-312 v-22 a8 8 0 0 1 8 -8 z" fill="#3a56ad"/>
+<rect class="card" x="612" y="40" width="340" height="200" rx="8"/>
+<path d="M620 40 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#3a56ad"/>
 <text class="head" x="632" y="60">ONE MACHINE YOU OWN</text>
 <text class="monoxs" x="632" y="100">127.0.0.1:5678</text>
-<text class="monoxs" x="762" y="100">n8n, one process</text>
-<line x1="632" y1="114" x2="904" y2="114" stroke="#33334f" stroke-width="1.5"/>
+<text class="monoxs" x="758" y="100">n8n, one process</text>
+<line x1="632" y1="114" x2="932" y2="114" stroke="#33334f" stroke-width="1.5"/>
 <text class="small" x="632" y="132">credentials stay in the container</text>
 <text class="small" x="632" y="158">two hostnames, one port</text>
 <text class="small" x="632" y="184">router: no forwarded port</text>
 <path d="M612 140 H512" fill="none" stroke="#e7e7f0" stroke-width="2.5"/>
-<text class="small" x="556" y="130" text-anchor="middle">outbound 443 only</text>
+<text class="small" x="556" y="130" text-anchor="middle">outbound 443</text>
 </svg>

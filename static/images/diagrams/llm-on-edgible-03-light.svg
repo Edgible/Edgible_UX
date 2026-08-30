@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" role="img" aria-labelledby="t d">
+<title id="t">n8n on another box you own calls ollama.&lt;org&gt;.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.</title>
+<desc id="d">n8n on another box you own calls ollama.&lt;org&gt;.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.</desc>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c9cdd8;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="420" rx="10" fill="#f4f5f7"/>
+<rect class="card" x="36" y="54" width="112" height="120" rx="8"/>
+<text class="label" x="92" y="100" text-anchor="middle">n8n VM</text>
+<text class="small" x="92" y="120" text-anchor="middle">another box</text>
+<text class="small" x="92" y="138" text-anchor="middle">you own</text>
+<rect class="card" x="250" y="47" width="250" height="58" rx="8"/>
+<rect x="250" y="47" width="6" height="58" rx="3" fill="#7a5cc0"/>
+<text class="mono" x="272" y="73">ollama.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="93">bearer key</text>
+<text class="small" x="486" y="93" text-anchor="end">Basic LLM Chain</text>
+<path d="M148 110 C 200 110, 200 76, 250 76" fill="none" stroke="#8a90a6" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="250" y="123" width="250" height="58" rx="8"/>
+<rect x="250" y="123" width="6" height="58" rx="3" fill="#7a5cc0"/>
+<text class="mono" x="272" y="149">ollama.&lt;org&gt;…/v1</text>
+<text class="small" x="272" y="169">bearer key</text>
+<text class="small" x="486" y="169" text-anchor="end">AI Assistant chat</text>
+<path d="M148 118 C 200 118, 200 152, 250 152" fill="none" stroke="#8a90a6" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="612" y="40" width="340" height="148" rx="8"/>
+<path d="M620 40 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
+<text class="head" x="632" y="60">UBUNTU GUEST</text>
+<text class="monoxs" x="632" y="100">socat</text>
+<text class="monoxs" x="758" y="100">127.0.0.1:11434 here</text>
+<line x1="632" y1="114" x2="932" y2="114" stroke="#e0e3ea" stroke-width="1.5"/>
+<text class="small" x="632" y="132">Authorization: Bearer, not an open port</text>
+<rect class="card" x="612" y="232" width="340" height="148" rx="8"/>
+<path d="M620 232 h324 a8 8 0 0 1 8 8 v22 h-340 v-22 a8 8 0 0 1 8 -8 z" fill="#2e4a9e"/>
+<text class="head" x="632" y="252">MACOS HOST</text>
+<text class="monoxs" x="632" y="292">0.0.0.0:11434</text>
+<text class="monoxs" x="758" y="292">Ollama.app, Metal</text>
+<line x1="632" y1="306" x2="932" y2="306" stroke="#e0e3ea" stroke-width="1.5"/>
+<text class="small" x="632" y="324">the weights and the GPU stay here</text>
+<path d="M782 188 V232" fill="none" stroke="#000033" stroke-width="2" stroke-dasharray="5 4"/>
+<text class="small" x="792" y="214">UTM virt LAN, often 192.168.64.1</text>
+<path d="M612 114 H512" fill="none" stroke="#000033" stroke-width="2.5"/>
+<text class="small" x="556" y="104" text-anchor="middle">outbound 443</text>
+</svg>

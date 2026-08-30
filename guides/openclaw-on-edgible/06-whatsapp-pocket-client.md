@@ -8,17 +8,8 @@ Telegram asks anyone you want to include to install something first. WhatsApp is
 
 The cost is that this is a linked device on your own account rather than a bot: no bot badge, replies that look like you talking to yourself, and a QR you have to see in order to scan it. That is why the reply prefix exists, and why a dedicated second number is cleaner if you have one. As with Telegram, none of this is an Edgible app. The Gateway connects out; do not publish a hostname or forward a port for a chat channel.
 
-```
-you, on a phone        WhatsApp (linked device) ──► WhatsApp servers
-                                                          ▲
-                                                          │  outbound 443
-Ubuntu guest           OpenClaw Gateway ──────────────────┘
-                                 │  bound thread
-                                 ▼
-                       Cursor over ACP ──► ~/hello-world  (the public page)
-
-you, in a browser      https://openclaw-ui.<org>.edgible.com  ← org login, cannot bind
-```
+![WhatsApp on a phone, paired as a linked device, reaches the OpenClaw Gateway on 127.0.0.1:18789 over the connection the Gateway opens outward, and the bound thread drives Cursor over ACP to edit the public Hello World page.](../../images/diagrams/openclaw-on-edgible-06-light.svg#only-light)
+![WhatsApp on a phone, paired as a linked device, reaches the OpenClaw Gateway on 127.0.0.1:18789 over the connection the Gateway opens outward, and the bound thread drives Cursor over ACP to edit the public Hello World page.](../../images/diagrams/openclaw-on-edgible-06-dark.svg#only-dark)
 
 **Where you run this:** the plugin, config and the QR on the **Ubuntu guest** (the QR is text, so the console or SSH is fine); the chat in **WhatsApp on a phone**; the page refresh in a **phone browser on cellular**.
 
