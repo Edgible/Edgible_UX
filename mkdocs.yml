@@ -49,6 +49,19 @@ theme:
         icon: material/weather-sunny
         name: Switch to light mode
 
+plugins:
+  # Listing any plugin replaces Material's defaults, so search has to be named.
+  - search
+  # One Open Graph image per page, drawn at build time from the page title and
+  # theme.logo. Off unless SOCIAL_CARDS is set, because it needs cairo and pango
+  # on the machine: the Docker image and CI install them, a laptop need not.
+  - social:
+      enabled: !ENV [SOCIAL_CARDS, false]
+      cards_layout_options:
+        background_color: "#000033"
+        color: "#ffffff"
+        font_family: Jost
+
 markdown_extensions:
   - admonition
   - attr_list

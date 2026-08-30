@@ -3,3 +3,5 @@ site/
 .venv/
 __pycache__/
 .DS_Store
+# Where the social plugin keeps the drawn cards between builds.
+.cache/

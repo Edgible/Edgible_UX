@@ -1,0 +1,8 @@
+# Only the social plugin needs these, and only where SOCIAL_CARDS is set: the
+# Docker image and the deploy workflow. Kept out of requirements.txt because
+# this pin of pillow has no wheel on the newest Python, so a laptop running
+# 3.13 or later would try to compile it and fail on an install that otherwise
+# has nothing to do with cards.
+#
+# Cards also need cairo and pango as system packages. See the Dockerfile.
+mkdocs-material[imaging]==9.5.49

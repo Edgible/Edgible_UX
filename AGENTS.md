@@ -99,6 +99,13 @@ pip install -r requirements.txt   # once
 ./scripts/build.sh
 ```
 
+That local build draws no social cards. The plugin that makes them needs cairo
+and pango installed on the machine, and a pin of pillow that has no wheel on the
+newest Python, so it is off unless `SOCIAL_CARDS` is set. The Docker image and
+the deploy workflow install `requirements-imaging.txt` and set it; a laptop
+neither needs to nor should have to. The consequence is that a card only appears
+on the deployed site, so check `og:image` there rather than locally.
+
 The build sets `use_directory_urls: false`, so a page becomes `glossary.html`
 rather than `glossary/index.html`. Every URL then maps onto a single file, which
 keeps the site servable from an object store with no rewrite rule, and puts each

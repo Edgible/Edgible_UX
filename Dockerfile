@@ -4,12 +4,20 @@ FROM python:3.12-slim AS build
 
 WORKDIR /src
 
+# libcairo2 and the pango libraries are what the social plugin draws the Open
+# Graph cards with; without them its import fails and the build stops.
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends bash findutils git \
+    && apt-get install -y --no-install-recommends \
+        bash findutils git \
+        libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libfreetype6 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements-imaging.txt ./
+RUN pip install --no-cache-dir -r requirements.txt -r requirements-imaging.txt
+
+# Draw the cards. The image build has the libraries above, so unlike a laptop it
+# can always do this.
+ENV SOCIAL_CARDS=true
 
 COPY mkdocs.yml ./
 COPY overrides ./overrides
