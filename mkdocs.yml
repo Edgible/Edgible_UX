@@ -92,7 +92,18 @@ nav:
   - What Edgible does: capabilities.md
   - Glossary: glossary.md
   - Working with an AI tool: working-with-ai.md
-  - 1. n8n on Edgible:
+  - Start here:
+      - guides/start-here/README.md
+      - guides/start-here/01-edgible-on-vm.md
+  - Website on Edgible:
+      - guides/website-on-edgible/README.md
+      - guides/website-on-edgible/01-site-on-the-vm.md
+      - guides/website-on-edgible/02-publish-the-site.md
+      - guides/website-on-edgible/03-umami-on-the-vm.md
+      - guides/website-on-edgible/04-publish-umami.md
+      - guides/website-on-edgible/05-uptime-kuma.md
+      - guides/website-on-edgible/06-website-teardown.md
+  - n8n on Edgible:
       - guides/n8n-on-edgible/README.md
       - guides/n8n-on-edgible/01-n8n-on-the-vm.md
       - guides/n8n-on-edgible/02-n8n-editor-through-edgible.md
@@ -100,9 +111,8 @@ nav:
       - guides/n8n-on-edgible/04-n8n-cron.md
       - guides/n8n-on-edgible/05-n8n-public-webhook.md
       - guides/n8n-on-edgible/06-n8n-teardown.md
-  - 2. OpenClaw on Edgible:
+  - OpenClaw on Edgible:
       - guides/openclaw-on-edgible/README.md
-      - guides/openclaw-on-edgible/01-edgible-on-vm.md
       - guides/openclaw-on-edgible/02-openclaw-on-the-box.md
       - guides/openclaw-on-edgible/03-publish-openclaw-control-ui.md
       - guides/openclaw-on-edgible/04-openclaw-changes-edgible-site.md
@@ -112,7 +122,7 @@ nav:
       - guides/openclaw-on-edgible/08-cursor-agent.md
       - guides/openclaw-on-edgible/09-models-beyond-free-gemini.md
       - guides/openclaw-on-edgible/10-openclaw-teardown.md
-  - 3. LLM on Edgible:
+  - LLM on Edgible:
       - guides/llm-on-edgible/README.md
       - guides/llm-on-edgible/01-ollama-on-bare-metal.md
       - guides/llm-on-edgible/02-edgible-to-ollama.md

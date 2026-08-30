@@ -1,6 +1,6 @@
 # LLM on Edgible — chapters
 
-Guide 3. Each chapter is one job and one smoke test. Do them in order.
+Each chapter is one job and one smoke test. Do them in order.
 
 How to read a chapter: a one-line hook under the title, then N.0 Why (what is missing without this chapter, and which machine you run it on), then N.1 The job (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
@@ -25,7 +25,7 @@ Edgible cannot aim at the Mac’s IP. It proxies `127.0.0.1` on the UTM guest. C
 
 Do not port-forward `11434` on the router. Same-LAN HTTP is only the guest → Mac hop for the forwarder. n8n and OpenClaw use the published `api-key` URL.
 
-**Need first:** [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) on the Mac guest (`mini-pc`, Hello World on cellular). Leave that VM and `hello-world` running. [1. n8n on Edgible](../n8n-on-edgible/README.md) and [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
+**Need first:** [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) on the Mac guest (`mini-pc`, Hello World on cellular). Leave that VM and `hello-world` running. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

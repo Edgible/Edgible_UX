@@ -17,7 +17,12 @@ by `scripts/build.sh` and are not checked in, so never edit files there.
   their own terms section; add a new term here instead.
 - `working-with-ai.md`: the markdown sources, `llms.txt` and how to read these
   guides alongside an AI tool.
-- `guides/<series>/README.md`: chapter list for that series.
+- `guides/<series>/README.md`: chapter list for that series. Series names carry
+  no ordinal: reading order lives in the `nav:` in `mkdocs.yml` and in `GUIDES`
+  in `scripts/gen_llms.py`, so inserting a series does not mean renumbering
+  prose that nothing validates.
+- `guides/start-here/01-edgible-on-vm.md` is the shared prerequisite. Every
+  series links to it from its `Need first:` line rather than repeating it.
 - `guides/<series>/NN-*.md`: one chapter, one job, one smoke test.
 
 ## Chapter structure

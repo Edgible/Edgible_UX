@@ -8,13 +8,13 @@ A free Gemini key is a demo budget. It carries the hellos in [chapter 2](02-open
 
 Common fixes make it worse. Re-running full onboarding to add one provider rebuilds Gateway settings you spent two chapters getting right. Pinning a model in the Control UI picker is strict: a pinned model never fails over. Guessing a model id from a provider’s marketing page gets “model not found”. A 20B-class local model as the backup turns a rate limit into what feels like a hang. What works: a key in the env file the daemon reads, an id the catalog printed, thinking off, and a short fallback list of comparable models.
 
-Cloud keys and a small same-LAN Ollama failover belong in this chapter. Publishing a large local or remote LLM at its own hostname, then pointing n8n and OpenClaw at that URL, is [3. LLM on Edgible](../llm-on-edgible/README.md). That hostname carries an `api-key` secret, never `None`.
+Cloud keys and a small same-LAN Ollama failover belong in this chapter. Publishing a large local or remote LLM at its own hostname, then pointing n8n and OpenClaw at that URL, is [LLM on Edgible](../llm-on-edgible/README.md). That hostname carries an `api-key` secret, never `None`.
 
 **Where you run this:** provider consoles in the **host browser**; keys, `models` commands and the hello on the **Ubuntu guest**; the Mac-side Ollama in [9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac) on the host; the fallback notice in a **Telegram DM**.
 
 ## 9.1 The job
 
-[2. OpenClaw on the VM](02-openclaw-on-the-box.md) onboarded free Gemini Flash. That is enough for the series. Free-tier `429`s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider without reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, or a small Ollama on the same LAN. Optional: a fallback list so a 429 still answers. A published model URL is [3. LLM on Edgible](../llm-on-edgible/README.md).
+[2. OpenClaw on the VM](02-openclaw-on-the-box.md) onboarded free Gemini Flash. That is enough for the series. Free-tier `429`s, `Think: medium` hangs, and a huge local failover are why Telegram then feels broken. Here you add another provider without reinstalling the Gateway: DeepSeek, OpenAI, Groq, Claude, or a small Ollama on the same LAN. Optional: a fallback list so a 429 still answers. A published model URL is [LLM on Edgible](../llm-on-edgible/README.md).
 
 A Cursor subscription is not a chat model. That is [8. Cursor Agent](08-cursor-agent.md) (ACP). Do not paste a Cursor key into `openclaw models set`.
 
@@ -30,7 +30,7 @@ A Cursor subscription is not a chat model. That is [8. Cursor Agent](08-cursor-a
 
 **Need first:** [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway up, Gemini hello already worked). The rest of the series can stay on Flash until you do this.
 
-**Not this chapter:** installing OpenClaw, publishing Control UI, pairing Telegram, hiring Cursor, or publishing an Ollama / vLLM Edgible app ([3. LLM on Edgible](../llm-on-edgible/README.md)).
+**Not this chapter:** installing OpenClaw, publishing Control UI, pairing Telegram, hiring Cursor, or publishing an Ollama / vLLM Edgible app ([LLM on Edgible](../llm-on-edgible/README.md)).
 
 ## 9.2 Rules that stay
 
@@ -42,7 +42,7 @@ Do this on the VM (Gateway host). Put keys in `~/.openclaw/.env` so systemd sees
 | `/think off` (or `thinkingDefault off`) | Flash and DeepSeek V4 both hang if thinking stays on `medium`. |
 | `models set` = primary; `fallbacks` = backup | Fallback is turn-local. Next message starts on primary again. |
 | Use an id `list` actually prints | Guessing `deepseek/deepseek-v4-flash` when the catalog says something else is “model not found”. |
-| Do not publish Ollama or the Gateway on Edgible `None` | Control UI stays `org`. A published inference URL is [3. LLM on Edgible](../llm-on-edgible/README.md), never `None`. |
+| Do not publish Ollama or the Gateway on Edgible `None` | Control UI stays `org`. A published inference URL is [LLM on Edgible](../llm-on-edgible/README.md), never `None`. |
 
 Check cooldown before blaming the new key:
 
@@ -115,7 +115,7 @@ Cost for these tutorials (fat OpenClaw prompt, short replies): DeepSeek Flash is
 
 ## 9.5 Local Ollama
 
-Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN (Gateway in the Mac’s UTM guest), point at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Do not hairpin through Edgible. If the Gateway is on a different home VM (the layout in [3. LLM on Edgible](../llm-on-edgible/README.md)), skip 9.5.2–9.5.3 and use [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md).
+Prompts stay on hardware you own. If OpenClaw and Ollama share a LAN (Gateway in the Mac’s UTM guest), point at the LAN URL ([9.5.2](#952-ollama-on-the-mac-openclaw-in-the-vm-32-gb-mac)). Do not hairpin through Edgible. If the Gateway is on a different home VM (the layout in [LLM on Edgible](../llm-on-edgible/README.md)), skip 9.5.2–9.5.3 and use [4. OpenClaw uses that URL](../llm-on-edgible/04-openclaw-uses-ollama.md).
 
 ### 9.5.1 Same machine as OpenClaw (enough RAM)
 
@@ -226,4 +226,4 @@ Groups suppress that notice; `/status` still has Fallback. The notice is not a l
 
 ## Next
 
-That’s the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and `openclaw-ui` gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [3. LLM on Edgible](../llm-on-edgible/README.md).
+That’s the series for models. [10. Tear down OpenClaw](10-openclaw-teardown.md) when you want the agent and `openclaw-ui` gone. [Index](README.md). Cursor ACP (not a chat key) is [8. Cursor Agent from OpenClaw on the Edgible site](08-cursor-agent.md). A published LLM is [LLM on Edgible](../llm-on-edgible/README.md).

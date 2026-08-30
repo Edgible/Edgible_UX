@@ -38,7 +38,7 @@ Three checks, in order: Edgible `org` auth (only your organisation hits the host
 - Hello World URL still works (tunnel unchanged).
 - Port `18789` is still not forwarded on the router.
 
-**Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + local hello). Leave `hello-world` running.
+**Need first:** [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (Hello World) and [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) (Gateway + local hello). Leave `hello-world` running.
 
 **Not this chapter:** binding `0.0.0.0`, a mesh VPN, or public (`None`) auth on 18789.
 
@@ -176,7 +176,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 **Smoke test.** A phone that is nowhere near the guest’s network.
 
 1. Turn Wi‑Fi off on the phone.
-2. Open the `https` URL. You should get the Edgible `org` login first. Sign in as the same account as [1.3](01-edgible-on-vm.md). A stranger with the URL should not see OpenClaw.
+2. Open the `https` URL. You should get the Edgible `org` login first. Sign in as the same account as [1.3](../start-here/01-edgible-on-vm.md). A stranger with the URL should not see OpenClaw.
 3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 3.3: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a new device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a local handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 

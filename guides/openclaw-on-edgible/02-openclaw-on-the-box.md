@@ -4,7 +4,7 @@
 
 ## 2.0 Why
 
-[Chapter 1](01-edgible-on-vm.md) published a process on your box to the internet, but that process was a throwaway page. This chapter installs something worth reaching from a phone: an agent that chats, runs shell commands, and writes files on hardware you own.
+[Chapter 1](../start-here/01-edgible-on-vm.md) published a process on your box to the internet, but that process was a throwaway page. This chapter installs something worth reaching from a phone: an agent that chats, runs shell commands, and writes files on hardware you own.
 
 Two shortcuts do not work here. Running OpenClaw on your laptop instead of the guest means the agent stops when you shut the lid, and its shell tool points at your personal machine rather than a box you are willing to hand it. Binding the Gateway to `0.0.0.0` and forwarding `18789` is the fast route to phone access, but the Control UI is an admin console over a process with a shell, so that port should not be reachable from a scanner. The Gateway stays on loopback for this whole chapter. The published hostname waits for [chapter 3](03-publish-openclaw-control-ui.md), where Edgible reaches it over loopback and puts a login in front.
 
@@ -37,7 +37,7 @@ You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays 
 - `curl` to `http://127.0.0.1:18789/` on the VM returns `200`.
 - Optional, guest desktop only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
-**Need first:** [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) (Hello World still up).
+**Need first:** [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (Hello World still up).
 
 **Not this chapter:** publishing Control UI ([3](03-publish-openclaw-control-ui.md)), the Edgible skill ([5](05-edgible-openclaw-skill.md)), other model providers ([9](09-models-beyond-free-gemini.md)), or `! edgible whoami` (host bash, off by default; [6.10](06-telegram-pocket-client.md#610-optional-host-bash---bash) if you want it later).
 

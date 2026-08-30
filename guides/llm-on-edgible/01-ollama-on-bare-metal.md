@@ -23,7 +23,7 @@ You install Ollama on the Mac that hosts the Ubuntu VM, pull a 7B-class chat mod
 - You did not change `OLLAMA_HOST` yet.
 - Port `11434` is not forwarded on the router.
 
-**Need first:** A Mac with enough RAM left after the Ubuntu VM: a 7B wants on the order of 8 GB+ for weights. The VM from [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) can stay running; you do not use it in this chapter. [Ollama for Mac](https://ollama.com/download).
+**Need first:** A Mac with enough RAM left after the Ubuntu VM: a 7B wants on the order of 8 GB+ for weights. The VM from [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) can stay running; you do not use it in this chapter. [Ollama for Mac](https://ollama.com/download).
 
 **Not this chapter:** `OLLAMA_HOST=0.0.0.0`, socat, an Edgible app, n8n, OpenClaw, or `curl` from the VM.
 

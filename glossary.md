@@ -30,6 +30,20 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | TLS termination | Where HTTPS is decrypted. With Edgible it happens on the serving device, which is why the original client IP does not reach the app. |
 | Webhook | An HTTPS URL another system calls. It needs a hostname reachable without a login, so `None` rather than `org`. |
 
+## Website, analytics and monitoring
+
+| Term | What it means here |
+| --- | --- |
+| Static site | A directory of files a web server hands over unchanged, whatever produced them. Nothing runs per request. |
+| Umami | Self-hosted web analytics: page views without cookies, with the database on your own machine. |
+| Tracking script | The `script.js` Umami serves and your pages load. It must come from a hostname with `None`, because visitors have no login. |
+| Website ID | The UUID Umami assigns your site, named in the tracking snippet so hits are attributed to it. |
+| Ingest hostname | The `None` hostname visitors' browsers reach, as opposed to the `org` hostname you read the numbers on. Both point at the same process. |
+| Uptime Kuma | Self-hosted uptime monitoring: it requests a URL on a schedule and notifies you when the answer changes. |
+| `8080` | The site's nginx port on the guest, bound to loopback. |
+| `3000` | Umami's port on the guest, bound to loopback. |
+| `3001` | Uptime Kuma's port on the guest, bound to loopback. |
+
 ## n8n
 
 | Term | What it means here |
@@ -68,6 +82,6 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 
 | Term | What it means here |
 | --- | --- |
-| Ubuntu guest | The virtual machine running the serving agent, created in [Edgible on an Ubuntu VM](guides/openclaw-on-edgible/01-edgible-on-vm.md). Most commands run here. |
-| Host computer | The laptop or desktop the virtual machine runs on. In guide 3 it is a Mac, and it runs Ollama. |
+| Ubuntu guest | The virtual machine running the serving agent, created in [Edgible on an Ubuntu VM](guides/start-here/01-edgible-on-vm.md). Most commands run here. |
+| Host computer | The laptop or desktop the virtual machine runs on. In [LLM on Edgible](guides/llm-on-edgible/README.md) it is a Mac, and it runs Ollama. |
 | Hello World | The first published page, used throughout as the check that publishing still works. |

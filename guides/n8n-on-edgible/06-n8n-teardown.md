@@ -4,7 +4,7 @@
 
 ## 6.0 Why
 
-A demo webhook left active is a live public endpoint on a box you own, and an active schedule keeps firing after you stop watching the VM. This is also a shared box: it may still be running [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md), so the default here is n8n only. The order matters: the `None` hostname comes down before the `org` one. Leave `openclaw-ui`, `ollama` and `hello-world` alone, and leave the Edgible serving agent installed.
+A demo webhook left active is a live public endpoint on a box you own, and an active schedule keeps firing after you stop watching the VM. This is also a shared box: it may still be running [OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [LLM on Edgible](../llm-on-edgible/README.md), so the default here is n8n only. The order matters: the `None` hostname comes down before the `org` one. Leave `openclaw-ui`, `ollama` and `hello-world` alone, and leave the Edgible serving agent installed.
 
 **Where you run this:** unpublishing in the **n8n editor** on the `org` hostname; `edgible` and Docker on the **Ubuntu guest**; the final dead-URL check on a **phone on cellular**.
 
@@ -89,4 +89,4 @@ Do not `edgible agent uninstall` here.
 
 ## Next
 
-Series index: [README](README.md). Control UI: [2. OpenClaw on Edgible](../openclaw-on-edgible/README.md). Published model: [3. LLM on Edgible](../llm-on-edgible/README.md).
+Series index: [README](README.md). Control UI: [OpenClaw on Edgible](../openclaw-on-edgible/README.md). Published model: [LLM on Edgible](../llm-on-edgible/README.md).

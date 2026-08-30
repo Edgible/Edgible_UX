@@ -92,4 +92,4 @@ Deactivate the workflow when you are finished. A public GET that returns only `o
 
 ## Next
 
-That’s this series for the demo. Teardown: [6. Tear down n8n](06-n8n-teardown.md). [Index](README.md). Edgible VM setup lives in [OpenClaw chapter 1](../openclaw-on-edgible/01-edgible-on-vm.md) (shared box). Guide 2 is [OpenClaw on Edgible](../openclaw-on-edgible/README.md); do not wire n8n to OpenClaw for this demo. Guide 3 is [LLM on Edgible](../llm-on-edgible/README.md).
+That’s this series for the demo. Teardown: [6. Tear down n8n](06-n8n-teardown.md). [Index](README.md). Edgible VM setup lives in [Start here](../start-here/README.md), on the same box. An agent instead: [OpenClaw on Edgible](../openclaw-on-edgible/README.md); do not wire n8n to OpenClaw for this demo. A published model: [LLM on Edgible](../llm-on-edgible/README.md).

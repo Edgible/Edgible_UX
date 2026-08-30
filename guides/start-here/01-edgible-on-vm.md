@@ -4,7 +4,7 @@
 
 ## 1.0 Why
 
-You have a machine you trust: a mini-PC at home, or the VM standing in for one in this chapter. Nothing outside your own network can reach it. A workflow canvas, an agent or a model on that box is usable only by whoever is sitting at the keyboard. This chapter is the first in all three series because everything later assumes a published hostname already exists.
+You have a machine you trust: a mini-PC at home, or the VM standing in for one in this chapter. Nothing outside your own network can reach it. A website, a workflow canvas, an agent or a model on that box is usable only by whoever is sitting at the keyboard. Every other guide starts from what this chapter leaves you with, so do this one first.
 
 The usual ways of publishing one are the ones to avoid. Forwarding a port on the router puts a process you have not hardened in front of everyone who scans your address, and you inherit dynamic DNS and certificates as homework. A mesh VPN works, but every device that will ever need the service has to be enrolled first, which rules out a colleague, a phone you borrowed, or a webhook from Stripe. Renting a cloud box solves reachability by giving up the whole premise: the data is no longer on hardware you own.
 
@@ -25,7 +25,7 @@ your router            no forwarded port — nothing dials in
 
 ## 1.1 The job
 
-You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serving device, and publish Hello World. The “mini-PC” is that guest: VirtualBox (Windows/Linux) or UTM (Mac). OpenClaw is the next chapter.
+You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serving device, and publish Hello World. The “mini-PC” is that guest: VirtualBox (Windows/Linux) or UTM (Mac). Whichever guide you go on to, it starts here.
 
 **Done when**
 
@@ -37,7 +37,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 
 **Need first:** the invite email. Host kit is 1.2. NAT is enough: outbound TCP 443 only.
 
-**Not this chapter:** OpenClaw, n8n, Control UI on the internet, Telegram, or the Edgible skill.
+**Not this chapter:** a website of your own, analytics, n8n, OpenClaw, or a published model. Those are the guides that follow.
 
 ## 1.2 What you need on the host computer
 
@@ -46,9 +46,9 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 | Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A temporary password arrives in a second email. |
 | VM manager | VirtualBox or UTM; see 1.4. |
 | Ubuntu 24.04 LTS ISO | Match the CPU: `amd64` on typical PCs; `arm64` on Apple Silicon. |
-| Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. That is not OpenClaw. Once it registers, your org lists it as a serving device named `mini-pc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
+| Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. Once it registers, your org lists it as a serving device named `mini-pc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
 
-NAT is enough. The VM only needs outbound TCP 443. Do not port-forward 22, 80, 443, or 18789. A Gemini key and Cursor are later chapters.
+NAT is enough. The VM only needs outbound TCP 443. Do not port-forward 22, 80, or 443.
 
 ---
 
@@ -81,7 +81,7 @@ Keep the email and the new password somewhere you can paste into the VM. To retu
 
 **Outcome:** An Ubuntu 24 virtual machine in a VM manager, standing in for the mini-PC.
 
-A virtual machine (VM) is a full computer that runs as an app on the laptop or PC in front of you. It stands in for the mini-PC: Ubuntu 24 inside, Edgible (and later OpenClaw) on that guest, not on your host OS.
+A virtual machine (VM) is a full computer that runs as an app on the laptop or PC in front of you. It stands in for the mini-PC: Ubuntu 24 inside, Edgible and whatever you go on to publish on that guest, not on your host OS.
 
 To create one you need a VM manager (hypervisor): the app that hosts the VM. Install that first, then create a virtual machine based on Ubuntu 24.04 LTS that runs inside it.
 
@@ -94,13 +94,13 @@ To create one you need a VM manager (hypervisor): the app that hosts the VM. Ins
 
 Use Ubuntu Server (not Desktop). You will work in a terminal, like a mini-PC.
 
-Recommended minimums for this guide (sized so the same guest can run OpenClaw later, not only the Edgible serving agent):
+Recommended minimums (sized so the same guest can run the services the later guides publish, not only the Edgible serving agent):
 
 
 | Resource | Recommended minimum | Floor if you are short on host RAM/disk                                                                      |
 | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Memory   | 4 GB            | 2 GB can boot Ubuntu and the Edgible serving agent; OpenClaw will struggle.                                      |
-| Disk     | 40 GB           | 20 GB is enough for this chapter only; images and OpenClaw need the rest. Dynamically allocated is fine. |
+| Memory   | 4 GB            | 2 GB can boot Ubuntu and the Edgible serving agent, but a database, an agent or a model on top of it will struggle. |
+| Disk     | 40 GB           | 20 GB is enough for this chapter only; container images need the rest. Dynamically allocated is fine. |
 | CPUs     | 2               | 1 works; two is the minimum we recommend.                                                                |
 
 
@@ -145,7 +145,7 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 
 **Outcome:** An updated VM with outbound internet and Docker installed.
 
-This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and Docker (OpenClaw will need it; Edgible can publish a compose app later). Work inside the VM (console is enough).
+This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and Docker (every later guide runs its service in a container). Work inside the VM (console is enough).
 
 SSH from the host is optional. NAT does not give you a stable guest IP on the LAN. You can stay in the VM window, or in VirtualBox add **Settings → Network → Advanced → Port forwarding** for host 2222 → guest 22 only, then:
 
@@ -153,7 +153,7 @@ SSH from the host is optional. NAT does not give you a stable guest IP on the LA
 ssh -p 2222 ubuntu@127.0.0.1
 ```
 
-Use your VM username if it is not `ubuntu`. Do not forward 80, 443, or 18789.
+Use your VM username if it is not `ubuntu`. Do not forward 80 or 443.
 
 ### 1.5.1 Update Ubuntu
 
@@ -277,7 +277,7 @@ edgible auth select-org
 
 **Outcome:** A serving device (`mini-pc`) connected to Edgible, with no inbound ports opened on your router.
 
-The Edgible serving agent must run on the VM as systemd. It registers a device named `mini-pc` in your org. It is not OpenClaw.
+The Edgible serving agent must run on the VM as systemd. It registers a device named `mini-pc` in your org.
 
 ```bash
 sudo edgible agent install \
@@ -325,9 +325,9 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 
 **Outcome:** An application hosted on your laptop / mini-PC that is accessible from the internet.
 
-The Edgible serving agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying Hello World: a throwaway nginx page you open from a phone, before you touch OpenClaw.
+The Edgible serving agent being healthy is not the same as “the internet can reach a process on this VM.” This step is Edgible saying Hello World: a throwaway nginx page you open from a phone.
 
-Choose `None` (public access) when asked how the application should be protected. That is acceptable only because this page is a public Hello World. Do not use None for OpenClaw or anything private.
+Choose `None` (public access) when asked how the application should be protected. That is acceptable only because this page is a public Hello World. Do not use `None` for anything private.
 
 ### 1.9.1 Run nginx on the VM
 
@@ -408,7 +408,7 @@ You should see Hello World over HTTPS. If curl complains about the certificate, 
 
 If it fails at first, wait a minute, re-run `edgible app status`, and retry. You are not opening a port on the router; the VM is still NAT-only.
 
-Leave this app running until [10. Tear down OpenClaw](10-openclaw-teardown.md) (or `edgible app delete --name hello-world` when you are done with it; skip that if n8n or LLM-on-Edgible still needs the page).
+Leave this app running. The guides that follow use it as the check that publishing still works, and each has a teardown chapter that removes it when you are finished.
 
 ### Verify
 
@@ -423,6 +423,11 @@ Leave this app running until [10. Tear down OpenClaw](10-openclaw-teardown.md) (
 
 ## Next
 
-[2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) continues guide 2 (Gateway on loopback, Gemini Flash, local hello / Control UI). Other models later: [9](09-models-beyond-free-gemini.md). Series: [README](README.md).
+Pick a guide. They all run on this VM, with Hello World still up.
 
-Or guide 1 (workflows, no agent): [n8n on Edgible](../n8n-on-edgible/README.md), same VM, Hello World still up.
+- [Website on Edgible](../website-on-edgible/README.md): your own site instead of Hello World, plus self-hosted analytics and uptime monitoring. The shortest path from here.
+- [n8n on Edgible](../n8n-on-edgible/README.md): workflows, and one process published twice with two auth modes.
+- [OpenClaw on Edgible](../openclaw-on-edgible/README.md): an agent you talk to from your phone.
+- [LLM on Edgible](../llm-on-edgible/README.md): a model on your own hardware, called by other machines.
+
+Series: [README](README.md).

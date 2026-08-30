@@ -4,7 +4,7 @@
 
 ## 10.0 Why
 
-This guest is probably shared: it may still be serving [1. n8n on Edgible](../n8n-on-edgible/README.md) and [3. LLM on Edgible](../llm-on-edgible/README.md). Uninstalling the serving agent, deleting every app and dropping Hello World would break guides you have not finished. The default here is OpenClaw only: Telegram / WhatsApp, `openclaw-ui`, the Gateway, and optionally `~/.openclaw`. Do not switch the Control UI hostname to `None` on the way out to check something. Delete the app instead.
+This guest is probably shared: it may still be serving [n8n on Edgible](../n8n-on-edgible/README.md) and [LLM on Edgible](../llm-on-edgible/README.md). Uninstalling the serving agent, deleting every app and dropping Hello World would break guides you have not finished. The default here is OpenClaw only: Telegram / WhatsApp, `openclaw-ui`, the Gateway, and optionally `~/.openclaw`. Do not switch the Control UI hostname to `None` on the way out to check something. Delete the app instead.
 
 **Where you run this:** `openclaw` and `edgible` on the **Ubuntu guest**; Automations in **Control UI**; BotFather in the **Telegram app**; the final check in a **phone browser on cellular**.
 
@@ -114,7 +114,7 @@ edgible app delete --name hello-world
 docker stop hello-world && docker rm hello-world
 ```
 
-Leave `~/hello-world` on disk unless you want that HTML gone too. Do not `edgible agent uninstall` here. That serving agent is still [guide 1](../n8n-on-edgible/README.md) (until [n8n teardown](../n8n-on-edgible/06-n8n-teardown.md)) / [guide 3](../llm-on-edgible/README.md).
+Leave `~/hello-world` on disk unless you want that HTML gone too. Do not `edgible agent uninstall` here. That serving agent is still what [n8n on Edgible](../n8n-on-edgible/README.md) (until [n8n teardown](../n8n-on-edgible/06-n8n-teardown.md)) and [LLM on Edgible](../llm-on-edgible/README.md) publish through.
 
 ### Verify
 
@@ -130,4 +130,4 @@ Leave `~/hello-world` on disk unless you want that HTML gone too. Do not `edgibl
 
 ## Next
 
-Series index: [README](README.md). Workflows: [1. n8n on Edgible](../n8n-on-edgible/README.md). Published model: [3. LLM on Edgible](../llm-on-edgible/README.md).
+Series index: [README](README.md). Workflows: [n8n on Edgible](../n8n-on-edgible/README.md). Published model: [LLM on Edgible](../llm-on-edgible/README.md).

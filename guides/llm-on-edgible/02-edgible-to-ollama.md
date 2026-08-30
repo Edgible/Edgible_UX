@@ -45,7 +45,7 @@ You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest t
 - Hello World still loads. Port `11434` is not forwarded on the router.
 - You did not set this app to `None`.
 
-**Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md) and [Edgible on an Ubuntu VM](../openclaw-on-edgible/01-edgible-on-vm.md) (`mini-pc` healthy, Hello World on cellular). Leave the VM, `hello-world`, and Mac Ollama running.
+**Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md) and [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (`mini-pc` healthy, Hello World on cellular). Leave the VM, `hello-world`, and Mac Ollama running.
 
 **Not this chapter:** n8n nodes, OpenClaw `models set`, `None` on this app, or installing Ollama in the guest.
 

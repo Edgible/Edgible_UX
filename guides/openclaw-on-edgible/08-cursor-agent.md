@@ -8,7 +8,7 @@
 
 Do not point OpenClaw’s chat model at Cursor, and do not paste a Cursor key into the model config. Cursor is not a chat model. It is a coding harness you hire for one job over ACP, with its own session, working directory and permission mode, while Gemini keeps talking to you. Running it as a separate job also keeps the blast radius small: one directory, one narrow allowlist, and `approve-all` only for the length of the job.
 
-The target is the same public hostname you have used since [chapter 1](01-edgible-on-vm.md). No new app, no new auth mode, no new port. The only variable is who wrote the file. This chapter wipes Gemini’s page on purpose, so look at that page first.
+The target is the same public hostname you have used since [chapter 1](../start-here/01-edgible-on-vm.md). No new app, no new auth mode, no new port. The only variable is who wrote the file. This chapter wipes Gemini’s page on purpose, so look at that page first.
 
 **Where you run this:** the Cursor CLI, acpx and the cron installer on the **Ubuntu guest** (`agent login` needs the **guest desktop** browser); the spawn and steer in **Control UI**; the before-and-after refresh on a **phone on cellular**.
 
@@ -28,7 +28,7 @@ Skip without a Cursor subscription. Finish chapter 4 first, because this chapter
 - `permissionMode` is `approve-reads` again (or you accept the wider ACP blast radius and said so).
 - openclaw-ui protection is still `org`. Port `18789` is still not forwarded.
 
-**Need first:** [4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md), [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) (`openclaw-ui` `org`), nginx bind-mount from [1.9](01-edgible-on-vm.md). Control UI cannot bind, so spawn then steer. WhatsApp ([7](07-whatsapp-pocket-client.md)) can `--bind here`.
+**Need first:** [4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md), [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) (`openclaw-ui` `org`), nginx bind-mount from [1.9](../start-here/01-edgible-on-vm.md). Control UI cannot bind, so spawn then steer. WhatsApp ([7](07-whatsapp-pocket-client.md)) can `--bind here`.
 
 **Not this chapter:** Cursor.app on the Mac; making Cursor the default chat model; another ACP spawn for the hourly tick (`python3` cron after install).
 
@@ -58,7 +58,7 @@ Once, in order: reset and inspect Hello World → CLI + acpx → doctor → spaw
 
 ## 8.3 Clean slate (Hello World, no rotation cron)
 
-The comparison only works if you can see the starting page. Restore [1.9](01-edgible-on-vm.md)’s HTML, delete extra files from chapter 4, remove Gemini rotation jobs. nginx stays up; you are not recreating the Edgible app.
+The comparison only works if you can see the starting page. Restore [1.9](../start-here/01-edgible-on-vm.md)’s HTML, delete extra files from chapter 4, remove Gemini rotation jobs. nginx stays up; you are not recreating the Edgible app.
 
 On the VM:
 

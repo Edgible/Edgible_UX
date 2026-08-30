@@ -31,7 +31,7 @@ On the OpenClaw VM, register the Edgible origin as the Ollama provider, list `ol
 - `openclaw agent --agent main --thinking off --model ollama/gpt-oss:20b --message "Say hello in one sentence."` replies, and Mac `ollama ps` shows that tag on GPU.
 - `ollama` app is still `api-key`. This VM is not the Mac guest.
 
-**Need first:** Gateway up on this VM ([2. OpenClaw on Edgible](../openclaw-on-edgible/README.md) applied here, not on the Mac). [Chapter 2](02-edgible-to-ollama.md), with cellular `curl` and Bearer already working. `gpt-oss:20b` pulled on the Mac, so `ollama ls` on the host shows it ([chapter 3](03-n8n-uses-ollama.md) pulls it for the Assistant). ~13 GB of Mac RAM free after the UTM guest.
+**Need first:** Gateway up on this VM ([OpenClaw on Edgible](../openclaw-on-edgible/README.md) applied here, not on the Mac). [Chapter 2](02-edgible-to-ollama.md), with cellular `curl` and Bearer already working. `gpt-oss:20b` pulled on the Mac, so `ollama ls` on the host shows it ([chapter 3](03-n8n-uses-ollama.md) pulls it for the Assistant). ~13 GB of Mac RAM free after the UTM guest.
 
 **Not this chapter:** installing Ollama on the OpenClaw VM, n8n, or LAN `http://$HOST:11434`.
 

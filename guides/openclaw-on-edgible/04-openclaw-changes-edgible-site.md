@@ -25,7 +25,7 @@ From Control UI on the phone, you tell OpenClaw to rewrite the Hello World site 
 - Optional: no personal mail, files, or calendar in the page source (`cat ~/hello-world/index.html`).
 - Port `18789` is still not forwarded.
 
-**Need first:** [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) on cellular. Leave the `hello-world` nginx container running ([1.9](01-edgible-on-vm.md)).
+**Need first:** [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) on cellular. Leave the `hello-world` nginx container running ([1.9](../start-here/01-edgible-on-vm.md)).
 
 **Not this chapter:** inbox/calendar demos (personal data on a public URL), opening ports, or editing OpenClaw/Edgible config.
 
@@ -41,7 +41,7 @@ Change the hello-world app to say "OpenClaw was here!"
 
 That one line is enough on this setup (Gemini Flash + tools). Approve a write if asked.
 
-**Smoke test.** Leave the Control UI, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](01-edgible-on-vm.md), Wi‑Fi still off), and hard-refresh. You should see “OpenClaw was here”, not the original Hello World.
+**Smoke test.** Leave the Control UI, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [chapter 1](../start-here/01-edgible-on-vm.md), Wi‑Fi still off), and hard-refresh. You should see “OpenClaw was here”, not the original Hello World.
 
 If it only *describes* the change, or the public page is unchanged, it guessed (docker exec into a read-only mount, wrong path, or no tool call). Then be explicit:
 
@@ -94,7 +94,7 @@ Use a cron/automation job. Confirm the schedule. Public sources only. Nothing ab
 
 Wait for the next hour (or **Run now** in **Automations**), hard-refresh Hello World. A different name should be on the page. Gemini free tier has daily caps. If 429s start, pause the job or pin Flash ([chapter 2](02-openclaw-on-the-box.md) 2.3.3), or switch the chat model in [9. Models beyond free Gemini](09-models-beyond-free-gemini.md). For a long-running box, switch this cron to daily after the demo.
 
-Gemini is enough to research and write HTML in one pass. Optional [chapter 8](08-cursor-agent.md) is the comparison: wipe back to the [chapter 1](01-edgible-on-vm.md) Hello World page, remove that cron, then hire Cursor to rebuild the same product on the same public URL. Do not skip this chapter; chapter 8 is compared against the page Gemini produced here.
+Gemini is enough to research and write HTML in one pass. Optional [chapter 8](08-cursor-agent.md) is the comparison: wipe back to the [chapter 1](../start-here/01-edgible-on-vm.md) Hello World page, remove that cron, then hire Cursor to rebuild the same product on the same public URL. Do not skip this chapter; chapter 8 is compared against the page Gemini produced here.
 
 ### Verify
 

@@ -16,10 +16,15 @@ SITE = "https://guides.edgible.com"
 
 REPO = Path(__file__).resolve().parent.parent
 
+# Reading order, which is also the nav order in mkdocs.yml. Series carry no
+# ordinal in their name: the order lives here and in the nav, so a new series
+# does not mean renumbering prose that nothing validates.
 GUIDES = [
-    ("1. n8n on Edgible", "guides/n8n-on-edgible"),
-    ("2. OpenClaw on Edgible", "guides/openclaw-on-edgible"),
-    ("3. LLM on Edgible", "guides/llm-on-edgible"),
+    ("Start here", "guides/start-here"),
+    ("Website on Edgible", "guides/website-on-edgible"),
+    ("n8n on Edgible", "guides/n8n-on-edgible"),
+    ("OpenClaw on Edgible", "guides/openclaw-on-edgible"),
+    ("LLM on Edgible", "guides/llm-on-edgible"),
 ]
 
 
@@ -68,7 +73,7 @@ def build_index() -> str:
         "are raw markdown."
     )
     out.append("")
-    out.append("## Start here")
+    out.append("## Overview")
     out.append("")
     index = REPO / "README.md"
     out.append(

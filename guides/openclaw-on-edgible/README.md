@@ -1,16 +1,16 @@
 # OpenClaw on Edgible — chapters
 
-**Guide 2.** Each chapter is one job and one smoke test. Do them in order. If [1. n8n on Edgible](../n8n-on-edgible/README.md) already left Hello World up, skip [chapter 1](01-edgible-on-vm.md) and start at [chapter 2](02-openclaw-on-the-box.md).
+Each chapter is one job and one smoke test. Do them in order. Chapter 1 is [Start here](../start-here/README.md), shared with every other guide; if Hello World is already up, begin at [chapter 2](02-openclaw-on-the-box.md).
 
 **How to read a chapter:** a one-line hook under the title, then N.0 Why (what is missing without this chapter, and which machine you run it on), then N.1 The job (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and Next at the end.
 
 OpenClaw chats and uses tools on a box you own. Edgible is the public `https://<app>.<org>.edgible.com` hostname, reached over outbound 443 only. No port-forward, no mesh VPN. The Edgible story here is the **Control UI**: phone browser, `org` login, no tunnel on the laptop. Telegram and WhatsApp are chat clients; they are not Edgible apps.
 
-Publishing plus two auth modes on one process (editor `org`, webhooks `None`) is [1. n8n on Edgible](../n8n-on-edgible/README.md). A remote self-hosted Gateway calling a self-hosted Ollama on another home machine is [3. LLM on Edgible](../llm-on-edgible/README.md). That is not this series and not chapter 9; chapter 9 is same-LAN or cloud keys.
+Publishing plus two auth modes on one process (editor `org`, webhooks `None`) is [n8n on Edgible](../n8n-on-edgible/README.md). A remote self-hosted Gateway calling a self-hosted Ollama on another home machine is [LLM on Edgible](../llm-on-edgible/README.md). That is not this series and not chapter 9; chapter 9 is same-LAN or cloud keys.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
-| 1 | [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) | `edgible whoami` on the VM; Hello World on a phone (cellular) |
+| 1 | [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (shared) | `edgible whoami` on the VM; Hello World on a phone (cellular) |
 | 2 | [2. OpenClaw on the VM (loopback Gateway)](02-openclaw-on-the-box.md) | `openclaw agent … hello`; local Control UI (`openclaw dashboard`) if the guest has a desktop |
 | 3 | [3. OpenClaw Control UI through Edgible](03-publish-openclaw-control-ui.md) | Phone opens `openclaw-ui.<org>.edgible.com` (`org` auth), chat works |
 | 4 | [4. OpenClaw changes the public Edgible site](04-openclaw-changes-edgible-site.md) | Control UI rewrites Hello World; optional hourly On this day |
@@ -25,4 +25,4 @@ Do not use `! edgible whoami` as the OpenClaw check in chapter 2. That is host b
 
 The skill source is [openclaw-edgible](https://github.com/Edgible/openclaw-edgible), not this repo.
 
-Workflows (webhooks and auth split, not an agent): [1. n8n on Edgible](../n8n-on-edgible/README.md), on the same VM from [chapter 1](01-edgible-on-vm.md). A model you control, published for both products: [3. LLM on Edgible](../llm-on-edgible/README.md).
+Workflows (webhooks and auth split, not an agent): [n8n on Edgible](../n8n-on-edgible/README.md), on the same VM from [chapter 1](../start-here/01-edgible-on-vm.md). A model you control, published for both products: [LLM on Edgible](../llm-on-edgible/README.md).

@@ -23,15 +23,16 @@ Nothing here needs a paid account with a third party to complete, and the servic
 
 ## The guides
 
-New guides get added over time, each taking a service people genuinely self-host and putting it online the same way. The three available now:
+New guides get added over time, each taking a service people genuinely self-host and putting it online the same way. Every one of them starts from [Start here](guides/start-here/README.md), which installs the serving agent and gets a first page online. The four available now:
 
-- [1. n8n on Edgible](guides/n8n-on-edgible/README.md). A workflow platform whose editor holds all your credentials, kept behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
-- [2. OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). An AI agent you can reach from your phone over HTTPS, with its Gateway still bound to loopback on the machine and no VPN on the phone. Ten short chapters.
-- [3. LLM on Edgible](guides/llm-on-edgible/README.md). A self-hosted Ollama that keeps the model weights and the GPU at home, published with `api-key` and called over HTTPS by other machines you own. Four chapters.
+- [Website on Edgible](guides/website-on-edgible/README.md). A static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
+- [n8n on Edgible](guides/n8n-on-edgible/README.md). A workflow platform whose editor holds all your credentials, kept behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
+- [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). An AI agent you can reach from your phone over HTTPS, with its Gateway still bound to loopback on the machine and no VPN on the phone. Ten short chapters.
+- [LLM on Edgible](guides/llm-on-edgible/README.md). A self-hosted Ollama that keeps the model weights and the GPU at home, published with `api-key` and called over HTTPS by other machines you own. Four chapters.
 
 ## Where to start
 
-If you have never published anything with Edgible, start with [Edgible on an Ubuntu VM](guides/openclaw-on-edgible/01-edgible-on-vm.md). It installs the serving agent and gets one page online, and it is the shared first chapter for all three guides rather than the start of the OpenClaw one. From there, pick whichever guide is closest to something you already run.
+Everyone starts with [Start here](guides/start-here/README.md). It installs the serving agent on a machine you own and gets one page online, which every other guide builds on. From there, pick whichever guide is closest to something you already run.
 
 If you would rather see the feature list first, [What Edgible does, and where these guides prove it](capabilities.md) maps each capability to the chapter that demonstrates it.
 
