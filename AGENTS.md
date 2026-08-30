@@ -52,6 +52,10 @@ Every chapter follows the same shape, and new chapters must match it:
 - Auth modes are `org`, `api-key` and `None`, always in code font.
 - Ports, hostnames, commands, filenames and env vars go in code font.
 - Every claim needs a command whose output a reader can check.
+- Say nothing about what Edgible costs. No free tier, no paid plan, no limits on
+  devices or published apps, and nothing that implies the answer, such as "the
+  only cost is electricity". Third-party services are different: a chapter should
+  state plainly what an outside account or key asks of the reader.
 
 ## Series themes
 
@@ -65,7 +69,7 @@ whether a chapter in that series proves it.
 | Series | Theme | The thing you stop doing |
 | --- | --- | --- |
 | Start here | A page the internet can load, without touching your router | Forwarding a port |
-| Website on Edgible | The whole small-site stack, rented from nobody | Paying three companies who also hold your traffic |
+| Website on Edgible | The whole small-site stack, on hardware you own | Giving three outside services a copy of your traffic |
 | n8n on Edgible | The back office workhorse, running at 3am in your own building | Handing your API keys to a hosted automation service |
 | OpenClaw on Edgible | The agent everyone is currently trying, with its shell and admin console off the internet | Exposing an admin port to reach the agent from a phone |
 | LLM on Edgible | Private AI: prompts, documents and weights never leave hardware you own | Sending the questions you would not type into a hosted model |

@@ -32,7 +32,7 @@ Where names the chapter that demonstrates the feature. How is the observable pro
 
 ## The set-piece demos
 
-The whole small-site stack, rented from nobody. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service.
+The whole small-site stack, on hardware you own. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service.
 
 The back office workhorse, with its credentials staying in your building. [n8n on Edgible](guides/n8n-on-edgible/README.md) covers the auth split end to end, including the `WEBHOOK_URL` setting that makes n8n print the public origin while traffic still reaches one process.
 

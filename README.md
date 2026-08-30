@@ -21,13 +21,13 @@ Product pages assert things. These guides show them, on ordinary hardware, in th
 - Every claim has an observable check behind it. When a guide says a service is reachable without a forwarded port, the test is loading it on a phone with Wi-Fi turned off.
 - Each use case series ends with a teardown chapter, so a guide you tried out of curiosity leaves nothing running.
 
-The services being published are stock software, unmodified. Almost everything here runs on free accounts and open source; the two exceptions say so at the top of the chapter, in [Cursor Agent](guides/openclaw-on-edgible/07-cursor-agent.md) and [Models beyond free Gemini](guides/openclaw-on-edgible/08-models-beyond-free-gemini.md), and both are optional.
+The services being published are stock software, unmodified: nginx, n8n, Umami, Uptime Kuma, Ollama and OpenClaw are all open source, and you install them from their own projects. Where a chapter reaches for an outside service, it says at the top what that service asks of you, as [Cursor Agent](guides/openclaw-on-edgible/07-cursor-agent.md) and [Models beyond free Gemini](guides/openclaw-on-edgible/08-models-beyond-free-gemini.md) do. Both of those are optional.
 
 ## The guides
 
 New guides get added over time, each taking a service people genuinely self-host and putting it online the same way. Every one of them starts from [Start here](guides/start-here/README.md), which installs the serving agent and gets a first page online. The four available now:
 
-- [Website on Edgible](guides/website-on-edgible/README.md). **The whole small-site stack, rented from nobody.** A static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
+- [Website on Edgible](guides/website-on-edgible/README.md). **The whole small-site stack, on hardware you own.** A static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
 - [n8n on Edgible](guides/n8n-on-edgible/README.md). **The back office workhorse, with the credentials staying in your building.** The editor that holds them is behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
 - [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). **The agent everyone is currently trying, on hardware you control.** Reachable from your phone over HTTPS, with its Gateway still bound to loopback and no VPN on the phone. Nine short chapters.
 - [LLM on Edgible](guides/llm-on-edgible/README.md). **Private AI, where the prompts and the weights stay home.** A self-hosted Ollama published with `api-key` and called over HTTPS by other machines you own. Five chapters.

@@ -1,6 +1,6 @@
 # Working with an AI tool
 
-These guides are published so that a coding agent or a chat assistant can read them as easily as you can. Everything below is served from this site, needs no account, and is free to fetch.
+These guides are published so that a coding agent or a chat assistant can read them as easily as you can. Everything below is served from this site, and needs no account and no key.
 
 ## The markdown source of any page
 
