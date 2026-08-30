@@ -32,13 +32,15 @@ Skip without a Cursor subscription. Finish chapter 4 first, because this chapter
 
 **Not this chapter:** Cursor.app on the Mac; making Cursor the default chat model; another ACP spawn for the hourly tick (`python3` cron after install).
 
-## 8.2 Words you’ll use
+## 8.2 How the job runs
 
 The job runs on the Gateway host (this Ubuntu VM). One-off ACP jobs on `~/hello-world` write on the host, not through `docker exec`. The hourly tick after install is `python3` via OpenClaw command cron, not another ACP spawn.
 
 ACP (Agent Client Protocol) is a small language two programs speak over stdin/stdout: start a session, send a prompt, stream tool calls, finish. OpenClaw is the client. Cursor CLI (`agent acp`) is the server.
 
 `acpx` is OpenClaw’s plugin that owns that client. Until it is installed, enabled, and the Gateway restarted, `/acp doctor` reports `ACP_BACKEND_MISSING`. On 2026.7 the runtime is embedded in the plugin.
+
+The commands below are this chapter's working vocabulary. The concepts behind them are in the [glossary](../../glossary.md).
 
 | Word | What it is here |
 | --- | --- |
