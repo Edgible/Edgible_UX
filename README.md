@@ -1,6 +1,8 @@
 # Welcome
 
-Edgible publishes a service running on a machine you own at a public HTTPS hostname. This site is a growing library of guides that show that happening, one use case at a time, with commands you can paste and results you can check.
+Edgible is a software platform that makes self-hosting easy and safe. It takes a service already running on a machine you own, a mini-PC at home, a spare laptop, a VM, and puts it on a public HTTPS hostname that anyone you choose can reach. No port forwarded on your router, no certificate to renew, and no copying your data onto somebody else's server.
+
+This site is a growing library of guides that show that happening, one use case at a time, with commands you can paste and results you can check.
 
 ## What Edgible does
 

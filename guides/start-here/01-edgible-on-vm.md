@@ -29,13 +29,13 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 
 **Done when**
 
-- An Edgible account and organisation from the invite.
+- An Edgible account and an organisation.
 - Ubuntu 24.04 on the VM, outbound HTTPS only (no port forwarding).
 - `edgible whoami` on the VM prints Profile / Environment / Account / Organization.
 - Serving device `mini-pc` with **Health check OK**.
 - `https://hello-world.<org>.edgible.com` loads on a phone (cellular).
 
-**Need first:** the invite email. Host kit is 1.2. NAT is enough: outbound TCP 443 only.
+**Need first:** an Edgible account, which 1.3 creates from scratch in a few minutes; an invite email is one route in but not required. Host kit is 1.2. NAT is enough: outbound TCP 443 only.
 
 **Not this chapter:** a website of your own, analytics, n8n, OpenClaw, or a published model. Those are the guides that follow.
 
@@ -43,7 +43,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 
 | Item | Notes |
 | --- | --- |
-| Invite email | Console: [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A temporary password arrives in a second email. |
+| An Edgible account | Sign up from [www.edgible.com](https://www.edgible.com), which takes you to the console at [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A temporary password arrives by email. 1.3 walks through it. |
 | VM manager | VirtualBox or UTM; see 1.4. |
 | Ubuntu 24.04 LTS ISO | Match the CPU: `amd64` on typical PCs; `arm64` on Apple Silicon. |
 | Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. Once it registers, your org lists it as a serving device named `mini-pc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
@@ -56,10 +56,10 @@ NAT is enough. The VM only needs outbound TCP 443. Do not port-forward 22, 80, o
 
 **Outcome:** An Edgible account and organisation you can sign into at the console.
 
-Do this on your laptop or desktop browser (the host), not inside the VM. The Edgible login and console live at [https://app.prod.edgible.com/](https://app.prod.edgible.com/), not the marketing site. You pick a permanent password here; that is what you will type later on the VM for `edgible auth login`.
+Do this on your laptop or desktop browser (the host), not inside the VM. Start at [www.edgible.com](https://www.edgible.com) and follow the signup, which lands you in the console at [https://app.prod.edgible.com/](https://app.prod.edgible.com/). That console, not the marketing site, is where you sign in from then on. You pick a permanent password here; that is what you will type later on the VM for `edgible auth login`.
 
-1. Open the invitation email and follow the signup link. If there is no link, open [https://app.prod.edgible.com/](https://app.prod.edgible.com/) and choose **Create your account** / sign up.
-2. On **Create your account**, enter first name, last name, and email (use the address the invite was sent to unless the invite says otherwise). Submit. Edgible does not ask for a password yet. It emails you a temporary one.
+1. Go to [www.edgible.com](https://www.edgible.com) and start the signup, or open [https://app.prod.edgible.com/](https://app.prod.edgible.com/) directly and choose **Create your account**. If you were sent an invitation email, its link goes to the same place.
+2. On **Create your account**, enter first name, last name, and email. If you were invited, use the address the invite was sent to. Submit. Edgible does not ask for a password yet. It emails you a temporary one.
 3. Check that inbox (and spam) for the temporary password email. Stay on the **Check your email** page in the browser; it is waiting for that password.
 4. Paste the temporary password from the email and continue.
 5. You have to change your password before continuing. Enter a new password (at least 8 characters), confirm it, and save. From this point on the temporary password is dead. Use only the new one.
