@@ -10,6 +10,7 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Serving device | The registered record of that machine in the console, with a name such as `mini-pc` and a health state. Not interchangeable with serving agent. |
 | App | One published hostname pointing at one local port, with one auth mode. A single process can be published as several apps. |
 | Published hostname | The public HTTPS address an app answers on, in the form `<app>.<org>.edgible.com`, with its certificate issued for you. |
+| Custom domain | A name of your own added to an app, pointed at its Edgible hostname with a `CNAME`. Edgible then issues a certificate for it too. |
 | Auth mode | The access rule attached to a hostname, chosen when the app is created: `org`, `api-key` or `None`. |
 | `org` | Auth mode requiring a browser login from your organisation. Used for anything holding credentials, such as the n8n editor or the OpenClaw Control UI. |
 | `api-key` | Auth mode accepting a bearer secret, for callers that cannot complete a browser login. Used for the published Ollama. |

@@ -36,7 +36,7 @@ You create two Edgible apps against port `3000`, add the tracking snippet to you
 
 **Need first:** [3. Umami on the VM](03-umami-on-the-vm.md), with the heartbeat answering on `127.0.0.1:3000`, the default password changed, and your website ID copied. The site from [2. Publish the site](02-publish-the-site.md) still published.
 
-**Not this chapter:** uptime monitoring, a domain of your own, or teardown.
+**Not this chapter:** uptime monitoring or teardown. A custom domain works here exactly as in [2.6](02-publish-the-site.md#26-a-domain-of-your-own-optional), if you want the tracking script on your own name.
 
 ## 4.2 Publish the tracking hostname (`None`)
 

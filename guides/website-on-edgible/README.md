@@ -13,7 +13,7 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
 | 1 | [1. The site on the VM](01-site-on-the-vm.md) | `curl http://127.0.0.1:8080/` on the guest; nothing on the internet yet |
-| 2 | [2. Publish the site](02-publish-the-site.md) | Phone (cellular) loads `site.<org>.edgible.com`, no login |
+| 2 | [2. Publish the site](02-publish-the-site.md) | Phone (cellular) loads `site.<org>.edgible.com`, no login; optionally your own domain |
 | 3 | [3. Umami on the VM](03-umami-on-the-vm.md) | Heartbeat on `127.0.0.1:3000`; default password changed |
 | 4 | [4. Publish Umami](04-publish-umami.md) | `/script.js` open on `analytics.<org>…`; dashboard behind `org` on `umami.<org>…`; a cellular visit appears |
 | 5 | [5. Uptime monitoring with Uptime Kuma](05-uptime-kuma.md) | Monitor green, then red when the site container stops, then green again |

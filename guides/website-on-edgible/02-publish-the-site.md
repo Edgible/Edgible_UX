@@ -35,7 +35,7 @@ You create an Edgible app pointing at port `8080` with auth mode `None`, wait fo
 
 **Need first:** [1. The site on the VM](01-site-on-the-vm.md), so `curl http://127.0.0.1:8080/` returns your page. Leave that container and `hello-world` running.
 
-**Not this chapter:** analytics, uptime monitoring, or a domain of your own.
+**Not this chapter:** analytics or uptime monitoring. A domain of your own is optional and comes at the end, in 2.6.
 
 ## 2.2 Create the app
 
@@ -105,6 +105,32 @@ rsync -av --delete ./dist/ ubuntu@mini-pc:~/site/public/
 
 Then hard-refresh the public URL. No rebuild, no container restart, no Edgible command: the app points at a port, and what that port serves is your business. Delete a file and it is gone from the site, which is what `--delete` is for and also why it is worth having the site in version control somewhere.
 
+## 2.6 A domain of your own (optional)
+
+`site.<org>.edgible.com` is a working public address, and for a demo it is enough. A site you hand to customers usually wants your own name on it. Edgible supports custom domains, so the shape is: your domain points at the Edgible hostname, and the app knows to answer for it.
+
+You need a domain and access to its DNS. Then:
+
+1. Add the hostname to the app. It is the **Custom domains / additional hostnames** prompt you left blank in 2.2, and the same field is on the application in the console. Enter the name you want, for example `www.example.com`.
+2. At your DNS provider, create a `CNAME` record from that name to the hostname Edgible issued:
+
+   ```
+   www.example.com.   CNAME   site.<your-org>.edgible.com.
+   ```
+
+3. Wait for DNS to propagate, then for Edgible to issue a certificate for the new name. The console shows the certificate the same way it did in 2.3.
+
+**Smoke test.** From the guest, check the name resolves to the Edgible hostname and then that it serves your site:
+
+```bash
+dig +short www.example.com
+curl -sSI https://www.example.com/ | head -1
+```
+
+The first prints the `site.<org>.edgible.com` target. The second is a `200` with no certificate complaint. Then load it on the phone, on cellular, the same as 2.4.
+
+One constraint comes from DNS rather than from Edgible: a `CNAME` cannot sit at the apex of a domain, so `example.com` with no subdomain needs a provider offering `ALIAS` or `ANAME` flattening. The usual answer is to publish `www.example.com` and have the apex redirect to it, which most registrars and DNS providers offer as a setting.
+
 ### Verify
 
 - [ ] `edgible app list` shows `site` with a `site.<org>.edgible.com` URL.
@@ -113,6 +139,7 @@ Then hard-refresh the public URL. No rebuild, no container restart, no Edgible c
 - [ ] The site loads on a phone on cellular.
 - [ ] `ss -ltnp | grep 8080` still shows `127.0.0.1:8080`.
 - [ ] Port `8080` is not forwarded on the router.
+- [ ] If you did 2.6: `dig +short www.example.com` returns the Edgible hostname, and the site loads on your own domain over HTTPS.
 
 ## Next
 
