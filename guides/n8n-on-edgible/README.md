@@ -4,6 +4,9 @@
 
 Chasing an invoice, routing a form, moving a row from one system into another that was never meant to talk to it. This is the unglamorous work every business runs on, and it is usually handed to a hosted automation service along with the API keys to everything it touches. Here the credentials sit in a container on your machine, the canvas that holds them opens only to your organisation, and the one URL that strangers must reach is a separate hostname that reaches the same process.
 
+![A phone and outside services reach two hostnames, one behind an org login and one open, both arriving at a single n8n process on loopback](../../images/diagrams/n8n-on-edgible-light.svg#only-light)
+![A phone and outside services reach two hostnames, one behind an org login and one open, both arriving at a single n8n process on loopback](../../images/diagrams/n8n-on-edgible-dark.svg#only-dark)
+
 n8n runs workflows on a box you own (webhooks, cron, glue between APIs). Edgible publishes it on a `https://<app>.<org>.edgible.com` hostname over outbound 443 only, with no port-forward and no mesh VPN. This series does not use OpenClaw.
 
 This is the demo of internet publishing and per-app auth. n8n is one process on loopback `5678`. Edgible publishes it as two apps: n8n (`org`) is the editor; `n8n-hooks` (`None`) is the public endpoint for inbound calls. Auth is a property of the hostname, not of a path. Without that split you either set the webhook hostname to `org` (GitHub never gets in) or set the editor hostname to `None` (anyone who finds the host gets the canvas). Chapters 1 to 5 are the demo; [6](06-n8n-teardown.md) is teardown. Control UI is [OpenClaw on Edgible](../openclaw-on-edgible/README.md). A remote self-hosted n8n calling a self-hosted Ollama on another machine, with the workflow on `qwen2.5:7b` (thinking off), **AI Assistant** chat on a thinking tag (`gpt-oss:20b`), and the sandbox on that same n8n VM, is [LLM on Edgible](../llm-on-edgible/README.md).

@@ -4,6 +4,9 @@
 
 A site, the analytics that tell you whether anyone read it, and the monitor that tells you when it broke. Taken separately those are three outside services, each with a copy of your traffic. Here they are three containers on a machine you already own, published on four HTTPS hostnames, with no port forwarded and no cloud host. The visitor data lands on your disk, and the monitor watching your site answers to you.
 
+![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-light.svg#only-light)
+![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-dark.svg#only-dark)
+
 This is also the clearest demonstration that auth is a property of the hostname. The site is `None`, because strangers are the audience. The Umami dashboard and the Uptime Kuma interface are `org`, because you are. The Umami tracking script is `None` on a second hostname pointing at the same process as the dashboard, because a visitor's browser has to fetch it and will never have a login.
 
 Each chapter is one job and one smoke test. Do them in order.

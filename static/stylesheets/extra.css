@@ -417,3 +417,26 @@
 .md-search__form:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+/* The photograph at the top of the Welcome page. Full text width, with the
+   same corner radius the code blocks use so it sits in the same family. */
+.md-typeset img.hero {
+  width: 100%;
+  height: auto;
+  border-radius: 0.2rem;
+  margin: 1.2rem 0 1.4rem;
+}
+
+/* Series topology diagrams. They carry real labels, so shrinking one to phone
+   width would make it unreadable; below that width the figure scrolls instead,
+   which keeps the type at a legible size. */
+.md-typeset img[src*="/diagrams/"] {
+  width: 100%;
+  min-width: 34rem;
+  height: auto;
+  margin: 1.2rem 0;
+}
+
+.md-typeset p:has(> img[src*="/diagrams/"]) {
+  overflow-x: auto;
+}

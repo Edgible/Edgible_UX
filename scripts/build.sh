@@ -15,6 +15,10 @@ OUT="site"
 rm -rf "$STAGE"
 mkdir -p "$STAGE" "$OUT"
 
+# Before staging, so the committed SVGs cannot drift from the spec they come
+# from. Editing one by hand is pointless: the next build overwrites it.
+python3 scripts/gen_diagrams.py
+
 # Staged as README.md, not index.md: MkDocs treats README.md as a directory
 # index, and keeping the name means links written for GitHub still resolve.
 cp README.md "$STAGE/README.md"

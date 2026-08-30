@@ -4,6 +4,9 @@
 
 An AI agent that chats, runs commands and edits files is the thing most people are experimenting with right now, and it is the thing least suited to a rented box: it holds your keys, it has a shell, and the fastest route to using it from a phone is opening a port on an admin console. This series takes the other route. The Gateway stays on loopback for the whole guide, the Control UI is published behind your organisation's login, and by the end the agent is rewriting a public page from a phone on cellular.
 
+![A phone reaches one hostname behind an org login, arriving at the OpenClaw Gateway on loopback, with the shell never exposed](../../images/diagrams/openclaw-on-edgible-light.svg#only-light)
+![A phone reaches one hostname behind an org login, arriving at the OpenClaw Gateway on loopback, with the shell never exposed](../../images/diagrams/openclaw-on-edgible-dark.svg#only-dark)
+
 OpenClaw chats and uses tools on a box you own. Edgible is the public `https://<app>.<org>.edgible.com` hostname, reached over outbound 443 only. No port-forward, no mesh VPN. The Edgible story here is the **Control UI**: phone browser, `org` login, no tunnel on the laptop. Telegram and WhatsApp are chat clients; they are not Edgible apps.
 
 Publishing plus two auth modes on one process (editor `org`, webhooks `None`) is [n8n on Edgible](../n8n-on-edgible/README.md). A remote self-hosted Gateway calling a self-hosted Ollama on another home machine is [LLM on Edgible](../llm-on-edgible/README.md). That is not this series and not chapter 8; chapter 8 is same-LAN or cloud keys.

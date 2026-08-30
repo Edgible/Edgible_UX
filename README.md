@@ -4,6 +4,8 @@ Edgible is a software platform that makes self-hosting easy and safe. It takes a
 
 This site is a growing library of guides that show that happening, one use case at a time, with commands you can paste and results you can check.
 
+![A mini-PC and a home router on a shelf, the kind of ordinary machine these guides publish from](images/self-hosted-machine.jpg){ .hero }
+
 ## What Edgible does
 
 The machine you are serving from dials out on TCP 443 and keeps that connection open. A hostname then appears, with a certificate already issued and an access rule already applied. Nothing listens for inbound connections, so there is no port to forward and no firewall hole to maintain.

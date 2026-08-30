@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 366" width="960" height="366" role="img" aria-labelledby="t d">
+<title id="t">A phone on cellular reaches four hostnames. The site and the Umami tracking script are open to anyone; the Umami dashboard and the Uptime Kuma status page need an org login. All four arrive at one machine you own, whose nginx, Umami and Uptime Kuma containers are bound to loopback, with no forwarded port.</title>
+<desc id="d">A phone on cellular reaches four hostnames. The site and the Umami tracking script are open to anyone; the Umami dashboard and the Uptime Kuma status page need an org login. All four arrive at one machine you own, whose nginx, Umami and Uptime Kuma containers are bound to loopback, with no forwarded port.</desc>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#e7e7f0}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#a5a8bd}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#e7e7f0}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#a5a8bd}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#22223c;stroke:#3a3a5c;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="366" rx="10" fill="#1a1a2e"/>
+<rect class="card" x="36" y="123" width="112" height="120" rx="8"/>
+<text class="label" x="92" y="169" text-anchor="middle">Phone</text>
+<text class="small" x="92" y="189" text-anchor="middle">cellular</text>
+<text class="small" x="92" y="207" text-anchor="middle">Wi-Fi off</text>
+<rect class="card" x="250" y="40" width="250" height="58" rx="8"/>
+<rect x="250" y="40" width="6" height="58" rx="3" fill="#7db2e8"/>
+<text class="mono" x="272" y="66">site.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="86">open to anyone</text>
+<path d="M148 171 C 200 171, 200 69, 250 69" fill="none" stroke="#7db2e8" stroke-width="2"/>
+<rect class="card" x="250" y="116" width="250" height="58" rx="8"/>
+<rect x="250" y="116" width="6" height="58" rx="3" fill="#7db2e8"/>
+<text class="mono" x="272" y="142">analytics.&lt;org&gt;…/script.js</text>
+<text class="small" x="272" y="162">open to anyone</text>
+<path d="M148 179 C 200 179, 200 145, 250 145" fill="none" stroke="#7db2e8" stroke-width="2"/>
+<rect class="card" x="250" y="192" width="250" height="58" rx="8"/>
+<rect x="250" y="192" width="6" height="58" rx="3" fill="#c3c6d8"/>
+<text class="mono" x="272" y="218">umami.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="238">org login</text>
+<path d="M148 187 C 200 187, 200 221, 250 221" fill="none" stroke="#767a93" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="250" y="268" width="250" height="58" rx="8"/>
+<rect x="250" y="268" width="6" height="58" rx="3" fill="#c3c6d8"/>
+<text class="mono" x="272" y="294">status.&lt;org&gt;.edgible.com</text>
+<text class="small" x="272" y="314">org login</text>
+<path d="M148 195 C 200 195, 200 297, 250 297" fill="none" stroke="#767a93" stroke-width="2" stroke-dasharray="5 4"/>
+<rect class="card" x="612" y="70" width="312" height="226" rx="8"/>
+<path d="M620 70 h296 a8 8 0 0 1 8 8 v22 h-312 v-22 a8 8 0 0 1 8 -8 z" fill="#0b0b22"/>
+<text class="head" x="632" y="90">ONE MACHINE YOU OWN</text>
+<text class="monoxs" x="632" y="130">127.0.0.1:8080</text>
+<text class="monoxs" x="762" y="130">nginx, the site</text>
+<text class="monoxs" x="632" y="156">127.0.0.1:3000</text>
+<text class="monoxs" x="762" y="156">Umami</text>
+<text class="monoxs" x="632" y="182">127.0.0.1:3001</text>
+<text class="monoxs" x="762" y="182">Uptime Kuma</text>
+<line x1="632" y1="196" x2="904" y2="196" stroke="#33334f" stroke-width="1.5"/>
+<text class="small" x="632" y="214">visitor data on your disk</text>
+<text class="small" x="632" y="240">router: no forwarded port</text>
+<path d="M612 183 H512" fill="none" stroke="#e7e7f0" stroke-width="2.5"/>
+<text class="small" x="556" y="173" text-anchor="middle">dials out on 443</text>
+</svg>

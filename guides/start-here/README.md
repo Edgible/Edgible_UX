@@ -4,6 +4,9 @@
 
 One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page that loads on a phone with Wi-Fi turned off. That last check is the whole idea in one test: nothing dials in, so there is no port to forward, and the page is still public.
 
+![A phone on cellular reaches one open hostname, which arrives at Hello World on loopback on a machine you own, with no forwarded port](../../images/diagrams/start-here-light.svg#only-light)
+![A phone on cellular reaches one open hostname, which arrives at Hello World on loopback on a machine you own, with no forwarded port](../../images/diagrams/start-here-dark.svg#only-dark)
+
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
 **Need first:** a computer that can run a virtual machine, a phone, and an Edgible account, which you create yourself at [www.edgible.com](https://www.edgible.com). No router change, no domain, no cloud account.
