@@ -6,7 +6,10 @@ hand-kept date goes stale exactly when it matters. Two modes, because the
 rendered page and the raw markdown are read by different audiences:
 
   meta    prepends YAML front matter to the staged copies, which MkDocs exposes
-          as page.meta for overrides/main.html to render.
+          as page.meta for overrides/main.html to render. It also carries the
+          page's hook across as its description, which becomes the meta
+          description and the line under the title on the social card. Without
+          it every page would share the site description, cut mid-sentence.
   header  prepends the canonical URL and the date to the .md files served
           alongside the HTML. Once a reader pastes a chapter into a chat, the
           URL is the only thing that lets the assistant cite it, or the reader
@@ -20,10 +23,13 @@ rather than guessed at.
 
 from __future__ import annotations
 
+import json
 import subprocess
 import sys
 from datetime import date
 from pathlib import Path
+
+from gen_llms import hook
 
 REPO = Path(__file__).resolve().parent.parent
 SITE = "https://guides.edgible.com"
@@ -55,7 +61,16 @@ def source_for(path: Path, root: Path) -> str:
 def stamp(path: Path, iso: str, root: Path, mode: str) -> None:
     text = path.read_text(encoding="utf-8")
     if mode == "meta":
-        front = f"---\nupdated: {iso}\nupdated_display: {display(iso)}\n---\n\n"
+        lines = [f"updated: {iso}", f"updated_display: {display(iso)}"]
+        summary = hook(path)
+        if summary:
+            # hook() drops the full stop, which suits a list entry in llms.txt
+            # but not a sentence under a card title.
+            summary += "."
+            # json.dumps gives a double-quoted scalar YAML accepts, so a hook
+            # containing a colon or a quote cannot break the front matter.
+            lines.append(f"description: {json.dumps(summary)}")
+        front = "---\n" + "\n".join(lines) + "\n---\n\n"
         path.write_text(front + text, encoding="utf-8")
     else:
         url = f"{SITE}/{path.relative_to(root).as_posix()}"
