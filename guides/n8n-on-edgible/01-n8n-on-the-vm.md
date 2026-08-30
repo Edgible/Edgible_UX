@@ -33,16 +33,7 @@ You install n8n in Docker on the same Ubuntu guest as Hello World. It listens on
 
 **Not this chapter:** Edgible apps for n8n, webhooks, cron, OpenClaw, or binding `0.0.0.0:5678`.
 
-## 1.2 Words you’ll use
-
-| Word | Here |
-| --- | --- |
-| n8n | The workflow runner (canvas + executions). Not OpenClaw. |
-| `5678` | n8n’s HTTP port on the guest. |
-| Editor | The canvas in a browser. Chapter 2 puts it on Edgible `org`. |
-| Webhook | An HTTPS URL other systems POST/GET. Chapter 3–5. Needs a public hostname, not org login. |
-
-## 1.3 Install n8n (loopback)
+## 1.2 Install n8n (loopback)
 
 On the VM, one paste. `127.0.0.1:5678` is deliberate, the same binding OpenClaw uses on `18789`. The Edgible serving agent on this VM can still reach it. Do not publish `5678` on the router.
 

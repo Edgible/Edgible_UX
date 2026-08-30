@@ -27,17 +27,7 @@ You install Ollama on the Mac that hosts the Ubuntu VM, pull a 7B-class chat mod
 
 **Not this chapter:** `OLLAMA_HOST=0.0.0.0`, socat, an Edgible app, n8n, OpenClaw, or `curl` from the VM.
 
-## 1.2 Words you’ll use
-
-| Word | Here |
-| --- | --- |
-| Bare metal | macOS on the MacBook (or Mac mini), not the UTM Ubuntu guest. |
-| Ollama.app | macOS menu-bar app. The Linux CLI error “could not find ollama app” means you are not on macOS, or the app is quit. |
-| `11434` | Ollama’s HTTP port. Default is localhost on the Mac only. |
-| Metal | How Ollama uses the Mac GPU. The Ubuntu VM cannot do this. |
-| 7B | Size class for this smoke test (`qwen2.5:7b`). Bigger tags wait until hello is fast. |
-
-## 1.3 Install and hello (macOS host only)
+## 1.2 Install and hello (macOS host only)
 
 On the Mac, in host Terminal, not the Ubuntu VM:
 
