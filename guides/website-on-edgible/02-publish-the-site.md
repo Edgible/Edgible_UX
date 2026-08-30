@@ -31,7 +31,8 @@ You create an Edgible app pointing at port `8080` with auth mode `None`, wait fo
 - The console shows that app's certificate as issued.
 - `curl https://site.<org>.edgible.com/` from the guest returns your page.
 - The site loads on a phone on cellular.
-- Port `8080` is still not forwarded, and still bound to `127.0.0.1` on the guest.
+- `ss -ltnp | grep 8080` still shows `127.0.0.1:8080`, and the port is still not forwarded on the router.
+- If you do the optional 2.6: your own domain resolves to the Edgible hostname and loads the site over HTTPS.
 
 **Need first:** [1. The site on the VM](01-site-on-the-vm.md), so `curl http://127.0.0.1:8080/` returns your page. Leave that container and `hello-world` running.
 
@@ -131,14 +132,13 @@ The first prints the `site.<org>.edgible.com` target. The second is a `200` with
 
 One constraint comes from DNS rather than from Edgible: a `CNAME` cannot sit at the apex of a domain, so `example.com` with no subdomain needs a provider offering `ALIAS` or `ANAME` flattening. The usual answer is to publish `www.example.com` and have the apex redirect to it, which most registrars and DNS providers offer as a setting.
 
-### Verify
+## Verify
 
 - [ ] `edgible app list` shows `site` with a `site.<org>.edgible.com` URL.
 - [ ] The console shows that app's certificate as issued.
 - [ ] `curl https://site.<org>.edgible.com/` from the guest returns your page.
 - [ ] The site loads on a phone on cellular.
-- [ ] `ss -ltnp | grep 8080` still shows `127.0.0.1:8080`.
-- [ ] Port `8080` is not forwarded on the router.
+- [ ] `ss -ltnp | grep 8080` still shows `127.0.0.1:8080`, and the port is not forwarded on the router.
 - [ ] If you did 2.6: `dig +short www.example.com` returns the Edgible hostname, and the site loads on your own domain over HTTPS.
 
 ## Next

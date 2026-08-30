@@ -1,4 +1,4 @@
-# Start here — chapters
+# Start here: chapters
 
 One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page the internet can load.
 

@@ -87,7 +87,7 @@ That is the same *idea* as `devices approve` for the Control UI; it is not the W
 
 A bare “Hey Bruce! How can I help you today?” is still the Gateway; it just has no product label. WhatsApp shows it as your linked session. Self-chat is *supposed* to default to `[openclaw]` / `[{identity.name}]` when `responsePrefix` is unset; that does not always fire. The explicit prefix from 6.3 is the check.
 
-## 6.5 Bind Cursor — retitle sections (no steer)
+## 6.5 Bind Cursor: retitle sections (no steer)
 
 If you set `permissionMode` back to `approve-reads` in [chapter 7](07-cursor-agent.md), headless Cursor cannot write HTML. For this pass:
 

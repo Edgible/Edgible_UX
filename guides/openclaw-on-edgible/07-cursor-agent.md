@@ -198,7 +198,7 @@ Success looks like: `Spawned ACP session agent:cursor:acp:<uuid> (oneshot, backe
 - Who they were
 - Why they still matter
 - A quirky detail
-- Footer at the end: next rotation time in **Europe/London** (IANA zone — readers may substitute their own), human-readable (include the offset or BST/GMT). Compute from “hourly from this run,” e.g. this update + 1 hour, in that zone — not UTC and not the browser’s local zone.
+- Footer at the end: next rotation time in **Europe/London** (IANA zone; readers may substitute their own), human-readable (include the offset or BST/GMT). Compute from “hourly from this run,” e.g. this update + 1 hour, in that zone, not UTC and not the browser’s local zone.
 Readable typography and a simple layout (CSS file is fine). Those three sections must be real headings, not a single blob. Public sources only. Nothing about me. Do not docker exec (nginx mount is read-only). Do not touch ~/.openclaw, Edgible config, or openclaw-ui.
 ```
 

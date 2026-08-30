@@ -28,10 +28,11 @@ You run Umami and Postgres with Docker Compose, set a real application secret, l
 **Done when**
 
 - `docker compose -f ~/umami/docker-compose.yml ps` shows `umami` and `db` running and healthy.
-- `curl http://127.0.0.1:3000/api/heartbeat` answers.
+- `curl http://127.0.0.1:3000/api/heartbeat` answers, and `ss` shows `127.0.0.1:3000`.
+- `APP_SECRET` in `~/umami/.env` is a value you generated.
 - You have logged in and changed the default `admin` password.
 - Umami lists your site, and you have copied its website ID.
-- Port `3000` is bound to `127.0.0.1` and not forwarded.
+- Port `3000` is not forwarded on the router.
 
 **Need first:** [2. Publish the site](02-publish-the-site.md), so there is a public site worth measuring. Leave it and `hello-world` running. The guest wants 4 GB of memory once Postgres is in the mix.
 
@@ -146,11 +147,10 @@ You want two things from that screen: the **website ID**, a UUID, and the shape 
 
 Copy the website ID somewhere. Do not paste the snippet into your site yet: the `src` on that screen points at whatever host you are viewing Umami on, which right now is `127.0.0.1`, and a visitor's browser cannot fetch that. Chapter 4 publishes a hostname that works and then adds the snippet.
 
-### Verify
+## Verify
 
 - [ ] `docker compose -f ~/umami/docker-compose.yml ps` shows `umami` and `db` running and healthy.
-- [ ] `curl http://127.0.0.1:3000/api/heartbeat` answers.
-- [ ] `ss -ltnp | grep 3000` shows `127.0.0.1:3000`.
+- [ ] `curl http://127.0.0.1:3000/api/heartbeat` answers, and `ss -ltnp | grep 3000` shows `127.0.0.1:3000`.
 - [ ] `grep APP_SECRET ~/umami/.env` shows the value you generated, not an empty or default one.
 - [ ] You can sign in with your new password, and `admin` / `umami` no longer works.
 - [ ] Umami lists your site, and you have its website ID.

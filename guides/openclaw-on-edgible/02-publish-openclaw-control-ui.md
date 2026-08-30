@@ -1,6 +1,6 @@
 # 2. OpenClaw Control UI through Edgible
 
-**Reach your agent from your phone, behind your org login.**
+**Reach your agent from your phone, behind your `org` login.**
 
 ## 2.0 Why
 
@@ -33,7 +33,7 @@ Three checks, in order: Edgible `org` auth (only your organisation hits the host
 
 - `edgible app list` shows `openclaw-ui` with an `openclaw-ui.<org>.edgible.com` URL.
 - Console **Certificates** for `openclaw-ui` is issued / ready.
-- Protection is `org`, not None.
+- Protection is `org`, not `None`.
 - Phone on cellular: Edgible `org` login, then the OpenClaw gateway token and `openclaw devices approve`, then a chat reply.
 - Hello World URL still works (tunnel unchanged).
 - Port `18789` is still not forwarded on the router.
@@ -157,7 +157,7 @@ openclaw gateway restart
 
 Hard-refresh again and paste the token if Settings was cleared.
 
-`None` (public) was only to prove the tunnel. Switch this app back to `org` when chat works; a public Control UI is an admin shell on the internet. If org auth still fails after that, it is an Edgible bug; do not leave `None` as the real setup.
+`None` (public) was only to prove the tunnel. Switch this app back to `org` when chat works; a public Control UI is an admin shell on the internet. If `org` auth still fails after that, it is an Edgible bug; do not leave `None` as the real setup.
 
 ## 2.5 Later visits (same browser)
 
@@ -167,7 +167,7 @@ You do not repeat origins, `trustedProxies`, token-from-disk, or `devices approv
 | --- | --- | --- |
 | Open the same `https://openclaw-ui.<org>.edgible.com` URL | Paste gateway token (or `#token=`) | New hostname → update `allowedOrigins` |
 | Edgible `org` login if the session expired | `openclaw devices approve` for this browser | Cleared site data, private window, new browser/profile, or phone → token + pairing again |
-| Gateway already running on the mini-PC (`openclaw gateway status`) | — | Token rotated / device revoked → paste + approve again |
+| Gateway already running on the mini-PC (`openclaw gateway status`) | none | Token rotated / device revoked → paste + approve again |
 
 Keep a normal (non-private) browser profile. Private windows throw away the device identity on close, so pairing looks “every time.”
 
@@ -180,7 +180,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 2.4: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a new device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a local handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 
-If `hello-world` still loads on the phone and `openclaw-ui` does not, the tunnel is fine. The failure is OpenClaw (certs, org login, origins, WebSocket, token).
+If `hello-world` still loads on the phone and `openclaw-ui` does not, the tunnel is fine. The failure is OpenClaw (certs, `org` login, origins, WebSocket, token).
 
 If chat disconnects immediately, Edgible may not be proxying WebSockets yet. Stop and note that; do not “fix” it with a mesh VPN or an ingress tunnel.
 
@@ -188,7 +188,7 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet. Sto
 
 - [ ] `edgible app list` shows `openclaw-ui` with an `openclaw-ui.<org>.edgible.com` URL.
 - [ ] Console **Certificates** for `openclaw-ui` is issued / ready.
-- [ ] Protection is `org`, not None.
+- [ ] Protection is `org`, not `None`.
 - [ ] Phone on cellular: Edgible `org` login, then the OpenClaw gateway token and `openclaw devices approve`, then a chat reply.
 - [ ] Hello World URL still works (tunnel unchanged).
 - [ ] Port `18789` is still not forwarded on the router.

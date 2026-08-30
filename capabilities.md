@@ -8,7 +8,7 @@ Edgible publishes a service running on a machine you own at a public HTTPS hostn
 
 2. Auth is a property of the hostname. Each app carries an auth mode, chosen when you create it: `org` restricts access to your organisation behind a browser login, `api-key` accepts a bearer secret from machines that cannot log in, and `None` is open. Auth attaches to the app, not to a path inside it.
 
-3. One process can have several hostnames with different auth modes. Because auth attaches to the hostname, the same running service can be published more than once with different protection. n8n's editor holds credentials and every workflow, so it stays `org`. Stripe and GitHub cannot complete a browser login, so they call a second hostname on `None`. One container on port 5678, two hostnames. Demonstrated in [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) and [Public webhook hostname](guides/n8n-on-edgible/03-n8n-webhook-door.md).
+3. One process can have several hostnames with different auth modes. Because auth attaches to the hostname, the same running service can be published more than once with different protection. n8n's editor holds credentials and every workflow, so it stays `org`. Stripe and GitHub cannot complete a browser login, so they call a second hostname on `None`. One container on port 5678, two hostnames. Demonstrated in [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) and [Public webhook hostname](guides/n8n-on-edgible/03-n8n-public-webhook-hostname.md).
 
 ## Feature, benefit, and where it is demonstrated
 
@@ -21,7 +21,7 @@ Where names the chapter that demonstrates the feature. How is the observable pro
 | `org` auth | Keep an interface private | [OpenClaw Control UI through Edgible](guides/openclaw-on-edgible/02-publish-openclaw-control-ui.md) | Phone opens the UI; Gateway on loopback |
 | `None` auth | Accept webhook callers | [A webhook a stranger can hit](guides/n8n-on-edgible/05-n8n-public-webhook.md) | An off-network GET returns JSON |
 | `api-key` auth | Secure Ollama | [Edgible publishes Ollama](guides/llm-on-edgible/02-edgible-to-ollama.md) | Bearer `curl` works; without it, `401` |
-| Two auth modes on one process | Protect the credential store | [Public webhook hostname](guides/n8n-on-edgible/03-n8n-webhook-door.md), [Publish Umami](guides/website-on-edgible/04-publish-umami.md) | Editor asks for login; hooks does not |
+| Two auth modes on one process | Protect the credential store | [Public webhook hostname](guides/n8n-on-edgible/03-n8n-public-webhook-hostname.md), [Publish Umami](guides/website-on-edgible/04-publish-umami.md) | Editor asks for login; hooks does not |
 | A static site published from your own disk | No web host, no rented box | [Publish the site](guides/website-on-edgible/02-publish-the-site.md) | A phone on cellular loads files from your machine |
 | API key create, list, revoke | Cut off a caller | [Edgible publishes Ollama](guides/llm-on-edgible/02-edgible-to-ollama.md) | Secret prints once; revoked key fails |
 | Device registration and health | Confirm the machine is connected | [Edgible on an Ubuntu VM](guides/start-here/01-edgible-on-vm.md) | **Health check OK** in about 15 seconds |

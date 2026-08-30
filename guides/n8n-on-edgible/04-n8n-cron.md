@@ -21,13 +21,13 @@ You add a **Schedule** workflow that writes one **Executions** row. Nothing on t
 - You then set the schedule to something sane (or deactivated the workflow) so it does not fire every minute forever.
 - You did not open a port or change Edgible auth.
 
-**Need first:** [2. n8n editor through Edgible](02-n8n-editor-through-edgible.md) (canvas on the phone or host browser). [Chapter 3](03-n8n-webhook-door.md) can wait, but you will want it before [5](05-n8n-public-webhook.md).
+**Need first:** [2. n8n editor through Edgible](02-n8n-editor-through-edgible.md) (canvas on the phone or host browser). [Chapter 3](03-n8n-public-webhook-hostname.md) can wait, but you will want it before [5](05-n8n-public-webhook.md).
 
 **Not this chapter:** Webhook nodes, GitHub, Telegram, OpenClaw.
 
 ## 4.2 Build it
 
-In the n8n editor (org URL):
+In the n8n editor (`org` URL):
 
 1. **Add workflow**.
 2. Delete the start stub if n8n added a manual trigger you do not want. Add **Schedule Trigger** (or **Schedule**).

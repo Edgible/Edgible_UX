@@ -18,7 +18,7 @@ Ubuntu guest           Edgible serving agent ──► 127.0.0.1:8081
                                  │
                        nginx  (Hello World)
 
-your router            no forwarded port — nothing dials in
+your router            no forwarded port, nothing dials in
 ```
 
 **Where you run this:** signup and the console in the **host browser**; the VM manager on the host; everything else (`edgible`, Docker, `curl`) on the **Ubuntu guest**; the final check on a **phone on cellular**.

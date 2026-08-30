@@ -15,7 +15,7 @@ macOS host     Ollama.app (Metal)     0.0.0.0:11434     ← chapter 2.2 (macOS)
                     ↑  UTM virt LAN (often 192.168.64.1)
 Ubuntu guest   socat                  127.0.0.1:11434   ← chapter 2.3 (Linux)
                     ↑
-Ubuntu guest   Edgible agent          app ollama, api-key  ← 2.4–2.5 (Linux CLI)
+Ubuntu guest   serving agent          app ollama, api-key  ← 2.4–2.5 (Linux CLI)
                     ↑
 Any off-box     n8n / OpenClaw / curl   https://ollama.<org>.edgible.com  (+ Bearer)
 ```
@@ -41,7 +41,7 @@ You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest t
 - `edgible app list` shows `ollama` with `api-key` (not `None`, not `org` alone), certificate issued.
 - You saved the secret from `create` (not the key id from `list`).
 - From a phone on cellular (or a laptop off the LAN), `curl` with `Authorization: Bearer` to `https://ollama.<org>.edgible.com/api/tags` returns that JSON, not an Edgible login HTML page.
-- Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
+- Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional-a-real-chat-ui-not-curl)).
 - Hello World still loads. Port `11434` is not forwarded on the router.
 - You did not set this app to `None`.
 
@@ -49,7 +49,7 @@ You open Ollama on the Mac so the VM can reach it, prove `curl` from the guest t
 
 **Not this chapter:** n8n nodes, OpenClaw `models set`, `None` on this app, or installing Ollama in the guest.
 
-## 2.2 macOS host — listen on the virt LAN
+## 2.2 macOS host: listen on the virt LAN
 
 macOS only. Terminal.app on the Mac, not the Ubuntu guest. `launchctl`, `open -a`, and “could not find ollama app” do not exist on Linux.
 
@@ -91,7 +91,7 @@ curl -sS "http://192.168.64.1:11434/api/tags"
 
 JSON with your tags means the bind is on the virt LAN. Connection refused: wrong IP (`ifconfig` and look for `192.168.64.`) or firewall. The guest `curl` in 2.3 is the same proof from the other side.
 
-## 2.3 Ubuntu VM — reach the Mac, then bind loopback
+## 2.3 Ubuntu VM: reach the Mac, then bind loopback
 
 Ubuntu guest only (UTM). `ip route`, `apt`, and `systemctl` are Linux. Do not paste this into macOS Terminal.
 
@@ -209,7 +209,7 @@ curl -sS "https://ollama.YOUR-ORG.edgible.com/api/tags" \
 
 You want the tags JSON. An HTML login page means the app is `org`. HTTP `401` means the Bearer is missing or wrong. `localhost` or `:11434` in the URL means you copied the wrong origin.
 
-For a chat window instead of `curl`, skip the optional generate below and go to [2.6 Chatbox](#26-optional--a-real-chat-ui-not-curl).
+For a chat window instead of `curl`, skip the optional generate below and go to [2.6 Chatbox](#26-optional-a-real-chat-ui-not-curl).
 
 Optional. Prove a completion (slow on a 7B; still GPU on the Mac):
 
@@ -222,7 +222,7 @@ curl -sS "https://ollama.YOUR-ORG.edgible.com/api/generate" \
 
 n8n and OpenClaw run on other VMs (another home computer). They call this HTTPS origin with Bearer. Do not give them UTM `$HOST:11434`. That LAN is only the Mac guest → Mac hop.
 
-## 2.6 Optional — a real chat UI (not curl)
+## 2.6 Optional: a real chat UI (not curl)
 
 `curl` proves the published hostname works. For a demo, use a desktop client that speaks OpenAI-compatible `/v1` with a Bearer key. GPU stays on the Mac; the app only calls `https://ollama.<org>.edgible.com`.
 
@@ -252,7 +252,7 @@ Same idea works in Cherry Studio or any “custom OpenAI endpoint” app. Open W
 - [ ] `edgible app list` shows `ollama` with `api-key` (not `None`, not `org` alone), certificate issued.
 - [ ] You saved the secret from `create` (not the key id from `list`).
 - [ ] From a phone on cellular (or a laptop off the LAN), `curl` with `Authorization: Bearer` to `https://ollama.<org>.edgible.com/api/tags` returns that JSON, not an Edgible login HTML page.
-- [ ] Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional--a-real-chat-ui-not-curl)).
+- [ ] Optional: [Chatbox](https://chatboxai.app) on the Mac chats via `https://ollama.<org>…/v1` and the same secret ([2.6](#26-optional-a-real-chat-ui-not-curl)).
 - [ ] Hello World still loads. Port `11434` is not forwarded on the router.
 - [ ] You did not set this app to `None`.
 

@@ -8,7 +8,7 @@ Every page is served twice: as HTML for reading, and as markdown at the same pat
 
 ```bash
 curl https://guides.edgible.com/capabilities.md
-curl https://guides.edgible.com/guides/n8n-on-edgible/03-n8n-webhook-door.md
+curl https://guides.edgible.com/guides/n8n-on-edgible/03-n8n-public-webhook-hostname.md
 ```
 
 At the top of each page there are two actions next to the edit pencil. One copies that page's markdown to your clipboard, ready to paste into a chat. The other opens the markdown in the browser.
@@ -21,7 +21,7 @@ At the top of each page there are two actions next to the edit pencil. One copie
 curl https://guides.edgible.com/llms.txt
 ```
 
-`llms-full.txt` is every page concatenated into a single document, about 200 KB, for a tool that would rather take the corpus in one go than fetch pages individually.
+`llms-full.txt` is every page concatenated into a single document, for a tool that would rather take the corpus in one go than fetch pages individually. `curl -sI https://guides.edgible.com/llms-full.txt` gives you its size before you fetch it.
 
 ```bash
 curl https://guides.edgible.com/llms-full.txt

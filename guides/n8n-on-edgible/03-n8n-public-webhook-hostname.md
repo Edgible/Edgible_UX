@@ -6,7 +6,7 @@
 
 Callers without a browser cannot complete an interactive login. Stripe, GitHub and a `curl` from a café have no browser and no password, so on the `org` hostname from chapter 2 every one of them stops at the sign-in page. That is the `org` auth mode working as designed, but it also means there is no public endpoint for inbound calls yet.
 
-Two ways out are wrong. Setting the editor app to `None` does accept those calls, and it also exposes the canvas, the credentials and every workflow you will ever write. Carving out one public path on the org hostname is not on offer either: Edgible auth is a property of the app, that is the hostname, not of a path inside it. With a single hostname you can only choose which side to break: webhooks that reject strangers, or a canvas that accepts them.
+Two ways out are wrong. Setting the editor app to `None` does accept those calls, and it also exposes the canvas, the credentials and every workflow you will ever write. Carving out one public path on the `org` hostname is not on offer either: Edgible auth is a property of the app, that is the hostname, not of a path inside it. With a single hostname you can only choose which side to break: webhooks that reject strangers, or a canvas that accepts them.
 
 Edgible’s answer is that hostnames are cheap and auth modes are per hostname. You point a second app at the same container on port `5678`, name it `n8n-hooks`, and give it `None`. One process, two hostnames, two auth modes. All `WEBHOOK_URL` does after that is tell n8n which origin to print on its webhook nodes; the traffic lands on the same process either way.
 
@@ -39,7 +39,7 @@ Anyone who learns a workflow’s webhook path can hit it. Use a throwaway path, 
 
 **Need first:** [2. n8n editor through Edgible](02-n8n-editor-through-edgible.md). Leave both n8n Docker and `hello-world` running.
 
-**Not this chapter:** building a workflow (that is [4](04-n8n-cron.md) and [5](05-n8n-public-webhook.md)), OpenClaw, or putting the editor on None.
+**Not this chapter:** building a workflow (that is [4](04-n8n-cron.md) and [5](05-n8n-public-webhook.md)), OpenClaw, or putting the editor on `None`.
 
 ## 3.2 Create n8n-hooks
 

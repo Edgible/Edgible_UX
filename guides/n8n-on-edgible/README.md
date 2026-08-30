@@ -1,4 +1,4 @@
-# n8n on Edgible — chapters
+# n8n on Edgible: chapters
 
 Each chapter is one job and one smoke test. Do them in order.
 
@@ -14,7 +14,7 @@ This is the demo of internet publishing and per-app auth. n8n is one process on 
 | --- | --- | --- |
 | 1 | [1. n8n on the VM](01-n8n-on-the-vm.md) | `curl http://127.0.0.1:5678/` on the guest; n8n is not on the internet |
 | 2 | [2. n8n editor through Edgible](02-n8n-editor-through-edgible.md) | Phone (cellular) opens `n8n.<org>.edgible.com` (`org`), canvas loads |
-| 3 | [3. Public webhook hostname](03-n8n-webhook-door.md) | `n8n-hooks.<org>.edgible.com` exists; n8n `WEBHOOK_URL` is that origin |
+| 3 | [3. Public webhook hostname](03-n8n-public-webhook-hostname.md) | `n8n-hooks.<org>.edgible.com` exists; n8n `WEBHOOK_URL` is that origin |
 | 4 | [4. A cron workflow](04-n8n-cron.md) | Active schedule writes an **Executions** row (no inbound URL) |
 | 5 | [5. A webhook a stranger can hit](05-n8n-public-webhook.md) | Cellular (or off-LAN) GET/POST to the hooks production URL returns JSON |
 | 6 | [6. Tear down n8n](06-n8n-teardown.md) | n8n and `n8n-hooks` gone; nothing on `5678`; OpenClaw / ollama / serving agent left unless you opt in |

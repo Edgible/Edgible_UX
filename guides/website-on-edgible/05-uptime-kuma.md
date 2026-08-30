@@ -8,7 +8,7 @@ You now have three things published and no idea when one of them breaks. A conta
 
 Uptime Kuma checks a URL on a schedule and notifies you when the answer changes. Pointing it at the public hostname rather than at `127.0.0.1` is deliberate: it then tests the whole path a visitor uses, including the serving agent, the certificate and the tunnel, not just whether nginx is alive locally.
 
-There is one thing this arrangement cannot do, and 5.4 is about not fooling yourself over it.
+There is one thing this arrangement cannot do, and 5.5 is about not fooling yourself over it.
 
 ```
 Ubuntu guest      uptime-kuma ──► https://site.<org>.edgible.com  (out and back in)
@@ -25,12 +25,12 @@ You run Uptime Kuma on the guest, publish it with `org`, add a monitor for the p
 
 **Done when**
 
-- `docker compose -f ~/uptime-kuma/docker-compose.yml ps` shows the container running.
+- `docker compose -f ~/uptime-kuma/docker-compose.yml ps` shows the container running, with `ss` showing `127.0.0.1:3001`.
 - `edgible app list` shows `status` with `org` on port `3001`.
 - `https://status.<org>.edgible.com` asks for the Edgible `org` login first.
-- A monitor for `https://site.<org>.edgible.com` is up and green.
+- Monitors for the site and for `/script.js` are up and green.
 - Stopping the site container turns that monitor red, and starting it turns it green again.
-- Port `3001` is bound to `127.0.0.1` and not forwarded.
+- Ports `3001`, `3000` and `8080` are not forwarded on the router.
 
 **Need first:** [4. Publish Umami](04-publish-umami.md). The site, `analytics`, `umami` and `hello-world` all still published. Check free memory before starting: `free -h`. With the site, Umami, Postgres and the serving agent already running, a 2 GB guest is out of room, and this is the container that will make it fail. 4 GB is the working number.
 
@@ -132,10 +132,9 @@ So be clear about what you have. This catches the common failures, which are one
 
 Covering that needs a check from somewhere else, which does not have to be much. A free external monitor pointed at the same public hostname closes the gap, and the two together are complementary: the external one tells you the machine is gone, and this one tells you which service broke while the machine was fine.
 
-### Verify
+## Verify
 
-- [ ] `docker compose -f ~/uptime-kuma/docker-compose.yml ps` shows the container running.
-- [ ] `ss -ltnp | grep 3001` shows `127.0.0.1:3001`.
+- [ ] `docker compose -f ~/uptime-kuma/docker-compose.yml ps` shows the container running, and `ss -ltnp | grep 3001` shows `127.0.0.1:3001`.
 - [ ] `edgible app list` shows `status` with `org` on port `3001`.
 - [ ] `https://status.<org>.edgible.com` asks for the Edgible `org` login, in a private window.
 - [ ] Monitors for the site and for `/script.js` are green.

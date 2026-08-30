@@ -24,7 +24,7 @@ you, logged in         ──► https://n8n.<org>.edgible.com   ← org  (canva
 
 ## 5.1 The job
 
-You add a **Webhook** node whose production URL is on `n8n-hooks` (None), not the org editor host. You hit it from cellular or any machine that is not the VM. n8n responds with JSON. That is what GitHub/Stripe would do next; you do not need them for the smoke test.
+You add a **Webhook** node whose production URL is on `n8n-hooks` (`None`), not the `org` editor host. You hit it from cellular or any machine that is not the VM. n8n responds with JSON. That is what GitHub/Stripe would do next; you do not need them for the smoke test.
 
 **Done when**
 
@@ -36,7 +36,7 @@ You add a **Webhook** node whose production URL is on `n8n-hooks` (None), not th
 - Hello World still loads. Port `5678` not forwarded.
 - You deactivated the smoke webhook (or accept that the path is public).
 
-**Need first:** [3. Public webhook hostname](03-n8n-webhook-door.md) (`WEBHOOK_URL` set, hooks cert issued) and the canvas from [2](02-n8n-editor-through-edgible.md).
+**Need first:** [3. Public webhook hostname](03-n8n-public-webhook-hostname.md) (`WEBHOOK_URL` set, hooks cert issued) and the canvas from [2](02-n8n-editor-through-edgible.md).
 
 **Not this chapter:** OpenClaw, Telegram bots, or leaving a privileged workflow on a public path.
 
@@ -57,10 +57,10 @@ In the `org` editor (`n8n.<org>…`), not the hooks hostname:
 { "ok": true, "via": "edgible" }
 ```
 
-8. **Save**. At the top of the **Webhook** node, switch to **Production URL** (not Test). Copy that URL. It must start with `https://n8n-hooks.` from [chapter 3](03-n8n-webhook-door.md).
+8. **Save**. At the top of the **Webhook** node, switch to **Production URL** (not Test). Copy that URL. It must start with `https://n8n-hooks.` from [chapter 3](03-n8n-public-webhook-hostname.md).
 9. **Publish** / toggle **Active** (production webhooks only exist when the workflow is active).
 
-If the URL still shows `localhost:5678` or `:5678`, `WEBHOOK_URL` is wrong. Go back to [3.3](03-n8n-webhook-door.md#33-point-n8n-at-the-two-origins) and recreate the container.
+If the URL still shows `localhost:5678` or `:5678`, `WEBHOOK_URL` is wrong. Go back to [3.3](03-n8n-public-webhook-hostname.md#33-point-n8n-at-the-two-origins) and recreate the container.
 
 ## 5.3 Hit it from outside the VM
 

@@ -13,7 +13,7 @@ OpenClaw VM (other PC)   Gateway ──► https://ollama.<org>.edgible.com   (+
                                               │
 Ubuntu guest             Edgible serving agent ──► 127.0.0.1:11434 (socat)
                                               │
-macOS host               Ollama.app (Metal) — gpt-oss:20b loads here
+macOS host               Ollama.app (Metal), gpt-oss:20b loads here
 ```
 
 **Where you run this:** every `openclaw` command runs on the **OpenClaw VM** (a different home computer); only `ollama ls` / `ollama ps` / `ollama show` run on the **macOS host**, and the hostname and secret are copied from the **Ubuntu guest**.
@@ -92,4 +92,4 @@ Once hello works, give it real work in chat (`/model ollama/gpt-oss:20b`, thinki
 
 ## Next
 
-That’s this series. [Index](README.md).
+[5. Tear down the published LLM](05-llm-teardown.md) when you are finished: it deletes the hostname, kills the secret and puts the Mac's Ollama back on loopback. Series: [README](README.md).

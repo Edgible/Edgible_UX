@@ -1,6 +1,6 @@
-# LLM on Edgible — chapters
+# LLM on Edgible: chapters
 
-Each chapter is one job and one smoke test. Do them in order.
+Each chapter is one job and one smoke test. Do them in order. Chapters 1 to 4 are the demo; [5](05-llm-teardown.md) removes the published hostname, revokes the secret and puts the Mac back on loopback.
 
 How to read a chapter: a one-line hook under the title, then N.0 Why (what is missing without this chapter, and which machine you run it on), then N.1 The job (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
@@ -30,8 +30,9 @@ Do not port-forward `11434` on the router. Same-LAN HTTP is only the guest → M
 | # | Chapter | Smoke test |
 | --- | --- | --- |
 | 1 | [1. Ollama on bare metal](01-ollama-on-bare-metal.md) | Mac `ollama run` replies; `ollama ls` lists the tag; `ollama ps` shows GPU |
-| 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional [Chatbox](02-edgible-to-ollama.md#26-optional--a-real-chat-ui-not-curl) on the Mac |
+| 2 | [2. Edgible publishes Ollama](02-edgible-to-ollama.md) | Cellular `curl` with Bearer; optional [Chatbox](02-edgible-to-ollama.md#26-optional-a-real-chat-ui-not-curl) on the Mac |
 | 3 | [3. n8n uses that URL](03-n8n-uses-ollama.md) | Use case 1: workflow on `qwen2.5:7b` (thinking off). Use case 2: Assistant `gpt-oss:20b` + sandbox + SearXNG; Hello, then edgible.com / n8n summary |
 | 4 | [4. OpenClaw uses that URL](04-openclaw-uses-ollama.md) | OpenClaw `ollama/gpt-oss:20b` via Edgible `api-key` (no `/v1`); agent hello, then a code change |
+| 5 | [5. Tear down the published LLM](05-llm-teardown.md) | The old Bearer token fails from cellular; nothing on `11434`; Mac back on loopback |
 
 OpenClaw chapter 8 is cloud keys plus optional same-LAN Ollama (Gateway next to the Mac). If the Gateway is on another home VM, skip 8.5 LAN and use [chapter 4](04-openclaw-uses-ollama.md). n8n stays editor `org` and webhook `None` on its own VM. The published inference URL lives here.

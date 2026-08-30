@@ -11,7 +11,7 @@ Two shortcuts do not work here. Running OpenClaw on your laptop instead of the g
 That leaves the model. Google’s free AI Studio key is enough to prove a hello, but OpenClaw’s Google default is often a Pro or preview id whose free-tier quota is almost nothing. That is the `429` most people blame on their install. Pinning a Flash id here is what makes every later chapter’s chat work.
 
 ```
-the internet          (nothing new — no hostname for the agent, no forwarded port)
+the internet          (nothing new: no hostname for the agent, no forwarded port)
 
 Ubuntu guest          OpenClaw Gateway ──► 127.0.0.1:18789   ← this chapter
                              │  outbound 443

@@ -1,4 +1,4 @@
-# Website on Edgible — chapters
+# Website on Edgible: chapters
 
 The shortest useful thing you can self-host: a static site, the analytics that tell you whether anyone read it, and the monitor that tells you when it broke. All three on one machine you own, all three on public HTTPS hostnames, with no port forwarded and no cloud host.
 

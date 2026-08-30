@@ -1,6 +1,6 @@
 # 4. Publish Umami
 
-**One process on two hostnames: the tracking script open to the world, the dashboard behind your org login.**
+**One process on two hostnames: the tracking script open to the world, the dashboard behind your `org` login.**
 
 ## 4.0 Why
 
@@ -32,7 +32,8 @@ You create two Edgible apps against port `3000`, add the tracking snippet to you
 - `curl https://analytics.<org>.edgible.com/script.js` returns JavaScript with no login.
 - Opening `https://umami.<org>.edgible.com` asks for the Edgible `org` login first.
 - Your site's HTML contains the snippet with the `analytics` host and your website ID.
-- A visit from a phone on cellular appears in the dashboard within a minute.
+- A visit from a phone on cellular appears in the dashboard's **Realtime** view.
+- Ports `3000` and `8080` are still bound to `127.0.0.1` and not forwarded.
 
 **Need first:** [3. Umami on the VM](03-umami-on-the-vm.md), with the heartbeat answering on `127.0.0.1:3000`, the default password changed, and your website ID copied. The site from [2. Publish the site](02-publish-the-site.md) still published.
 
@@ -136,13 +137,13 @@ That visit lands with a country against it. Everything except location works nor
 
 If geography genuinely matters to you, the options are to put a proxy you control in front of the ingest hostname so that it can set the header, or to use a hosted ingest endpoint and keep only the dashboard self-hosted. Both trade away part of the reason you self-hosted analytics, so decide whether the column is worth it before adding the moving part.
 
-### Verify
+## Verify
 
 - [ ] `edgible app list` shows `analytics` (`None`) and `umami` (`org`), both port `3000`.
 - [ ] `curl https://analytics.<org>.edgible.com/script.js` returns JavaScript with no login.
 - [ ] `https://umami.<org>.edgible.com` asks for the Edgible `org` login first, in a private window.
 - [ ] The public site's HTML contains the snippet with the `analytics` host.
-- [ ] A visit from a phone on cellular appears in **Realtime**.
+- [ ] A visit from a phone on cellular appears in the dashboard's **Realtime** view.
 - [ ] Ports `3000` and `8080` are still bound to `127.0.0.1` and not forwarded.
 
 ## Next

@@ -23,7 +23,10 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Term | What it means here |
 | --- | --- |
 | Outbound only | The serving agent dials out and keeps that connection open, so nothing listens for inbound connections and no router change is needed. |
-| Port forward | A router rule exposing a local port to the internet. These guides never use one, and every chapter's checklist confirms the port is still not forwarded. |
+| Port forward | A router rule exposing a local port to the internet. These guides never use one, and the checklist of every chapter that publishes a port confirms it is still not forwarded. |
+| Virt LAN | The private network between a host and its own virtual machines, often `192.168.64.x` under UTM. It reaches the host, and nothing outside that machine. |
+| `socat` | A small relay. In [LLM on Edgible](guides/llm-on-edgible/README.md) it listens on the guest's loopback and forwards to Ollama on the host, so the serving agent has a local port to publish. |
+| E.164 | The international phone number format, such as `+61412345678`, used when allow-listing who may message an agent. |
 | Loopback | The `127.0.0.1` address, reachable only from the machine itself. Services in these guides bind here, and the serving agent reaches them locally. |
 | NAT | The address translation a home router does. It is sufficient for Edgible, because the connection is outbound. |
 | Mesh VPN | A private network requiring every client device to be enrolled. One of the alternatives Edgible replaces. |
@@ -67,6 +70,10 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Harness | Cursor CLI running as the ACP server, via `agent acp`. |
 | Session | One ACP job, keyed as `agent:cursor:acp:<uuid>`. |
 | `18789` | The OpenClaw Gateway port on the VM, bound to loopback. |
+| `permissionMode` | How much OpenClaw does without asking. `approve-reads` asks before writing; `approve-all` stops asking, which is what an unattended coding pass needs and what you set back afterwards. |
+| BotFather | Telegram's own bot for creating bots. It issues the token the Telegram client uses. |
+| Linked device | A WhatsApp session paired by scanning a QR code, the same mechanism as WhatsApp Web. |
+| SearXNG | A self-hosted search backend. n8n's AI Assistant uses it rather than a hosted search API. |
 
 ## Self-hosted models
 
@@ -86,3 +93,4 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Ubuntu guest | The virtual machine running the serving agent, created in [Edgible on an Ubuntu VM](guides/start-here/01-edgible-on-vm.md). Most commands run here. |
 | Host computer | The laptop or desktop the virtual machine runs on. In [LLM on Edgible](guides/llm-on-edgible/README.md) it is a Mac, and it runs Ollama. |
 | Hello World | The first published page, used throughout as the check that publishing still works. |
+| `8081` | The Hello World nginx port on the guest, bound to loopback. Later chapters check it is still what `hello-world` points at. |

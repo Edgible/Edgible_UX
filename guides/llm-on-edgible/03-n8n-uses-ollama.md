@@ -14,7 +14,7 @@ n8n VM (other PC)   AI Assistant chat  ──►  https://ollama.<org>.edgible.c
                                                         │
 Ubuntu guest        Edgible serving agent ──► 127.0.0.1:11434 (socat)
                                                         │
-macOS host          Ollama.app (Metal) — weights and GPU stay here
+macOS host          Ollama.app (Metal), weights and GPU stay here
 ```
 
 **Where you run this:** almost everything is on the **n8n VM** (its browser UI and `docker compose` in `~/n8n`); only `ollama show` / `ollama ps` and any missing `ollama pull` run on the **macOS host**.
@@ -49,7 +49,7 @@ Do both use cases. Same Edgible secret, two models.
 
 Official sandbox docs: [Docker Compose](https://docs.n8n.io/deploy/host-n8n/install-options/install-using-docker-compose/) and [AI Assistant](https://docs.n8n.io/deploy/host-n8n/configure-n8n/set-up-ai-assistant/).
 
-## 3.2 Two models — the Assistant must support thinking
+## 3.2 Two models: the Assistant must support thinking
 
 Ollama’s n8n page uses `qwen3-coder` as an example. Do not pull it (~19 GB).
 
@@ -253,7 +253,7 @@ docker compose logs sandbox-api | grep -i runner
 
 You want `sandbox-api` healthy, healthz `{"status":"ok"}`, and a log line that the runner registered. n8n still only binds `127.0.0.1:5678`.
 
-Do not set `N8N_INSTANCE_AI_MODEL` to Anthropic, so that Ollama stays in the UI. Change `GENERIC_TIMEZONE` / `TZ` if you need a different zone. If this n8n already has `n8n-hooks`, keep `WEBHOOK_URL` (and any `N8N_HOST` / `N8N_PROTOCOL`) on the n8n `environment` block from [n8n chapter 3](../n8n-on-edgible/03-n8n-webhook-door.md). Do not add `N8N_INSTANCE_AI_THINKING_ENABLED=false` to “fix” the 7B. It does not stop Assistant thinking; use `gpt-oss:20b` instead.
+Do not set `N8N_INSTANCE_AI_MODEL` to Anthropic, so that Ollama stays in the UI. Change `GENERIC_TIMEZONE` / `TZ` if you need a different zone. If this n8n already has `n8n-hooks`, keep `WEBHOOK_URL` (and any `N8N_HOST` / `N8N_PROTOCOL`) on the n8n `environment` block from [n8n chapter 3](../n8n-on-edgible/03-n8n-public-webhook-hostname.md). Do not add `N8N_INSTANCE_AI_THINKING_ENABLED=false` to “fix” the 7B. It does not stop Assistant thinking; use `gpt-oss:20b` instead.
 
 Then AI settings → sandbox `n8n-sandbox` (not Daytona). **Service URL** = `http://sandbox-api:8080`. **API key** = `SANDBOX_API_KEYS` from `.env` (`grep SANDBOX_API_KEYS .env`). Save. You want a successful test.
 

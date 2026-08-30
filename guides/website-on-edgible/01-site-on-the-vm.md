@@ -103,7 +103,7 @@ The first prints the top of your HTML. The second must show `127.0.0.1:8080`. If
 
 A 403 from `curl` means nginx found the directory but no `index.html` at its root, which is the nested-directory mistake from 1.2. A connection refused means the container is not running: `docker compose logs site` says why.
 
-### Verify
+## Verify
 
 - [ ] `~/site/public/index.html` exists on the guest.
 - [ ] `docker compose -f ~/site/docker-compose.yml ps` shows the container running.

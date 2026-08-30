@@ -1,6 +1,6 @@
 # 2. n8n editor through Edgible
 
-**Your workflow canvas, on your phone, behind an org login.**
+**Your workflow canvas, on your phone, behind an `org` login.**
 
 ## 2.0 Why
 
@@ -8,12 +8,12 @@ Right now n8n only exists for whoever is sitting at the VM. Chapter 1 left it on
 
 Forwarding `5678` on the router puts a credential store holding every API key you own on the open internet. A mesh VPN means every device that ever needs the canvas has to enrol first. Edgible is the third option: the guest dials out on 443, and a published HTTPS hostname appears with an auth mode already set.
 
-Edgible auth is per app, that is, per hostname, not per path within one URL. This hostname serves the canvas, the credentials and every workflow you will ever write, so it stays `org` and only your organisation can get past it. Stripe and GitHub cannot complete a browser login, so they get a second, separate hostname in [chapter 3](03-n8n-webhook-door.md) instead. Do not set this app to `None` to make webhooks work.
+Edgible auth is per app, that is, per hostname, not per path within one URL. This hostname serves the canvas, the credentials and every workflow you will ever write, so it stays `org` and only your organisation can get past it. Stripe and GitHub cannot complete a browser login, so they get a second, separate hostname in [chapter 3](03-n8n-public-webhook-hostname.md) instead. Do not set this app to `None` to make webhooks work.
 
 ```
 you, on cellular       https://n8n.<org>.edgible.com     ← org login   (this chapter)
                                  │
-Ubuntu guest           Edgible agent ──► 127.0.0.1:5678
+Ubuntu guest           serving agent ──► 127.0.0.1:5678
                                  │
                        n8n  (canvas · credentials · every workflow)
                                  ▲
@@ -24,7 +24,7 @@ Stripe / GitHub        https://n8n-hooks.<org>.edgible.com  ← None     (chapte
 
 ## 2.1 The job
 
-You publish n8n’s editor through Edgible. n8n stays on loopback `5678`. Protection is `org`, never `None` on this hostname. GitHub cannot log into your org; inbound webhooks are a different app in [chapter 3](03-n8n-webhook-door.md).
+You publish n8n’s editor through Edgible. n8n stays on loopback `5678`. Protection is `org`, never `None` on this hostname. GitHub cannot log into your org; inbound webhooks are a different app in [chapter 3](03-n8n-public-webhook-hostname.md).
 
 **Done when**
 
@@ -77,7 +77,7 @@ Copy the `https://n8n.<org>.edgible.com` URL (no path). Always copy the exact ho
 **Smoke test.** Cellular, not the VM’s Wi‑Fi.
 
 1. Open that HTTPS URL.
-2. Sign in to Edgible (org).
+2. Sign in to Edgible (`org`).
 3. n8n’s own owner signup or login (email + password n8n stores on the VM volume). That is not the Edgible password.
 4. You want the empty canvas (or the home/workflows list).
 
@@ -85,7 +85,7 @@ If the tab loads a shell but the canvas stays blank, Edgible may not be proxying
 
 ### Verify
 
-- [ ] `edgible app list` shows n8n on an `n8n.<org>.edgible.com` URL, protection `org`, not None.
+- [ ] `edgible app list` shows n8n on an `n8n.<org>.edgible.com` URL, protection `org`, not `None`.
 - [ ] Console **Certificates** for n8n is issued.
 - [ ] Phone on cellular: Edgible login, then n8n signup/sign-in, then the canvas.
 - [ ] Hello World still loads, and port `5678` is still not forwarded.
@@ -94,4 +94,4 @@ If the tab loads a shell but the canvas stays blank, Edgible may not be proxying
 
 ## Next
 
-[3. Public webhook hostname](03-n8n-webhook-door.md). Series: [README](README.md).
+[3. Public webhook hostname](03-n8n-public-webhook-hostname.md). Series: [README](README.md).

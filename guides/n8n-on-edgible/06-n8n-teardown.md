@@ -24,7 +24,7 @@ You stop production schedules and public webhooks, remove the two n8n hostnames,
 
 **Not this chapter:** deleting the Ubuntu VM, OpenClaw teardown ([OpenClaw chapter 9](../openclaw-on-edgible/09-openclaw-teardown.md)), or `edgible auth logout`.
 
-## 6.2 Unpublish workflows (org editor)
+## 6.2 Unpublish workflows (`org` editor)
 
 Do this before deleting the editor app, while you can still open `https://n8n.<org>.edgible.com`.
 
@@ -66,7 +66,7 @@ docker compose down -v
 
 That does not remove the Edgible apps; do 6.3 first (or the hostnames 404 onto nothing).
 
-## 6.5 Optional — Hello World too
+## 6.5 Optional: Hello World too
 
 Only if you also want the shared public page gone. Skip this if OpenClaw or LLM-on-Edgible still uses this VM.
 

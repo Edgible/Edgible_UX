@@ -81,3 +81,9 @@ in the `Dockerfile`.
 If you add or rename a chapter, update `nav:` in `mkdocs.yml`, the series
 `README.md` table, and any cross-references. `--strict` will catch links that
 no longer resolve, but it cannot catch a stale chapter number in prose.
+
+A chapter's number is its position in its own series, so `03-*.md` is chapter 3
+and its sections are `3.x`. Every series starts at 1. Refer to a chapter in
+another series by its title or its series name, never as "chapter N", because
+that number means something different in each series. `Start here` is a
+prerequisite of every series, not chapter 1 of any of them.
