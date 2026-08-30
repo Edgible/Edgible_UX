@@ -7,8 +7,11 @@ rendered page and the raw markdown are read by different audiences:
 
   meta    prepends YAML front matter to the staged copies, which MkDocs exposes
           as page.meta for overrides/main.html to render.
-  append  adds a closing line to the .md files served alongside the HTML, so an
-          agent fetching the markdown sees the date too.
+  header  prepends the canonical URL and the date to the .md files served
+          alongside the HTML. Once a reader pastes a chapter into a chat, the
+          URL is the only thing that lets the assistant cite it, or the reader
+          work out later which version they followed. It leads rather than
+          trails because a long chapter is often pasted truncated.
 
 Paths are relative to the repo root in both trees, so the tree being stamped
 maps onto the file whose history is being read. Untracked files are skipped
@@ -23,6 +26,7 @@ from datetime import date
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+SITE = "https://guides.edgible.com"
 
 
 def last_changed(rel: str) -> str | None:
@@ -48,21 +52,20 @@ def source_for(path: Path, root: Path) -> str:
     return "README.md" if rel == "index.md" else rel
 
 
-def stamp(path: Path, iso: str, mode: str) -> None:
+def stamp(path: Path, iso: str, root: Path, mode: str) -> None:
     text = path.read_text(encoding="utf-8")
     if mode == "meta":
         front = f"---\nupdated: {iso}\nupdated_display: {display(iso)}\n---\n\n"
         path.write_text(front + text, encoding="utf-8")
     else:
-        path.write_text(
-            text.rstrip() + f"\n\nLast updated: {iso}\n",
-            encoding="utf-8",
-        )
+        url = f"{SITE}/{path.relative_to(root).as_posix()}"
+        header = f"Source: {url}\nLast updated: {iso}\n\n"
+        path.write_text(header + text, encoding="utf-8")
 
 
 def main() -> int:
-    if len(sys.argv) != 3 or sys.argv[1] not in {"meta", "append"}:
-        print("usage: add_dates.py <meta|append> <tree>", file=sys.stderr)
+    if len(sys.argv) != 3 or sys.argv[1] not in {"meta", "header"}:
+        print("usage: add_dates.py <meta|header> <tree>", file=sys.stderr)
         return 2
 
     mode, root = sys.argv[1], Path(sys.argv[2])
@@ -70,7 +73,7 @@ def main() -> int:
     for path in sorted(root.rglob("*.md")):
         iso = last_changed(source_for(path, root))
         if iso:
-            stamp(path, iso, mode)
+            stamp(path, iso, root, mode)
             stamped += 1
 
     if stamped == 0:

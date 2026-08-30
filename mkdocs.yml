@@ -84,6 +84,7 @@ extra:
 nav:
   - Welcome: README.md
   - What Edgible does: capabilities.md
+  - Working with an AI tool: working-with-ai.md
   - 1. n8n on Edgible:
       - guides/n8n-on-edgible/README.md
       - guides/n8n-on-edgible/01-n8n-on-the-vm.md

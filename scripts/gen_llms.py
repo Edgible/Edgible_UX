@@ -77,6 +77,8 @@ def build_index() -> str:
     )
     cap = REPO / "capabilities.md"
     out.append(f"- [{heading(cap)}]({url_for('capabilities.md')}): {hook(cap)}")
+    ai = REPO / "working-with-ai.md"
+    out.append(f"- [{heading(ai)}]({url_for('working-with-ai.md')}): {hook(ai)}")
     out.append("")
 
     for title, rel in GUIDES:
@@ -110,7 +112,9 @@ def build_full() -> str:
 
     for path in sources:
         rel = path.relative_to(REPO).as_posix()
-        out.append(f"<!-- source: {rel} -->")
+        # The canonical URL rather than the repo path, so a section quoted out
+        # of this file can still be traced back to the page it came from.
+        out.append(f"<!-- source: {url_for(rel)} -->")
         out.append("")
         out.append(path.read_text(encoding="utf-8").rstrip())
         out.append("")

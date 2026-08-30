@@ -34,3 +34,5 @@ New guides get added over time, each taking a service people genuinely self-host
 If you have never published anything with Edgible, start with [Edgible on an Ubuntu VM](guides/openclaw-on-edgible/01-edgible-on-vm.md). It installs the serving agent and gets one page online, and it is the shared first chapter for all three guides rather than the start of the OpenClaw one. From there, pick whichever guide is closest to something you already run.
 
 If you would rather see the feature list first, [What Edgible does, and where these guides prove it](capabilities.md) maps each capability to the chapter that demonstrates it.
+
+If you are reading alongside a coding agent or a chat assistant, [Working with an AI tool](working-with-ai.md) covers the markdown sources, the `llms.txt` index and the whole site in one fetch.
