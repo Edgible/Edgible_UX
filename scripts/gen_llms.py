@@ -108,6 +108,7 @@ def build_full() -> str:
         REPO / "README.md",
         REPO / "capabilities.md",
         REPO / "glossary.md",
+        REPO / "working-with-ai.md",
     ]
     for _, rel in GUIDES:
         directory = REPO / rel

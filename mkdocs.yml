@@ -15,6 +15,12 @@ edit_uri: edit/main/
 docs_dir: build/docs
 site_dir: site
 
+# One page, one file: glossary.html rather than glossary/index.html. Every URL
+# then maps straight onto an object key on a static host, with no rewrite rule
+# to turn a directory path into its index. It also puts each page next to its
+# own source, glossary.html beside glossary.md.
+use_directory_urls: false
+
 copyright: Copyright &copy; 2026 Edgible Pty Ltd.
 
 theme:

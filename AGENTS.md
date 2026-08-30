@@ -67,6 +67,12 @@ pip install -r requirements.txt   # once
 ./scripts/build.sh
 ```
 
+The build sets `use_directory_urls: false`, so a page becomes `glossary.html`
+rather than `glossary/index.html`. Every URL then maps onto a single file, which
+keeps the site servable from an object store with no rewrite rule, and puts each
+page beside its own `.md` source. A new top-level page also needs a `COPY` line
+in the `Dockerfile`.
+
 If you add or rename a chapter, update `nav:` in `mkdocs.yml`, the series
 `README.md` table, and any cross-references. `--strict` will catch links that
 no longer resolve, but it cannot catch a stale chapter number in prose.
