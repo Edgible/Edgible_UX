@@ -41,8 +41,9 @@ Every chapter follows the same shape, and new chapters must match it:
 
 ## Writing rules
 
-- Reserve bold for the hook and for literal UI labels. Do not bold for emphasis,
-  and never bold negations.
+- Reserve bold for the hook, for literal UI labels, and for the theme phrase that
+  leads a series entry in a list of guides. Do not bold for emphasis, and never
+  bold negations.
 - Avoid em dashes. Use a comma, a full stop, or a colon.
 - Use literal, searchable terms over metaphor: `auth mode`, `published
   hostname`, `serving agent`. Not doors, locks, or brains.
@@ -51,6 +52,28 @@ Every chapter follows the same shape, and new chapters must match it:
 - Auth modes are `org`, `api-key` and `None`, always in code font.
 - Ports, hostnames, commands, filenames and env vars go in code font.
 - Every claim needs a command whose output a reader can check.
+
+## Series themes
+
+Each series has one theme, the answer to "why would I care" that the chapters
+themselves never stop to give. It appears as the bold hook on the series
+`README.md`, as the bold lead in the guide list on `README.md`, and in the
+matching paragraph in `capabilities.md`. Keep those three in step. A theme is
+stated as a fact the guide demonstrates, never as an adjective: the test is
+whether a chapter in that series proves it.
+
+| Series | Theme | The thing you stop doing |
+| --- | --- | --- |
+| Start here | A page the internet can load, without touching your router | Forwarding a port |
+| Website on Edgible | The whole small-site stack, rented from nobody | Paying three companies who also hold your traffic |
+| n8n on Edgible | The back office workhorse, running at 3am in your own building | Handing your API keys to a hosted automation service |
+| OpenClaw on Edgible | The agent everyone is currently trying, with its shell and admin console off the internet | Exposing an admin port to reach the agent from a phone |
+| LLM on Edgible | Private AI: prompts, documents and weights never leave hardware you own | Sending the questions you would not type into a hosted model |
+
+The themes are also the art direction. Any illustration added to a series should
+come from that row (a machine in a room, a phone on cellular, an invoice at
+night, a GPU at home), not from generic cloud or network clip art, and never
+from the metaphors the writing rules ban.
 
 ## Keeping it useful to agents
 

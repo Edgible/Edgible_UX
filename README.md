@@ -27,10 +27,10 @@ The services being published are stock software, unmodified. Almost everything h
 
 New guides get added over time, each taking a service people genuinely self-host and putting it online the same way. Every one of them starts from [Start here](guides/start-here/README.md), which installs the serving agent and gets a first page online. The four available now:
 
-- [Website on Edgible](guides/website-on-edgible/README.md). The whole small-site stack, rented from nobody: a static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
-- [n8n on Edgible](guides/n8n-on-edgible/README.md). The back office workhorse, and the credentials stay in your building: the editor that holds them is behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
-- [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). The agent everyone is currently trying, on hardware you control: reachable from your phone over HTTPS, with its Gateway still bound to loopback and no VPN on the phone. Nine short chapters.
-- [LLM on Edgible](guides/llm-on-edgible/README.md). Private AI, where the prompts and the weights stay home: a self-hosted Ollama published with `api-key` and called over HTTPS by other machines you own. Five chapters.
+- [Website on Edgible](guides/website-on-edgible/README.md). **The whole small-site stack, rented from nobody.** A static site, self-hosted analytics and uptime monitoring on one machine, published as four hostnames with three different access rules. The easiest place to begin. Six chapters.
+- [n8n on Edgible](guides/n8n-on-edgible/README.md). **The back office workhorse, with the credentials staying in your building.** The editor that holds them is behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
+- [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). **The agent everyone is currently trying, on hardware you control.** Reachable from your phone over HTTPS, with its Gateway still bound to loopback and no VPN on the phone. Nine short chapters.
+- [LLM on Edgible](guides/llm-on-edgible/README.md). **Private AI, where the prompts and the weights stay home.** A self-hosted Ollama published with `api-key` and called over HTTPS by other machines you own. Five chapters.
 
 ## Where to start
 
