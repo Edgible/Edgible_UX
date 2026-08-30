@@ -15,7 +15,9 @@ COPY mkdocs.yml ./
 COPY overrides ./overrides
 COPY static ./static
 COPY scripts ./scripts
-COPY README.md capabilities.md ./
+# Keep in step with the top-level pages scripts/build.sh stages; a missing one
+# fails the strict build below with a broken nav entry.
+COPY README.md capabilities.md glossary.md working-with-ai.md ./
 COPY guides ./guides
 # scripts/add_dates.py reads commit dates, so the build needs the history. Last,
 # because it changes on every commit and would otherwise bust the layers above.
