@@ -4,7 +4,7 @@ Edgible is a software platform that makes self-hosting easy and safe. It takes a
 
 This site is a growing library of guides that show that happening, one use case at a time, with commands you can paste and results you can check.
 
-![A mini-PC and a home router on a shelf, the kind of ordinary machine these guides publish from](images/self-hosted-machine.jpg){ .hero }
+![A desktop PC with lit fans and a large graphics card, on a desk in a home office at night](images/self-hosted-machine.jpg){ .hero }
 
 ## What Edgible does
 
