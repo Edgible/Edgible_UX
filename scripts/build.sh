@@ -19,6 +19,7 @@ mkdir -p "$STAGE" "$OUT"
 # index, and keeping the name means links written for GitHub still resolve.
 cp README.md "$STAGE/README.md"
 cp capabilities.md "$STAGE/capabilities.md"
+cp glossary.md "$STAGE/glossary.md"
 cp working-with-ai.md "$STAGE/working-with-ai.md"
 cp -R guides "$STAGE/guides"
 cp static/robots.txt "$STAGE/robots.txt"
@@ -38,6 +39,7 @@ mkdocs build --strict
 cp README.md "$OUT/README.md"
 cp README.md "$OUT/index.md"
 cp capabilities.md "$OUT/capabilities.md"
+cp glossary.md "$OUT/glossary.md"
 cp working-with-ai.md "$OUT/working-with-ai.md"
 while IFS= read -r file; do
   mkdir -p "$OUT/$(dirname "$file")"

@@ -77,6 +77,8 @@ def build_index() -> str:
     )
     cap = REPO / "capabilities.md"
     out.append(f"- [{heading(cap)}]({url_for('capabilities.md')}): {hook(cap)}")
+    glossary = REPO / "glossary.md"
+    out.append(f"- [{heading(glossary)}]({url_for('glossary.md')}): {hook(glossary)}")
     ai = REPO / "working-with-ai.md"
     out.append(f"- [{heading(ai)}]({url_for('working-with-ai.md')}): {hook(ai)}")
     out.append("")
@@ -102,7 +104,11 @@ def build_index() -> str:
 
 def build_full() -> str:
     out: list[str] = ["# Edgible Guides, full text", ""]
-    sources = [REPO / "README.md", REPO / "capabilities.md"]
+    sources = [
+        REPO / "README.md",
+        REPO / "capabilities.md",
+        REPO / "glossary.md",
+    ]
     for _, rel in GUIDES:
         directory = REPO / rel
         readme = directory / "README.md"

@@ -13,6 +13,10 @@ by `scripts/build.sh` and are not checked in, so never edit files there.
 - `README.md`: the landing page. What Edgible does, why the guides are worth
   reading, and where to start. The guide list here grows as guides are added.
 - `capabilities.md`: each Edgible feature mapped to the chapter that proves it.
+- `glossary.md`: every term the guides use, defined once. Chapters do not carry
+  their own terms section; add a new term here instead.
+- `working-with-ai.md`: the markdown sources, `llms.txt` and how to read these
+  guides alongside an AI tool.
 - `guides/<series>/README.md`: chapter list for that series.
 - `guides/<series>/NN-*.md`: one chapter, one job, one smoke test.
 
