@@ -1,6 +1,124 @@
 {% extends "base.html" %}
 
 {#-
+  Titles as a search result shows them. Material's default is the page title
+  and the site name, which for a chapter reads "2. Publish the site - Edgible
+  Guides": the number is meaningless out of context and the series, the part
+  that says what the page is about, is missing. So the series goes in, and the
+  chapter number comes out, while the H1 and the nav keep their numbering.
+-#}
+{% block htmltitle %}
+  {% if page.meta and page.meta.seo_title %}
+    <title>{{ page.meta.seo_title }} - {{ config.site_name }}</title>
+  {% elif page and page.title and not page.is_homepage %}
+    {%- set parts = page.title.split(". ", 1) -%}
+    {%- set bare = parts[1] if parts | length == 2 and parts[0] | int > 0 else page.title -%}
+    {%- set series = page.parent.title if page.parent and page.parent.title else None -%}
+    <title>{{ bare }}{% if series %} - {{ series }}{% endif %} - {{ config.site_name }}</title>
+  {% elif not page %}
+    {#- The 404 template renders without a page, so it would otherwise be titled
+        as though it were the site itself. -#}
+    <title>Page not found - {{ config.site_name }}</title>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{#-
+  Structured data. The dates come from git via scripts/add_dates.py, the
+  description is the page's own hook, and the breadcrumb is the series path, so
+  none of it asserts anything the page does not already say. Search engines use
+  it for results; the assistants these guides are written for parse it too.
+-#}
+{% block extrahead %}
+  {{ super() }}
+  {%- set page_url = page.canonical_url if page else config.site_url -%}
+  {%- set title_parts = page.title.split(". ", 1) if page and page.title else [] -%}
+  {%- set bare_title = title_parts[1] if title_parts | length == 2 and title_parts[0] | int > 0 else (page.title if page else "") -%}
+  {%- set description = page.meta.description if page and page.meta and page.meta.description else config.site_description -%}
+  {%- if page and page.is_homepage %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "{{ config.site_url }}#website",
+        "url": "{{ config.site_url }}",
+        "name": "{{ config.site_name }}",
+        "description": {{ description | tojson }},
+        "inLanguage": "en",
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://www.edgible.com/#organization",
+          "name": "Edgible Pty Ltd",
+          "url": "https://www.edgible.com",
+          "logo": "{{ config.site_url }}images/edgible-logo-white.png"
+        }
+      }
+    </script>
+  {%- elif page and page.title %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "@id": "{{ page_url }}#article",
+        "url": "{{ page_url }}",
+        "headline": {{ bare_title | tojson }},
+        "description": {{ description | tojson }},
+        "inLanguage": "en",
+        {%- if page.meta and page.meta.updated %}
+        "datePublished": "{{ page.meta.updated }}",
+        "dateModified": "{{ page.meta.updated }}",
+        {%- endif %}
+        "isPartOf": { "@id": "{{ config.site_url }}#website" },
+        "author": {
+          "@type": "Organization",
+          "@id": "https://www.edgible.com/#organization",
+          "name": "Edgible Pty Ltd"
+        },
+        "publisher": { "@id": "https://www.edgible.com/#organization" }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Welcome",
+            "item": "{{ config.site_url }}"
+          }
+          {%- if page.parent and page.parent.title -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ page.parent.title | tojson }}
+            {%- if page.parent.children and page.parent.children[0].abs_url %},
+            "item": "{{ config.site_url | trim('/') }}{{ page.parent.children[0].abs_url }}"
+            {%- endif %}
+          }
+          ,{
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ bare_title | tojson }},
+            "item": "{{ page_url }}"
+          }
+          {%- else -%}
+          ,{
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ bare_title | tojson }},
+            "item": "{{ page_url }}"
+          }
+          {%- endif %}
+        ]
+      }
+    </script>
+  {%- endif %}
+{% endblock %}
+
+{#-
   The date each page's markdown last changed, from git via scripts/add_dates.py.
   A reader deciding whether a chapter still matches the product needs to see it,
   and the time element gives a crawler or an agent something machine-readable.

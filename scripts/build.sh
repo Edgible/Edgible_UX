@@ -39,6 +39,9 @@ python3 scripts/add_dates.py meta "$STAGE"
 
 mkdocs build --strict
 
+# Canonical URLs and image dimensions, which MkDocs cannot get right on its own.
+python3 scripts/polish_html.py "$OUT"
+
 # Serve the raw markdown next to the rendered HTML.
 cp README.md "$OUT/README.md"
 cp README.md "$OUT/index.md"
