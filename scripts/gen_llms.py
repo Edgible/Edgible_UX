@@ -94,7 +94,8 @@ def build_index() -> str:
         out.append("")
         readme = directory / "README.md"
         if readme.exists():
-            out.append(f"- [{heading(readme)}]({url_for(rel + '/README.md')}): chapter list and reading order")
+            summary = hook(readme) or "chapter list and reading order"
+            out.append(f"- [{heading(readme)}]({url_for(rel + '/README.md')}): {summary}")
         for chapter in chapter_files(directory):
             link = url_for(f"{rel}/{chapter.name}")
             summary = hook(chapter)

@@ -1,6 +1,6 @@
 # 1. Ollama on bare metal
 
-**Run the model locally on the Mac GPU before publishing anything.**
+**A model answering on your own GPU, with nothing leaving the machine yet.**
 
 ## 1.0 Why
 

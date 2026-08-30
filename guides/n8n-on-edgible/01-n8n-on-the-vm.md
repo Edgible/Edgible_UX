@@ -1,6 +1,6 @@
 # 1. n8n on the VM
 
-**Workflows on your own VM, with no public hostname yet.**
+**The workhorse installed on your own VM, holding your credentials, reachable from nowhere yet.**
 
 ## 1.0 Why
 

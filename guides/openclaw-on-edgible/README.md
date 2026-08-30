@@ -1,14 +1,18 @@
 # OpenClaw on Edgible: chapters
 
-Each chapter is one job and one smoke test. Do them in order.
+**The agent everyone is currently trying, with its shell and its admin console kept off the internet.**
 
-**Need first:** [Start here](../start-here/README.md), which installs the serving agent and leaves Hello World published. Every guide starts there, and this series assumes it is done.
-
-**How to read a chapter:** a one-line hook under the title, then N.0 Why (what is missing without this chapter, and which machine you run it on), then N.1 The job (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and Next at the end.
+An AI agent that chats, runs commands and edits files is the thing most people are experimenting with right now, and it is the thing least suited to a rented box: it holds your keys, it has a shell, and the fastest route to using it from a phone is opening a port on an admin console. This series takes the other route. The Gateway stays on loopback for the whole guide, the Control UI is published behind your organisation's login, and by the end the agent is rewriting a public page from a phone on cellular.
 
 OpenClaw chats and uses tools on a box you own. Edgible is the public `https://<app>.<org>.edgible.com` hostname, reached over outbound 443 only. No port-forward, no mesh VPN. The Edgible story here is the **Control UI**: phone browser, `org` login, no tunnel on the laptop. Telegram and WhatsApp are chat clients; they are not Edgible apps.
 
 Publishing plus two auth modes on one process (editor `org`, webhooks `None`) is [n8n on Edgible](../n8n-on-edgible/README.md). A remote self-hosted Gateway calling a self-hosted Ollama on another home machine is [LLM on Edgible](../llm-on-edgible/README.md). That is not this series and not chapter 8; chapter 8 is same-LAN or cloud keys.
+
+Each chapter is one job and one smoke test. Do them in order.
+
+**How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
+
+**Need first:** [Start here](../start-here/README.md), which installs the serving agent and leaves Hello World published. Every guide starts there, and this series assumes it is done.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

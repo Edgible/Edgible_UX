@@ -1,6 +1,8 @@
 # Website on Edgible: chapters
 
-The shortest useful thing you can self-host: a static site, the analytics that tell you whether anyone read it, and the monitor that tells you when it broke. All three on one machine you own, all three on public HTTPS hostnames, with no port forwarded and no cloud host.
+**The whole small-site stack on one machine, with nothing rented and nobody else holding the numbers.**
+
+A site, the analytics that tell you whether anyone read it, and the monitor that tells you when it broke. Bought separately those are three subscriptions and three companies with a copy of your traffic. Here they are three containers on a machine you already own, published on four HTTPS hostnames, with no port forwarded and no cloud host. The recurring cost is the electricity.
 
 This is also the clearest demonstration that auth is a property of the hostname. The site is `None`, because strangers are the audience. The Umami dashboard and the Uptime Kuma interface are `org`, because you are. The Umami tracking script is `None` on a second hostname pointing at the same process as the dashboard, because a visitor's browser has to fetch it and will never have a login.
 

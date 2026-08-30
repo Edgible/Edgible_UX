@@ -32,13 +32,13 @@ Where names the chapter that demonstrates the feature. How is the observable pro
 
 ## The set-piece demos
 
-A marketing site with analytics and monitoring, all self-hosted. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service.
+The whole small-site stack, rented from nobody. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service.
 
-A workflow platform with a public webhook and a private canvas. [n8n on Edgible](guides/n8n-on-edgible/README.md) covers the auth split end to end, including the `WEBHOOK_URL` setting that makes n8n print the public origin while traffic still reaches one process.
+The back office workhorse, with its credentials staying in your building. [n8n on Edgible](guides/n8n-on-edgible/README.md) covers the auth split end to end, including the `WEBHOOK_URL` setting that makes n8n print the public origin while traffic still reaches one process.
 
-An AI agent reachable from a phone. [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md) keeps the Gateway on loopback and lets the phone in through `org`. The agent edits a live public page in [chapter 3](guides/openclaw-on-edgible/03-openclaw-changes-edgible-site.md), and [chapter 4](guides/openclaw-on-edgible/04-edgible-openclaw-skill.md) installs a skill that lets it run the Edgible CLI.
+The agent everyone is currently trying, on hardware you control. [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md) keeps the Gateway on loopback and lets the phone in through `org`. The agent edits a live public page in [chapter 3](guides/openclaw-on-edgible/03-openclaw-changes-edgible-site.md), and [chapter 4](guides/openclaw-on-edgible/04-edgible-openclaw-skill.md) installs a skill that lets it run the Edgible CLI.
 
-A self-hosted GPU serving two other self-hosted machines. In [LLM on Edgible](guides/llm-on-edgible/README.md), Ollama and the model weights stay on one machine while n8n on a second and OpenClaw on a third call it over HTTPS with a bearer secret. No port-forward and no mesh VPN. This combination exercises private inference, machine authentication and remote self-hosted callers together.
+Private AI, where the prompts and the weights stay home. In [LLM on Edgible](guides/llm-on-edgible/README.md), Ollama and the model weights stay on one machine while n8n on a second and OpenClaw on a third call it over HTTPS with a bearer secret. No port-forward and no mesh VPN. This combination exercises private inference, machine authentication and remote self-hosted callers together.
 
 ## What it replaces
 

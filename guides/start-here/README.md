@@ -1,6 +1,8 @@
 # Start here: chapters
 
-One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page the internet can load.
+**From a blank virtual machine to a page the internet can load, without touching your router.**
+
+One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page that loads on a phone with Wi-Fi turned off. That last check is the whole idea in one test: nothing dials in, so there is no port to forward, and the page is still public.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
@@ -12,4 +14,9 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 
 Leave Hello World running when you finish. The other guides use it as the check that publishing still works, and each of them ends with a teardown chapter that removes its own services and leaves Hello World and the serving agent alone. Each of those chapters ends with an optional step for removing Hello World too, once no other guide needs it.
 
-Then pick a guide: [Website on Edgible](../website-on-edgible/README.md), [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md), or [LLM on Edgible](../llm-on-edgible/README.md).
+Then pick a guide by what you want to stop paying for or stop handing over:
+
+- [Website on Edgible](../website-on-edgible/README.md): a site, its analytics and its uptime monitor, all on your machine.
+- [n8n on Edgible](../n8n-on-edgible/README.md): the back office automation, with the credentials it holds staying in your building.
+- [OpenClaw on Edgible](../openclaw-on-edgible/README.md): an AI agent with a shell, reachable from your phone, never exposed.
+- [LLM on Edgible](../llm-on-edgible/README.md): a model on your own GPU, called over HTTPS by other machines you own.

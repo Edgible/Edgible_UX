@@ -1,8 +1,8 @@
 # LLM on Edgible: chapters
 
-Each chapter is one job and one smoke test. Do them in order. Chapters 1 to 4 are the demo; [5](05-llm-teardown.md) removes the published hostname, revokes the secret and puts the Mac back on loopback.
+**Private AI: the prompts, the documents and the weights never leave hardware you own.**
 
-How to read a chapter: a one-line hook under the title, then N.0 Why (what is missing without this chapter, and which machine you run it on), then N.1 The job (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
+Every prompt sent to a hosted model is a document handed to somebody else's logs, which is why the interesting questions are the ones people will not type into one. A GPU at home answers those, and the usual catch is that only the machine holding the GPU can use it. Here it answers over HTTPS to other machines you own, authenticated by a bearer secret rather than a port left open, and the weights stay where they were downloaded.
 
 The use case: a self-hosted LLM on one home machine, called from a different self-hosted machine (n8n, OpenClaw, `curl`, Chatbox). Weights and GPU stay on the machine that runs the model. The remote box only sends HTTPS + `Authorization: Bearer`. No port-forward, no mesh VPN, no putting n8n or OpenClaw on the GPU box.
 
@@ -25,7 +25,13 @@ Edgible cannot aim at the Mac’s IP. It proxies `127.0.0.1` on the UTM guest. C
 
 Do not port-forward `11434` on the router. Same-LAN HTTP is only the guest → Mac hop for the forwarder. n8n and OpenClaw use the published `api-key` URL.
 
-**Need first:** [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) on the Mac guest (`mini-pc`, Hello World on cellular). Leave that VM and `hello-world` running. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
+## Chapters
+
+Each chapter is one job and one smoke test. Do them in order. Chapters 1 to 4 are the demo; [5](05-llm-teardown.md) removes the published hostname, revokes the secret and puts the Mac back on loopback.
+
+**How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
+
+**Need first:** [Start here](../start-here/README.md) on the Mac guest (`mini-pc`, Hello World on cellular). Leave that VM and `hello-world` running. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

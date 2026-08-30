@@ -1,6 +1,6 @@
 # 4. OpenClaw uses the published Ollama URL
 
-**Point the OpenClaw Gateway at the published Ollama hostname with a bearer secret.**
+**An agent on one machine you own, thinking on a GPU in another, over HTTPS with a bearer secret.**
 
 ## 4.0 Why
 
