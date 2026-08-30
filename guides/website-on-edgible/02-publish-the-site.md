@@ -88,7 +88,7 @@ You should see your HTML. If `curl` complains about the certificate, wait and re
 2. Open `https://site.<your-org>.edgible.com`.
 3. You should see the same page `curl` returned on the guest.
 
-That page came off a disk in your house, over a connection your machine dialled out. The router still has no forwarded port. Confirm that from the guest, because it is the claim worth checking rather than assuming:
+That page came off a disk in your house, over a connection your machine opened. The router still has no forwarded port. Confirm that from the guest, because it is the claim worth checking rather than assuming:
 
 ```bash
 ss -ltnp | grep 8080

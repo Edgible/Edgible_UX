@@ -13,7 +13,7 @@
 <text class="small" x="272" y="170">bearer key</text>
 <path d="M148 153 C 200 153, 200 153, 250 153" fill="none" stroke="#767a93" stroke-width="2" stroke-dasharray="5 4"/>
 <rect class="card" x="612" y="40" width="312" height="226" rx="8"/>
-<path d="M620 40 h296 a8 8 0 0 1 8 8 v22 h-312 v-22 a8 8 0 0 1 8 -8 z" fill="#0b0b22"/>
+<path d="M620 40 h296 a8 8 0 0 1 8 8 v22 h-312 v-22 a8 8 0 0 1 8 -8 z" fill="#3a56ad"/>
 <text class="head" x="632" y="60">THE GPU STAYS HOME</text>
 <text class="monoxs" x="632" y="100">127.0.0.1:11434</text>
 <text class="monoxs" x="762" y="100">Ollama on the Mac</text>
@@ -24,5 +24,5 @@
 <text class="small" x="632" y="184">Authorization: Bearer, not an open port</text>
 <text class="small" x="632" y="210">router: no forwarded port</text>
 <path d="M612 153 H512" fill="none" stroke="#e7e7f0" stroke-width="2.5"/>
-<text class="small" x="556" y="143" text-anchor="middle">dials out on 443</text>
+<text class="small" x="556" y="143" text-anchor="middle">outbound 443 only</text>
 </svg>

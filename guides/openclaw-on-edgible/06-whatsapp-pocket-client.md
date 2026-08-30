@@ -6,7 +6,7 @@
 
 Telegram asks anyone you want to include to install something first. WhatsApp is already on the phone. There is also a mechanical reason to have it: Control UI is webchat, and webchat cannot bind a conversation to a Cursor session, so every follow-up in [chapter 7](07-cursor-agent.md) needs a steer command carrying a uuid. A bound WhatsApp thread becomes the Cursor session until you close it, and you type normal sentences.
 
-The cost is that this is a linked device on your own account rather than a bot: no bot badge, replies that look like you talking to yourself, and a QR you have to see in order to scan it. That is why the reply prefix exists, and why a dedicated second number is cleaner if you have one. As with Telegram, none of this is an Edgible app. The Gateway dials out; do not publish a hostname or forward a port for a chat channel.
+The cost is that this is a linked device on your own account rather than a bot: no bot badge, replies that look like you talking to yourself, and a QR you have to see in order to scan it. That is why the reply prefix exists, and why a dedicated second number is cleaner if you have one. As with Telegram, none of this is an Edgible app. The Gateway connects out; do not publish a hostname or forward a port for a chat channel.
 
 ```
 you, on a phone        WhatsApp (linked device) ──► WhatsApp servers

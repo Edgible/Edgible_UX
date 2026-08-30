@@ -6,7 +6,7 @@
 
 Control UI is the right client for anything serious, but each new phone or browser profile costs a token paste and a device approve. A one-line question does not need that setup.
 
-Telegram is the cheap client, and it is not an Edgible app. There is no port and no hostname to publish. The Gateway dials out to Telegram’s API on TCP 443, as it already dials out to Edgible, so nothing new is exposed and nothing new is forwarded. Publishing a chat channel at a hostname would add an inbound path this never needed.
+Telegram is the cheap client, and it is not an Edgible app. There is no port and no hostname to publish. The Gateway connects out to Telegram’s API on TCP 443, as it already connects out to Edgible, so nothing new is exposed and nothing new is forwarded. Publishing a chat channel at a hostname would add an inbound path this never needed.
 
 The costs are privacy and precision: your messages traverse Telegram’s servers, and slash commands in a chat window are a clumsy place to approve a shell write. Use Telegram for questions and quick checks. Use Control UI for exec approvals and the first run of anything new.
 
@@ -23,7 +23,7 @@ you, in a browser      https://openclaw-ui.<org>.edgible.com   ← org login (ch
 
 ## 5.1 The job
 
-You create a bot, store its token on the VM, and DM that bot (not BotFather). OpenClaw replies. The Gateway dials out to `api.telegram.org` on TCP 443. There is no `openclaw channels login telegram`; you paste a BotFather token into config. Do not publish Telegram (or WhatsApp, Discord, Ollama) through Edgible. Do not port-forward 18789.
+You create a bot, store its token on the VM, and DM that bot (not BotFather). OpenClaw replies. The Gateway connects out to `api.telegram.org` on TCP 443. There is no `openclaw channels login telegram`; you paste a BotFather token into config. Do not publish Telegram (or WhatsApp, Discord, Ollama) through Edgible. Do not port-forward 18789.
 
 Control UI remains the cleaner place for `/skill` and exec approvals. WhatsApp is the bindable ACP client. Telegram is official Bot API.
 

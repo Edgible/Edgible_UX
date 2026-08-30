@@ -1,6 +1,6 @@
 # What Edgible does, and where these guides prove it
 
-Edgible publishes a service running on a machine you own at a public HTTPS hostname, using only an outbound connection on TCP 443. The alternatives each cost something. Port-forwarding exposes the service, and anything it holds, to the open internet. A mesh VPN requires enrolling every device that will ever need access. A reverse proxy with certbot and dynamic DNS means you operate TLS and a domain yourself. With Edgible the machine dials out, and a hostname appears with a certificate already issued and an auth mode already applied.
+Edgible publishes a service running on a machine you own at a public HTTPS hostname, using only an outbound connection on TCP 443. The alternatives each cost something. Port-forwarding exposes the service, and anything it holds, to the open internet. A mesh VPN requires enrolling every device that will ever need access. A reverse proxy with certbot and dynamic DNS means you operate TLS and a domain yourself. With Edgible the machine makes the connection outward, and a hostname appears with a certificate already issued and an auth mode already applied.
 
 ## The three differentiators
 

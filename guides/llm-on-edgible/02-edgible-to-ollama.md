@@ -6,7 +6,7 @@
 
 After chapter 1 the model answers only to whoever is sitting at the Mac. Nothing else on your network can reach it, let alone n8n or OpenClaw on another computer. Forwarding `11434` on the router hands strangers an unauthenticated inference endpoint on your own hardware. A mesh VPN means every future caller has to enrol first. Installing Ollama inside the 4 GB guest gives up Metal for CPU inference. Handing a remote box the UTM address (`192.168.64.1`) fails for a different reason: that virt LAN only exists between the Mac and its own guest.
 
-Edgible’s serving agent runs on the Ubuntu guest, and it can only proxy a local port (`127.0.0.1` on `mini-pc`). So the shape is: the Mac binds Ollama to the virt LAN, the guest binds loopback `11434` and forwards to the host, and the Edgible app publishes that loopback port. The guest dials out on 443; nothing inbound is opened anywhere.
+Edgible’s serving agent runs on the Ubuntu guest, and it can only proxy a local port (`127.0.0.1` on `mini-pc`). So the shape is: the Mac binds Ollama to the virt LAN, the guest binds loopback `11434` and forwards to the host, and the Edgible app publishes that loopback port. The guest connects out on 443; nothing inbound is opened anywhere.
 
 The auth mode is set per app, and each app is one hostname, so this hostname decides who may use your GPU. It is `api-key`. With `None`, anyone on the internet could run inference on your GPU, and `org` is a human browser login that `curl`, an n8n node and an OpenClaw Gateway cannot complete. Callers send `Authorization: Bearer`, and the weights stay on the Mac.
 

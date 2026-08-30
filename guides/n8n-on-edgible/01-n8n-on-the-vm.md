@@ -6,7 +6,7 @@
 
 Later chapters (the phone opening the canvas, GitHub firing a webhook) assume there is something on this box worth publishing. Right now there is nothing, so this chapter installs it: n8n as one process on loopback `5678`, with no public hostname.
 
-n8n stays on loopback. Binding it to `0.0.0.0` and forwarding the port would expose a credential store holding every API key you own to anyone scanning that address. Edgible does not need that: the serving agent on this guest dials out on 443 and reaches n8n over loopback, so the process stays private and can still be published later. Later you give this one process two public hostnames with two auth modes: `org` for the editor you log into, `None` for the webhooks GitHub and `curl` must reach without a login.
+n8n stays on loopback. Binding it to `0.0.0.0` and forwarding the port would expose a credential store holding every API key you own to anyone scanning that address. Edgible does not need that: the serving agent on this guest connects out on 443 and reaches n8n over loopback, so the process stays private and can still be published later. Later you give this one process two public hostnames with two auth modes: `org` for the editor you log into, `None` for the webhooks GitHub and `curl` must reach without a login.
 
 ```
 the internet          (nothing: no hostname, no forwarded port, this chapter)

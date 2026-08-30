@@ -22,7 +22,7 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 
 | Term | What it means here |
 | --- | --- |
-| Outbound only | The serving agent dials out and keeps that connection open, so nothing listens for inbound connections and no router change is needed. |
+| Outbound only | The serving agent opens the connection and keeps it open, so nothing listens for inbound connections and no router change is needed. The direction matters: a connection your machine starts needs no forwarded port, because the reply comes back down a connection the router already knows about. |
 | Port forward | A router rule exposing a local port to the internet. These guides never use one, and the checklist of every chapter that publishes a port confirms it is still not forwarded. |
 | Virt LAN | The private network between a host and its own virtual machines, often `192.168.64.x` under UTM. It reaches the host, and nothing outside that machine. |
 | `socat` | A small relay. In [LLM on Edgible](guides/llm-on-edgible/README.md) it listens on the guest's loopback and forwards to Ollama on the host, so the serving agent has a local port to publish. |

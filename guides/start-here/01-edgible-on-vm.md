@@ -8,7 +8,7 @@ You have a machine you trust: a mini-PC at home, or the VM standing in for one i
 
 The usual ways of publishing one are the ones to avoid. Forwarding a port on the router puts a process you have not hardened in front of everyone who scans your address, and you inherit dynamic DNS and certificates as homework. A mesh VPN works, but every device that will ever need the service has to be enrolled first, which rules out a colleague, a phone you borrowed, or a webhook from Stripe. Renting a cloud box solves reachability by giving up the whole premise: the data is no longer on hardware you own.
 
-Edgible takes the third route. A serving agent on the guest dials out on TCP 443 and holds that connection open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app, and so each hostname, carries its own auth mode: `org` for “only my organisation gets past a browser login”, `api-key` for a bearer secret, `None` for open to the world. Hello World at the end of this chapter is `None` because it is a throwaway page. A page that loads on a phone with Wi‑Fi off is the proof that publishing worked.
+Edgible takes the third route. A serving agent on the guest opens an outbound connection on TCP 443 and holds it open, so a public HTTPS hostname of the shape `https://<app>.<org>.edgible.com` appears with a certificate already on it and nothing inbound on your router. Each app, and so each hostname, carries its own auth mode: `org` for “only my organisation gets past a browser login”, `api-key` for a bearer secret, `None` for open to the world. Hello World at the end of this chapter is `None` because it is a throwaway page. A page that loads on a phone with Wi‑Fi off is the proof that publishing worked.
 
 ```
 you, on cellular       https://hello-world.<org>.edgible.com   ← None (throwaway page)
@@ -18,7 +18,7 @@ Ubuntu guest           Edgible serving agent ──► 127.0.0.1:8081
                                  │
                        nginx  (Hello World)
 
-your router            no forwarded port, nothing dials in
+your router            no forwarded port, nothing connects in
 ```
 
 **Where you run this:** signup and the console in the **host browser**; the VM manager on the host; everything else (`edgible`, Docker, `curl`) on the **Ubuntu guest**; the final check on a **phone on cellular**.

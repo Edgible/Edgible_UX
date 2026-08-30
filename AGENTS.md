@@ -49,6 +49,9 @@ Every chapter follows the same shape, and new chapters must match it:
   hostname`, `serving agent`. Not doors, locks, or brains.
 - `serving agent` is the daemon on the machine. `serving device` is the
   registered record in the console. They are not interchangeable.
+- The agent "connects out" or "opens an outbound connection". Not "dials out":
+  that is a modem metaphor, and the point being made is about the direction a
+  connection is opened in, which the plain wording says better.
 - Auth modes are `org`, `api-key` and `None`, always in code font.
 - Ports, hostnames, commands, filenames and env vars go in code font.
 - Every claim needs a command whose output a reader can check.

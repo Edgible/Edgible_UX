@@ -36,7 +36,9 @@ PALETTES = {
         "rule": "#e0e3ea",
         "ink": "#000033",
         "muted": "#4a4f66",
-        "machine": "#000033",
+        # The same mid blue the table headers use, so a header bar reads as a
+        # header wherever it appears. Navy is reserved for the chrome.
+        "machine": "#2e4a9e",
         "machine_ink": "#ffffff",
         OPEN: "#2f6fb0",
         LOGIN: "#000033",
@@ -51,7 +53,7 @@ PALETTES = {
         "rule": "#33334f",
         "ink": "#e7e7f0",
         "muted": "#a5a8bd",
-        "machine": "#0b0b22",
+        "machine": "#3a56ad",
         "machine_ink": "#ffffff",
         OPEN: "#7db2e8",
         LOGIN: "#c3c6d8",
@@ -74,7 +76,7 @@ SERIES = {
         "machine": "ONE MACHINE YOU OWN",
         "ports": [("127.0.0.1:8080", "Hello World")],
         "notes": [
-            "serving agent, outbound 443 only",
+            "serving agent connects out, nothing connects in",
             "router: no forwarded port",
             "nothing listens on the LAN",
         ],
@@ -235,14 +237,15 @@ def svg_for(spec: dict, palette: dict) -> str:
         add(f'<text class="small" x="{MACHINE_X + 20}" y="{row:.0f}">{escape(note)}</text>')
         row += 26
 
-    # the outbound connection, drawn from the machine towards the hostnames
+    # the outbound connection, drawn from the machine towards the hostnames,
+    # because the direction the connection is opened in is the whole point
     add(
         f'<path d="M{MACHINE_X} {mid:.0f} H{CARD_X + CARD_W + 12}" fill="none" '
         f'stroke="{p["ink"]}" stroke-width="2.5"/>'
     )
     add(
         f'<text class="small" x="{(MACHINE_X + CARD_X + CARD_W) / 2:.0f}" y="{mid - 10:.0f}" '
-        f'text-anchor="middle">dials out on 443</text>'
+        f'text-anchor="middle">outbound 443 only</text>'
     )
 
     add("</svg>")

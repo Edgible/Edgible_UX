@@ -252,7 +252,7 @@ If there is no GUI, there is no in-guest browser. Skip to Edgible, or forward ho
 
 ### 1.3.7 Do not do these yet
 
-- Telegram / Discord. They already dial out; they are not the Edgible job. Skill: [chapter 4](04-edgible-openclaw-skill.md). Telegram: [chapter 5](05-telegram-pocket-client.md). WhatsApp: [chapter 6](06-whatsapp-pocket-client.md).
+- Telegram / Discord. They already connect out; they are not the Edgible job. Skill: [chapter 4](04-edgible-openclaw-skill.md). Telegram: [chapter 5](05-telegram-pocket-client.md). WhatsApp: [chapter 6](06-whatsapp-pocket-client.md).
 - DeepSeek / Ollama / OpenAI as the chat model: [chapter 8](08-models-beyond-free-gemini.md), after this hello works.
 - Mesh VPNs, ingress tunnels, or other tools that publish a local port.
 - `gateway.auth` set to none.

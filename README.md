@@ -8,7 +8,7 @@ This site is a growing library of guides that show that happening, one use case 
 
 ## What Edgible does
 
-The machine you are serving from dials out on TCP 443 and keeps that connection open. A hostname then appears, with a certificate already issued and an access rule already applied. Nothing listens for inbound connections, so there is no port to forward and no firewall hole to maintain.
+The machine you are serving from opens an outbound connection on TCP 443 and keeps it open. A hostname then appears, with a certificate already issued and an access rule already applied. Nothing listens for inbound connections, so there is no port to forward and no firewall hole to maintain.
 
 Each published hostname carries its own auth mode: `org` puts a login from your organisation in front of it, `api-key` accepts a bearer secret from machines that cannot log in, and `None` leaves it open for callers like payment or repository webhooks. Because the rule belongs to the hostname rather than to the service, one running process can be published more than once with different protection on each hostname.
 

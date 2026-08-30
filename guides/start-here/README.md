@@ -2,7 +2,7 @@
 
 **From a blank virtual machine to a page the internet can load, without touching your router.**
 
-One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page that loads on a phone with Wi-Fi turned off. That last check is the whole idea in one test: nothing dials in, so there is no port to forward, and the page is still public.
+One chapter, and every other guide depends on it. You end with a machine you own, registered to your organisation, serving a page that loads on a phone with Wi-Fi turned off. That last check is the whole idea in one test: nothing connects in, so there is no port to forward, and the page is still public.
 
 ![A phone on cellular reaches one open hostname, which arrives at Hello World on loopback on a machine you own, with no forwarded port](../../images/diagrams/start-here-light.svg#only-light)
 ![A phone on cellular reaches one open hostname, which arrives at Hello World on loopback on a machine you own, with no forwarded port](../../images/diagrams/start-here-dark.svg#only-dark)
