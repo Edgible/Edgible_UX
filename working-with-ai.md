@@ -27,6 +27,14 @@ curl https://guides.edgible.com/llms.txt
 curl https://guides.edgible.com/llms-full.txt
 ```
 
+## Terms in one place
+
+[Glossary](glossary.md) defines every term the guides use, so an assistant can pick up the vocabulary in one fetch rather than inferring it chapter by chapter:
+
+```bash
+curl https://guides.edgible.com/glossary.md
+```
+
 ## Ways people use this
 
 Point an assistant at `llms.txt` and ask which chapter covers what you are trying to do. The summaries are written to make that question answerable without opening every page.

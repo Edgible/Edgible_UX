@@ -274,6 +274,13 @@
   }
 }
 
+/* The footer meta band is 2.9rem tall because the credit and the copyright each
+   run to two lines. Match the header to it, so the navy at the top and the navy
+   at the bottom read as one frame rather than two mismatched bars. */
+.md-header__inner {
+  min-height: 2.9rem;
+}
+
 /* The logo is a wordmark rather than a square mark, so it needs more width than
    Material's default logo box allows. */
 .md-header__button.md-logo {
