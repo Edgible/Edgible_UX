@@ -62,7 +62,7 @@ If the URL still shows `localhost:5678` or `:5678`, `WEBHOOK_URL` is wrong. Go b
 Or from a laptop on cellular / another network:
 
 ```bash
-curl -sS "https://n8n-hooks.YOUR-ORG.edgible.com/webhook/edgible-smoke-YOURPATH"
+curl -sS "https://n8n-hooks.<org>.edgible.com/webhook/edgible-smoke-YOURPATH"
 ```
 
 Use the exact production URL from the node. HTTP `200` and `ok` is success.

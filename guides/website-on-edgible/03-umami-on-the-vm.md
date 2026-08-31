@@ -130,7 +130,7 @@ That the login page was never reachable from outside this machine is not a reaso
 ## 3.4 Add your site and copy the tracking ID
 
 1. In Umami, open **Settings**, then **Websites**, then **Add website**.
-2. Name it whatever you like. For **Domain**, use the hostname from chapter 2: `site.<your-org>.edgible.com`.
+2. Name it whatever you like. For **Domain**, use the hostname from chapter 2: `site.<org>.edgible.com`.
 3. Save, then open the site's **Edit** or **Tracking code** view.
 
 You want two things from that screen: the **website ID**, a UUID, and the shape of the snippet, which looks like this:

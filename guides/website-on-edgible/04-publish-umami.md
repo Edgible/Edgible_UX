@@ -52,7 +52,7 @@ edgible app create existing
 Wait for the certificate in the console, as in chapter 2, then from the guest:
 
 ```bash
-curl -sI https://analytics.<your-org>.edgible.com/script.js
+curl -sI https://analytics.<org>.edgible.com/script.js
 ```
 
 A `200` with a JavaScript content type. No login, which is the point: a stranger's browser has to be able to do exactly this.
@@ -78,16 +78,16 @@ edgible app create existing
 | Select local workload | `umami` |
 | Select port | `3000` |
 
-**Smoke test.** Open `https://umami.<your-org>.edgible.com` in the host browser. You get the Edgible `org` login before you ever see Umami. Sign in with the account from [Start here](../start-here/01-edgible-on-vm.md), then sign in to Umami itself with the password you set in 3.3. Two logins, because the two systems do not share accounts.
+**Smoke test.** Open `https://umami.<org>.edgible.com` in the host browser. You get the Edgible `org` login before you ever see Umami. Sign in with the account from [Start here](../start-here/01-edgible-on-vm.md), then sign in to Umami itself with the password you set in 3.3. Two logins, because the two systems do not share accounts.
 
-Now confirm the split does what it claims. In a private window, open the same URL. You should be stopped at the Edgible login and never reach Umami. Then open `https://analytics.<your-org>.edgible.com/script.js` in that same private window and watch it return JavaScript. Same process, same port, different rules, decided by which hostname you asked for.
+Now confirm the split does what it claims. In a private window, open the same URL. You should be stopped at the Edgible login and never reach Umami. Then open `https://analytics.<org>.edgible.com/script.js` in that same private window and watch it return JavaScript. Same process, same port, different rules, decided by which hostname you asked for.
 
 ## 4.4 Add the snippet to your site
 
 In your site's HTML, inside `<head>`, using your tracking hostname and the website ID from 3.4:
 
 ```html
-<script defer src="https://analytics.YOUR-ORG.edgible.com/script.js"
+<script defer src="https://analytics.<org>.edgible.com/script.js"
         data-website-id="YOUR-WEBSITE-ID"></script>
 ```
 
@@ -97,12 +97,12 @@ Put this in the source your generator uses, not only in the built output, or the
 rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/
 ```
 
-**Smoke test.** On a phone with Wi‑Fi off, load `https://site.<your-org>.edgible.com`. Then open the dashboard on `https://umami.<your-org>.edgible.com` and look at **Realtime**. Your visit shows up within a few seconds.
+**Smoke test.** On a phone with Wi‑Fi off, load `https://site.<org>.edgible.com`. Then open the dashboard on `https://umami.<org>.edgible.com` and look at **Realtime**. Your visit shows up within a few seconds.
 
 If nothing arrives, check in this order. View source on the public site and confirm the snippet is actually there, since a stale build is the usual cause. Confirm the `src` host is the `analytics` hostname and not `127.0.0.1`. Then, on the guest, confirm the ingest path itself works:
 
 ```bash
-curl -sS -X POST https://analytics.<your-org>.edgible.com/api/send \
+curl -sS -X POST https://analytics.<org>.edgible.com/api/send \
   -H "Content-Type: application/json" \
   -H "User-Agent: Mozilla/5.0" \
   -d '{"type":"event","payload":{"website":"YOUR-WEBSITE-ID","hostname":"test","url":"/"}}'

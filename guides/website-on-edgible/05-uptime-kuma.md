@@ -86,7 +86,7 @@ edgible app create existing
 | Select local workload | `uptime-kuma` |
 | Select port | `3001` |
 
-Wait for the certificate in the console, then open `https://status.<your-org>.edgible.com` in the host browser. The Edgible `org` login comes first. Behind it, Uptime Kuma asks you to create the admin account: do that now, and store the password.
+Wait for the certificate in the console, then open `https://status.<org>.edgible.com` in the host browser. The Edgible `org` login comes first. Behind it, Uptime Kuma asks you to create the admin account: do that now, and store the password.
 
 This is the same shape as the Umami dashboard in 4.3 and the opposite of the site in chapter 2. Three services, three answers to the same prompt, each one following from who needs to reach the thing.
 
@@ -98,11 +98,11 @@ In Uptime Kuma, **Add New Monitor**:
 | --- | --- |
 | Monitor Type | HTTP(s) |
 | Friendly Name | `site` |
-| URL | `https://site.<your-org>.edgible.com` |
+| URL | `https://site.<org>.edgible.com` |
 | Heartbeat Interval | 60 seconds |
 | Retries | 2 |
 
-Save, and it should go green within a minute. Add a second monitor the same way for `https://analytics.<your-org>.edgible.com/script.js`, which is the path your visitors' browsers actually depend on. Do not monitor the `org` hostnames: they answer with a login page, so what you would be testing is Edgible's login, not your service.
+Save, and it should go green within a minute. Add a second monitor the same way for `https://analytics.<org>.edgible.com/script.js`, which is the path your visitors' browsers actually depend on. Do not monitor the `org` hostnames: they answer with a login page, so what you would be testing is Edgible's login, not your service.
 
 **Smoke test.** A monitor that has never gone red has not been tested. On the guest:
 

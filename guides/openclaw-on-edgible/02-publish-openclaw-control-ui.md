@@ -90,7 +90,7 @@ Allow both the local UI and the Edgible origin (replace the host):
 
 ```bash
 openclaw config set gateway.controlUi.allowedOrigins \
-  '["http://127.0.0.1:18789","https://openclaw-ui.YOUR-ORG.edgible.com"]' --strict-json
+  '["http://127.0.0.1:18789","https://openclaw-ui.<org>.edgible.com"]' --strict-json
 openclaw gateway restart
 ```
 
@@ -123,7 +123,7 @@ python3 -c 'import json, pathlib; p=pathlib.Path.home()/".openclaw"/"openclaw.js
 Then either:
 
 - Control UI → **Settings** → gateway token → paste → save, or
-- Open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=THEVALUE` (same host as `edgible app list`; fragment, not a query string).
+- Open `https://openclaw-ui.<org>.edgible.com/#token=THEVALUE` (same host as `edgible app list`; fragment, not a query string).
 
 Do not set `gateway.auth.mode` to `none` or `trusted-proxy`.
 
@@ -169,7 +169,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 
 1. Turn Wi‑Fi off on the phone.
 2. Open the `https` URL. You should get the Edgible `org` login first. Sign in as the same account as [Start here 1.3](../start-here/01-edgible-on-vm.md#13-create-account). A stranger with the URL should not see OpenClaw.
-3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 2.4: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a new device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a local handoff; it does not replace this on the phone.
+3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 2.4: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.<org>.edgible.com/#token=…`. The phone is a new device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a local handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 
 If `hello-world` still loads on the phone and `openclaw-ui` does not, publishing is fine. The failure is OpenClaw (certs, `org` login, origins, WebSocket, token).

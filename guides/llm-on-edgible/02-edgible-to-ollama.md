@@ -166,7 +166,7 @@ edgible app create existing \
 
 Leave extra hostnames blank. **Allow other organizations?** **No**. Never `None`. Do not use `org` alone. `curl` and n8n cannot complete a browser login.
 
-Wait for the certificate: console → `ollama` → **Certificates**, or `edgible app list` / `edgible app status`. Copy `https://ollama.YOUR-ORG.edgible.com` exactly (no path, no `:11434`).
+Wait for the certificate: console → `ollama` → **Certificates**, or `edgible app list` / `edgible app status`. Copy `https://ollama.<org>.edgible.com` exactly (no path, no `:11434`).
 
 ## 2.5 API key (Ubuntu VM) and cellular smoke (any off-LAN device)
 
@@ -196,7 +196,7 @@ List rows are metadata: name, key id, created / expiry. That id is not the API k
 **Smoke test (phone on cellular).** From a phone on cellular or a laptop not on the VM’s LAN:
 
 ```bash
-curl -sS "https://ollama.YOUR-ORG.edgible.com/api/tags" \
+curl -sS "https://ollama.<org>.edgible.com/api/tags" \
   -H "Authorization: Bearer $EDGIBLE_APP_KEY"
 ```
 
@@ -207,7 +207,7 @@ For a chat window instead of `curl`, skip the optional generate below and go to 
 Optional. Prove a completion (slow on a 7B; still GPU on the Mac):
 
 ```bash
-curl -sS "https://ollama.YOUR-ORG.edgible.com/api/generate" \
+curl -sS "https://ollama.<org>.edgible.com/api/generate" \
   -H "Authorization: Bearer $EDGIBLE_APP_KEY" \
   -H "Content-Type: application/json" \
   -d '{"model":"qwen2.5:7b","prompt":"Reply with exactly: ok","stream":false}'
@@ -227,7 +227,7 @@ Published endpoint: [Chatbox](https://chatboxai.app) (Mac/Windows/Linux).
 
 1. **Settings** (bottom left of the sidebar) → **Model Provider**.
 2. **Add** → type **OpenAI API compatible** (not Chatbox’s own cloud, not “OpenAI” with `api.openai.com`).
-3. **API Key** = the secret from 2.5. **API Host** = `https://ollama.YOUR-ORG.edgible.com` (Chatbox usually appends `/v1/chat/completions` itself; if chat fails, try the same URL with `/v1`).
+3. **API Key** = the secret from 2.5. **API Host** = `https://ollama.<org>.edgible.com` (Chatbox usually appends `/v1/chat/completions` itself; if chat fails, try the same URL with `/v1`).
 4. **Add a model.** The id must be exactly what `ollama ls` shows, e.g. `qwen2.5:7b`. Save. Use **Check** if the UI has it. You want connection OK, not 401.
 5. Leave Settings. Click the **back** chevron, or click **Chatbox** in the sidebar, until you see the big empty chat pane and an input at the bottom. There is no button labelled “New conversation”.
 6. If you still only see Settings: look left for the sidebar. It may be hidden, so use **☰** (top left) or drag the window wider. In the sidebar the button is **New Chat** (sometimes a `+`). You can skip that: if a blank thread is already open, just use the input box at the bottom.

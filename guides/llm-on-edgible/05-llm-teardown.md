@@ -51,7 +51,7 @@ Deleting the app removes its API keys with it. If you would rather revoke a key 
 
 ```bash
 curl -sS -o /dev/null -w '%{http_code}\n' \
-  "https://ollama.YOUR-ORG.edgible.com/api/tags" \
+  "https://ollama.<org>.edgible.com/api/tags" \
   -H "Authorization: Bearer $EDGIBLE_APP_KEY"
 ```
 

@@ -41,7 +41,7 @@ Change the hello-world app to say "OpenClaw was here!"
 
 That one line is enough on this setup (Gemini Flash + tools). Approve a write if asked.
 
-**Smoke test.** Leave the Control UI, open `https://hello-world.YOUR-ORG.edgible.com` (same host as [Start here](../start-here/01-edgible-on-vm.md), Wi‑Fi still off), and hard-refresh. You should see “OpenClaw was here”, not the original Hello World.
+**Smoke test.** Leave the Control UI, open `https://hello-world.<org>.edgible.com` (same host as [Start here](../start-here/01-edgible-on-vm.md), Wi‑Fi still off), and hard-refresh. You should see “OpenClaw was here”, not the original Hello World.
 
 If it only *describes* the change, or the public page is unchanged, it guessed (docker exec into a read-only mount, wrong path, or no tool call). Then be explicit:
 
@@ -78,7 +78,7 @@ Use three headings: Who they were. Why they still matter. A quirky detail.
 Public sources only (Wikipedia is fine). Nothing about me. Simple HTML.
 ```
 
-Hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a name, dates, a few paragraphs, not “OpenClaw was here.”
+Hard-refresh `https://hello-world.<org>.edgible.com`. You want a name, dates, a few paragraphs, not “OpenClaw was here.”
 
 If it guesses from memory with no fetch, say: use Wikipedia’s “On this day” births for today’s month and day, then rewrite hello-world.
 

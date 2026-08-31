@@ -390,7 +390,7 @@ edgible app create existing
 | Select local workload | `hello-world` (the nginx container) |
 | Select port | `8081` |
 
-When it succeeds, the CLI prints an application URL. Standard shape is `https://<app>.<org>.edgible.com`, so for this app something like `https://hello-world.your-org.edgible.com`. Always copy the exact host the CLI prints. Do not open that HTTPS URL yet. The certificate is still being issued.
+When it succeeds, the CLI prints an application URL. Standard shape is `https://<app>.<org>.edgible.com`, so for this app something like `https://hello-world.<org>.edgible.com`. Always copy the exact host the CLI prints. Do not open that HTTPS URL yet. The certificate is still being issued.
 
 ### 1.9.3 Wait for the certificate (console)
 

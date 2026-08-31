@@ -73,14 +73,14 @@ If `gpt-oss:20b` is missing: `ollama pull gpt-oss:20b` on the Mac, not in the UT
 **AI Assistant**: Settings, self-hosted Ollama. Pick the model before you chat:
 
 1. On the Mac, confirm thinking: `ollama show gpt-oss:20b` lists thinking. If you pick `qwen2.5:7b` here, Hello fails with “doesn’t support thinking” even if the connection test passed.
-2. Endpoint = `https://ollama.YOUR-ORG.edgible.com/v1` (with `/v1`). No `?think=`; that does nothing.
+2. Endpoint = `https://ollama.<org>.edgible.com/v1` (with `/v1`). No `?think=`; that does nothing.
 3. API Key = the secret from [2.5](02-edgible-to-ollama.md).
 4. **Model** = `gpt-oss:20b` (same string as `ollama ls`). Not a 7B. Not any tag whose `ollama show` lacks thinking.
 5. Save. Connection test succeeds (this still does not prove thinking).
 
 **Ollama Chat Model** in a workflow needs a separate Ollama credential (do not reuse the Assistant URL):
 
-1. Base URL = `https://ollama.YOUR-ORG.edgible.com` (no `/v1`, no `:11434`).
+1. Base URL = `https://ollama.<org>.edgible.com` (no `/v1`, no `:11434`).
 2. Same secret.
 3. Save. Connection test succeeds.
 
@@ -284,7 +284,7 @@ Optional. Ollama from the same container (replace host and secret):
 ```bash
 docker compose exec -T n8n wget -qO- \
   --header="Authorization: Bearer YOUR-EDGIBLE-SECRET" \
-  "https://ollama.YOUR-ORG.edgible.com/v1/models" | head -c 400 && echo
+  "https://ollama.<org>.edgible.com/v1/models" | head -c 400 && echo
 ```
 
 You want JSON that includes `qwen2.5:7b` and `gpt-oss:20b`. 401 = bad secret. Timeout/HTML = Mac Ollama/forwarder down or wrong host.

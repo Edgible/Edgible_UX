@@ -9,7 +9,9 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Serving agent | The daemon installed on the machine that runs your service. It holds an outbound connection on TCP 443 and proxies traffic to a local port. |
 | Serving device | The registered record of that machine in the console, with a name such as `minipc` and a health state. Not interchangeable with serving agent. |
 | App | One published hostname pointing at one local port, with one auth mode. A single process can be published as several apps. |
-| Published hostname | The public HTTPS address an app answers on, in the form `<app>.<org>.edgible.com`, with its certificate issued for you. |
+| Published hostname | The public HTTPS address an app answers on. Standard shape: `https://<app>.<org>.edgible.com`, where `<app>` is the app name you chose at publish time and `<org>` is your organisation label in Edgible. In examples, angle brackets mark placeholders; always copy the exact host from `edgible app list` or the console. |
+| `<app>` | The app name in a published hostname, such as `hello-world` in `hello-world.<org>.edgible.com`. |
+| `<org>` | Your organisation label in a published hostname, such as `acme` in `hello-world.acme.edgible.com`. Not the word "org" literally; copy the label from `edgible app list`. |
 | Custom domain | A name of your own added to an app, pointed at its Edgible hostname with a `CNAME`. Edgible then issues a certificate for it too. |
 | Auth mode | The access rule attached to a hostname, chosen when the app is created: `org`, `api-key` or `None`. |
 | `org` | Auth mode requiring a browser login from your organisation. Used for anything holding credentials, such as the n8n editor or the OpenClaw Control UI. |

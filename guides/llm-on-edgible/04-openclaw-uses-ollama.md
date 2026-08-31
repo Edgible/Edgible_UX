@@ -37,7 +37,7 @@ OpenClaw’s `api ollama` talks `/api/tags` and `/api/chat`. No `/v1` (that suff
 On the OpenClaw VM (not the Mac):
 
 ```bash
-openclaw config set models.providers.ollama.baseUrl "https://ollama.YOUR-ORG.edgible.com"
+openclaw config set models.providers.ollama.baseUrl "https://ollama.<org>.edgible.com"
 openclaw config set models.providers.ollama.api ollama
 openclaw config set models.providers.ollama.apiKey "<secret-from-chapter-2.5>"
 openclaw config set models.providers.ollama.models \
@@ -64,7 +64,7 @@ Do not make the 20B a fallback. 13 GB on a cold load makes a cloud 429 feel like
 
 Ollama may hide tags that `/api/show` does not mark as tool-capable with ≥16K context. Fallback can still use the config id. Pin in chat: `/model ollama/gpt-oss:20b`.
 
-If `list` fails but n8n’s `/v1` test works, OpenClaw may be hitting the OpenAI-compatible surface. Try `api` `openai-completions` and `baseUrl` `https://ollama.YOUR-ORG.edgible.com/v1` with the same secret. Prefer native `ollama` when `list` already works.
+If `list` fails but n8n’s `/v1` test works, OpenClaw may be hitting the OpenAI-compatible surface. Try `api` `openai-completions` and `baseUrl` `https://ollama.<org>.edgible.com/v1` with the same secret. Prefer native `ollama` when `list` already works.
 
 ## 4.3 Hello
 

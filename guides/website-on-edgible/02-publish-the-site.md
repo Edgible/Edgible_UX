@@ -69,7 +69,7 @@ Then, on the guest:
 
 ```bash
 edgible app list
-curl -sS https://site.<your-org>.edgible.com/ | head -5
+curl -sS https://site.<org>.edgible.com/ | head -5
 ```
 
 You should see your HTML. If `curl` complains about the certificate, wait and refresh **Certificates** in the console. Do not work around it with `http://` or `-k`: a certificate error here means the certificate is not ready, and both of those hide the one thing you are checking.
@@ -79,7 +79,7 @@ You should see your HTML. If `curl` complains about the certificate, wait and re
 **Smoke test.** The page must load when you are nowhere near your own network.
 
 1. On the phone, turn Wi‑Fi off so you are on cellular.
-2. Open `https://site.<your-org>.edgible.com`.
+2. Open `https://site.<org>.edgible.com`.
 3. You should see the same page `curl` returned on the guest.
 
 That page came off a disk in your house, over a connection your machine opened. The router still has no forwarded port. Confirm that from the guest, because it is the claim worth checking rather than assuming:
@@ -110,7 +110,7 @@ You need a domain and access to its DNS. Then:
 2. At your DNS provider, create a `CNAME` record from that name to the hostname Edgible issued:
 
    ```
-   www.example.com.   CNAME   site.<your-org>.edgible.com.
+   www.example.com.   CNAME   site.<org>.edgible.com.
    ```
 
 3. Wait for DNS to propagate, then for Edgible to issue a certificate for the new name. The console shows the certificate the same way it did in 2.3.

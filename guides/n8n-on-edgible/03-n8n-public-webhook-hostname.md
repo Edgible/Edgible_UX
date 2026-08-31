@@ -53,7 +53,7 @@ Wait for the certificate (console → `n8n-hooks`), same as Hello World.
 edgible app list
 ```
 
-Copy `https://n8n-hooks.YOUR-ORG.edgible.com` exactly (no path). If the CLI refuses a second app on `5678`, stop. This series needs two hostnames; do not “fix” it by setting the n8n editor app to `None`.
+Copy `https://n8n-hooks.<org>.edgible.com` exactly (no path). If the CLI refuses a second app on `5678`, stop. This series needs two hostnames; do not “fix” it by setting the n8n editor app to `None`.
 
 ## 3.3 Point n8n at the two origins
 
@@ -64,15 +64,15 @@ On the VM, edit `~/n8n/docker-compose.yml`. Keep the loopback publish. Add/set:
       - N8N_PORT=5678
       - N8N_PROTOCOL=https
       - N8N_PROXY_HOPS=1
-      - N8N_HOST=n8n.YOUR-ORG.edgible.com
-      - N8N_EDITOR_BASE_URL=https://n8n.YOUR-ORG.edgible.com/
-      - WEBHOOK_URL=https://n8n-hooks.YOUR-ORG.edgible.com/
+      - N8N_HOST=n8n.<org>.edgible.com
+      - N8N_EDITOR_BASE_URL=https://n8n.<org>.edgible.com/
+      - WEBHOOK_URL=https://n8n-hooks.<org>.edgible.com/
       - GENERIC_TIMEZONE=Australia/Adelaide
       - TZ=Australia/Adelaide
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 ```
 
-Replace `YOUR-ORG` with the labels from `edgible app list`. Trailing slashes on the two `https://` URLs. No `:5678` on those URLs.
+Replace `<org>` in the block below with the org label from `edgible app list`. Trailing slashes on the two `https://` URLs. No `:5678` on those URLs.
 
 ```bash
 cd ~/n8n

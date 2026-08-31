@@ -86,7 +86,7 @@ ls -la
 curl -sS http://127.0.0.1:8081/
 ```
 
-`ls` should be `index.html` (and maybe `.git`). curl should be Hello World, not a biography. On the phone (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. Same starting page as 1.9. That is the before state.
+`ls` should be `index.html` (and maybe `.git`). curl should be Hello World, not a biography. On the phone (cellular), hard-refresh `https://hello-world.<org>.edgible.com`. Same starting page as 1.9. That is the before state.
 
 ## 7.4 Cursor CLI on the VM
 
@@ -206,7 +206,7 @@ Readable typography and a simple layout (CSS file is fine). Those three sections
 
 Success looks like: `ACP steer sent to…` then a Cursor summary of HTML/CSS/state/script. That write-up is the harness, not Gemini describing a change it did not make.
 
-**Smoke test.** Leave Control UI. On the phone (cellular), hard-refresh `https://hello-world.YOUR-ORG.edgible.com`. You want a designed page with “Who they were / Why they still matter / A quirky detail”, and a footer with the next rotation in Europe/London time. Not a single Gemini page, not “Hello World”, not “OpenClaw was here.”
+**Smoke test.** Leave Control UI. On the phone (cellular), hard-refresh `https://hello-world.<org>.edgible.com`. You want a designed page with “Who they were / Why they still matter / A quirky detail”, and a footer with the next rotation in Europe/London time. Not a single Gemini page, not “Hello World”, not “OpenClaw was here.”
 
 ```bash
 cd ~/hello-world

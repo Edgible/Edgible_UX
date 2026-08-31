@@ -104,7 +104,7 @@ Do not docker exec. Do not touch ~/.openclaw or Edgible.
 
 Wait for Cursor to finish in WhatsApp. `/acp close` when done. Then set `permissionMode` back to `approve-reads` ([chapter 7](07-cursor-agent.md)).
 
-Leave WhatsApp, hard-refresh `https://hello-world.YOUR-ORG.edgible.com` (cellular). You want the new titles, same person, same footer.
+Leave WhatsApp, hard-refresh `https://hello-world.<org>.edgible.com` (cellular). You want the new titles, same person, same footer.
 
 ### Verify
 
