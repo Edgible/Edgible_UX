@@ -26,7 +26,7 @@ You publish n8n’s editor through Edgible. n8n stays on loopback `5678`. Protec
 - Phone on cellular opens that URL: Edgible `org` login, then n8n owner signup (first time) or sign-in, then the canvas.
 - Hello World still loads, and port `5678` is still not forwarded.
 
-**Need first:** [1. n8n on the VM](01-n8n-on-the-vm.md) and [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (`mini-pc`, Hello World). Leave `hello-world` and the n8n container running.
+**Need first:** [1. n8n on the VM](01-n8n-on-the-vm.md) and [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (`minipc`, Hello World). Leave `hello-world` and the n8n container running.
 
 **Not this chapter:** `WEBHOOK_URL`, a public hooks hostname, cron, or OpenClaw.
 
@@ -38,19 +38,19 @@ n8n is Docker, so the picker may list it. Port must be `5678`, auth `org`.
 edgible device list
 ```
 
-Note the id for `mini-pc`, then:
+Note the id for `minipc`, then:
 
 ```bash
 edgible app create existing \
   --name n8n \
   --port 5678 \
   --auth-modes org \
-  --device-id <mini-pc-id>
+  --device-id <minipc-id>
 ```
 
 Leave extra hostnames blank. **Allow other organizations?** **No**. Never `None` on this app.
 
-**Wizard instead:** `edgible app create existing` → name `n8n` → protection `Org` → device `mini-pc` → port `5678` (custom if the list shows 8081).
+**Wizard instead:** `edgible app create existing` → name `n8n` → protection `Org` → device `minipc` → port `5678` (custom if the list shows 8081).
 
 The CLI prints an `n8n.<org>.edgible.com` URL. Do not open it yet. Wait for the certificate.
 

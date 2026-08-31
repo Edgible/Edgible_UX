@@ -82,7 +82,7 @@ edgible app create existing
 | Custom domains / additional hostnames | leave blank (Enter) |
 | How should access to this application be protected? | `org` |
 | Use Edgible managed gateway? | Yes (if asked) |
-| Select serving device | `mini-pc` |
+| Select serving device | `minipc` |
 | Select local workload | `uptime-kuma` |
 | Select port | `3001` |
 

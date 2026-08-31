@@ -34,7 +34,7 @@ Each chapter is one job and one smoke test. Do them in order. Chapters 1 to 4 ar
 
 **How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
-**Need first:** [Start here](../start-here/README.md) on the Mac guest (`mini-pc`, Hello World on cellular). Leave that VM and `hello-world` running. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
+**Need first:** [Start here](../start-here/README.md) on the Mac guest (`minipc`, Hello World on cellular). Leave that VM and `hello-world` running. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs, not from the Mac.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

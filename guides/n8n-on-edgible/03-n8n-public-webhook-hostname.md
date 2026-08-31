@@ -44,7 +44,7 @@ edgible app create existing \
   --name n8n-hooks \
   --port 5678 \
   --auth-modes none \
-  --device-id <mini-pc-id>
+  --device-id <minipc-id>
 ```
 
 Wait for the certificate (console → `n8n-hooks`), same as Hello World.

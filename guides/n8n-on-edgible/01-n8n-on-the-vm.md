@@ -24,7 +24,7 @@ You install n8n in Docker on the same Ubuntu guest as Hello World. It listens on
 - Hello World on the phone still loads (Edgible unchanged).
 - Port `5678` is not forwarded on the router.
 
-**Need first:** [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md). `edgible whoami` works, device `mini-pc` is healthy, `https://hello-world.<org>.edgible.com` loads on cellular. Docker is already on that guest from that chapter.
+**Need first:** [1. Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md). `edgible whoami` works, device `minipc` is healthy, `https://hello-world.<org>.edgible.com` loads on cellular. Docker is already on that guest from that chapter.
 
 **Not this chapter:** Edgible apps for n8n, webhooks, cron, OpenClaw, or binding `0.0.0.0:5678`.
 

@@ -36,7 +36,7 @@ Three checks, in order: Edgible `org` auth (only your organisation hits the host
 
 ## 2.2 Create the Edgible app
 
-Edgible’s interactive picker looks at Docker (and a short list of process names). OpenClaw on loopback `18789` often does not appear. That is expected. The app is “this port on `mini-pc`,” not “this Docker name.”
+Edgible’s interactive picker looks at Docker (and a short list of process names). OpenClaw on loopback `18789` often does not appear. That is expected. The app is “this port on `minipc`,” not “this Docker name.”
 
 Preferred, set the port yourself:
 
@@ -44,14 +44,14 @@ Preferred, set the port yourself:
 edgible device list
 ```
 
-Note the id for `mini-pc`, then:
+Note the id for `minipc`, then:
 
 ```bash
 edgible app create existing \
   --name openclaw-ui \
   --port 18789 \
   --auth-modes org \
-  --device-id <mini-pc-id>
+  --device-id <minipc-id>
 ```
 
 Leave extra hostnames blank if asked. **Allow other organizations?** **No**. Never `None`.

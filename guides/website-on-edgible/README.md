@@ -13,7 +13,7 @@ Each chapter is one job and one smoke test. Do them in order.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
-**Need first:** [Start here](../start-here/README.md) (serving device `mini-pc`, Hello World on the phone). Leave `hello-world` running. The guest wants 4 GB of memory by the time all three services are up.
+**Need first:** [Start here](../start-here/README.md) (serving device `minipc`, Hello World on the phone). Leave `hello-world` running. The guest wants 4 GB of memory by the time all three services are up.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

@@ -27,7 +27,7 @@ You put a directory of static files on the guest, run nginx in Docker against it
 - `ss -ltnp | grep 8080` shows `127.0.0.1:8080`, not `0.0.0.0:8080`.
 - Port `8080` is not forwarded on the router.
 
-**Need first:** [Start here](../start-here/README.md). `edgible whoami` works, device `mini-pc` is healthy, `https://hello-world.<org>.edgible.com` loads on cellular. Docker is already on the guest from that chapter. Leave `hello-world` running.
+**Need first:** [Start here](../start-here/README.md). `edgible whoami` works, device `minipc` is healthy, `https://hello-world.<org>.edgible.com` loads on cellular. Docker is already on the guest from that chapter. Leave `hello-world` running.
 
 **Not this chapter:** an Edgible app for this site, a hostname, analytics, or uptime monitoring.
 

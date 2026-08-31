@@ -24,7 +24,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 - An Edgible account and an organisation.
 - Ubuntu 24.04 on the VM, outbound HTTPS only (no port forwarding).
 - `edgible whoami` on the VM prints Profile / Environment / Account / Organization.
-- Serving device `mini-pc` with **Health check OK**.
+- Serving device `minipc` with **Health check OK**.
 - `https://hello-world.<org>.edgible.com` loads on a phone (cellular).
 
 **Need first:** an Edgible account, which 1.3 creates from scratch in a few minutes; an invite email is one route in but not required. Host kit is 1.2. NAT is enough: outbound TCP 443 only.
@@ -38,7 +38,7 @@ You stand up an Ubuntu 24 VM, log the Edgible CLI into your org, register a serv
 | An Edgible account | Sign up from [www.edgible.com](https://www.edgible.com), which takes you to the console at [https://app.prod.edgible.com/](https://app.prod.edgible.com/). Host browser, not the VM. A temporary password arrives by email. 1.3 walks through it. |
 | VM manager | VirtualBox or UTM; see 1.4. |
 | Ubuntu 24.04 LTS ISO | Match the CPU: `amd64` on typical PCs; `arm64` on Apple Silicon. |
-| Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. Once it registers, your org lists it as a serving device named `mini-pc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
+| Sudo on the guest | You will install the Edgible serving agent (systemd). It configures WireGuard, iptables, and Caddy. Once it registers, your org lists it as a serving device named `minipc`. The *agent* is the software running on the box; the *device* is that entry in your organisation. |
 
 NAT is enough. The VM only needs outbound TCP 443. Do not port-forward 22, 80, or 443.
 
@@ -74,6 +74,8 @@ Keep the email and the new password somewhere you can paste into the VM. To retu
 **Outcome:** An Ubuntu 24 virtual machine in a VM manager, standing in for the mini-PC.
 
 A virtual machine (VM) is a full computer that runs as an app on the laptop or PC in front of you. It stands in for the mini-PC: Ubuntu 24 inside, Edgible and whatever you go on to publish on that guest, not on your host OS.
+
+A VM is used here only because it costs you no hardware. The serving agent runs just as well on a machine's own Linux install, Ubuntu included, so if you already have a spare box, a mini-PC or a laptop running Ubuntu, install straight onto it and skip to 1.5. Everything after that point is identical, apart from reaching the machine over your LAN rather than through the port forward in 1.5.
 
 To create one you need a VM manager (hypervisor): the app that hosts the VM. Install that first, then create a virtual machine based on Ubuntu 24.04 LTS that runs inside it.
 
@@ -139,7 +141,7 @@ Optional but useful: **Devices → Shared Clipboard → Bidirectional** after Gu
 
 This step is ordinary Linux housekeeping on the guest: updates, outbound internet, and Docker (every later guide runs its service in a container). Work inside the VM (console is enough).
 
-SSH from the host is worth setting up now. NAT does not give you a stable guest IP on the LAN, so `ssh ubuntu@mini-pc` will not resolve: the device name you register with Edgible later is a record in Edgible, not a hostname on your network. Instead, forward one host port to the guest's SSH port.
+SSH from the host is worth setting up now. NAT does not give you a stable guest IP on the LAN, so `ssh ubuntu@minipc` will not resolve: the device name you register with Edgible later is a record in Edgible, not a hostname on your network. Instead, forward one host port to the guest's SSH port.
 
 In VirtualBox: **Settings → Network → Advanced → Port forwarding**, host 2222 → guest 22. In UTM: **Edit → Network → Port Forwarding**, host 2222 → guest 22. Then, from the host:
 
@@ -183,6 +185,8 @@ curl -fsSI https://www.google.com | head -n 5
 You want a successful TLS response (for example HTTP `200` or `301`), not “Could not resolve host” or a hang. If this fails, fix NAT/shared network in the VM manager before installing anything else.
 
 ### 1.5.3 Install Docker
+
+Edgible itself does not need Docker. The serving agent publishes whatever is already listening on a local port, however that process got there. Docker is here because it is a tidy way to run and tear down the services these guides publish, and because every later chapter uses it, so installing it once now saves repeating it.
 
 Follow Docker’s current Ubuntu steps if these drift: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
 
@@ -254,7 +258,7 @@ edgible auth login \
   --user-password 'your-password'
 ```
 
-Or run `edgible auth login` and follow the prompts.
+Or run `edgible auth login` and follow the prompts. Depending on how your account signs in, the CLI may hand you a short code and a URL instead of taking a password: open that URL in the host browser, paste the code to confirm it is you, and the CLI finishes on its own. That is the expected flow, not an error, and it is why the console is worth having open in a tab.
 
 This writes tokens and the active organization id under your guest home directory.
 
@@ -282,15 +286,17 @@ edgible auth select-org
 
 ## 1.8 Install and start the Edgible serving agent
 
-**Outcome:** A serving device (`mini-pc`) connected to Edgible, with no inbound ports opened on your router.
+**Outcome:** A serving device (`minipc`) connected to Edgible, with no inbound ports opened on your router.
 
-The Edgible serving agent must run on the VM as systemd. It registers a device named `mini-pc` in your org.
+The Edgible serving agent must run on the VM as systemd. It registers a device named `minipc` in your org.
+
+Keep the name to letters and digits. Hyphens can cause trouble, which is why it is `minipc` rather than `mini-pc`. If you are naming real machines rather than a throwaway VM, a machine-plus-OS pattern reads well and stays unique, as in `lggram17ubuntuv24`. The name has to be unique within the org, and later chapters pass it to `--device-name`, so pick one now and use it consistently.
 
 ```bash
 sudo edgible agent install \
   --type systemd \
   --device-type serving \
-  --device-name mini-pc \
+  --device-name minipc \
   --non-interactive
 ```
 
@@ -306,7 +312,7 @@ That process connects outbound to the control plane (WebSocket over HTTPS). It d
 Wait a few seconds, then:
 
 ```bash
-edgible device health --name mini-pc
+edgible device health --name minipc
 ```
 
 Expect **Health check OK** within about 15 seconds.
@@ -323,8 +329,8 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 ### Verify
 
 - [ ] `systemctl status edgible-agent` shows `active (running)`.
-- [ ] `edgible device health --name mini-pc` prints **Health check OK**.
-- [ ] Dashboard lists a serving device named `mini-pc`.
+- [ ] `edgible device health --name minipc` prints **Health check OK**.
+- [ ] Dashboard lists a serving device named `minipc`.
 
 ---
 
@@ -380,7 +386,7 @@ edgible app create existing
 | Custom domains / additional hostnames | leave blank (Enter) |
 | How should access to this application be protected? | `None` (public access) |
 | Use Edgible managed gateway? | Yes (if asked, so you are not asked for a gateway ID) |
-| Select serving device | `mini-pc` |
+| Select serving device | `minipc` |
 | Select local workload | `hello-world` (the nginx container) |
 | Select port | `8081` |
 

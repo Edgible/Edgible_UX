@@ -47,7 +47,7 @@ Answer the prompts like this:
 | Custom domains / additional hostnames | leave blank (Enter) |
 | How should access to this application be protected? | `None` (public access) |
 | Use Edgible managed gateway? | Yes (if asked) |
-| Select serving device | `mini-pc` |
+| Select serving device | `minipc` |
 | Select local workload | `site` (the nginx container) |
 | Select port | `8080` |
 
