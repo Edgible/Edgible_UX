@@ -72,7 +72,7 @@ On the VM, edit `~/n8n/docker-compose.yml`. Keep the loopback publish. Add/set:
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
 ```
 
-Replace `<org>` in the block below with the org label from `edgible app list`. Trailing slashes on the two `https://` URLs. No `:5678` on those URLs.
+Replace `<org>` in the block above with the org label from `edgible app list`. Trailing slashes on the two `https://` URLs. No `:5678` on those URLs.
 
 ```bash
 cd ~/n8n
