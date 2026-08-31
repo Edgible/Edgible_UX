@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" width="960" height="420" role="img" aria-labelledby="t d">
 <title id="t">n8n on another box you own calls ollama.&lt;org&gt;.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.</title>
 <desc id="d">n8n on another box you own calls ollama.&lt;org&gt;.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.</desc>
-<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c9cdd8;stroke-width:1.5}</style>
-<rect x="0" y="0" width="960" height="420" rx="10" fill="#f4f5f7"/>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c2c8d8;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="420" rx="10" fill="#e4e8f2"/>
 <rect class="card" x="36" y="54" width="112" height="120" rx="8"/>
 <text class="label" x="92" y="100" text-anchor="middle">n8n VM</text>
 <text class="small" x="92" y="120" text-anchor="middle">another box</text>

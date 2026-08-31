@@ -396,15 +396,35 @@
   }
 }
 
-/* Table of contents panel. Lighter than the code background so the two greys
-   read as different surfaces rather than competing. Applied to the inner
-   element, not the sidebar, so the sticky positioning is untouched. */
+/* Navigation and table of contents panels. Both take the same grey so the two
+   margins read as one kind of surface, distinct from the prose between them.
+   Applied to the inner element, not the sidebar, so the sticky positioning is
+   untouched. */
 @media screen and (min-width: 60em) {
   [data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__inner {
-    background-color: #f5f6fa;
-    border: 1px solid #e6e9f2;
+    background-color: #e9ecf5;
+    border: 1px solid #dbe0ee;
     border-radius: 0.2rem;
     padding: 0.4rem 0.2rem 0.6rem;
+  }
+}
+
+/* The primary sidebar only becomes a fixed column at this width. Below it the
+   same element is the slide-out drawer, which keeps the header navy instead. */
+@media screen and (min-width: 76.25em) {
+  [data-md-color-scheme="default"] .md-sidebar--primary .md-sidebar__scrollwrap {
+    background-color: #e9ecf5;
+    border: 1px solid #dbe0ee;
+    border-radius: 0.2rem;
+    padding: 0.4rem 0.2rem 0.6rem;
+    margin-right: 0;
+  }
+
+  /* Material gives the sticky site-name row its own white background so nav
+     items scroll under it. On the tinted panel that reads as a gap. */
+  [data-md-color-scheme="default"] .md-sidebar--primary .md-nav__title {
+    background-color: transparent;
+    box-shadow: none;
   }
 }
 

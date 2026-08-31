@@ -37,9 +37,9 @@ OPEN, LOGIN, KEY = "open", "login", "key"
 
 PALETTES = {
     "light": {
-        "panel": "#f4f5f7",
+        "panel": "#e4e8f2",
         "card": "#ffffff",
-        "edge": "#c9cdd8",
+        "edge": "#c2c8d8",
         "rule": "#e0e3ea",
         "ink": "#000033",
         "muted": "#4a4f66",

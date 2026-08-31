@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280" role="img" aria-labelledby="t d">
 <title id="t">Nothing is published yet. An nginx container on the Ubuntu guest serves ~/site/public on 127.0.0.1:8080, reachable only from the guest itself.</title>
 <desc id="d">Nothing is published yet. An nginx container on the Ubuntu guest serves ~/site/public on 127.0.0.1:8080, reachable only from the guest itself.</desc>
-<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c9cdd8;stroke-width:1.5}</style>
-<rect x="0" y="0" width="960" height="280" rx="10" fill="#f4f5f7"/>
+<style>.label{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:#000033}.small{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:#4a4f66}.mono{font-family:Iosevka,ui-monospace,monospace;font-size:13px;fill:#000033}.monoxs{font-family:Iosevka,ui-monospace,monospace;font-size:12px;fill:#4a4f66}.head{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;fill:#ffffff;letter-spacing:.04em}.card{fill:#ffffff;stroke:#c2c8d8;stroke-width:1.5}</style>
+<rect x="0" y="0" width="960" height="280" rx="10" fill="#e4e8f2"/>
 <rect class="card" x="36" y="80" width="112" height="120" rx="8"/>
 <text class="label" x="92" y="126" text-anchor="middle">The internet</text>
 <text class="small" x="92" y="146" text-anchor="middle">cannot reach</text>
 <text class="small" x="92" y="164" text-anchor="middle">this yet</text>
-<rect x="250" y="111" width="250" height="58" rx="8" fill="none" stroke="#c9cdd8" stroke-width="1.5" stroke-dasharray="6 5"/>
+<rect x="250" y="111" width="250" height="58" rx="8" fill="none" stroke="#c2c8d8" stroke-width="1.5" stroke-dasharray="6 5"/>
 <text class="small" x="375" y="137" text-anchor="middle">nothing published yet</text>
 <text class="small" x="375" y="155" text-anchor="middle">reachable on loopback only</text>
 <rect class="card" x="612" y="40" width="340" height="200" rx="8"/>
