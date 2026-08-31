@@ -114,7 +114,7 @@ curl -sS -X POST https://analytics.<your-org>.edgible.com/api/send \
 
 Visits will arrive with browser and operating system filled in and with **Country** and **Region** empty. This is not a misconfiguration and no environment variable fixes it.
 
-Umami reads the visitor's IP address from a forwarded header to look up a location. Edgible terminates TLS on your own device, which is the property that keeps the platform out of your traffic: the gateway relays bytes it cannot read, so it cannot add an `X-Forwarded-For` header, because it never sees the HTTP request at all. Umami therefore sees the address of the tunnel hop rather than the visitor, and declines to guess a country from it.
+Umami reads the visitor's IP address from a forwarded header to look up a location. Edgible terminates TLS on your own device, which is the property that keeps the platform out of your traffic: the gateway relays bytes it cannot read, so it cannot add an `X-Forwarded-For` header, because it never sees the HTTP request at all. Umami therefore sees the address of the Edgible hop rather than the visitor, and declines to guess a country from it.
 
 You can prove the software is fine, and that the missing piece is the header, by supplying one by hand on the guest:
 

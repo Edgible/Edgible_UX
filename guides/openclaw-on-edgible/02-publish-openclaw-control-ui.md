@@ -6,7 +6,7 @@
 
 After [chapter 1](01-openclaw-on-the-box.md) the agent works, but only for whoever can type on the guest. This chapter publishes it as a hostname so you can ask it something from a phone instead of walking back to a terminal.
 
-Three shortcuts do not work. Binding the Gateway to `0.0.0.0` and forwarding `18789` publishes an admin console with a shell tool to anyone scanning your address. A mesh VPN means enrolling each phone before it can ask a question. Setting this app’s auth mode to `None` to test the tunnel leaves the agent open to the world until you change it back. The Gateway stays on loopback, the serving agent on this guest reaches `127.0.0.1:18789`, and the auth mode sits on the hostname.
+Three shortcuts do not work. Binding the Gateway to `0.0.0.0` and forwarding `18789` publishes an admin console with a shell tool to anyone scanning your address. A mesh VPN means enrolling each phone before it can ask a question. Setting this app’s auth mode to `None` to test the published path leaves the agent open to the world until you change it back. The Gateway stays on loopback, the serving agent on this guest reaches `127.0.0.1:18789`, and the auth mode sits on the hostname.
 
 Edgible auth mode is per app, and so per hostname. This hostname is the privileged one, so it stays `org`: only your organisation gets past the browser login. OpenClaw adds two checks of its own that the local `openclaw dashboard` handoff cannot cover on a different origin: a gateway token you paste once per browser, and a device pairing you approve on the guest. Expect all three, in that order.
 
@@ -27,7 +27,7 @@ Three checks, in order: Edgible `org` auth (only your organisation hits the host
 - Console **Certificates** for `openclaw-ui` is issued / ready.
 - Protection is `org`, not `None`.
 - Phone on cellular: Edgible `org` login, then the OpenClaw gateway token and `openclaw devices approve`, then a chat reply.
-- Hello World URL still works (tunnel unchanged).
+- Hello World URL still works (publishing unchanged).
 - Port `18789` is still not forwarded on the router.
 
 **Need first:** [Start here: Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) (Hello World) and [1. OpenClaw on the VM (loopback Gateway)](01-openclaw-on-the-box.md) (Gateway + local hello). Leave `hello-world` running.
@@ -149,7 +149,7 @@ openclaw gateway restart
 
 Hard-refresh again and paste the token if Settings was cleared.
 
-`None` (public) was only to prove the tunnel. Switch this app back to `org` when chat works; a public Control UI is an admin shell on the internet. If `org` auth still fails after that, it is an Edgible bug; do not leave `None` as the real setup.
+`None` (public) was only to prove the published path. Switch this app back to `org` when chat works; a public Control UI is an admin shell on the internet. If `org` auth still fails after that, it is an Edgible bug; do not leave `None` as the real setup.
 
 ## 2.5 Later visits (same browser)
 
@@ -172,7 +172,7 @@ Keep a normal (non-private) browser profile. Private windows throw away the devi
 3. When the Control UI appears, paste the OpenClaw gateway token if asked (same reveal as 2.4: python on `~/.openclaw/openclaw.json`, not `config get` and not `dashboard --no-open`). You can also open `https://openclaw-ui.YOUR-ORG.edgible.com/#token=…`. The phone is a new device: keep the tab open, `openclaw devices list` on the VM, approve that requestId, then reconnect. `openclaw dashboard` is a local handoff; it does not replace this on the phone.
 4. Send `hello`. You want a reply, same as in the VM browser.
 
-If `hello-world` still loads on the phone and `openclaw-ui` does not, the tunnel is fine. The failure is OpenClaw (certs, `org` login, origins, WebSocket, token).
+If `hello-world` still loads on the phone and `openclaw-ui` does not, publishing is fine. The failure is OpenClaw (certs, `org` login, origins, WebSocket, token).
 
 If chat disconnects immediately, Edgible may not be proxying WebSockets yet. Stop and note that; do not “fix” it with a mesh VPN or an ingress tunnel.
 
@@ -182,7 +182,7 @@ If chat disconnects immediately, Edgible may not be proxying WebSockets yet. Sto
 - [ ] Console **Certificates** for `openclaw-ui` is issued / ready.
 - [ ] Protection is `org`, not `None`.
 - [ ] Phone on cellular: Edgible `org` login, then the OpenClaw gateway token and `openclaw devices approve`, then a chat reply.
-- [ ] Hello World URL still works (tunnel unchanged).
+- [ ] Hello World URL still works (publishing unchanged).
 - [ ] Port `18789` is still not forwarded on the router.
 
 ---

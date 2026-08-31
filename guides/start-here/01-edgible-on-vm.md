@@ -155,7 +155,7 @@ ssh -p 2222 ubuntu@127.0.0.1
 
 Use your VM username if it is not `ubuntu`. Do not forward 80 or 443.
 
-Later chapters copy files to the guest and tunnel a port back to your laptop's browser, and both use this forward:
+Later chapters copy files to the guest and carry a port back to your laptop's browser over SSH, and both use this forward:
 
 ```bash
 rsync -av --delete -e 'ssh -p 2222' ./dist/ ubuntu@127.0.0.1:~/site/public/

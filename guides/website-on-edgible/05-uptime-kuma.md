@@ -6,7 +6,7 @@
 
 You now have three things published and no idea when one of them breaks. A container that exits after an update, a database that fills the disk, a laptop that went to sleep: all of these end with a page that does not load, and none of them announce themselves. The first person to notice should not be a customer.
 
-Uptime Kuma checks a URL on a schedule and notifies you when the answer changes. Pointing it at the public hostname rather than at `127.0.0.1` is deliberate: it then tests the whole path a visitor uses, including the serving agent, the certificate and the tunnel, not just whether nginx is alive locally.
+Uptime Kuma checks a URL on a schedule and notifies you when the answer changes. Pointing it at the public hostname rather than at `127.0.0.1` is deliberate: it then tests the whole path a visitor uses, including the serving agent, the certificate and the outbound connection it holds, not just whether nginx is alive locally.
 
 There is one thing this arrangement cannot do, and 5.5 is about not fooling yourself over it.
 

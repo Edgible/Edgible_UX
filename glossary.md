@@ -31,6 +31,8 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | NAT | The address translation a home router does. It is sufficient for Edgible, because the connection is outbound. |
 | Mesh VPN | A private network requiring every client device to be enrolled. One of the alternatives Edgible replaces. |
 | Reverse proxy | A server such as nginx or Caddy placed in front of a service, usually paired with certbot and dynamic DNS. Another alternative Edgible replaces. |
+| Tunnel | A mechanism word from the wider market, meaning traffic carried inside another connection. It is worth knowing because it covers three jobs that are not the same: publishing a service so anyone can reach it, joining your own devices on a private network, and getting out through a network that restricts you. These guides describe what you actually configure instead, so the serving agent holds an **outbound connection** and an app is **published**. Where the word appears here it means an SSH tunnel, below. |
+| SSH tunnel | A port carried over an SSH session you open yourself, as in `ssh -L 3000:127.0.0.1:3000`. It lets a browser on your laptop reach a service bound to the guest's loopback before that service is published, as in [Umami on the VM](guides/website-on-edgible/03-umami-on-the-vm.md). It is temporary, involves no Edgible app, and closes when the session does. |
 | TLS termination | Where HTTPS is decrypted. With Edgible it happens on the serving device, which is why the original client IP does not reach the app. |
 | Webhook | An HTTPS URL another system calls. It needs a hostname reachable without a login, so `None` rather than `org`. |
 

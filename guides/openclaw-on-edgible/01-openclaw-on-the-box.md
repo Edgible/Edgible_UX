@@ -25,7 +25,7 @@ You install OpenClaw on the same Ubuntu guest as Hello World. The Gateway stays 
 - `openclaw gateway status` shows the Gateway running on `18789`, bind loopback.
 - `openclaw models status` shows a Flash (not Pro/preview) default.
 - `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
-- Hello World on the phone still loads (Edgible tunnel unchanged).
+- Hello World on the phone still loads (publishing unchanged).
 - `curl` to `http://127.0.0.1:18789/` on the VM returns `200`.
 - Optional, guest desktop only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
@@ -255,7 +255,7 @@ If there is no GUI, there is no in-guest browser. Skip to Edgible, or forward ho
 - [ ] `openclaw gateway status` shows the Gateway running on `18789`, bind loopback.
 - [ ] `openclaw models status` shows a Flash (not Pro/preview) default.
 - [ ] `openclaw agent --agent main --thinking off --message "Say hello in one sentence."` returns a reply (identity ritual counts).
-- [ ] Hello World on the phone still loads (Edgible tunnel unchanged).
+- [ ] Hello World on the phone still loads (publishing unchanged).
 - [ ] `curl` to `http://127.0.0.1:18789/` on the VM returns `200`.
 - [ ] Optional, guest desktop only: with the Gateway running, `openclaw dashboard` opens the local Control UI and chat works.
 
