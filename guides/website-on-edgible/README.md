@@ -4,6 +4,8 @@
 
 A site, the analytics that tell you whether anyone read it, and the monitor that tells you when it broke. Taken separately those are three outside services, each with a copy of your traffic. Here they are three containers on a machine you already own, published on four HTTPS hostnames, with no port forwarded and no cloud host. The visitor data lands on your disk, and the monitor watching your site answers to you.
 
+The public address does not have to be an `edgible.com` one. Add your own name to the app and point a `CNAME` at the Edgible hostname, and the site on the machine in your house answers at `www.example.com` with a certificate for that name. All it asks of you is a domain you can add a DNS record to. That is [2.6](02-publish-the-site.md#26-a-domain-of-your-own-optional).
+
 ![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-light.svg#only-light)
 ![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-dark.svg#only-dark)
 
