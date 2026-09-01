@@ -9,7 +9,7 @@ The public address does not have to be an `edgible.com` one. Add your own name t
 ![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-light.svg#only-light)
 ![A phone reaches four hostnames, two open and two behind an org login, all arriving at three containers on loopback on one machine you own](../../images/diagrams/website-on-edgible-dark.svg#only-dark)
 
-This is also the clearest demonstration that auth is a property of the hostname. The site is `None`, because strangers are the audience. The Umami dashboard and the Uptime Kuma interface are `org`, because you are. The Umami tracking script is `None` on a second hostname pointing at the same process as the dashboard, because a visitor's browser has to fetch it and will never have a login.
+This is also the clearest demonstration that auth is a property of the hostname. The site is `None`, because strangers are the audience. The Umami dashboard and the Uptime Kuma interface are `org`, because you are. Umami uses **split-surface publish** (see [Glossary](../../glossary.md)): the tracking script is `None` on a second hostname pointing at the same process as the dashboard, because a visitor's browser has to fetch it and will never have a login.
 
 Each chapter is one job and one smoke test. Do them in order.
 

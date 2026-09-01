@@ -27,7 +27,7 @@ Edgible is **managed ingress for self-hosted services**.
 
 A **serving agent** on your machine holds an **outbound** connection on TCP 443. Edgible provisions a **hostname**, issues and renews **TLS certificates**, and **routes** HTTPS to a local port. You choose an **auth mode per app**: `org` for a browser login from your organisation, `api-key` for machine callers, or `None` for open access.
 
-Published hostnames use the shape `https://<app>.<org>.edgible.com`. You can also attach **your own domain** with a `CNAME` at the DNS provider you already use.
+Published hostnames use the shape `https://<app>.<org>.edgible.com`. First publish is **zero-DNS**: a working `https://` name with certificate and routing, and no registrar or zone edit. Bring your own domain later with **one `CNAME`** at the DNS provider you already use.
 
 Traffic path in outline:
 
@@ -69,17 +69,17 @@ If you are comparing products that all claim the above, the useful questions mov
 
 Stated without naming other products.
 
-### 1. A hostname before you own a domain
+### 1. Zero-DNS publish
 
-On first publish you get a working `https://` name, with certificate and routing in place, and **no DNS step**. Bring your own domain later if you want; you are not blocked waiting on a registrar.
+On first publish you get a working `https://` name, with certificate and routing in place, and **no DNS step** — no registrar, no zone record. Architects often describe this as a **generated hostname** or **platform-provided name**; we call it **zero-DNS publish**. Bring your own domain later if you want; you are not blocked waiting on a registrar.
 
 ### 2. Your DNS zone stays where it is
 
 Custom domains attach with **one `CNAME`** at your existing provider. You do not move nameservers or hand over the whole zone to publish one service.
 
-### 3. Auth per hostname, not per network
+### 3. Split-surface publish
 
-Each published app carries its own auth mode. The same process on the same port can be published **twice** with different rules: for example an admin UI on `org` and a webhook receiver on `None`, because payment providers and repository hosts cannot complete a browser login.
+Each published app carries its own auth mode. The same process on the same port can be published **twice** with different rules — for example an admin UI on `org` and a webhook receiver on `None`, because payment providers and repository hosts cannot complete a browser login. That pattern is familiar as a **separate admin hostname** or **dual public exposure** of one backend; we call it **split-surface publish** (not split tunneling, which means something else in VPN literature).
 
 A forwarded port is all-or-nothing. A mesh VPN is enrol-or-nothing for visitors. Per-hostname policy is the middle ground those two cannot offer.
 
@@ -112,7 +112,8 @@ Questions an architect can answer from the guides without trusting marketing cop
 | Does publishing work with no inbound port? | [Edgible on an Ubuntu VM](../guides/start-here/01-edgible-on-vm.md): phone on cellular |
 | Can you publish a port that is already listening, without a config file? | [Edgible on an Ubuntu VM](../guides/start-here/01-edgible-on-vm.md) §1.9: `edgible app create existing` |
 | Are certificates issued per hostname? | Console **Certificates**, or `edgible app list` / `edgible app status` |
-| Can one process have two hostnames and two auth modes? | [n8n public webhook hostname](../guides/n8n-on-edgible/03-n8n-public-webhook-hostname.md), [Publish Umami](../guides/website-on-edgible/04-publish-umami.md) |
+| Can you publish with zero-DNS (no zone edit on first hostname)? | [Edgible on an Ubuntu VM](../guides/start-here/01-edgible-on-vm.md) §1.9: hostname before any `CNAME` |
+| Can one process use split-surface publish (two hostnames, two auth modes)? | [n8n public webhook hostname](../guides/n8n-on-edgible/03-n8n-public-webhook-hostname.md), [Publish Umami](../guides/website-on-edgible/04-publish-umami.md) |
 | Can machine callers use `api-key`? | [Edgible publishes Ollama](../guides/llm-on-edgible/02-edgible-to-ollama.md) |
 | Can a custom domain point at an Edgible hostname? | [A domain of your own](../guides/website-on-edgible/02-publish-the-site.md#26-a-domain-of-your-own-optional) |
 | Vocabulary in one fetch | [Glossary](../glossary.md) |

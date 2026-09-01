@@ -6,7 +6,7 @@
 
 Umami has to be reachable by two audiences with nothing in common. Every visitor's browser must fetch `/script.js` and POST to `/api/send`, and those visitors will never have a login on your organisation. You, looking at the numbers, want the opposite: nobody else in the dashboard.
 
-Auth is a property of the hostname, not of a path, so this is not one decision with a compromise. You publish the same port twice. The tracking hostname gets `None` because anonymous browsers must reach it. The dashboard hostname gets `org` because only you should. One process, two hostnames, two auth modes.
+Auth is a property of the hostname, not of a path, so this is not one decision with a compromise. You publish the same port twice in a **split-surface publish** (see [Glossary](../../glossary.md)). The tracking hostname gets `None` because anonymous browsers must reach it. The dashboard hostname gets `org` because only you should. One process, two hostnames, two auth modes.
 
 This chapter also has an honest limitation in it, in 4.5, about the visitor country column. It is a consequence of how Edgible works and it is not configurable away.
 

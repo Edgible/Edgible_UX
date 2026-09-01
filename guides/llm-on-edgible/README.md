@@ -9,7 +9,9 @@ Every prompt sent to a hosted model is a document handed to somebody else's logs
 
 The use case: a self-hosted LLM on one home machine, called from a different self-hosted machine (n8n, OpenClaw, `curl`, Chatbox). Weights and GPU stay on the machine that runs the model. The remote box only sends HTTPS + `Authorization: Bearer`. No port-forward, no mesh VPN, no putting n8n or OpenClaw on the GPU box.
 
-That is why the auth mode is `api-key` on `https://<app>.<org>.edgible.com`. With `None`, anyone on the internet could run inference on your GPU. `org` is a human browser login, which a workflow or Gateway cannot complete. Same-LAN `http://192.168.64.1:11434` is only the UTM guest talking to the Mac; it is not this use case.
+That is why the auth mode is `api-key` on `https://<app>.<org>.edgible.com` — **zero-DNS publish** for the inference hostname, with no DNS step (see [Glossary](../../glossary.md)). With `None`, anyone on the internet could run inference on your GPU. `org` is a human browser login, which a workflow or Gateway cannot complete. Same-LAN `http://192.168.64.1:11434` is only the UTM guest talking to the Mac; it is not this use case.
+
+A full **private AI estate** mixes auth modes: inference stays `api-key` here; automation that needs webhooks uses **split-surface publish** on n8n in [n8n on Edgible](../n8n-on-edgible/README.md) (editor `org`, hooks `None`); agent UIs stay `org` in [OpenClaw on Edgible](../openclaw-on-edgible/README.md). Ollama itself is one locked surface, not two hostnames on the same port.
 
 ## Pattern (for the time being)
 

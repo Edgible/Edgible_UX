@@ -13,6 +13,8 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | `<app>` | The app name in a published hostname, such as `hello-world` in `hello-world.<org>.edgible.com`. |
 | `<org>` | Your organisation label in a published hostname, such as `acme` in `hello-world.acme.edgible.com`. Not the word "org" literally; copy the label from `edgible app list`. |
 | Custom domain | A name of your own added to an app, pointed at its Edgible hostname with a `CNAME`. Edgible then issues a certificate for it too. |
+| Zero-DNS publish | First publish returns a working `https://` hostname with certificate and routing, with no registrar step and no DNS record to create. Same idea as a generated or platform-provided hostname. |
+| Split-surface publish | Two or more hostnames on the same local process, each with its own auth mode — for example `org` on an admin UI and `None` on a webhook path. Familiar as a separate admin hostname or dual exposure of one backend; not VPN split tunneling. |
 | Auth mode | The access rule attached to a hostname, chosen when the app is created: `org`, `api-key` or `None`. |
 | `org` | Auth mode requiring a browser login from your organisation. Used for anything holding credentials, such as the n8n editor or the OpenClaw Control UI. |
 | `api-key` | Auth mode accepting a bearer secret, for callers that cannot complete a browser login. Used for the published Ollama. |

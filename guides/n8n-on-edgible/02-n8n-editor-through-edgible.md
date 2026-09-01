@@ -6,7 +6,7 @@
 
 Right now n8n only exists for whoever is sitting at the VM. Chapter 1 left it on loopback, so the canvas is stuck on that one machine. No phone, no laptop in another room, nothing a colleague could reach.
 
-Forwarding `5678` on the router puts a credential store holding every API key you own on the open internet. A mesh VPN means every device that ever needs the canvas has to enrol first. Edgible is the third option: the guest connects out on 443, and a published HTTPS hostname appears with an auth mode already set.
+Forwarding `5678` on the router puts a credential store holding every API key you own on the open internet. A mesh VPN means every device that ever needs the canvas has to enrol first. Edgible is the third option: the guest connects out on 443, and **zero-DNS publish** gives you a working `https://` hostname with certificate and auth mode set, with no DNS step (see [Glossary](../../glossary.md)).
 
 Edgible auth is per app, that is, per hostname, not per path within one URL. This hostname serves the canvas, the credentials and every workflow you will ever write, so it stays `org` and only your organisation can get past it. Stripe and GitHub cannot complete a browser login, so they get a second, separate hostname in [chapter 3](03-n8n-public-webhook-hostname.md) instead. Do not set this app to `None` to make webhooks work.
 

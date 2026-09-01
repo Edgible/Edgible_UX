@@ -166,7 +166,7 @@ edgible app create existing \
 
 Leave extra hostnames blank. **Allow other organizations?** **No**. Never `None`. Do not use `org` alone. `curl` and n8n cannot complete a browser login.
 
-Wait for the certificate: console → `ollama` → **Certificates**, or `edgible app list` / `edgible app status`. Copy `https://ollama.<org>.edgible.com` exactly (no path, no `:11434`).
+Wait for the certificate: console → `ollama` → **Certificates**, or `edgible app list` / `edgible app status`. Copy `https://ollama.<org>.edgible.com` exactly (no path, no `:11434`). That hostname is **zero-DNS publish** — issued without a registrar or zone edit (defined in [Glossary](../../glossary.md)).
 
 ## 2.5 API key (Ubuntu VM) and cellular smoke (any off-LAN device)
 
