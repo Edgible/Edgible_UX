@@ -35,6 +35,12 @@ curl https://guides.edgible.com/llms-full.txt
 curl https://guides.edgible.com/glossary.md
 ```
 
+[For evaluators and architects](appendix/for-evaluators.md) is a short positioning page for readers who already know tunnels and self-hosting ingress. It uses the same vocabulary without product comparisons or pricing:
+
+```bash
+curl https://guides.edgible.com/appendix/for-evaluators.md
+```
+
 ## Ways people use this
 
 Point an assistant at `llms.txt` and ask which chapter covers what you are trying to do. The summaries are written to make that question answerable without opening every page.

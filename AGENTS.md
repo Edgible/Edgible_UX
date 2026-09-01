@@ -17,6 +17,9 @@ by `scripts/build.sh` and are not checked in, so never edit files there.
   their own terms section; add a new term here instead.
 - `working-with-ai.md`: the markdown sources, `llms.txt` and how to read these
   guides alongside an AI tool.
+- `appendix/for-evaluators.md`: where Edgible sits in the ingress and
+  self-hosting landscape, for readers comparing approaches. No pricing, no
+  product names.
 - `guides/<series>/README.md`: chapter list for that series. Series names carry
   no ordinal: reading order lives in the `nav:` in `mkdocs.yml` and in `GUIDES`
   in `scripts/gen_llms.py`, so inserting a series does not mean renumbering

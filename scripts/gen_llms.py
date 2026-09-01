@@ -86,6 +86,11 @@ def build_index() -> str:
     out.append(f"- [{heading(glossary)}]({url_for('glossary.md')}): {hook(glossary)}")
     ai = REPO / "working-with-ai.md"
     out.append(f"- [{heading(ai)}]({url_for('working-with-ai.md')}): {hook(ai)}")
+    evaluators = REPO / "appendix" / "for-evaluators.md"
+    out.append(
+        f"- [{heading(evaluators)}]({url_for('appendix/for-evaluators.md')}): "
+        f"{hook(evaluators)}"
+    )
     out.append("")
 
     for title, rel in GUIDES:
@@ -115,6 +120,7 @@ def build_full() -> str:
         REPO / "capabilities.md",
         REPO / "glossary.md",
         REPO / "working-with-ai.md",
+        REPO / "appendix" / "for-evaluators.md",
     ]
     for _, rel in GUIDES:
         directory = REPO / rel

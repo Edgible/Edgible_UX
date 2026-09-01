@@ -25,6 +25,7 @@ cp README.md "$STAGE/README.md"
 cp capabilities.md "$STAGE/capabilities.md"
 cp glossary.md "$STAGE/glossary.md"
 cp working-with-ai.md "$STAGE/working-with-ai.md"
+cp -R appendix "$STAGE/appendix"
 cp -R guides "$STAGE/guides"
 cp static/robots.txt "$STAGE/robots.txt"
 cp -R static/stylesheets "$STAGE/stylesheets"
@@ -58,7 +59,7 @@ cp working-with-ai.md "$OUT/working-with-ai.md"
 while IFS= read -r file; do
   mkdir -p "$OUT/$(dirname "$file")"
   cp "$file" "$OUT/$file"
-done < <(find guides -name '*.md')
+done < <(find guides appendix -name '*.md')
 
 python3 scripts/add_dates.py header "$OUT"
 

@@ -105,6 +105,9 @@ nav:
   - What Edgible does: capabilities.md
   - Glossary: glossary.md
   - Working with an AI tool: working-with-ai.md
+  - Appendix:
+      - Overview: appendix/README.md
+      - For evaluators and architects: appendix/for-evaluators.md
   - Start here:
       - guides/start-here/README.md
       - guides/start-here/01-edgible-on-vm.md
