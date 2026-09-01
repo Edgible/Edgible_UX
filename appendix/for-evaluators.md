@@ -142,6 +142,8 @@ No product wins every comparison. These are worth asking about in your environme
 | **Device-to-device mesh** | Overlay VPN products solve SSH and LAN extension between enrolled machines; that is a different job |
 | **Identity policy depth** | Enterprise zero-trust products offer more identity providers and richer rules than three hostname auth modes |
 | **Visitor IP at the app** | TLS terminates on your device (Edgible does not read HTTP), so apps that rely on `X-Forwarded-For` for geolocation or rate limits may see the tunnel hop until [client IP preservation](https://guides.edgible.com/guides/website-on-edgible/04-publish-umami.md#45-what-the-country-column-will-not-tell-you) ships; the platform should not permanently block honoring the real visitor |
+| **Data durability and backup** | Edgible publishes services; it does not store or back up your app data (photos, databases, model weights). Disks, snapshots, and offsite backup remain your stack — same as Cloudflare Tunnel or ngrok. Ingress ≠ backup. |
+| **Sustained library traffic** | Photo and media workloads are in scope for ingress; some CDN-backed tunnels restrict that traffic in their terms — evaluate against the upload/download shape you intend ([What Edgible emphasises §5](../capabilities.md)) |
 | **Agent privileges** | The serving agent is installed with privileges sufficient to configure networking on the host today; confirm your security model against that |
 
 ## Related pages
