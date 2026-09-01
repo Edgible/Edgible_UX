@@ -104,7 +104,6 @@ nav:
   - Welcome: README.md
   - What Edgible does: capabilities.md
   - Glossary: glossary.md
-  - Working with an AI tool: working-with-ai.md
   - Start here:
       - guides/start-here/README.md
       - guides/start-here/01-edgible-on-vm.md
@@ -144,4 +143,5 @@ nav:
       - guides/llm-on-edgible/05-llm-teardown.md
   - Appendix:
       - Overview: appendix/README.md
+      - Working with an AI tool: working-with-ai.md
       - For evaluators and architects: appendix/for-evaluators.md
