@@ -75,7 +75,73 @@ These are table stakes in the category. They are necessary to be credible; they 
 - A stable URL for a local service
 - No port-forward rule on the router
 
-If you are comparing products that all claim the above, the useful questions move to custody, policy, visitors, and operations.
+If you are comparing products that all claim the above, the useful questions move to custody, policy, visitors, and operations. The next section groups **approaches** in this space; Edgible is one lane among several jobs that share vocabulary but not the same outcome.
+
+## Comparing ingress approaches
+
+People looking at tunnels, ingress, and remote access often mix **five different jobs**. Edgible targets one of them. This summary is drawn from our internal competitive research, stated **without naming products or prices** so you can map it to whatever you already use.
+
+| Job | Typical shape | Fit for a lasting self-hosted stack? |
+| --- | --- | --- |
+| **DIY platform** | You bring a public server, a domain, DNS records, and certificates — often a cluster. You operate the platform. | Only if you want to run a platform team |
+| **Dev session** | One command, a temporary public URL; the laptop must stay awake. Built for webhooks and previews. | Poor as household or office infrastructure |
+| **Enrolled overlay** | Every device installs a client and joins a private network. Strong for staff-to-NAS and device-to-device. | Wrong when the caller will not install anything |
+| **One-app remote** | A toggle that publishes a single application (often home automation). | Fine for that one app; nothing else on the box |
+| **Assembled identity edge** | Several products glued together; often requires moving your DNS zone or learning a glossary of infrastructure nouns before a URL exists | An IT project, not something a small team can keep |
+
+**Edgible’s lane:** a service already runs on hardware you own. You want a stable `https://` URL, certificates, and a policy **per hostname**, without forwarding a port, without standing up a cluster, and without putting a VPN client on every visitor.
+
+### Capability questions (same job, different products)
+
+Use this when several options all claim outbound HTTPS and automatic certificates. Legend: **Strong** — routinely true for that approach · **Partly** — possible with extra setup or limits · **Weak** — not what that approach optimises for.
+
+| Question | Edgible | CDN-backed tunnel | Mesh public funnel | Dev relay | DIY VPS + proxy |
+| --- | --- | --- | --- | --- | --- |
+| Working `https://` URL with no inbound port | Strong | Strong | Strong | Strong | Strong |
+| Hostname live **before** you edit DNS | Strong | Partly | Weak | Strong | Weak |
+| Keep DNS zone at your current provider | Strong | Weak | n/a | Partly | Strong |
+| Custom domain with valid cert on **your** name | Strong | Strong* | Weak | Partly | Strong |
+| Auth mode chosen **per hostname** at publish time | Strong | Partly | Weak | Partly | Weak |
+| Same process, two hostnames, two auth modes (split-surface) | Strong | Partly | Weak | Partly | Partly |
+| Machine callers (`api-key` / bearer) as a first-class mode | Strong | Partly | Weak | Partly | Weak |
+| Visitor needs no installed client | Strong | Strong | Partly | Strong | Strong |
+| Several apps on one machine, one ingress layer | Strong | Strong | Partly | Weak | Strong |
+| One CLI for device + app + cert state | Strong | Partly | Partly | Partly | Weak |
+| Sustained media / large libraries in scope (terms) | Strong | Weak | Partly | Partly | Strong |
+| Global edge / DDoS scale | Weak | Strong | Weak | Weak | Weak |
+| Fastest throwaway port expose | Partly | Partly | Strong | Strong | Weak |
+| Device-to-device mesh (enrolled peers) | Weak | Weak | Strong | Weak | Partly |
+
+\*CDN-backed tunnels often handle custom domains well, but frequently require the **zone** to live with the CDN operator — a different trade from a single `CNAME` at your existing DNS host.
+
+**How to read the table:** Edgible is not strongest on every row. Session relays win the ten-second demo. Large CDN edges win global scale and DDoS. Mesh products win enrolled device-to-device access. The comparison that matters is whether you need a **durable estate** — several hostnames, mixed policies, visitors without clients, libraries and automation on metal you control.
+
+### Where another approach is the right tool
+
+Stated plainly so the comparison stays credible:
+
+- **Fastest throwaway demo** — session tools mint a URL in seconds for a port that dies when the laptop sleeps. That is a developer loop, not an office estate.
+- **Staff laptop to NAS or SSH between home machines** — use an overlay when both sides can install a client.
+- **Global anycast edge and DDoS** — a large CDN operator will win that comparison.
+- **Deep identity policy** — enterprise zero-trust products offer more identity providers and richer rules than three hostname auth modes.
+- **Webhook traffic debugging** — some dev relays include a request inspector we do not replace.
+- **You want to operate the entire stack** — a rented VPS plus your own reverse proxy and cert automation is a valid hobby; it is a different job from managed ingress.
+
+### “Is this Zero Trust / a mesh?”
+
+Those products are for **enrolled devices** talking to each other. Many Edgible callers are **not staff** — payment webhooks, a phone on cellular, automation hitting a local model. They will not install a client. We publish hostnames and attach a policy to each one.
+
+Mesh is the right tool for device-to-device. It is the wrong tool when the internet must reach an app under a policy you chose, with a normal browser or webhook. For a human in a browser, “only the right people get in” is already how the web works: login, 2FA, passkeys, an identity provider you already use — without enrolling their phone on a private network first.
+
+### Fair test (same job)
+
+1. Run something local (even a tiny web server).
+2. Publish until you have an `https://` URL **before** you touch DNS.
+3. Open that URL on a phone with Wi‑Fi off.
+4. If you need admin vs webhook, publish a **second** hostname to the **same** process with a different policy.
+5. Ask whether you can still **name** what you stood up — hostname, policy, machine — without a glossary.
+
+If that path is shorter and clearer than standing up a cluster, moving a DNS zone, joining a mesh, or living with a short-lived preview link, you are in Edgible’s lane. If you needed one of the other jobs above, use the approach built for it.
 
 ## What Edgible emphasises
 
@@ -142,7 +208,7 @@ No product wins every comparison. These are worth asking about in your environme
 | **Device-to-device mesh** | Overlay VPN products solve SSH and LAN extension between enrolled machines; that is a different job |
 | **Identity policy depth** | Enterprise zero-trust products offer more identity providers and richer rules than three hostname auth modes |
 | **Visitor IP at the app** | TLS terminates on your device (Edgible does not read HTTP), so apps that rely on `X-Forwarded-For` for geolocation or rate limits may see the tunnel hop until [client IP preservation](https://guides.edgible.com/guides/website-on-edgible/04-publish-umami.md#45-what-the-country-column-will-not-tell-you) ships; the platform should not permanently block honoring the real visitor |
-| **Data durability and backup** | Edgible publishes services; it does not store or back up your app data (photos, databases, model weights). Disks, snapshots, and offsite backup remain your stack — same as Cloudflare Tunnel or ngrok. Ingress ≠ backup. |
+| **Data durability and backup** | Edgible publishes services; it does not store or back up your app data (photos, databases, model weights). Disks, snapshots, and offsite backup remain your stack — same as other managed tunnels or dev relays. Ingress ≠ backup. |
 | **Sustained library traffic** | Photo and media workloads are in scope for ingress; some CDN-backed tunnels restrict that traffic in their terms — evaluate against the upload/download shape you intend ([What Edgible emphasises §5](../capabilities.md)) |
 | **Agent privileges** | The serving agent is installed with privileges sufficient to configure networking on the host today; confirm your security model against that |
 
