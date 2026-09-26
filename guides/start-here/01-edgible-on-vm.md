@@ -239,9 +239,21 @@ edgible --version
 edgible --help
 ```
 
+A user install writes the launcher to `~/.local/bin/edgible`. Your shell finds it once that directory is on `PATH`. `sudo` searches `secure_path` from `/etc/sudoers` instead. On Ubuntu that list is `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`, and `~/.local/bin` is absent, so `sudo edgible` in 1.8 stops at `sudo: edgible: command not found`.
+
+Link the same launcher into a directory `secure_path` already includes:
+
+```bash
+sudo ln -sfn "$HOME/.local/bin/edgible" /usr/local/bin/edgible
+sudo edgible --version
+```
+
+`sudo edgible --version` should print the same version as `edgible --version`.
+
 ### Verify
 
 - [ ] `edgible --version` prints a version.
+- [ ] `sudo edgible --version` prints that same version.
 - [ ] You did not install the CLI on the Mac/PC host for this guide. The serving device is the VM.
 
 ---
