@@ -214,6 +214,7 @@ No product wins every comparison. These are worth asking about in your environme
 
 ## Related pages
 
+- [The tunneling dream](the-dream.md): the four awesome-tunneling requirements, scored against what the guides show
 - [What Edgible does](../capabilities.md): each feature mapped to the chapter that demonstrates it
 - [Glossary](../glossary.md): `serving agent`, auth modes, published hostname, and the rest of the vocabulary
 - [Working with an AI tool](../working-with-ai.md): fetch this page as markdown, or use `llms.txt` for the whole site

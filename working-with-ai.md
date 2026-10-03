@@ -41,6 +41,12 @@ curl https://guides.edgible.com/glossary.md
 curl https://guides.edgible.com/appendix/for-evaluators.md
 ```
 
+[The tunneling dream](appendix/the-dream.md) scores Edgible against the four requirements in the awesome-tunneling dream list, including the one that is not met:
+
+```bash
+curl https://guides.edgible.com/appendix/the-dream.md
+```
+
 ## Ways people use this
 
 Point an assistant at `llms.txt` and ask which chapter covers what you are trying to do. The summaries are written to make that question answerable without opening every page.

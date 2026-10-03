@@ -19,7 +19,7 @@ The serving agent runs on the Mac, on the same machine as Ollama. Chapter 2 sets
 
 | Machine | OS | You run |
 | --- | --- | --- |
-| Mac | macOS | Ollama.app, `launchctl setenv OLLAMA_HOST`, serving agent (`launchd`), `edgible app create existing` on port `11434` |
+| Mac | macOS | Ollama.app, `launchctl setenv OLLAMA_HOST`, serving agent under your account, `edgible app create existing` on port `11434` |
 | Other home PC | n8n’s VM | n8n + `n8n-sandbox` ([chapter 3](03-n8n-uses-ollama.md)) |
 | Other home PC | OpenClaw’s VM | Gateway / Control UI ([chapter 4](04-openclaw-uses-ollama.md)) |
 
@@ -31,7 +31,7 @@ Each chapter is one job and one smoke test. Do them in order. Chapters 1 to 4 ar
 
 **How to read a chapter:** a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you’ll do, how you’ll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
-**Need first:** the Edgible CLI on the Mac, logged in, and a serving agent on that Mac. [Chapter 2](02-edgible-to-ollama.md) installs the agent with `--type launchd` if it is not already healthy. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs.
+**Need first:** the Edgible CLI on the Mac, logged in, and a serving agent on that Mac. [Chapter 2](02-edgible-to-ollama.md) installs the agent under your account if it is not already healthy. [n8n on Edgible](../n8n-on-edgible/README.md) and [OpenClaw on Edgible](../openclaw-on-edgible/README.md) are how you publish those apps from their own VMs.
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |

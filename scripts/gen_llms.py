@@ -91,6 +91,11 @@ def build_index() -> str:
         f"- [{heading(evaluators)}]({url_for('appendix/for-evaluators.md')}): "
         f"{hook(evaluators)}"
     )
+    dream = REPO / "appendix" / "the-dream.md"
+    out.append(
+        f"- [{heading(dream)}]({url_for('appendix/the-dream.md')}): "
+        f"{hook(dream)}"
+    )
     out.append("")
 
     for title, rel in GUIDES:
@@ -121,6 +126,7 @@ def build_full() -> str:
         REPO / "glossary.md",
         REPO / "working-with-ai.md",
         REPO / "appendix" / "for-evaluators.md",
+        REPO / "appendix" / "the-dream.md",
     ]
     for _, rel in GUIDES:
         directory = REPO / rel

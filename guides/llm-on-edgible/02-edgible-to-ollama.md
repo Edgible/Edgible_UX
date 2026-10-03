@@ -29,7 +29,7 @@ You bind Ollama to `0.0.0.0:11434` on the Mac, publish that port as an existing 
 - Port `11434` is not forwarded on the router.
 - You did not set this app to `None`.
 
-**Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md), with Mac Ollama running. The Edgible CLI on this Mac, logged in (`edgible whoami`). A serving agent on this Mac. 2.3 installs one with `--type launchd` if `edgible device health` does not already print **Health check OK**.
+**Need first:** [1. Ollama on bare metal](01-ollama-on-bare-metal.md), with Mac Ollama running. The Edgible CLI on this Mac, logged in (`edgible whoami`). A serving agent on this Mac. 2.3 installs one under your account if `edgible device health` does not already print **Health check OK**.
 
 **Not this chapter:** n8n nodes, OpenClaw `models set`, `None` on this app, or a relay on another machine.
 
@@ -68,22 +68,15 @@ curl -sS http://127.0.0.1:11434/api/tags
 
 On the Mac. If this machine is already a serving device, `edgible device list` shows it and `edgible device health --name <name>` prints **Health check OK**. Use that device id below.
 
-If it does not, install the agent here. The name is letters and digits, unique in the org:
+If it does not, install the agent here. It runs under your account, and on this Mac it runs while you are logged in. The name is letters and digits, unique in the org:
 
 ```bash
-sudo edgible agent install \
-  --type launchd \
+edgible agent install \
   --device-type serving \
   --device-name macbook \
   --non-interactive
-sudo edgible agent start
+edgible agent start
 edgible device health --name macbook
-```
-
-If `sudo edgible` says `command not found`, the launcher from the user install is `~/.local/bin/edgible`, and `sudo` does not search that directory. Link it into `/usr/local/bin`, then run the install again:
-
-```bash
-sudo ln -sfn "$HOME/.local/bin/edgible" /usr/local/bin/edgible
 ```
 
 Then create the app. `--port 11434` is the Ollama listen from 2.2. `--device-id` is the id from `edgible device list` for this Mac.

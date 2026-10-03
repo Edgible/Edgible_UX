@@ -239,7 +239,9 @@ edgible --version
 edgible --help
 ```
 
-A user install writes the launcher to `~/.local/bin/edgible`. Your shell finds it once that directory is on `PATH`. `sudo` searches `secure_path` from `/etc/sudoers` instead. On Ubuntu that list is `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`, and `~/.local/bin` is absent, so `sudo edgible` in 1.8 stops at `sudo: edgible: command not found`.
+A user install writes the launcher to `~/.local/bin/edgible`. If the command is not found, that directory is not on `PATH` yet. Open a new shell, or `source ~/.bashrc`.
+
+This guide installs the agent without `sudo`. If you want `sudo edgible` anyway, `sudo` will not find that launcher. It searches `secure_path` from `/etc/sudoers`. On Ubuntu that list is `/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin`, and `~/.local/bin` is absent, so `sudo edgible` stops at `sudo: edgible: command not found`.
 
 Link the same launcher into a directory `secure_path` already includes:
 
@@ -248,12 +250,11 @@ sudo ln -sfn "$HOME/.local/bin/edgible" /usr/local/bin/edgible
 sudo edgible --version
 ```
 
-`sudo edgible --version` should print the same version as `edgible --version`.
+`sudo edgible --version` should print the same version as `edgible --version`. Skip the link if you are following the steps below.
 
 ### Verify
 
 - [ ] `edgible --version` prints a version.
-- [ ] `sudo edgible --version` prints that same version.
 - [ ] You did not install the CLI on the Mac/PC host for this guide. The serving device is the VM.
 
 ---
@@ -300,23 +301,30 @@ edgible auth select-org
 
 **Outcome:** A serving device (`minipc`) connected to Edgible, with no inbound ports opened on your router.
 
-The Edgible serving agent must run on the VM as systemd. It registers a device named `minipc` in your org.
+The Edgible serving agent runs on the VM under your account. It registers a device named `minipc` in your org.
 
 Keep the name to letters and digits. Hyphens can cause trouble, which is why it is `minipc` rather than `mini-pc`. If you are naming real machines rather than a throwaway VM, a machine-plus-OS pattern reads well and stays unique, as in `lggram17ubuntuv24`. The name has to be unique within the org, and later chapters pass it to `--device-name`, so pick one now and use it consistently.
 
 ```bash
-sudo edgible agent install \
-  --type systemd \
+edgible agent install \
   --device-type serving \
   --device-name minipc \
   --non-interactive
 ```
 
-Expect 30–60 seconds. Then:
+Expect 30–60 seconds. Run without `sudo`. That is what installs the agent as you.
+
+As installed, the agent stops when this SSH session ends, and it does not start at boot. Keep it running with one command:
 
 ```bash
-sudo edgible agent start
-sudo systemctl status edgible-agent --no-pager
+sudo loginctl enable-linger "$USER"
+```
+
+After that it starts at boot and stays up when you log out. The agent still runs as you. Then:
+
+```bash
+edgible agent start
+systemctl --user status edgible-agent --no-pager
 ```
 
 That process connects outbound to the control plane (WebSocket over HTTPS). It does not open a port on your router.
@@ -332,15 +340,15 @@ Expect **Health check OK** within about 15 seconds.
 If it hangs or fails:
 
 ```bash
-sudo journalctl -u edgible-agent -n 80 --no-pager
-sudo edgible agent status
+journalctl --user -u edgible-agent -n 80 --no-pager
+edgible agent status
 ```
 
 Common causes: login was skipped, no outbound 443, or the device name already exists in the org from a previous attempt (`--device-name` must be unique).
 
 ### Verify
 
-- [ ] `systemctl status edgible-agent` shows `active (running)`.
+- [ ] `systemctl --user status edgible-agent` shows `active (running)`.
 - [ ] `edgible device health --name minipc` prints **Health check OK**.
 - [ ] Dashboard lists a serving device named `minipc`.
 

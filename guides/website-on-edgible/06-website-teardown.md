@@ -88,7 +88,7 @@ If this was the only thing you were doing and you want the machine back:
 
 ```bash
 edgible app delete --name hello-world
-sudo edgible agent uninstall
+edgible agent uninstall
 ```
 
 Leave those alone if any other guide is still in progress.

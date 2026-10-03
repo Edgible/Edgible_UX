@@ -20,6 +20,13 @@ by `scripts/build.sh` and are not checked in, so never edit files there.
 - `appendix/for-evaluators.md`: where Edgible sits in the ingress and
   self-hosting landscape, for readers comparing approaches. No pricing, no
   product names.
+- `appendix/the-dream.md`: Edgible scored against the four requirements in
+  the awesome-tunneling dream list. Name that list. Guide steps install
+  the agent with `edgible agent install` and no `sudo`. On Linux they
+  also show `sudo loginctl enable-linger`. Start here §1.6 keeps the
+  optional link so `sudo edgible` works for anyone who wants the system
+  service. That service runs as root. `sudo` elsewhere in the guides is
+  host setup (apt, Docker).
 - `guides/<series>/README.md`: chapter list for that series. Series names carry
   no ordinal: reading order lives in the `nav:` in `mkdocs.yml` and in `GUIDES`
   in `scripts/gen_llms.py`, so inserting a series does not mean renumbering
