@@ -35,13 +35,15 @@ Where names the chapter that demonstrates the feature. How is the observable pro
 
 ## The set-piece demos
 
-The whole small-site stack, on hardware you own. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service. [Self Hosting is Social](guides/website-on-edgible/07-self-hosting-is-social.md) writes those four apps into one card file, with the device name, the hostnames and the organization id left out.
+The whole small-site stack, on hardware you own. [Website on Edgible](guides/website-on-edgible/README.md) publishes four hostnames off one machine: the site on `None`, the Umami tracking script on `None`, and the Umami and Uptime Kuma interfaces on `org`. It is the shortest demonstration that the access rule belongs to the hostname rather than to the service.
 
 The back office workhorse, with its credentials staying in your building. [n8n on Edgible](guides/n8n-on-edgible/README.md) covers the auth split end to end, including the `WEBHOOK_URL` setting that makes n8n print the public origin while traffic still reaches one process.
 
 The agent everyone is currently trying, on hardware you control. [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md) keeps the Gateway on loopback and lets the phone in through `org`. The agent edits a live public page in [chapter 3](guides/openclaw-on-edgible/03-openclaw-changes-edgible-site.md), and [chapter 4](guides/openclaw-on-edgible/04-edgible-openclaw-skill.md) installs a skill that lets it run the Edgible CLI.
 
 Private AI, where the prompts and the weights stay home. In [LLM on Edgible](guides/llm-on-edgible/README.md), Ollama and the model weights stay on one machine while n8n on a second and OpenClaw on a third call it over HTTPS with a bearer secret. No port-forward and no mesh VPN. This combination exercises private inference, machine authentication and remote self-hosted callers together.
+
+The website pattern is one file you can hand over, and the file that publishes those apps again. [Self Hosting is Social](guides/self-hosting-is-social/README.md) writes the four website apps into one card, with the device name, the hostnames and the organization id left out, then turns that card into the stack file that publishes them.
 
 ## What it replaces
 

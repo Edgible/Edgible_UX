@@ -8,7 +8,7 @@ Two of the four hostnames this series created are `None`, which means anyone who
 
 This is also a shared machine. It may still be running [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) or [LLM on Edgible](../llm-on-edgible/README.md), so the default here is this series only: `hello-world` and the Edgible serving agent stay, unless you take the optional step at the end.
 
-If you built something you actually use, skip this chapter and [7. Self Hosting is Social](07-self-hosting-is-social.md). It is the only series here whose result is worth keeping. Chapter 7 puts the four apps back from a card, which is why this teardown can come first.
+If you built something you actually use, skip this chapter. It is the only series here whose result is worth keeping.
 
 **Where you run this:** `edgible` and Docker on the **Ubuntu guest**, the console in the **host browser** for the final check.
 
@@ -91,7 +91,7 @@ edgible app delete --name hello-world
 edgible agent uninstall
 ```
 
-Leave those alone if any other guide is still in progress. Chapter 7 needs the serving agent.
+Leave those alone if any other guide is still in progress. [Self Hosting is Social](../self-hosting-is-social/README.md) needs the serving agent.
 
 ## Verify
 
@@ -104,4 +104,4 @@ Leave those alone if any other guide is still in progress. Chapter 7 needs the s
 
 ## Next
 
-[7. Self Hosting is Social](07-self-hosting-is-social.md) writes the website card and publishes the four apps again. Series: [README](README.md).
+[Self Hosting is Social](../self-hosting-is-social/README.md) writes the website card and publishes the four apps again. It starts from this teardown. [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [LLM on Edgible](../llm-on-edgible/README.md) go further with the same machine. Series: [README](README.md).

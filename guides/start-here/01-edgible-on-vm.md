@@ -280,7 +280,7 @@ edgible whoami
 edgible config list
 ```
 
-Note the organization id. It identifies this login on this machine. The website card in [Self Hosting is Social](../website-on-edgible/07-self-hosting-is-social.md) leaves it out of the file you share.
+Note the organization id. It identifies this login on this machine. The website card in [Self Hosting is Social](../self-hosting-is-social/01-website-card.md) leaves it out of the file you share.
 
 If you belong to more than one org:
 
@@ -462,5 +462,6 @@ Pick a guide. They all run on this VM, with Hello World still up.
 - [n8n on Edgible](../n8n-on-edgible/README.md): workflows, and one process published twice with two auth modes.
 - [OpenClaw on Edgible](../openclaw-on-edgible/README.md): an agent you talk to from your phone.
 - [LLM on Edgible](../llm-on-edgible/README.md): a model on your own hardware, called by other machines.
+- [Self Hosting is Social](../self-hosting-is-social/README.md): the website pattern as one file, which publishes those four apps again after the website teardown.
 
 Series: [README](README.md).

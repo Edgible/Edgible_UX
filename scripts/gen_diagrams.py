@@ -16,8 +16,8 @@ for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
 A card diagram is a different shape. It lists apps with a port and an auth mode,
-and it draws no caller, no hostname and no machine. The website card in chapter
-6 is the one of these.
+and it draws no caller, no hostname and no machine. The website card in Self
+Hosting is Social is the one of these.
 
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
@@ -150,6 +150,16 @@ SERIES = {
             "router: no forwarded port",
         ],
     },
+    "self-hosting-is-social": {
+        "card": "WEBSITE CARD",
+        "apps": [
+            ("site", "8080", OPEN, "nginx:alpine, your files"),
+            ("analytics", "3000", OPEN, "Umami tracking script"),
+            ("umami", "3000", LOGIN, "Umami and Postgres"),
+            ("status", "3001", LOGIN, "Uptime Kuma"),
+        ],
+        "note": "no device name, no hostname, no organization id",
+    },
 }
 
 MAC = {
@@ -251,7 +261,7 @@ CHAPTERS = {
             "hostname by going out to the internet and back in."
         ),
     },
-    "website-on-edgible-07": {
+    "self-hosting-is-social-01": {
         "card": "WEBSITE CARD",
         "apps": [
             ("site", "8080", OPEN, "nginx:alpine, your files"),
@@ -841,6 +851,13 @@ ALT = {
         "ollama.<org>.edgible.com with a bearer key. It arrives at Ollama on the Mac, "
         "bound to 127.0.0.1:11434 and reached through a forwarder on the guest, so the "
         "model weights and the GPU stay home and the router has no forwarded port."
+    ),
+    "self-hosting-is-social": (
+        "The website card lists four apps and no hostnames. site is nginx serving "
+        "your files on port 8080, open to anyone. analytics is the Umami tracking "
+        "script on port 3000, open to anyone. umami is the Umami dashboard on that "
+        "same port, with Postgres, behind an org login. status is Uptime Kuma on "
+        "port 3001, behind an org login. The card names no device and no organization."
     ),
 }
 

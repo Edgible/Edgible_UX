@@ -104,6 +104,7 @@ whether a chapter in that series proves it.
 | n8n on Edgible | The back office workhorse, running at 3am in your own building | Handing your API keys to a hosted automation service |
 | OpenClaw on Edgible | The agent everyone is currently trying, with its shell and admin console off the internet | Exposing an admin port to reach the agent from a phone |
 | LLM on Edgible | Private AI: prompts, documents and weights never leave hardware you own | Sending the questions you would not type into a hosted model |
+| Self Hosting is Social | The website pattern is one file you can hand over, and the file that publishes those apps again | Retyping the four publish steps |
 
 The themes are also the art direction. Any illustration added to a series should
 come from that row (a machine in a room, a phone on cellular, an invoice at

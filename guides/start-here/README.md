@@ -15,7 +15,7 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 | --- | --- | --- |
 | 1 | [1. Edgible on an Ubuntu VM](01-edgible-on-vm.md) | `edgible whoami` on the VM; Hello World on a phone (cellular) |
 
-Leave Hello World running when you finish. The other guides use it as the check that publishing still works, and each of them ends with a teardown chapter that removes its own services and leaves Hello World and the serving agent alone. Each of those chapters ends with an optional step for removing Hello World too, once no other guide needs it.
+Leave Hello World running when you finish. The service guides use it as the check that publishing still works, and each of them ends with a teardown chapter that removes its own services and leaves Hello World and the serving agent alone. Each of those chapters ends with an optional step for removing Hello World too, once no other guide needs it.
 
 Then pick a guide by what you want to stop paying for or stop handing over:
 
@@ -23,3 +23,5 @@ Then pick a guide by what you want to stop paying for or stop handing over:
 - [n8n on Edgible](../n8n-on-edgible/README.md): the back office automation, with the credentials it holds staying in your building.
 - [OpenClaw on Edgible](../openclaw-on-edgible/README.md): an AI agent with a shell, reachable from your phone, never exposed.
 - [LLM on Edgible](../llm-on-edgible/README.md): a model on your own GPU, called over HTTPS by other machines you own.
+
+After [Website on Edgible](../website-on-edgible/README.md) is torn down, [Self Hosting is Social](../self-hosting-is-social/README.md) writes that pattern as one file and publishes the four apps again.

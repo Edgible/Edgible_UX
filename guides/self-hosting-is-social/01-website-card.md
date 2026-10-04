@@ -1,19 +1,19 @@
-# 7. Self Hosting is Social
+# 1. The website card
 
 **One card is the website pattern you can hand to someone else, and the file that puts those four apps back.**
 
-## 7.0 Why
+## 1.0 Why
 
-Chapters 1 to 5 created the website as four prompt answers: `site`, `analytics`, `umami` and `status`. Chapter 6 deleted the hostnames and stopped the containers. The pattern is still those four answers. A hostname such as `site.<org>.edgible.com` and the serving device name `minipc` were yours. They do not belong in the file you hand over.
+[Website on Edgible](../website-on-edgible/README.md) created the website as four prompt answers: `site`, `analytics`, `umami` and `status`. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted the hostnames and stopped the containers. The pattern is still those four answers. A hostname such as `site.<org>.edgible.com` and the serving device name `minipc` were yours. They do not belong in the file you hand over.
 
 A card is the four apps written down once: the Edgible name, what the software is, the image it comes from, the port, and the auth mode. The copy you share leaves the device name, the hostnames and the organization id out. This chapter writes that card, starts the containers again, and deploys the stack file the card becomes, so the four hostnames exist again.
 
-![The website card lists four apps and no hostnames. site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/website-on-edgible-07-light.svg#only-light)
-![The website card lists four apps and no hostnames. site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/website-on-edgible-07-dark.svg#only-dark)
+![The website card lists four apps and no hostnames. site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-01-light.svg#only-light)
+![The website card lists four apps and no hostnames. site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-01-dark.svg#only-dark)
 
-**Where you run this:** the **Ubuntu guest**. The four apps are gone. The Compose files from chapters 1, 3 and 5 are still on disk.
+**Where you run this:** the **Ubuntu guest**. The four apps are gone. The Compose files from [The site on the VM](../website-on-edgible/01-site-on-the-vm.md), [Umami on the VM](../website-on-edgible/03-umami-on-the-vm.md) and [Uptime monitoring with Uptime Kuma](../website-on-edgible/05-uptime-kuma.md) are still on disk.
 
-## 7.1 The job
+## 1.1 The job
 
 You write `~/website-card.yml`, start nginx, Umami and Uptime Kuma, generate `~/website.stack.yml`, and deploy it.
 
@@ -26,11 +26,11 @@ You write `~/website-card.yml`, start nginx, Umami and Uptime Kuma, generate `~/
 - `edgible stack validate -f ~/website.stack.yml` reports 4 applications: `site`, `analytics`, `umami`, `status`.
 - `edgible app list` shows those four apps again.
 
-**Need first:** [6. Tear down the website stack](06-website-teardown.md), including the serving agent still installed. If you removed `~/site`, `~/umami` or `~/uptime-kuma`, put those Compose files back from chapters 1, 3 and 5 before 7.3. `hello-world` can stay.
+**Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), including the serving agent still installed. If you removed `~/site`, `~/umami` or `~/uptime-kuma`, put those Compose files back from [The site on the VM](../website-on-edgible/01-site-on-the-vm.md), [Umami on the VM](../website-on-edgible/03-umami-on-the-vm.md) and [Uptime monitoring with Uptime Kuma](../website-on-edgible/05-uptime-kuma.md) before 1.3. `hello-world` can stay.
 
 **Not this chapter:** a command that writes the card for you. [card-to-stack.py](card-to-stack.py) writes the stack file. The card itself you write here.
 
-## 7.2 Write the website card
+## 1.2 Write the website card
 
 On the guest:
 
@@ -84,7 +84,7 @@ YAML
 
 `what` is the software. `from` is the image. `umami` also names its database image, because that dashboard does not run alone. `analytics` is not a second program: it is the tracking script from that same Umami image.
 
-`none` in the file is the auth mode `None`. `org` is the auth mode `org`. `analytics` and `umami` are the split surface from chapter 4: one port, two auth modes. `subtype: existing` means the process is already listening. The Compose files hold the volumes and the passwords. The card names the images and leaves those secrets out.
+`none` in the file is the auth mode `None`. `org` is the auth mode `org`. `analytics` and `umami` are the split surface from [Publish Umami](../website-on-edgible/04-publish-umami.md): one port, two auth modes. `subtype: existing` means the process is already listening. The Compose files hold the volumes and the passwords. The card names the images and leaves those secrets out.
 
 **Smoke test.** On the guest:
 
@@ -95,7 +95,7 @@ grep -nE 'deviceName|edgible\.com|organization' ~/website-card.yml
 
 Four names, ports `8080`, `3000`, `3000` and `3001`, and the four `authModes` lines. The second `grep` prints nothing.
 
-## 7.3 Start the containers
+## 1.3 Start the containers
 
 The stack file publishes ports that are already listening. It does not pull the images or start them. On the guest:
 
@@ -106,9 +106,9 @@ docker compose -f ~/uptime-kuma/docker-compose.yml up -d
 ss -ltnp | grep -E '8080|3000|3001'
 ```
 
-`127.0.0.1:8080`, `127.0.0.1:3000` and `127.0.0.1:3001` are listening. If chapter 6 removed the Umami tracking snippet from your pages, put it back from [4. Publish Umami](04-publish-umami.md) when you want page views again. The hostnames publish either way.
+`127.0.0.1:8080`, `127.0.0.1:3000` and `127.0.0.1:3001` are listening. If [Tear down the website stack](../website-on-edgible/06-website-teardown.md) removed the Umami tracking snippet from your pages, put it back from [Publish Umami](../website-on-edgible/04-publish-umami.md) when you want page views again. The hostnames publish either way.
 
-## 7.4 Generate the stack file and deploy it
+## 1.4 Generate the stack file and deploy it
 
 `edgible stack validate` reads a deploy document. Run it on the card:
 
@@ -123,7 +123,7 @@ The command exits with an error. The report says it expected `apiVersion: v3` an
 On the guest:
 
 ```bash
-curl -fsSL https://guides.edgible.com/guides/website-on-edgible/card-to-stack.py -o ~/card-to-stack.py
+curl -fsSL https://guides.edgible.com/guides/self-hosting-is-social/card-to-stack.py -o ~/card-to-stack.py
 python3 ~/card-to-stack.py ~/website-card.yml --device minipc > ~/website.stack.yml
 edgible stack validate -f ~/website.stack.yml
 edgible stack deploy -f ~/website.stack.yml
