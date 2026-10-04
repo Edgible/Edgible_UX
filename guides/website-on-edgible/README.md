@@ -25,6 +25,7 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 | 4 | [4. Publish Umami](04-publish-umami.md) | `/script.js` open on `analytics.<org>…`; dashboard behind `org` on `umami.<org>…`; a cellular visit appears |
 | 5 | [5. Uptime monitoring with Uptime Kuma](05-uptime-kuma.md) | Monitor green, then red when the site container stops, then green again |
 | 6 | [6. Tear down the website stack](06-website-teardown.md) | Four hostnames gone; nothing on `8080`, `3000`, `3001`; `hello-world` and the serving agent left unless you opt in |
+| 7 | [7. Self Hosting is Social](07-self-hosting-is-social.md) | The card puts `site`, `analytics`, `umami` and `status` back |
 
 Two limits are stated where they arise rather than glossed over: visitor country is unavailable to self-hosted analytics behind Edgible ([4.5](04-publish-umami.md#45-what-the-country-column-will-not-tell-you)), and a monitor running on the machine it watches cannot report that machine going down ([5.5](05-uptime-kuma.md#55-what-this-cannot-tell-you)).
 

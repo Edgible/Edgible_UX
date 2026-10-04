@@ -114,6 +114,7 @@ nav:
       - guides/website-on-edgible/04-publish-umami.md
       - guides/website-on-edgible/05-uptime-kuma.md
       - guides/website-on-edgible/06-website-teardown.md
+      - guides/website-on-edgible/07-self-hosting-is-social.md
   - n8n on Edgible:
       - guides/n8n-on-edgible/README.md
       - guides/n8n-on-edgible/01-n8n-on-the-vm.md

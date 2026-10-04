@@ -139,4 +139,4 @@ Covering that needs a check from somewhere else, which does not have to be much.
 
 ## Next
 
-[6. Tear down the website stack](06-website-teardown.md), when you are done, or leave it running: this is the one series in these guides you may actually want to keep. Series: [README](README.md).
+[6. Tear down the website stack](06-website-teardown.md), when you are done, or leave it running: this is the one series in these guides you may actually want to keep. [7. Self Hosting is Social](07-self-hosting-is-social.md) puts the four apps back from a card. Series: [README](README.md).

@@ -15,6 +15,10 @@ column for the chapters where nothing is published yet, a second machine panel
 for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
+A card diagram is a different shape. It lists apps with a port and an auth mode,
+and it draws no caller, no hostname and no machine. The website card in chapter
+6 is the one of these.
+
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
 see that toggle, so the markdown references both with #only-light and #only-dark
@@ -247,6 +251,23 @@ CHAPTERS = {
             "hostname by going out to the internet and back in."
         ),
     },
+    "website-on-edgible-07": {
+        "card": "WEBSITE CARD",
+        "apps": [
+            ("site", "8080", OPEN, "nginx:alpine, your files"),
+            ("analytics", "3000", OPEN, "Umami tracking script"),
+            ("umami", "3000", LOGIN, "Umami and Postgres"),
+            ("status", "3001", LOGIN, "Uptime Kuma"),
+        ],
+        "note": "no device name, no hostname, no organization id",
+        "alt": (
+            "The website card lists four apps and no hostnames. site is nginx serving "
+            "your files on port 8080, open to anyone. analytics is the Umami tracking "
+            "script on port 3000, open to anyone. umami is the Umami dashboard on that "
+            "same port, with Postgres, behind an org login. status is Uptime Kuma on "
+            "port 3001, behind an org login. The card names no device and no organization."
+        ),
+    },
     "n8n-on-edgible-01": {
         "caller": ["The internet", "cannot reach", "this yet"],
         "hosts": [],
@@ -475,7 +496,28 @@ def too_wide(text: str, limit: int, size: int, mono: bool = False) -> bool:
     return len(text) * size * (MONO_EM if mono else JOST_EM) > limit
 
 
+def check_card(name: str, spec: dict) -> list[str]:
+    bad = []
+    if too_wide(spec["card"], 480, 13):
+        bad.append(f"{name}: card title does not fit: {spec['card']!r}")
+    for app_name, port, auth, what in spec["apps"]:
+        if too_wide(app_name, 150, 13, mono=True):
+            bad.append(f"{name}: app name does not fit: {app_name!r}")
+        if too_wide(port, 80, 13, mono=True):
+            bad.append(f"{name}: port does not fit: {port!r}")
+        if too_wide(AUTH_LABEL[auth], 180, 13):
+            bad.append(f"{name}: auth label does not fit: {AUTH_LABEL[auth]!r}")
+        if too_wide(what, 420, 13):
+            bad.append(f"{name}: app description does not fit: {what!r}")
+    note = spec.get("note", "")
+    if note and too_wide(note, 560, 13):
+        bad.append(f"{name}: card note does not fit: {note!r}")
+    return bad
+
+
 def check(name: str, spec: dict) -> list[str]:
+    if "apps" in spec:
+        return check_card(name, spec)
     bad = []
     inner = MACHINE_W - 40
 
@@ -510,7 +552,89 @@ def check(name: str, spec: dict) -> list[str]:
     return bad
 
 
+def card_svg(spec: dict, palette: dict) -> str:
+    """One panel: the apps on a card, with no caller, hostname or machine."""
+    p = palette
+    apps = spec["apps"]
+    note = spec.get("note", "")
+    width = 720
+    pad = 28
+    row_h = 72
+    row_gap = 12
+    header_h = 44
+    rows_top = pad + header_h + 36
+    rows_h = len(apps) * row_h + max(len(apps) - 1, 0) * row_gap
+    note_block = 36 if note else 0
+    height = rows_top + rows_h + 20 + note_block + pad
+
+    parts: list[str] = []
+    add = parts.append
+    add(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height:.0f}" '
+        f'width="{width}" height="{height:.0f}" role="img" aria-labelledby="t d">'
+    )
+    add(f"<title id=\"t\">{escape(spec['alt'])}</title>")
+    add(f"<desc id=\"d\">{escape(spec['alt'])}</desc>")
+    add(
+        "<style>"
+        f".label{{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:{p['ink']}}}"
+        f".small{{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:{p['muted']}}}"
+        f".mono{{font-family:Iosevka,ui-monospace,monospace;font-size:15px;fill:{p['ink']}}}"
+        f".head{{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;"
+        f"fill:{p['machine_ink']};letter-spacing:.04em}}"
+        f".card{{fill:{p['card']};stroke:{p['edge']};stroke-width:1.5}}"
+        "</style>"
+    )
+    add(f'<rect x="0" y="0" width="{width}" height="{height:.0f}" rx="10" fill="{p["panel"]}"/>')
+    add(
+        f'<path d="M10 0 h{width - 20} a10 10 0 0 1 10 10 v{header_h - 10} '
+        f'h-{width} v-{header_h - 10} a10 10 0 0 1 10 -10 z" fill="{p["machine"]}"/>'
+    )
+    add(f'<text class="head" x="{pad}" y="28">{escape(spec["card"])}</text>')
+
+    col_app = pad + 28
+    col_port = 250
+    col_auth = width - pad - 8
+    add(f'<text class="small" x="{col_app}" y="{pad + header_h + 22:.0f}">app</text>')
+    add(f'<text class="small" x="{col_port}" y="{pad + header_h + 22:.0f}">port</text>')
+    add(
+        f'<text class="small" x="{col_auth}" y="{pad + header_h + 22:.0f}" '
+        f'text-anchor="end">auth</text>'
+    )
+
+    for i, (app_name, port, auth, what) in enumerate(apps):
+        y = rows_top + i * (row_h + row_gap)
+        add(
+            f'<rect class="card" x="{pad}" y="{y:.0f}" width="{width - 2 * pad}" '
+            f'height="{row_h}" rx="8"/>'
+        )
+        add(
+            f'<rect x="{pad}" y="{y:.0f}" width="6" height="{row_h}" rx="3" fill="{p[auth]}"/>'
+        )
+        baseline = y + 30
+        add(f'<text class="mono" x="{col_app}" y="{baseline:.0f}">{escape(app_name)}</text>')
+        add(f'<text class="mono" x="{col_port}" y="{baseline:.0f}">{escape(port)}</text>')
+        add(
+            f'<text class="small" x="{col_auth}" y="{baseline:.0f}" text-anchor="end">'
+            f'{escape(AUTH_LABEL[auth])}</text>'
+        )
+        add(f'<text class="small" x="{col_app}" y="{baseline + 20:.0f}">{escape(what)}</text>')
+
+    if note:
+        rule_y = rows_top + rows_h + 16
+        add(
+            f'<line x1="{pad}" y1="{rule_y:.0f}" x2="{width - pad}" y2="{rule_y:.0f}" '
+            f'stroke="{p["rule"]}" stroke-width="1.5"/>'
+        )
+        add(f'<text class="small" x="{pad}" y="{rule_y + 22:.0f}">{escape(note)}</text>')
+
+    add("</svg>")
+    return "\n".join(parts) + "\n"
+
+
 def svg_for(spec: dict, palette: dict) -> str:
+    if "apps" in spec:
+        return card_svg(spec, palette)
     p = palette
     hosts = spec["hosts"]
     second = spec.get("machine2")

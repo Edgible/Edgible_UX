@@ -280,7 +280,7 @@ edgible whoami
 edgible config list
 ```
 
-Note the organization id. You will need it when you author YAML in a later chapter.
+Note the organization id. It identifies this login on this machine. The website card in [Self Hosting is Social](../website-on-edgible/07-self-hosting-is-social.md) leaves it out of the file you share.
 
 If you belong to more than one org:
 

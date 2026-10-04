@@ -53,6 +53,7 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | `8080` | The site's nginx port on the guest, bound to loopback. |
 | `3000` | Umami's port on the guest, bound to loopback. |
 | `3001` | Uptime Kuma's port on the guest, bound to loopback. |
+| Card | A YAML file of the apps in a pattern: name, port, and auth mode. The copy you share has no device name, no hostname, and no organization id. The website card is [Self Hosting is Social](guides/website-on-edgible/07-self-hosting-is-social.md). |
 
 ## n8n
 
