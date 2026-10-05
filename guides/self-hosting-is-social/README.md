@@ -2,25 +2,20 @@
 
 **A proven solution can be shared as a pattern, so someone else can reproduce it.**
 
-A self-hosted setup that solves a real problem usually lives in one person's command history. The next person, or you months later, rebuilds it from memory: the same images, the same ports, the same auth modes, and a fresh set of mistakes. A pattern is that solution written down so it can be handed over. What you share is the apps, what each one is, where it comes from, the port, the auth mode, and the public URLs of the Compose files that start them. What you leave out is yours alone: the device name, the hostnames, and the organization id. Whoever receives the pattern fills those in on their own machine and stands the same solution up again.
+Self-hosting keeps a service on hardware you own. The data stays there, and so do the passwords and the volumes. That is a private arrangement, which is why calling it social sounds like a contradiction. The contradiction is the point. The service stays private. The pattern of how you published it is what another person can use.
 
-The file for a pattern is a card. One card is enough to see the solution, and, once a device name is supplied, to publish it again.
+A useful self-hosted setup is a set of decisions: which programs, which images, which ports, which auth mode on each hostname, which files they need, and which of those programs share a serving device. Those decisions are what took the time. They usually live in one person's command history. A screenshot shows that it worked. It does not give the next person a way to stand the same thing up on their own machine.
 
-The first pattern here is a website. [Website on Edgible](../website-on-edgible/README.md) is that solution built the long way: nginx serving your files, Umami for the visits, Uptime Kuma for the monitor, four hostnames, two of them open and two behind an `org` login. This series writes that website as a card and reproduces it. Further patterns, for other problems, can follow the same shape.
+Edgible is what makes the pattern separable from your machine. Each published app already has its own hostname and its own auth mode, `None`, `org`, or `api-key`, independent of the program behind it. A card writes those decisions down and leaves out what is yours alone: the device name, the hostnames, and the organization id. Whoever receives the card maps each place to a serving device they have, and Edgible publishes the apps on their hostnames.
 
-![The website card lists four apps in two places, and no hostnames. Place web is one serving device: site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. Place monitor may be a second serving device: status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-light.svg#only-light)
-![The website card lists four apps in two places, and no hostnames. Place web is one serving device: site is nginx serving your files on port 8080, open to anyone. analytics is the Umami tracking script on port 3000, open to anyone. umami is the Umami dashboard on that same port, with Postgres, behind an org login. Place monitor may be a second serving device: status is Uptime Kuma on port 3001, behind an org login. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-dark.svg#only-dark)
+The card is meant to be complete enough that the person sharing it does not also have to host the programs. An image is named by the registry that already publishes it. A Compose file is named by its public URL. When that file needs a change to be safe to publish this way, such as binding a port to `127.0.0.1`, the card lists the change instead of asking the sharer to rehost the file. Passwords and volume data are still created on the machine that runs the pattern.
 
-One chapter, for this first pattern. It assumes the website stack has been torn down, so the containers are stopped and the hostnames are gone. The card names the images, the ports, and the public URLs of the Compose files. Volume data and passwords stay out of the card.
-
-In this chapter you write the card by hand. A later tool will generate one from a running setup, and an AI can draft one from a description of the apps. The program that turns the card into a stack file is the stand-in for a later Edgible command.
+What you stop doing is rebuilding a known setup from memory. What you can hand over is the pattern. The chapters after this page are examples of that. The first is a website.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
-**Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), with the serving agent from [Start here](../start-here/README.md) still installed.
+**Need first:** [Start here](../start-here/README.md), so a serving agent is installed. The website example also needs [Tear down the website stack](../website-on-edgible/06-website-teardown.md).
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
 | 1 | [1. The website card](01-website-card.md) | `edgible app list` shows `site`, `analytics`, `umami` and `status` again |
-
-The Compose files and the passwords stay in [Website on Edgible](../website-on-edgible/README.md). This chapter does not rewrite them.

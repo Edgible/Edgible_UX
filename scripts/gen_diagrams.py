@@ -151,20 +151,6 @@ SERIES = {
             "router: no forwarded port",
         ],
     },
-    "self-hosting-is-social": {
-        "card": "WEBSITE CARD",
-        "apps": [
-            ("site", "8080", OPEN, "nginx:alpine, your files", "web"),
-            ("analytics", "3000", OPEN, "Umami tracking script", "web"),
-            ("umami", "3000", LOGIN, "Umami and Postgres", "web"),
-            ("status", "3001", LOGIN, "Uptime Kuma", "monitor"),
-        ],
-        "places": {
-            "web": "one serving device",
-            "monitor": "may be a second serving device",
-        },
-        "note": "no device name, no hostname, no organization id",
-    },
 }
 
 MAC = {
@@ -921,15 +907,6 @@ ALT = {
         "ollama.<org>.edgible.com with a bearer key. It arrives at Ollama on the Mac, "
         "bound to 127.0.0.1:11434 and reached through a forwarder on the guest, so the "
         "model weights and the GPU stay home and the router has no forwarded port."
-    ),
-    "self-hosting-is-social": (
-        "The website card lists four apps in two places, and no hostnames. "
-        "Place web is one serving device: site is nginx serving your files on "
-        "port 8080, open to anyone. analytics is the Umami tracking script on "
-        "port 3000, open to anyone. umami is the Umami dashboard on that same "
-        "port, with Postgres, behind an org login. Place monitor may be a second "
-        "serving device: status is Uptime Kuma on port 3001, behind an org login. "
-        "The card names no device and no organization."
     ),
 }
 
