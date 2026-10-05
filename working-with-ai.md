@@ -57,10 +57,11 @@ Give a coding agent the markdown for a chapter and have it adapt the commands to
 
 Ask a question against the whole corpus by fetching `llms-full.txt`, when you do not yet know which guide the answer is in.
 
-The source of truth for a shareable pattern is [card.schema.json](guides/self-hosting-is-social/card.schema.json). [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md) is how an assistant that can run `edgible` fills that schema from the apps you name.
+The source of truth for a shareable pattern is [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) in the cards repo. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes a stack file from a card. [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md) is how an assistant that can run `edgible` fills that schema from the apps you name.
 
 ```bash
-curl https://guides.edgible.com/guides/self-hosting-is-social/card.schema.json
+curl https://raw.githubusercontent.com/Edgible/cards/main/tools/card.schema.json
+curl https://raw.githubusercontent.com/Edgible/cards/main/tools/card-to-stack.py
 curl https://guides.edgible.com/guides/self-hosting-is-social/README.md
 ```
 

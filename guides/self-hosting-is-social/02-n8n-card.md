@@ -30,7 +30,7 @@ You write the n8n card, fetch n8n's Compose file and apply its `changes`, genera
 
 **Need first:** [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md), including the serving agent still installed. One published app stays, such as `hello-world`, so 2.3 can read your org label. 2.3 fetches the Compose file, so `~/n8n` does not have to already be the gold file.
 
-**Not this chapter:** a tool that writes the card, a cron workflow, or a webhook workflow. You write `~/n8n-card.yml` by hand. [card-to-stack.py](card-to-stack.py) writes the stack file from that card. The timezone in [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) stays off the card.
+**Not this chapter:** a tool that writes the card, a cron workflow, or a webhook workflow. You write `~/n8n-card.yml` by hand. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file from that card. The timezone in [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) stays off the card.
 
 ## 2.2 Write the n8n card
 
@@ -167,12 +167,12 @@ curl -sS -o /dev/null -w "%{http_code}\n" http://127.0.0.1:5678/
 
 ## 2.4 Generate the stack file and deploy it
 
-The port from 2.3 is listening. `edgible stack deploy` reads a stack file, and each app in it is `pre-existing`, so deploy publishes that port twice. [card-to-stack.py](card-to-stack.py) writes that file from the card. It reads `~/n8n-card.yml`, takes the organization id from `edgible config get organizationId`, and writes one Application document per app. `--device minipc` places both on the serving device from [Start here](../start-here/01-edgible-on-vm.md). Auth mode `org` in the card is written `edgible-login` in the stack file.
+The port from 2.3 is listening. `edgible stack deploy` reads a stack file, and each app in it is `pre-existing`, so deploy publishes that port twice. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes that file from the card. It reads `~/n8n-card.yml`, takes the organization id from `edgible config get organizationId`, and writes one Application document per app. `--device minipc` places both on the serving device from [Start here](../start-here/01-edgible-on-vm.md). Auth mode `org` in the card is written `edgible-login` in the stack file.
 
 On the guest:
 
 ```bash
-curl -fsSL https://guides.edgible.com/guides/self-hosting-is-social/card-to-stack.py -o ~/card-to-stack.py
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/tools/card-to-stack.py -o ~/card-to-stack.py
 python3 ~/card-to-stack.py ~/n8n-card.yml --device minipc > ~/n8n.stack.yml
 edgible stack validate -f ~/n8n.stack.yml
 edgible stack deploy -f ~/n8n.stack.yml

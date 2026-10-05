@@ -14,7 +14,7 @@ What you stop doing is rebuilding a known setup from memory. What you can hand o
 
 ## The card
 
-[card.schema.json](card.schema.json) is the source of truth for a card. An assistant that can run `edgible` reads this section, writes a file that satisfies that schema, and you check it before you share it. The block below is the same shape, with placeholders, so it is not itself a valid card. [1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are valid cards.
+[card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for a card. An assistant that can run `edgible` reads this section, writes a file that satisfies that schema, and you check it before you share it. The block below is the same shape, with placeholders, so it is not itself a valid card. [1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are valid cards.
 
 ```yaml
 apiVersion: v1
@@ -43,7 +43,7 @@ applications:
       env: [SOME_SECRET]
 ```
 
-`kind: Card` is the shareable file. [card-to-stack.py](card-to-stack.py) adds your device name and your organization id when you publish, and that output is the stack file.
+`kind: Card` is the shareable file. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) adds your device name and your organization id when you publish, and that output is the stack file.
 
 Every application has `name`, `what`, `from`, `port`, `protocol`, `subtype`, `published`, `authModes`, and `place`. `protocol` is `https`. `subtype` is `existing`. `published` is `true`. `database` is optional, and names a database image in the same Compose file. `files`, `changes`, and `env` are optional.
 
@@ -67,7 +67,7 @@ Repeat the export for each app. Copy `metadata.name`, the workload `containerPor
 Check a card against the schema. This needs the `pyyaml` and `jsonschema` packages.
 
 ```bash
-curl -fsSL https://guides.edgible.com/guides/self-hosting-is-social/card.schema.json -o ~/card.schema.json
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/tools/card.schema.json -o ~/card.schema.json
 python3 -c '
 import json, sys
 from pathlib import Path
@@ -80,7 +80,7 @@ print("ok")
 ' ~/website-card.yml
 ```
 
-`ok` means the file matches [card.schema.json](card.schema.json). A file that still has `deviceName`, `organization`, or a placeholder URL fails.
+`ok` means the file matches [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json). A file that still has `deviceName`, `organization`, or a placeholder URL fails.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 

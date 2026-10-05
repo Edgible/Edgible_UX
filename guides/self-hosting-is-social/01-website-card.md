@@ -30,7 +30,7 @@ You write the website card by hand, start nginx, Umami and Uptime Kuma, generate
 
 **Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), including the serving agent still installed. `hello-world` can stay. 1.3 fetches the Compose files, so those directories do not have to already be on disk.
 
-**Not this chapter:** a tool that writes the card. You write `~/website-card.yml` by hand. [card-to-stack.py](card-to-stack.py) writes the stack file from that card.
+**Not this chapter:** a tool that writes the card. You write `~/website-card.yml` by hand. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file from that card.
 
 ## 1.2 Write the website card
 
@@ -177,14 +177,14 @@ ss -ltnp | grep -E '8080|3000|3001'
 
 ## 1.4 Generate the stack file and deploy it
 
-The ports from 1.3 are listening. `edgible stack deploy` reads a stack file, and each app in it is `pre-existing`, so deploy publishes those ports. [card-to-stack.py](card-to-stack.py) writes that file from the card. It reads `~/website-card.yml`, takes the organization id from `edgible config get organizationId`, and writes one Application document per app. `--device minipc` places all four on the serving device from [Start here](../start-here/01-edgible-on-vm.md). Auth mode `org` in the card is written `edgible-login` in the stack file.
+The ports from 1.3 are listening. `edgible stack deploy` reads a stack file, and each app in it is `pre-existing`, so deploy publishes those ports. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes that file from the card. It reads `~/website-card.yml`, takes the organization id from `edgible config get organizationId`, and writes one Application document per app. `--device minipc` places all four on the serving device from [Start here](../start-here/01-edgible-on-vm.md). Auth mode `org` in the card is written `edgible-login` in the stack file.
 
 Running the script yourself is the current step. Later, `edgible stack export --card` will write the stack file from the card, and this download goes away.
 
 On the guest:
 
 ```bash
-curl -fsSL https://guides.edgible.com/guides/self-hosting-is-social/card-to-stack.py -o ~/card-to-stack.py
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/tools/card-to-stack.py -o ~/card-to-stack.py
 python3 ~/card-to-stack.py ~/website-card.yml --device minipc > ~/website.stack.yml
 ```
 
