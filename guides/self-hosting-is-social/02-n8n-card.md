@@ -4,18 +4,18 @@
 
 ## 2.0 Why
 
-[n8n on Edgible](../n8n-on-edgible/README.md) publishes one process on port `5678` twice: the editor with `org`, and a webhook hostname with `None`. [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md) deleted those hostnames and stopped the container. This chapter writes that pattern as a card and publishes the two apps again.
+[n8n on Edgible](../n8n-on-edgible/README.md) publishes one process on port `5678` twice: the editor with `org`, and a webhook hostname with `None`. [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md) deleted those hostnames and stopped the container. This chapter takes that pattern from the [cards](https://github.com/Edgible/cards) catalog and publishes the two apps again.
 
 The card assumes the Compose file n8n publishes, not the shorter file those chapters pasted by hand. That published file runs Postgres and a task runner, and it binds port `5678` on every interface. The `changes` list is the edit that makes it this pattern: loopback only, generated secrets, and the editor hostname kept apart from the webhook hostname. Both apps are place `workhorse`. This chapter maps that place to `minipc`.
 
-![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is the editor on port 5678, with Postgres, behind an org login. n8n-hooks is the webhook hostname on that same port, open to anyone. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-02-light.svg#only-light)
-![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is the editor on port 5678, with Postgres, behind an org login. n8n-hooks is the webhook hostname on that same port, open to anyone. The card names no device and no organization.](../../images/diagrams/self-hosting-is-social-02-dark.svg#only-dark)
+![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/card-light.svg#only-light)
+![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/card-dark.svg#only-dark)
 
 **Where you run this:** the **Ubuntu guest**. The n8n hostnames are gone. The Compose file is fetched in 2.3 from the URL in the card.
 
 ## 2.1 The job
 
-You write the n8n card, fetch n8n's Compose file and apply its `changes`, generate `~/n8n.stack.yml` from the card, and deploy it.
+You fetch the n8n card from the catalog, fetch n8n's Compose file and apply its `changes`, generate `~/n8n.stack.yml` from the card, and deploy it.
 
 **Done when**
 
@@ -30,68 +30,16 @@ You write the n8n card, fetch n8n's Compose file and apply its `changes`, genera
 
 **Need first:** [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md), including the serving agent still installed. One published app stays, such as `hello-world`, so 2.3 can read your org label. 2.3 fetches the Compose file, so `~/n8n` does not have to already be the gold file.
 
-**Not this chapter:** a tool that writes the card, a cron workflow, or a webhook workflow. You write `~/n8n-card.yml` by hand. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file from that card. The timezone in [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) stays off the card.
+**Not this chapter:** a second copy of the card, a cron workflow, or a webhook workflow. The file is [cards/n8n/card.yml](https://github.com/Edgible/cards/blob/main/cards/n8n/card.yml). [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file from that card. The timezone in [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) stays off the card.
 
-## 2.2 Write the n8n card
+## 2.2 Fetch the n8n card
 
-The field meanings are the same as [The website card](01-website-card.md). This card is the gold-file assumption for an `existing` app: `compose` is the public file for the image, and `changes` is what you edit before you run it. If a setup you already run uses a different file, edit the card. Point `compose` at that file and drop `changes`, or keep this URL and add a line.
+The field meanings are the same as [The website card](01-website-card.md). This card is the gold-file assumption for an `existing` app: `compose` is the public file for the image, and `changes` is what you edit before you run it. If a setup you already run uses a different file, edit the card in the catalog. Point `compose` at that file and drop `changes`, or keep this URL and add a line.
 
 On the guest:
 
 ```bash
-cat > ~/n8n-card.yml <<'YAML'
-apiVersion: v1
-kind: Card
-metadata:
-  name: n8n
-  description: Locked editor and open webhook hostname, one n8n process
-
-applications:
-  - name: n8n
-    what: n8n editor
-    from: docker.n8n.io/n8nio/n8n
-    database: postgres:18
-    port: 5678
-    protocol: https
-    subtype: existing
-    published: true
-    authModes: [org]
-    place: workhorse
-    resources:
-      compose: https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/docker-compose.yml
-      files:
-        - https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/.env
-        - https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/init-data.sh
-      changes:
-        - Bind the host port to 127.0.0.1 only
-        - Replace the sample database passwords and RUNNERS_AUTH_TOKEN with generated values
-        - Set N8N_PROXY_HOPS to 1 and N8N_PROTOCOL to https
-        - Set N8N_HOST and N8N_EDITOR_BASE_URL to the hostname of this app
-        - Set WEBHOOK_URL to the hostname of n8n-hooks
-      env: [POSTGRES_PASSWORD, POSTGRES_NON_ROOT_PASSWORD, RUNNERS_AUTH_TOKEN]
-
-  - name: n8n-hooks
-    what: n8n webhooks, same process as n8n
-    from: docker.n8n.io/n8nio/n8n
-    port: 5678
-    protocol: https
-    subtype: existing
-    published: true
-    authModes: [none]
-    place: workhorse
-    resources:
-      compose: https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/docker-compose.yml
-      files:
-        - https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/.env
-        - https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/init-data.sh
-      changes:
-        - Bind the host port to 127.0.0.1 only
-        - Replace the sample database passwords and RUNNERS_AUTH_TOKEN with generated values
-        - Set N8N_PROXY_HOPS to 1 and N8N_PROTOCOL to https
-        - Set N8N_HOST and N8N_EDITOR_BASE_URL to the hostname of this app
-        - Set WEBHOOK_URL to the hostname of n8n-hooks
-      env: [POSTGRES_PASSWORD, POSTGRES_NON_ROOT_PASSWORD, RUNNERS_AUTH_TOKEN]
-YAML
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/card.yml -o ~/n8n-card.yml
 ```
 
 `n8n-hooks` is not a second program. It is the webhook hostname on the same process as `n8n`, the split from [Public webhook hostname](../n8n-on-edgible/03-n8n-public-webhook-hostname.md). `none` in the file is the auth mode `None`. `org` is the auth mode `org`.

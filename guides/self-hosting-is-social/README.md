@@ -14,7 +14,7 @@ What you stop doing is rebuilding a known setup from memory. What you can hand o
 
 ## The card
 
-[card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for a card. An assistant that can run `edgible` reads this section, writes a file that satisfies that schema, and you check it before you share it. The block below is the same shape, with placeholders, so it is not itself a valid card. [1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are valid cards.
+[card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for a card. The cards themselves live in [Edgible/cards](https://github.com/Edgible/cards). An assistant that can run `edgible` reads this section, writes a file that satisfies that schema, and you check it before you share it. The block below is the same shape, with placeholders, so it is not itself a valid card. [1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) fetch the real files from that repo.
 
 ```yaml
 apiVersion: v1

@@ -15,11 +15,6 @@ column for the chapters where nothing is published yet, a second machine panel
 for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
-A card diagram is a different shape. It lists apps with a port and an auth mode,
-and it draws no caller, no hostname and no machine. When an app names a place,
-apps that share that place are drawn together. The website card in Self Hosting
-is Social is the one of these.
-
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
 see that toggle, so the markdown references both with #only-light and #only-dark
@@ -250,47 +245,6 @@ CHAPTERS = {
             "Uptime Kuma on 127.0.0.1:3001 on the Ubuntu guest is published as "
             "status.<org>.edgible.com behind an org login, and checks your public site "
             "hostname by going out to the internet and back in."
-        ),
-    },
-    "self-hosting-is-social-01": {
-        "card": "WEBSITE CARD",
-        "apps": [
-            ("site", "8080", OPEN, "nginx:alpine, your files", "web"),
-            ("analytics", "3000", OPEN, "Umami tracking script", "web"),
-            ("umami", "3000", LOGIN, "Umami and Postgres", "web"),
-            ("status", "3001", LOGIN, "Uptime Kuma", "monitor"),
-        ],
-        "places": {
-            "web": "one serving device",
-            "monitor": "may be a second serving device",
-        },
-        "note": "no device name, no hostname, no organization id",
-        "alt": (
-            "The website card lists four apps in two places, and no hostnames. "
-            "Place web is one serving device: site is nginx serving your files on "
-            "port 8080, open to anyone. analytics is the Umami tracking script on "
-            "port 3000, open to anyone. umami is the Umami dashboard on that same "
-            "port, with Postgres, behind an org login. Place monitor may be a second "
-            "serving device: status is Uptime Kuma on port 3001, behind an org login. "
-            "The card names no device and no organization."
-        ),
-    },
-    "self-hosting-is-social-02": {
-        "card": "N8N CARD",
-        "apps": [
-            ("n8n", "5678", LOGIN, "n8n editor, Postgres", "workhorse"),
-            ("n8n-hooks", "5678", OPEN, "webhooks, same process", "workhorse"),
-        ],
-        "places": {
-            "workhorse": "one serving device",
-        },
-        "note": "no device name, no hostname, no organization id",
-        "alt": (
-            "The n8n card lists two apps in one place, and no hostnames. "
-            "Place workhorse is one serving device: n8n is the editor on port "
-            "5678, with Postgres, behind an org login. n8n-hooks is the webhook "
-            "hostname on that same port, open to anyone. The card names no device "
-            "and no organization."
         ),
     },
     "n8n-on-edgible-01": {
