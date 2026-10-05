@@ -11,11 +11,11 @@ The card for this example has two places. `site`, `analytics`, and `umami` are `
 ![The website card lists four apps in two places, and no hostnames. Place web is one serving device: site is your static files, served by nginx on port 8080, open to anyone. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/website/card-light.svg#only-light)
 ![The website card lists four apps in two places, and no hostnames. Place web is one serving device: site is your static files, served by nginx on port 8080, open to anyone. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/website/card-dark.svg#only-dark)
 
-**Where you run this:** the **Ubuntu guest**. The four apps are gone. The Compose files are fetched in 1.3 from the URLs in the card.
+**Where you run this:** the **Ubuntu guest**. The four apps are gone. The [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md) fetches the Compose files.
 
 ## 1.1 The job
 
-You fetch the website card, start nginx, Umami and Uptime Kuma, generate `~/website.stack.yml` from the card, and deploy it.
+You fetch the website card, follow its README, start nginx, Umami and Uptime Kuma, generate `~/website.stack.yml` from the card, and deploy it.
 
 **Done when**
 
@@ -28,7 +28,7 @@ You fetch the website card, start nginx, Umami and Uptime Kuma, generate `~/webs
 - `edgible stack validate -f ~/website.stack.yml` reports 4 applications: `site`, `analytics`, `umami`, `status`.
 - `edgible app list` shows those four apps again.
 
-**Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), including the serving agent still installed. `hello-world` can stay. 1.3 fetches the Compose files, so those directories do not have to already be on disk.
+**Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), including the serving agent still installed. `hello-world` can stay. The [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md) fetches the Compose files, so those directories do not have to already be on disk.
 
 **Not this chapter:** a second copy of the card. The file is [cards/website/card.yml](https://github.com/Edgible/cards/blob/main/cards/website/card.yml). [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file from that card.
 
@@ -48,39 +48,15 @@ curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/ca
 
 `place` is the topology. It is not a device name. Applications with the same place run on one serving device, and that device is where the serving agent for those apps runs. `site`, `analytics` and `umami` are `web`, and `analytics` and `umami` have to stay together because they are one process on port `3000`. `status` is `monitor`, so it can live on a second serving device. A monitor on the same machine as the site cannot report that machine going down, which is [What this cannot tell you](../website-on-edgible/05-uptime-kuma.md#55-what-this-cannot-tell-you). This chapter maps both places to `minipc`.
 
-`resources` sits on the application that needs it. `compose` is a public URL. `changes` is the list of edits to make before you run that file, and it is left off when the file is already the one to run. `site` is that case: there is no upstream Compose file for a folder of your pages, so the URL is [docker-compose.yml](https://github.com/Edgible/cards/blob/main/cards/website/docker-compose.yml) next to the card, and there is no `changes` list. `files` on `site` is the page nginx serves when `~/site/public` is empty. `analytics` and `umami` list the same Umami URL and the same `changes`, because they are one process. `status` lists the Uptime Kuma URL and the one edit that binds its port to loopback. `env` names the variables to generate into `~/umami/.env`. The card does not carry the values or the volume data.
+The Compose files and the edits are on the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md).
 
 `subtype: existing` on every app means a process is already listening on that port. The card only records the port. nginx, Umami and Uptime Kuma are still stopped, from [Tear down the website stack](../website-on-edgible/06-website-teardown.md). The next step starts them, so those ports have something listening before you publish.
 
 ## 1.3 Start the containers
 
-Fetch each `compose` URL. `site` is ready to run. [tailor.sh](https://github.com/Edgible/cards/blob/main/cards/website/tailor.sh) applies the `changes` on the Umami and Uptime Kuma files before you start them. The Umami URL is listed twice and downloaded once. An existing `~/site/public/index.html` from [The site on the VM](../website-on-edgible/01-site-on-the-vm.md) is left as it is. The sample page is only downloaded when that file is missing.
+The Compose files and the edits are on the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md). Follow that page. It fetches the files and runs `tailor.sh`.
 
-On the guest:
-
-```bash
-mkdir -p ~/site/public ~/umami ~/uptime-kuma
-curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/docker-compose.yml -o ~/site/docker-compose.yml
-curl -fsSL https://raw.githubusercontent.com/umami-software/umami/master/docker-compose.yml -o ~/umami/docker-compose.yml
-curl -fsSL https://raw.githubusercontent.com/louislam/uptime-kuma/master/compose.yaml -o ~/uptime-kuma/compose.yaml
-if [ ! -f ~/site/public/index.html ]; then
-  curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/public/index.html -o ~/site/public/index.html
-fi
-curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/tailor.sh -o ~/website-tailor.sh
-bash ~/website-tailor.sh
-```
-
-**Smoke test.** On the guest:
-
-```bash
-grep -n '127.0.0.1:3000:3000' ~/umami/docker-compose.yml
-grep -nE 'replace-me|POSTGRES_PASSWORD: umami' ~/umami/docker-compose.yml
-grep -n '127.0.0.1:3001:3001' ~/uptime-kuma/compose.yaml
-```
-
-The first `grep` shows the Umami port bound to loopback. The second prints nothing. The third shows the Uptime Kuma port bound to loopback.
-
-`tailor.sh` writes `~/umami/.env` when that file is missing. Start the three Compose files:
+Start the three Compose files:
 
 ```bash
 docker compose -f ~/site/docker-compose.yml up -d

@@ -57,7 +57,7 @@ Give a coding agent the markdown for a chapter and have it adapt the commands to
 
 Ask a question against the whole corpus by fetching `llms-full.txt`, when you do not yet know which guide the answer is in.
 
-The cards, the schema, and the tools live in [Edgible/cards](https://github.com/Edgible/cards). [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for a card. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes a stack file from a card. [card-image.py](https://github.com/Edgible/cards/blob/main/tools/card-image.py) draws the picture. [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md) is how an assistant that can run `edgible` fills that schema from the apps you name. The guide does not keep a second copy of those files.
+The cards, the schema, and the tools live in [Edgible/cards](https://github.com/Edgible/cards). [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for a card. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes a stack file from a card. [card-image.py](https://github.com/Edgible/cards/blob/main/tools/card-image.py) draws the picture. An assistant that can run `edgible` reads that schema and the cards in the repo. [Self Hosting is Social](guides/self-hosting-is-social/README.md) is the idea. The guide does not keep a second copy of those files.
 
 ```bash
 curl https://raw.githubusercontent.com/Edgible/cards/main/tools/card.schema.json
