@@ -275,6 +275,24 @@ CHAPTERS = {
             "The card names no device and no organization."
         ),
     },
+    "self-hosting-is-social-02": {
+        "card": "N8N CARD",
+        "apps": [
+            ("n8n", "5678", LOGIN, "n8n editor, Postgres", "workhorse"),
+            ("n8n-hooks", "5678", OPEN, "webhooks, same process", "workhorse"),
+        ],
+        "places": {
+            "workhorse": "one serving device",
+        },
+        "note": "no device name, no hostname, no organization id",
+        "alt": (
+            "The n8n card lists two apps in one place, and no hostnames. "
+            "Place workhorse is one serving device: n8n is the editor on port "
+            "5678, with Postgres, behind an org login. n8n-hooks is the webhook "
+            "hostname on that same port, open to anyone. The card names no device "
+            "and no organization."
+        ),
+    },
     "n8n-on-edgible-01": {
         "caller": ["The internet", "cannot reach", "this yet"],
         "hosts": [],

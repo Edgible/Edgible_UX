@@ -33,7 +33,7 @@ New guides get added over time, each taking a service people genuinely self-host
 - [n8n on Edgible](guides/n8n-on-edgible/README.md). **The back office workhorse, with the credentials staying in your building.** The editor that holds them is behind an `org` login, while a second hostname on `None` accepts webhooks from services that cannot sign in. Six chapters.
 - [OpenClaw on Edgible](guides/openclaw-on-edgible/README.md). **The agent everyone is currently trying, on hardware you control.** Reachable from your phone over HTTPS, with its Gateway still bound to loopback and no VPN on the phone. Nine short chapters.
 - [LLM on Edgible](guides/llm-on-edgible/README.md). **Private AI, where the prompts and the weights stay home.** A self-hosted Ollama published with `api-key` and called over HTTPS by other machines you own. Five chapters.
-- [Self Hosting is Social](guides/self-hosting-is-social/README.md). **A proven solution can be shared as a pattern, so someone else can reproduce it.** The first pattern is a website: four apps written as a card, with the device name, the hostnames and the organization id left out, then published again from that file. One chapter.
+- [Self Hosting is Social](guides/self-hosting-is-social/README.md). **A proven solution can be shared as a pattern, so someone else can reproduce it.** The first pattern is a website: four apps written as a card, with the device name, the hostnames and the organization id left out, then published again from that file. The second is n8n, starting from the Compose file n8n publishes. Two chapters.
 
 ## Where to start
 

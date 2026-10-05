@@ -89,4 +89,4 @@ Do not `edgible agent uninstall` here.
 
 ## Next
 
-Series index: [README](README.md). Control UI: [OpenClaw on Edgible](../openclaw-on-edgible/README.md). Published model: [LLM on Edgible](../llm-on-edgible/README.md).
+[The n8n card](../self-hosting-is-social/02-n8n-card.md) writes this pattern from n8n's published Compose file and publishes the two apps again. Series index: [README](README.md). Control UI: [OpenClaw on Edgible](../openclaw-on-edgible/README.md). Published model: [LLM on Edgible](../llm-on-edgible/README.md).

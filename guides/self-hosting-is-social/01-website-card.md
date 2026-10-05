@@ -224,4 +224,4 @@ Deploy waits until those apps are published. `edgible app list` shows them again
 
 ## Next
 
-[Start here](../start-here/README.md) still has the VM and the serving agent ready. The other guides go further with the same machine: [n8n on Edgible](../n8n-on-edgible/README.md) publishes one process on two hostnames with two auth modes, [OpenClaw on Edgible](../openclaw-on-edgible/README.md) puts an agent on your phone, and [LLM on Edgible](../llm-on-edgible/README.md) publishes a model on your own hardware. Series: [README](README.md).
+[2. The n8n card](02-n8n-card.md). Series: [README](README.md).
