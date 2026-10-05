@@ -15,6 +15,10 @@ column for the chapters where nothing is published yet, a second machine panel
 for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
+The social series index is not that shape. It is the workflow around a card:
+someone builds apps, shares them as a card, and someone else tailors that card,
+turns it into a stack file, and deploys it.
+
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
 see that toggle, so the markdown references both with #only-light and #only-dark
@@ -510,6 +514,8 @@ def check_card(name: str, spec: dict) -> list[str]:
 
 
 def check(name: str, spec: dict) -> list[str]:
+    if "rows" in spec:
+        return check_flow(name, spec)
     if "apps" in spec:
         return check_card(name, spec)
     bad = []
@@ -670,7 +676,119 @@ def card_svg(spec: dict, palette: dict) -> str:
     return "\n".join(parts) + "\n"
 
 
+FLOW_BOX_W = 203
+FLOW_BOX_H = 78
+FLOW_GAP = 28
+FLOW_PAD_X = 32
+
+
+def check_flow(name: str, spec: dict) -> list[str]:
+    bad = []
+    title_limit = FLOW_BOX_W - 52
+    sub_limit = FLOW_BOX_W - 24
+    for _label, steps in spec["rows"]:
+        for _number, title, sub in steps:
+            if too_wide(title, title_limit, 15):
+                bad.append(f"{name}: flow title does not fit: {title!r}")
+            if too_wide(sub, sub_limit, 13):
+                bad.append(f"{name}: flow note does not fit: {sub!r}")
+    return bad
+
+
+def flow_svg(spec: dict, palette: dict) -> str:
+    p = palette
+    rows = spec["rows"]
+    row_block = 22 + FLOW_BOX_H
+    height = 24 + len(rows) * row_block + 16
+    parts: list[str] = []
+    add = parts.append
+    add(
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {WIDTH} {height}" '
+        f'width="{WIDTH}" height="{height}" role="img" aria-labelledby="t d">'
+    )
+    add(f"<title id=\"t\">{escape(spec['alt'])}</title>")
+    add(f"<desc id=\"d\">{escape(spec['alt'])}</desc>")
+    add(
+        "<style>"
+        f".label{{font-family:Jost,system-ui,sans-serif;font-size:15px;fill:{p['ink']}}}"
+        f".small{{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:{p['muted']}}}"
+        f".head{{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;"
+        f"fill:{p['machine_ink']}}}"
+        f".row{{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;"
+        f"fill:{p['muted']};letter-spacing:.04em}}"
+        f".card{{fill:{p['card']};stroke:{p['edge']};stroke-width:1.5}}"
+        "</style>"
+    )
+    add(f'<rect x="0" y="0" width="{WIDTH}" height="{height}" rx="10" fill="{p["panel"]}"/>')
+
+    y = 24
+    for label, steps in rows:
+        add(f'<text class="row" x="{FLOW_PAD_X}" y="{y + 14}">{escape(label.upper())}</text>')
+        by = y + 22
+        for i, (number, title, sub) in enumerate(steps):
+            x = FLOW_PAD_X + i * (FLOW_BOX_W + FLOW_GAP)
+            add(
+                f'<rect class="card" x="{x}" y="{by}" width="{FLOW_BOX_W}" '
+                f'height="{FLOW_BOX_H}" rx="8"/>'
+            )
+            add(f'<circle cx="{x + 22}" cy="{by + 28}" r="12" fill="{p["machine"]}"/>')
+            add(
+                f'<text class="head" x="{x + 22}" y="{by + 33}" text-anchor="middle">'
+                f"{escape(number)}</text>"
+            )
+            add(f'<text class="label" x="{x + 42}" y="{by + 33}">{escape(title)}</text>')
+            add(f'<text class="small" x="{x + 16}" y="{by + 58}">{escape(sub)}</text>')
+            if i < len(steps) - 1:
+                x1 = x + FLOW_BOX_W + 4
+                x2 = x + FLOW_BOX_W + FLOW_GAP - 4
+                cy = by + FLOW_BOX_H / 2
+                add(
+                    f'<path d="M{x1} {cy:.0f} H{x2 - 8}" fill="none" '
+                    f'stroke="{p["ink"]}" stroke-width="2"/>'
+                )
+                add(
+                    f'<path d="M{x2 - 8} {cy - 5:.0f} L{x2} {cy:.0f} L{x2 - 8} {cy + 5:.0f}" '
+                    f'fill="none" stroke="{p["ink"]}" stroke-width="2"/>'
+                )
+        y += row_block
+    add("</svg>")
+    return "\n".join(parts) + "\n"
+
+
+FLOWS = {
+    "self-hosting-is-social": {
+        "alt": (
+            "You build several Edgible apps, write them as a card, add files such as "
+            "tailor.sh, and publish the card. Someone else finds that card, tailors it "
+            "for their machine, turns it into a stack file, and deploys the stack."
+        ),
+        "rows": [
+            (
+                "You share",
+                [
+                    ("1", "Build the apps", "several Edgible apps"),
+                    ("2", "Write the card", "ports, auth, place"),
+                    ("3", "Add the files", "such as tailor.sh"),
+                    ("4", "Publish the card", "in the cards repo"),
+                ],
+            ),
+            (
+                "Someone else reuses",
+                [
+                    ("5", "Find the card", "in the cards repo"),
+                    ("6", "Tailor it", "for your machine"),
+                    ("7", "Make the stack", "card-to-stack.py"),
+                    ("8", "Deploy", "edgible stack deploy"),
+                ],
+            ),
+        ],
+    },
+}
+
+
 def svg_for(spec: dict, palette: dict) -> str:
+    if "rows" in spec:
+        return flow_svg(spec, palette)
     if "apps" in spec:
         return card_svg(spec, palette)
     p = palette
@@ -888,6 +1006,7 @@ def main() -> int:
     written = 0
     specs = {name: {**spec, "alt": ALT[name]} for name, spec in SERIES.items()}
     specs.update(CHAPTERS)
+    specs.update(FLOWS)
 
     problems = [p for name, spec in specs.items() for p in check(name, spec)]
     if problems:
