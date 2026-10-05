@@ -53,7 +53,8 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | `8080` | The site's nginx port on the guest, bound to loopback. |
 | `3000` | Umami's port on the guest, bound to loopback. |
 | `3001` | Uptime Kuma's port on the guest, bound to loopback. |
-| Card | A YAML file of a pattern: the apps (name, image, port, auth mode) and the resources they need, as public URLs such as Compose files. The copy you share has no device name, no hostname, no organization id, and no passwords. The website card is [The website card](guides/self-hosting-is-social/01-website-card.md). |
+| Card | A YAML file of a pattern: the apps (name, image, port, auth mode), the resources they need as public URLs, and a place for which apps share a serving device. The copy you share has no device name, no hostname, no organization id, and no passwords. The website card is [The website card](guides/self-hosting-is-social/01-website-card.md). |
+| Place | A name on a card for applications that share a serving device. It is not one of your device names. You map each place to a serving device when you publish. |
 
 ## n8n
 

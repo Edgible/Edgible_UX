@@ -6,7 +6,7 @@ device names and the organization id. This script fills those in and prints
 one `kind: Application` document per app, which `edgible stack deploy` accepts.
 
     python3 card-to-stack.py website-card.yml --device minipc > website.stack.yml
-    python3 card-to-stack.py website-card.yml --device site=minipc --device status=monitor
+    python3 card-to-stack.py website-card.yml --device web=minipc --device monitor=otherbox
 
 The organization id is `edgible config get organizationId`, unless you pass
 `--org`. The workload is `pre-existing`: the process must already be listening
@@ -73,35 +73,47 @@ def parse_card(text: str) -> list[dict[str, str]]:
     return apps
 
 
-def devices_from(flags: list[str], names: list[str]) -> dict[str, str]:
-    """One bare name applies to every app. app=device assigns that app."""
+def devices_from(flags: list[str], apps: list[dict[str, str]]) -> dict[str, str]:
+    """One bare name applies to every app. place=device or app=device overrides."""
+    names = [app["name"] for app in apps]
+    place_of = {app["name"]: app.get("place", "") for app in apps}
+    places = {place for place in place_of.values() if place}
     assigned: dict[str, str] = {}
     default: str | None = None
     for flag in flags:
         if "=" in flag:
-            app, device = flag.split("=", 1)
-            if not app or not device:
-                raise SystemExit(f"bad --device {flag!r}, use app=device")
-            assigned[app] = device
+            key, device = flag.split("=", 1)
+            if not key or not device:
+                raise SystemExit(f"bad --device {flag!r}, use place=device or app=device")
+            assigned[key] = device
         else:
             if default is not None:
-                raise SystemExit("pass one device name, or app=device pairs")
+                raise SystemExit("pass one device name, or place=device pairs")
             default = flag
     out: dict[str, str] = {}
     missing = []
     for name in names:
-        device = assigned.get(name, default)
+        place = place_of[name]
+        if name in assigned:
+            device = assigned[name]
+        elif place in assigned:
+            device = assigned[place]
+        else:
+            device = default
         if not device:
             missing.append(name)
         else:
             out[name] = device
     if missing:
         raise SystemExit(
-            "no device for: " + ", ".join(missing) + ". Pass --device NAME or --device app=NAME"
+            "no device for: "
+            + ", ".join(missing)
+            + ". Pass --device NAME, --device place=NAME, or --device app=NAME"
         )
-    unknown = sorted(set(assigned) - set(names))
+    known = set(names) | places
+    unknown = sorted(set(assigned) - known)
     if unknown:
-        raise SystemExit("card has no app named: " + ", ".join(unknown))
+        raise SystemExit("card has no app or place named: " + ", ".join(unknown))
     return out
 
 
@@ -201,13 +213,13 @@ def main() -> None:
         "--device",
         action="append",
         required=True,
-        help="one device for every app, or app=device",
+        help="one device for every app, or place=device, or app=device",
     )
     parser.add_argument("--org", help="organization id (default: edgible config get organizationId)")
     parser.add_argument("-o", "--output", help="write here instead of stdout")
     args = parser.parse_args()
     apps = parse_card(args.card.read_text())
-    text = render(apps, devices_from(args.device, [a["name"] for a in apps]), organization(args.org))
+    text = render(apps, devices_from(args.device, apps), organization(args.org))
     if args.output:
         Path(args.output).write_text(text)
     else:

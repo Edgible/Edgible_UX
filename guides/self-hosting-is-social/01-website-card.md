@@ -25,6 +25,7 @@ You write the website card by hand, start nginx, Umami and Uptime Kuma, generate
 - Each app has a `what` line and a `from` line. `umami` also names `postgres:15-alpine`. `analytics` names the same Umami image as `umami`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id. The only `edgible.com` names are `https://guides.edgible.com` URLs.
 - Each application has a `resources` section. `site`, `analytics`, `umami` and `status` each name their own Compose URL. `analytics` and `umami` name the same Umami URL.
+- `site`, `analytics` and `umami` have `place: web`. `status` has `place: monitor`.
 - `ss` shows `127.0.0.1:8080`, `127.0.0.1:3000` and `127.0.0.1:3001`.
 - `edgible stack validate -f ~/website.stack.yml` reports 4 applications: `site`, `analytics`, `umami`, `status`.
 - `edgible app list` shows those four apps again.
@@ -56,6 +57,7 @@ applications:
     subtype: existing
     published: true
     authModes: [none]
+    place: web
     resources:
       compose: https://guides.edgible.com/guides/self-hosting-is-social/compose/site/docker-compose.yml
       files:
@@ -69,6 +71,7 @@ applications:
     subtype: existing
     published: true
     authModes: [none]
+    place: web
     resources:
       compose: https://guides.edgible.com/guides/self-hosting-is-social/compose/umami/docker-compose.yml
       env: [POSTGRES_PASSWORD, APP_SECRET]
@@ -82,6 +85,7 @@ applications:
     subtype: existing
     published: true
     authModes: [org]
+    place: web
     resources:
       compose: https://guides.edgible.com/guides/self-hosting-is-social/compose/umami/docker-compose.yml
       env: [POSTGRES_PASSWORD, APP_SECRET]
@@ -94,6 +98,7 @@ applications:
     subtype: existing
     published: true
     authModes: [org]
+    place: monitor
     resources:
       compose: https://guides.edgible.com/guides/self-hosting-is-social/compose/uptime-kuma/docker-compose.yml
 YAML
@@ -102,6 +107,8 @@ YAML
 `what` is the software. `from` is the image. `umami` also names its database image, because that dashboard does not run alone. `analytics` is not a second program: it is the tracking script from that same Umami image.
 
 `none` in the file is the auth mode `None`. `org` is the auth mode `org`. `analytics` and `umami` are the split surface from [Publish Umami](../website-on-edgible/04-publish-umami.md): one port, two auth modes.
+
+`place` is the topology. It is not a device name. Applications with the same place run on one serving device, and that device is where the serving agent for those apps runs. `site`, `analytics` and `umami` are `web`, and `analytics` and `umami` have to stay together because they are one process on port `3000`. `status` is `monitor`, so it can live on a second serving device. A monitor on the same machine as the site cannot report that machine going down, which is [What this cannot tell you](../website-on-edgible/05-uptime-kuma.md#55-what-this-cannot-tell-you). This chapter maps both places to `minipc`.
 
 `resources` sits on the application that needs it. Each `compose` value is an `https://guides.edgible.com` URL, so someone who has never built this site can fetch the file. `analytics` and `umami` list the same URL and the same `env` names, because they are one Umami process. `files` on `site` is the page nginx serves when `~/site/public` is empty. Whoever runs the pattern generates `POSTGRES_PASSWORD` and `APP_SECRET` in a `.env` beside the Umami Compose file. The card does not carry the values or the volume data. Docker still runs the Compose file.
 
@@ -168,7 +175,7 @@ edgible app list
 
 Deploy waits until those apps are published. `edgible app list` shows them again: `site` and `analytics` with `None`, `umami` and `status` with `org`.
 
-A different device for one app is `--device status=monitor` alongside `--device minipc` for the rest.
+`--device minipc` puts both places on `minipc`. To put the monitor on a second serving device, pass `--device web=minipc --device monitor=otherbox`. `otherbox` has to be a serving device you already have.
 
 ## Verify
 
@@ -177,6 +184,7 @@ A different device for one app is `--device status=monitor` alongside `--device 
 - [ ] `grep -nE 'deviceName|organization' ~/website-card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/website-card.yml | grep -v 'https://guides.edgible.com/'` prints nothing.
 - [ ] `grep -n 'compose:' ~/website-card.yml` shows the site URL under `site`, the Umami URL under both `analytics` and `umami`, and the Uptime Kuma URL under `status`.
+- [ ] `grep -n 'place:' ~/website-card.yml` shows `web` for `site`, `analytics` and `umami`, and `monitor` for `status`.
 - [ ] `ss -ltnp | grep -E '8080|3000|3001'` shows `127.0.0.1` on each port.
 - [ ] `edgible stack validate -f ~/website.stack.yml` reports 4 applications: `site`, `analytics`, `umami`, `status`.
 - [ ] `edgible app list` shows `site`, `analytics`, `umami` and `status` again.

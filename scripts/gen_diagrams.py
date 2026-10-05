@@ -16,8 +16,9 @@ for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
 A card diagram is a different shape. It lists apps with a port and an auth mode,
-and it draws no caller, no hostname and no machine. The website card in Self
-Hosting is Social is the one of these.
+and it draws no caller, no hostname and no machine. When an app names a place,
+apps that share that place are drawn together. The website card in Self Hosting
+is Social is the one of these.
 
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
@@ -153,11 +154,15 @@ SERIES = {
     "self-hosting-is-social": {
         "card": "WEBSITE CARD",
         "apps": [
-            ("site", "8080", OPEN, "nginx:alpine, your files"),
-            ("analytics", "3000", OPEN, "Umami tracking script"),
-            ("umami", "3000", LOGIN, "Umami and Postgres"),
-            ("status", "3001", LOGIN, "Uptime Kuma"),
+            ("site", "8080", OPEN, "nginx:alpine, your files", "web"),
+            ("analytics", "3000", OPEN, "Umami tracking script", "web"),
+            ("umami", "3000", LOGIN, "Umami and Postgres", "web"),
+            ("status", "3001", LOGIN, "Uptime Kuma", "monitor"),
         ],
+        "places": {
+            "web": "one serving device",
+            "monitor": "may be a second serving device",
+        },
         "note": "no device name, no hostname, no organization id",
     },
 }
@@ -264,18 +269,24 @@ CHAPTERS = {
     "self-hosting-is-social-01": {
         "card": "WEBSITE CARD",
         "apps": [
-            ("site", "8080", OPEN, "nginx:alpine, your files"),
-            ("analytics", "3000", OPEN, "Umami tracking script"),
-            ("umami", "3000", LOGIN, "Umami and Postgres"),
-            ("status", "3001", LOGIN, "Uptime Kuma"),
+            ("site", "8080", OPEN, "nginx:alpine, your files", "web"),
+            ("analytics", "3000", OPEN, "Umami tracking script", "web"),
+            ("umami", "3000", LOGIN, "Umami and Postgres", "web"),
+            ("status", "3001", LOGIN, "Uptime Kuma", "monitor"),
         ],
+        "places": {
+            "web": "one serving device",
+            "monitor": "may be a second serving device",
+        },
         "note": "no device name, no hostname, no organization id",
         "alt": (
-            "The website card lists four apps and no hostnames. site is nginx serving "
-            "your files on port 8080, open to anyone. analytics is the Umami tracking "
-            "script on port 3000, open to anyone. umami is the Umami dashboard on that "
-            "same port, with Postgres, behind an org login. status is Uptime Kuma on "
-            "port 3001, behind an org login. The card names no device and no organization."
+            "The website card lists four apps in two places, and no hostnames. "
+            "Place web is one serving device: site is nginx serving your files on "
+            "port 8080, open to anyone. analytics is the Umami tracking script on "
+            "port 3000, open to anyone. umami is the Umami dashboard on that same "
+            "port, with Postgres, behind an org login. Place monitor may be a second "
+            "serving device: status is Uptime Kuma on port 3001, behind an org login. "
+            "The card names no device and no organization."
         ),
     },
     "n8n-on-edgible-01": {
@@ -506,11 +517,19 @@ def too_wide(text: str, limit: int, size: int, mono: bool = False) -> bool:
     return len(text) * size * (MONO_EM if mono else JOST_EM) > limit
 
 
+def card_app(app: tuple) -> tuple:
+    place = app[4] if len(app) > 4 else ""
+    return app[0], app[1], app[2], app[3], place
+
+
 def check_card(name: str, spec: dict) -> list[str]:
     bad = []
     if too_wide(spec["card"], 480, 13):
         bad.append(f"{name}: card title does not fit: {spec['card']!r}")
-    for app_name, port, auth, what in spec["apps"]:
+    subtitles = spec.get("places", {})
+    seen = set()
+    for app in spec["apps"]:
+        app_name, port, auth, what, place = card_app(app)
         if too_wide(app_name, 150, 13, mono=True):
             bad.append(f"{name}: app name does not fit: {app_name!r}")
         if too_wide(port, 80, 13, mono=True):
@@ -519,6 +538,13 @@ def check_card(name: str, spec: dict) -> list[str]:
             bad.append(f"{name}: auth label does not fit: {AUTH_LABEL[auth]!r}")
         if too_wide(what, 420, 13):
             bad.append(f"{name}: app description does not fit: {what!r}")
+        if place and place not in seen:
+            seen.add(place)
+            if too_wide(place, 160, 15, mono=True):
+                bad.append(f"{name}: place name does not fit: {place!r}")
+            subtitle = subtitles.get(place, "")
+            if subtitle and too_wide(subtitle, 340, 13):
+                bad.append(f"{name}: place note does not fit: {subtitle!r}")
     note = spec.get("note", "")
     if note and too_wide(note, 560, 13):
         bad.append(f"{name}: card note does not fit: {note!r}")
@@ -562,18 +588,40 @@ def check(name: str, spec: dict) -> list[str]:
     return bad
 
 
+def card_groups(spec: dict) -> list[tuple[str, list[tuple]]]:
+    groups: list[tuple[str, list[tuple]]] = []
+    for app in spec["apps"]:
+        name, port, auth, what, place = card_app(app)
+        row = (name, port, auth, what)
+        if groups and groups[-1][0] == place:
+            groups[-1][1].append(row)
+        else:
+            groups.append((place, [row]))
+    return groups
+
+
 def card_svg(spec: dict, palette: dict) -> str:
     """One panel: the apps on a card, with no caller, hostname or machine."""
     p = palette
-    apps = spec["apps"]
+    groups = card_groups(spec)
+    subtitles = spec.get("places", {})
     note = spec.get("note", "")
     width = 720
     pad = 28
     row_h = 72
     row_gap = 12
+    place_h = 32
+    place_gap = 10
+    group_gap = 18
     header_h = 44
     rows_top = pad + header_h + 36
-    rows_h = len(apps) * row_h + max(len(apps) - 1, 0) * row_gap
+    rows_h = 0
+    for i, (place, rows) in enumerate(groups):
+        if i:
+            rows_h += group_gap
+        if place:
+            rows_h += place_h + place_gap
+        rows_h += len(rows) * row_h + max(len(rows) - 1, 0) * row_gap
     note_block = 36 if note else 0
     height = rows_top + rows_h + 20 + note_block + pad
 
@@ -853,11 +901,13 @@ ALT = {
         "model weights and the GPU stay home and the router has no forwarded port."
     ),
     "self-hosting-is-social": (
-        "The website card lists four apps and no hostnames. site is nginx serving "
-        "your files on port 8080, open to anyone. analytics is the Umami tracking "
-        "script on port 3000, open to anyone. umami is the Umami dashboard on that "
-        "same port, with Postgres, behind an org login. status is Uptime Kuma on "
-        "port 3001, behind an org login. The card names no device and no organization."
+        "The website card lists four apps in two places, and no hostnames. "
+        "Place web is one serving device: site is nginx serving your files on "
+        "port 8080, open to anyone. analytics is the Umami tracking script on "
+        "port 3000, open to anyone. umami is the Umami dashboard on that same "
+        "port, with Postgres, behind an org login. Place monitor may be a second "
+        "serving device: status is Uptime Kuma on port 3001, behind an org login. "
+        "The card names no device and no organization."
     ),
 }
 
