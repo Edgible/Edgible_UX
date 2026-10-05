@@ -52,6 +52,38 @@ def image_size(path: Path) -> tuple[int, int] | None:
         return im.size
 
 
+def inline_flow(html: str, out: Path, page: Path) -> str:
+    """Replace the card-workflow images with the SVG itself.
+
+    A title on a shape is the hover text, and a browser only shows that title
+    when the SVG is part of the page. The markdown keeps the images so the
+    file still reads on GitHub.
+    """
+
+    def repl(m: re.Match[str]) -> str:
+        tag = m.group(0)
+        src = re.search(r'src="([^"]+)"', tag)
+        if not src:
+            return tag
+        name = src.group(1)
+        if "self-hosting-is-social-light.svg" in name:
+            kind = "only-light"
+        elif "self-hosting-is-social-dark.svg" in name:
+            kind = "only-dark"
+        else:
+            return tag
+        path = resolve(name, out, page)
+        if not path.exists():
+            return tag
+        svg = path.read_text(encoding="utf-8")
+        svg = svg.replace("<svg ", f'<svg class="diagram {kind}" ', 1)
+        svg = svg.replace(' width="960"', ' width="100%"', 1)
+        svg = svg.replace(' height="240"', ' height="auto"', 1)
+        return svg
+
+    return re.sub(r"<img\b[^>]*>", repl, html)
+
+
 def fix_images(html: str, out: Path, page: Path) -> str:
     def repl(m: re.Match[str]) -> str:
         tag = m.group(0)
@@ -85,6 +117,7 @@ def main() -> int:
     for page in out.rglob("*.html"):
         html = page.read_text(encoding="utf-8")
         fixed = ROOT_CANONICAL.sub(SITE_URL, html)
+        fixed = inline_flow(fixed, out, page)
         fixed = fix_images(fixed, out, page)
         if fixed != html:
             page.write_text(fixed, encoding="utf-8")

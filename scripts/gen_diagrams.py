@@ -687,7 +687,7 @@ def check_flow(name: str, spec: dict) -> list[str]:
     title_limit = FLOW_BOX_W - 52
     sub_limit = FLOW_BOX_W - 24
     for _label, steps in spec["rows"]:
-        for _number, title, sub in steps:
+        for _number, title, sub, _detail in steps:
             if too_wide(title, title_limit, 15):
                 bad.append(f"{name}: flow title does not fit: {title!r}")
             if too_wide(sub, sub_limit, 13):
@@ -717,6 +717,7 @@ def flow_svg(spec: dict, palette: dict) -> str:
         f".row{{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;"
         f"fill:{p['muted']};letter-spacing:.04em}}"
         f".card{{fill:{p['card']};stroke:{p['edge']};stroke-width:1.5}}"
+        f".step{{cursor:help}}"
         "</style>"
     )
     add(f'<rect x="0" y="0" width="{WIDTH}" height="{height}" rx="10" fill="{p["panel"]}"/>')
@@ -725,8 +726,11 @@ def flow_svg(spec: dict, palette: dict) -> str:
     for label, steps in rows:
         add(f'<text class="row" x="{FLOW_PAD_X}" y="{y + 14}">{escape(label.upper())}</text>')
         by = y + 22
-        for i, (number, title, sub) in enumerate(steps):
+        for i, (number, title, sub, detail) in enumerate(steps):
             x = FLOW_PAD_X + i * (FLOW_BOX_W + FLOW_GAP)
+            # The title is the hover text. It only appears once the built page
+            # inlines this file. An img cannot show a title on a shape inside it.
+            add(f'<g class="step"><title>{escape(detail)}</title>')
             add(
                 f'<rect class="card" x="{x}" y="{by}" width="{FLOW_BOX_W}" '
                 f'height="{FLOW_BOX_H}" rx="8"/>'
@@ -738,6 +742,7 @@ def flow_svg(spec: dict, palette: dict) -> str:
             )
             add(f'<text class="label" x="{x + 42}" y="{by + 33}">{escape(title)}</text>')
             add(f'<text class="small" x="{x + 16}" y="{by + 58}">{escape(sub)}</text>')
+            add("</g>")
             if i < len(steps) - 1:
                 x1 = x + FLOW_BOX_W + 4
                 x2 = x + FLOW_BOX_W + FLOW_GAP - 4
@@ -766,19 +771,77 @@ FLOWS = {
             (
                 "You share",
                 [
-                    ("1", "Build the apps", "several Edgible apps"),
-                    ("2", "Write the card", "ports, auth, place"),
-                    ("3", "Add the files", "such as tailor.sh"),
-                    ("4", "Publish the card", "in the cards repo"),
+                    (
+                        "1",
+                        "Build the apps",
+                        "several Edgible apps",
+                        "Several apps, already published on Edgible. Each one has a port "
+                        "and an auth mode: None, org, or api-key. Apps that share a "
+                        "serving device share a place.",
+                    ),
+                    (
+                        "2",
+                        "Write the card",
+                        "ports, auth, place",
+                        "One YAML file. It names the programs, the images, the ports, "
+                        "the auth modes, and which apps share a place. It leaves out "
+                        "your device name, your hostnames, your organization id, and "
+                        "any password.",
+                    ),
+                    (
+                        "3",
+                        "Add the files",
+                        "such as tailor.sh",
+                        "Optional files beside the card: a Compose file, a sample page, "
+                        "and tailor.sh. The changes list says what to edit. The script "
+                        "applies that list and stops if an edit did not land.",
+                    ),
+                    (
+                        "4",
+                        "Publish the card",
+                        "in the cards repo",
+                        "A maintainer merges a pull request into the cards repo. That "
+                        "merge is the publish. The pull request checks the card against "
+                        "the schema, and the directory name must match the card name. "
+                        "The maintainer decides whether the card belongs.",
+                    ),
                 ],
             ),
             (
                 "Someone else reuses",
                 [
-                    ("5", "Find the card", "in the cards repo"),
-                    ("6", "Tailor it", "for your machine"),
-                    ("7", "Make the stack", "card-to-stack.py"),
-                    ("8", "Deploy", "edgible stack deploy"),
+                    (
+                        "5",
+                        "Find the card",
+                        "in the cards repo",
+                        "Open the cards repo and read the card. The picture lists the "
+                        "apps, the ports, the auth modes, and the places. It names no "
+                        "device and no organization.",
+                    ),
+                    (
+                        "6",
+                        "Tailor it",
+                        "for your machine",
+                        "Follow the card README. It fetches the Compose files and runs "
+                        "tailor.sh. You supply what is yours, such as an org label. The "
+                        "script does not store a device name, a hostname, or a password.",
+                    ),
+                    (
+                        "7",
+                        "Make the stack",
+                        "card-to-stack.py",
+                        "card-to-stack.py reads the card and writes a stack file. It "
+                        "fills in your device name and your organization id. Auth mode "
+                        "org is written edgible-login.",
+                    ),
+                    (
+                        "8",
+                        "Deploy",
+                        "edgible stack deploy",
+                        "edgible stack deploy publishes the ports in that stack file. "
+                        "The processes are already listening. Deploy does not start "
+                        "the containers.",
+                    ),
                 ],
             ),
         ],

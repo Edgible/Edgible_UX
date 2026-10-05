@@ -8,6 +8,8 @@ A card is that pattern. It names the programs, the images, the ports, the auth m
 
 What you stop doing is rebuilding a known setup from memory. The first example is a website. The second is n8n.
 
+Hover a step.
+
 ![You build several Edgible apps, write them as a card, add files such as tailor.sh, and publish the card. Someone else finds that card, tailors it for their machine, turns it into a stack file, and deploys the stack.](../../images/diagrams/self-hosting-is-social-light.svg#only-light)
 ![You build several Edgible apps, write them as a card, add files such as tailor.sh, and publish the card. Someone else finds that card, tailors it for their machine, turns it into a stack file, and deploys the stack.](../../images/diagrams/self-hosting-is-social-dark.svg#only-dark)
 

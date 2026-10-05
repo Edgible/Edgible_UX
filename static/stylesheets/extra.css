@@ -457,6 +457,22 @@
   margin: 1.2rem 0;
 }
 
-.md-typeset p:has(> img[src*="/diagrams/"]) {
+.md-typeset p:has(> img[src*="/diagrams/"]),
+.md-typeset p:has(> svg.diagram) {
   overflow-x: auto;
+}
+
+/* The card workflow is inlined so each step can show its title on hover.
+   An img cannot. The same light and dark pair as the other diagrams. */
+.md-typeset svg.diagram {
+  width: 100%;
+  min-width: 34rem;
+  height: auto;
+  margin: 1.2rem 0;
+  display: block;
+}
+
+[data-md-color-scheme="slate"] .md-typeset svg.diagram.only-light,
+[data-md-color-scheme="default"] .md-typeset svg.diagram.only-dark {
+  display: none;
 }
