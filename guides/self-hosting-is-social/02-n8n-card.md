@@ -50,7 +50,7 @@ The Compose URL is listed twice and downloaded once. `files` are the `.env` and 
 
 ## 2.3 Start the container
 
-Fetch the gold file and the two files it mounts, then apply the `changes`. An existing `~/n8n/docker-compose.yml` from [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) is replaced. The org label comes from a hostname you already have.
+Fetch the gold file and the two files it mounts, then run [tailor.sh](https://github.com/Edgible/cards/blob/main/cards/n8n/tailor.sh), which applies the `changes`. An existing `~/n8n/docker-compose.yml` from [n8n on the VM](../n8n-on-edgible/01-n8n-on-the-vm.md) is replaced. The org label comes from a hostname you already have, and you pass it to the script.
 
 On the guest:
 
@@ -60,18 +60,6 @@ curl -fsSL https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-comp
 curl -fsSL https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/.env -o ~/n8n/.env
 curl -fsSL https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/init-data.sh -o ~/n8n/init-data.sh
 chmod +x ~/n8n/init-data.sh
-sed -i 's/- 5678:5678/- 127.0.0.1:5678:5678/' ~/n8n/docker-compose.yml
-if grep -qE 'changePassword|changeRunnerAuthToken' ~/n8n/.env; then
-  postgres_password=$(openssl rand -hex 16)
-  postgres_non_root_password=$(openssl rand -hex 16)
-  runners_auth_token=$(openssl rand -hex 32)
-  sed -i \
-    -e "s/^POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=${postgres_password}/" \
-    -e "s/^POSTGRES_NON_ROOT_PASSWORD=.*/POSTGRES_NON_ROOT_PASSWORD=${postgres_non_root_password}/" \
-    -e "s/^RUNNERS_AUTH_TOKEN=.*/RUNNERS_AUTH_TOKEN=${runners_auth_token}/" \
-    ~/n8n/.env
-  chmod 600 ~/n8n/.env
-fi
 org=$(edgible app list --json | python3 -c '
 import json, sys
 apps = json.load(sys.stdin)
@@ -80,14 +68,8 @@ if not hosts:
     sys.exit("need one published app so the org label is known")
 print(hosts[0].split(".", 1)[1].removesuffix(".edgible.com"))
 ')
-if ! grep -q '^      - WEBHOOK_URL=' ~/n8n/docker-compose.yml; then
-  sed -i "/N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0/a\\
-      - N8N_PROXY_HOPS=1\\
-      - N8N_PROTOCOL=https\\
-      - N8N_HOST=n8n.${org}.edgible.com\\
-      - N8N_EDITOR_BASE_URL=https://n8n.${org}.edgible.com/\\
-      - WEBHOOK_URL=https://n8n-hooks.${org}.edgible.com/" ~/n8n/docker-compose.yml
-fi
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/tailor.sh -o ~/n8n-tailor.sh
+bash ~/n8n-tailor.sh ~/n8n "$org"
 ```
 
 **Smoke test.** On the guest:

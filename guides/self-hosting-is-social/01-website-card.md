@@ -54,7 +54,7 @@ curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/ca
 
 ## 1.3 Start the containers
 
-Fetch each `compose` URL. `site` is ready to run. Apply the `changes` on the Umami and Uptime Kuma files before starting them. The Umami URL is listed twice and downloaded once. An existing `~/site/public/index.html` from [The site on the VM](../website-on-edgible/01-site-on-the-vm.md) is left as it is. The sample page is only downloaded when that file is missing.
+Fetch each `compose` URL. `site` is ready to run. [tailor.sh](https://github.com/Edgible/cards/blob/main/cards/website/tailor.sh) applies the `changes` on the Umami and Uptime Kuma files before you start them. The Umami URL is listed twice and downloaded once. An existing `~/site/public/index.html` from [The site on the VM](../website-on-edgible/01-site-on-the-vm.md) is left as it is. The sample page is only downloaded when that file is missing.
 
 On the guest:
 
@@ -66,14 +66,8 @@ curl -fsSL https://raw.githubusercontent.com/louislam/uptime-kuma/master/compose
 if [ ! -f ~/site/public/index.html ]; then
   curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/public/index.html -o ~/site/public/index.html
 fi
-sed -i \
-  -e 's/"3000:3000"/"127.0.0.1:3000:3000"/' \
-  -e 's#postgresql://umami:umami@#postgresql://umami:${POSTGRES_PASSWORD}@#' \
-  -e 's/APP_SECRET: replace-me-with-a-random-string/APP_SECRET: ${APP_SECRET}/' \
-  -e 's/TWO_FACTOR_ENCRYPTION_KEY: replace-me-with-a-64-character-hex-string/TWO_FACTOR_ENCRYPTION_KEY: ${TWO_FACTOR_ENCRYPTION_KEY}/' \
-  -e 's/POSTGRES_PASSWORD: umami/POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}/' \
-  ~/umami/docker-compose.yml
-sed -i 's/"3001:3001"/"127.0.0.1:3001:3001"/' ~/uptime-kuma/compose.yaml
+curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/website/tailor.sh -o ~/website-tailor.sh
+bash ~/website-tailor.sh
 ```
 
 **Smoke test.** On the guest:
@@ -86,19 +80,9 @@ grep -n '127.0.0.1:3001:3001' ~/uptime-kuma/compose.yaml
 
 The first `grep` shows the Umami port bound to loopback. The second prints nothing. The third shows the Uptime Kuma port bound to loopback.
 
-Generate the Umami secrets when `~/umami/.env` does not already have them, then start the three Compose files:
+`tailor.sh` writes `~/umami/.env` when that file is missing. Start the three Compose files:
 
 ```bash
-if [ ! -f ~/umami/.env ]; then
-  cat > ~/umami/.env <<EOF
-POSTGRES_PASSWORD=$(openssl rand -hex 16)
-APP_SECRET=$(openssl rand -base64 32)
-TWO_FACTOR_ENCRYPTION_KEY=$(openssl rand -hex 32)
-EOF
-  chmod 600 ~/umami/.env
-elif ! grep -q '^TWO_FACTOR_ENCRYPTION_KEY=' ~/umami/.env; then
-  echo "TWO_FACTOR_ENCRYPTION_KEY=$(openssl rand -hex 32)" >> ~/umami/.env
-fi
 docker compose -f ~/site/docker-compose.yml up -d
 docker compose -f ~/umami/docker-compose.yml up -d
 docker compose -f ~/uptime-kuma/compose.yaml up -d
