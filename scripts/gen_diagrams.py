@@ -640,6 +640,7 @@ def card_svg(spec: dict, palette: dict) -> str:
         f".mono{{font-family:Iosevka,ui-monospace,monospace;font-size:15px;fill:{p['ink']}}}"
         f".head{{font-family:Jost,system-ui,sans-serif;font-size:13px;font-weight:600;"
         f"fill:{p['machine_ink']};letter-spacing:.04em}}"
+        f".place{{font-family:Jost,system-ui,sans-serif;font-size:13px;fill:{p['ink']}}}"
         f".card{{fill:{p['card']};stroke:{p['edge']};stroke-width:1.5}}"
         "</style>"
     )
@@ -660,23 +661,44 @@ def card_svg(spec: dict, palette: dict) -> str:
         f'text-anchor="end">auth</text>'
     )
 
-    for i, (app_name, port, auth, what) in enumerate(apps):
-        y = rows_top + i * (row_h + row_gap)
-        add(
-            f'<rect class="card" x="{pad}" y="{y:.0f}" width="{width - 2 * pad}" '
-            f'height="{row_h}" rx="8"/>'
-        )
-        add(
-            f'<rect x="{pad}" y="{y:.0f}" width="6" height="{row_h}" rx="3" fill="{p[auth]}"/>'
-        )
-        baseline = y + 30
-        add(f'<text class="mono" x="{col_app}" y="{baseline:.0f}">{escape(app_name)}</text>')
-        add(f'<text class="mono" x="{col_port}" y="{baseline:.0f}">{escape(port)}</text>')
-        add(
-            f'<text class="small" x="{col_auth}" y="{baseline:.0f}" text-anchor="end">'
-            f'{escape(AUTH_LABEL[auth])}</text>'
-        )
-        add(f'<text class="small" x="{col_app}" y="{baseline + 20:.0f}">{escape(what)}</text>')
+    y = rows_top
+    inner_w = width - 2 * pad
+    for gi, (place, rows) in enumerate(groups):
+        if gi:
+            y += group_gap
+        if place:
+            add(
+                f'<rect x="{pad}" y="{y:.0f}" width="{inner_w}" height="{place_h}" '
+                f'rx="6" fill="{p["rule"]}"/>'
+            )
+            add(f'<text class="place" x="{pad + 14}" y="{y + 21:.0f}">place</text>')
+            add(f'<text class="mono" x="{pad + 62}" y="{y + 22:.0f}">{escape(place)}</text>')
+            subtitle = subtitles.get(place, "")
+            if subtitle:
+                add(
+                    f'<text class="place" x="{width - pad - 14}" y="{y + 21:.0f}" '
+                    f'text-anchor="end">{escape(subtitle)}</text>'
+                )
+            y += place_h + place_gap
+        for i, (app_name, port, auth, what) in enumerate(rows):
+            add(
+                f'<rect class="card" x="{pad}" y="{y:.0f}" width="{inner_w}" '
+                f'height="{row_h}" rx="8"/>'
+            )
+            add(
+                f'<rect x="{pad}" y="{y:.0f}" width="6" height="{row_h}" rx="3" fill="{p[auth]}"/>'
+            )
+            baseline = y + 30
+            add(f'<text class="mono" x="{col_app}" y="{baseline:.0f}">{escape(app_name)}</text>')
+            add(f'<text class="mono" x="{col_port}" y="{baseline:.0f}">{escape(port)}</text>')
+            add(
+                f'<text class="small" x="{col_auth}" y="{baseline:.0f}" text-anchor="end">'
+                f'{escape(AUTH_LABEL[auth])}</text>'
+            )
+            add(f'<text class="small" x="{col_app}" y="{baseline + 20:.0f}">{escape(what)}</text>')
+            y += row_h
+            if i < len(rows) - 1:
+                y += row_gap
 
     if note:
         rule_y = rows_top + rows_h + 16
