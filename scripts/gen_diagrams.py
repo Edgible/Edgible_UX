@@ -56,6 +56,9 @@ PALETTES = {
         KEY: "#7a5cc0",
         "flow_open": "#2f6fb0",
         "flow_closed": "#8a90a6",
+        # Workflow connectors. Medium blue, same as the step numbers. Navy is
+        # the page chrome, and on these arrows it reads as a heavy rule.
+        "flow_arrow": "#2e4a9e",
     },
     "dark": {
         "panel": "#1a1a2e",
@@ -71,6 +74,8 @@ PALETTES = {
         KEY: "#b39ce8",
         "flow_open": "#7db2e8",
         "flow_closed": "#767a93",
+        # Lighter than the step numbers so a 2px stroke still shows on the panel.
+        "flow_arrow": "#7db2e8",
     },
 }
 
@@ -749,11 +754,11 @@ def flow_svg(spec: dict, palette: dict) -> str:
                 cy = by + FLOW_BOX_H / 2
                 add(
                     f'<path d="M{x1} {cy:.0f} H{x2 - 8}" fill="none" '
-                    f'stroke="{p["ink"]}" stroke-width="2"/>'
+                    f'stroke="{p["flow_arrow"]}" stroke-width="2"/>'
                 )
                 add(
                     f'<path d="M{x2 - 8} {cy - 5:.0f} L{x2} {cy:.0f} L{x2 - 8} {cy + 5:.0f}" '
-                    f'fill="none" stroke="{p["ink"]}" stroke-width="2"/>'
+                    f'fill="none" stroke="{p["flow_arrow"]}" stroke-width="2"/>'
                 )
         y += row_block
     add("</svg>")
