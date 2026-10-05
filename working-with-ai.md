@@ -57,6 +57,12 @@ Give a coding agent the markdown for a chapter and have it adapt the commands to
 
 Ask a question against the whole corpus by fetching `llms-full.txt`, when you do not yet know which guide the answer is in.
 
+The shape of a shareable pattern is [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md). An assistant that can run `edgible` reads that section and writes the file from the apps you name.
+
+```bash
+curl https://guides.edgible.com/guides/self-hosting-is-social/README.md
+```
+
 ## How current a page is
 
 Every page carries the date its source last changed: at the foot of the HTML, and in the first two lines of the markdown, alongside the page's canonical URL.

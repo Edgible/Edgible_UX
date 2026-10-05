@@ -12,6 +12,60 @@ The card is meant to be complete enough that the person sharing it does not also
 
 What you stop doing is rebuilding a known setup from memory. What you can hand over is the pattern. The chapters after this page are examples of that. The first is a website. The second is n8n, starting from the Compose file n8n publishes.
 
+## The card
+
+This is the file an assistant writes when you name a pattern and the apps that belong in it. The assistant can run `edgible`. You check the file before you share it.
+
+```yaml
+apiVersion: v1
+kind: Card
+metadata:
+  name: pattern-name
+  description: one line
+
+applications:
+  - name: app1
+    what: what this program is
+    from: registry/image
+    database: database-image
+    port: 8080
+    protocol: https
+    subtype: existing
+    published: true
+    authModes: [none]
+    place: place-name
+    resources:
+      compose: https://<public-gold-compose-url>
+      files:
+        - https://<public-url-of-a-file-the-compose-expects>
+      changes:
+        - Bind the host port to 127.0.0.1 only
+      env: [SOME_SECRET]
+```
+
+`kind: Card` is the shareable file. [card-to-stack.py](card-to-stack.py) adds your device name and your organization id when you publish, and that output is the stack file.
+
+Every application has `name`, `what`, `from`, `port`, `protocol`, `subtype`, `published`, `authModes`, and `place`. `protocol` is `https`. `subtype` is `existing`. `published` is `true`. `database` is optional, and names a database image in the same Compose file. `files`, `changes`, and `env` are optional.
+
+`authModes` is `none`, `org`, or `api-key`. `none` in the file is the auth mode `None`. An export that says `edgible-login` is written `org` on the card.
+
+`place` is a topology name you choose. It is not a device name and not a device id. Applications with the same `place` run on one serving device. Two applications that are one process share a `place`, a port, a `from`, and the same `resources`.
+
+`from` is the image name, without a device and without your organization. `resources.compose` is a public URL. For an `existing` app, assume the gold Compose file for that image. `changes` lists the edits to make before running that file, such as binding the host port to `127.0.0.1`. Leave `changes` off when the URL is already the file to run. When the image has no published Compose file, leave `compose` empty until you put a public URL there. `env` names variables to generate on the machine that runs the pattern. The card does not carry the values.
+
+Leave these off the card: `deviceName`, `deviceId`, `organization`, hostnames, passwords, volume data, and a timezone. A hostname setting is written as a change, "the hostname of this app" or "the hostname of the `None` app", not as your `<org>.edgible.com` name.
+
+Fill it from the apps you named. On the guest:
+
+```bash
+edgible application export app1 --redacted
+docker ps --format '{{.Image}} {{.Ports}}'
+```
+
+Repeat the export for each app. Copy `metadata.name`, the workload `containerPort`, and the access `modes`. Drop `deviceId`, `organization`, and `hostname` after you have used the device id for one decision: exports that share a device id and a port are one process. Match that port to the `Ports` column of `docker ps` to read `from`. The export of an `existing` app does not record the image.
+
+[1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are this file filled in.
+
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 
 **Need first:** [Start here](../start-here/README.md), so a serving agent is installed. The website example also needs [Tear down the website stack](../website-on-edgible/06-website-teardown.md). The n8n example also needs [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md).
