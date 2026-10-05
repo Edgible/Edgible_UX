@@ -4,7 +4,7 @@
 
 ## 1.0 Why
 
-[Website on Edgible](../website-on-edgible/README.md) is four apps: a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted the hostnames and stopped the containers. This chapter takes that website from the [cards](https://github.com/Edgible/cards) catalog and publishes the four apps again.
+[Website on Edgible](../website-on-edgible/README.md) is four apps: a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted the hostnames and stopped the containers. This chapter takes that website from [cards](https://github.com/Edgible/cards) and publishes the four apps again.
 
 The card for this example has two places. `site`, `analytics`, and `umami` are `web`. `analytics` and `umami` share port `3000`, so they stay on one serving device. `status` is `monitor`, which can be that same device or a second one. This chapter maps both places to `minipc`.
 
@@ -15,7 +15,7 @@ The card for this example has two places. `site`, `analytics`, and `umami` are `
 
 ## 1.1 The job
 
-You fetch the website card from the catalog, start nginx, Umami and Uptime Kuma, generate `~/website.stack.yml` from the card, and deploy it.
+You fetch the website card, start nginx, Umami and Uptime Kuma, generate `~/website.stack.yml` from the card, and deploy it.
 
 **Done when**
 
@@ -34,7 +34,7 @@ You fetch the website card from the catalog, start nginx, Umami and Uptime Kuma,
 
 ## 1.2 Fetch the website card
 
-The card lives in the catalog. This chapter does not contain a second copy. [Working with an AI tool](../../working-with-ai.md) is how these guides are meant to be read alongside one, when you are writing a new card rather than using this one.
+The card lives in [cards](https://github.com/Edgible/cards). This chapter does not contain a second copy. [Working with an AI tool](../../working-with-ai.md) is how these guides are meant to be read alongside one, when you are writing a new card rather than using this one.
 
 On the guest:
 

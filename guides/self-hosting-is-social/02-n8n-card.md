@@ -4,7 +4,7 @@
 
 ## 2.0 Why
 
-[n8n on Edgible](../n8n-on-edgible/README.md) publishes one process on port `5678` twice: the editor with `org`, and a webhook hostname with `None`. [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md) deleted those hostnames and stopped the container. This chapter takes that pattern from the [cards](https://github.com/Edgible/cards) catalog and publishes the two apps again.
+[n8n on Edgible](../n8n-on-edgible/README.md) publishes one process on port `5678` twice: the editor with `org`, and a webhook hostname with `None`. [Tear down n8n](../n8n-on-edgible/06-n8n-teardown.md) deleted those hostnames and stopped the container. This chapter takes that pattern from [cards](https://github.com/Edgible/cards) and publishes the two apps again.
 
 The card assumes the Compose file n8n publishes, not the shorter file those chapters pasted by hand. That published file runs Postgres and a task runner, and it binds port `5678` on every interface. The `changes` list is the edit that makes it this pattern: loopback only, generated secrets, and the editor hostname kept apart from the webhook hostname. Both apps are place `workhorse`. This chapter maps that place to `minipc`.
 
@@ -15,7 +15,7 @@ The card assumes the Compose file n8n publishes, not the shorter file those chap
 
 ## 2.1 The job
 
-You fetch the n8n card from the catalog, fetch n8n's Compose file and apply its `changes`, generate `~/n8n.stack.yml` from the card, and deploy it.
+You fetch the n8n card, fetch n8n's Compose file and apply its `changes`, generate `~/n8n.stack.yml` from the card, and deploy it.
 
 **Done when**
 
@@ -34,7 +34,7 @@ You fetch the n8n card from the catalog, fetch n8n's Compose file and apply its 
 
 ## 2.2 Fetch the n8n card
 
-The field meanings are the same as [The website card](01-website-card.md). This card is the gold-file assumption for an `existing` app: `compose` is the public file for the image, and `changes` is what you edit before you run it. If a setup you already run uses a different file, edit the card in the catalog. Point `compose` at that file and drop `changes`, or keep this URL and add a line.
+The field meanings are the same as [The website card](01-website-card.md). This card is the gold-file assumption for an `existing` app: `compose` is the public file for the image, and `changes` is what you edit before you run it. If a setup you already run uses a different file, edit the card in [cards](https://github.com/Edgible/cards). Point `compose` at that file and drop `changes`, or keep this URL and add a line.
 
 On the guest:
 
