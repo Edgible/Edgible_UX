@@ -8,6 +8,9 @@ one `kind: Application` document per app, which `edgible stack deploy` accepts.
     python3 card-to-stack.py website-card.yml --device minipc > website.stack.yml
     python3 card-to-stack.py website-card.yml --device web=minipc --device monitor=otherbox
 
+card.schema.json is the source of truth for the file. This script checks only
+the fields it copies into a stack file.
+
 The organization id is `edgible config get organizationId`, unless you pass
 `--org`. The workload is `pre-existing`: the process must already be listening
 on the named device. Each application has a `resources` section naming the public URLs that app

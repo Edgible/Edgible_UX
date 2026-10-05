@@ -59,7 +59,7 @@ cp working-with-ai.md "$OUT/working-with-ai.md"
 while IFS= read -r file; do
   mkdir -p "$OUT/$(dirname "$file")"
   cp "$file" "$OUT/$file"
-done < <(find guides appendix -name '*.md' -o -name '*.py' -o -name '*.yml' -o -name '*.html')
+done < <(find guides appendix -name '*.md' -o -name '*.py' -o -name '*.yml' -o -name '*.html' -o -name '*.json')
 
 python3 scripts/add_dates.py header "$OUT"
 

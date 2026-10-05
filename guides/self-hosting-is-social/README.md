@@ -14,7 +14,7 @@ What you stop doing is rebuilding a known setup from memory. What you can hand o
 
 ## The card
 
-This is the file an assistant writes when you name a pattern and the apps that belong in it. The assistant can run `edgible`. You check the file before you share it.
+[card.schema.json](card.schema.json) is the source of truth for a card. An assistant that can run `edgible` reads this section, writes a file that satisfies that schema, and you check it before you share it. The block below is the same shape, with placeholders, so it is not itself a valid card. [1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are valid cards.
 
 ```yaml
 apiVersion: v1
@@ -51,7 +51,7 @@ Every application has `name`, `what`, `from`, `port`, `protocol`, `subtype`, `pu
 
 `place` is a topology name you choose. It is not a device name and not a device id. Applications with the same `place` run on one serving device. Two applications that are one process share a `place`, a port, a `from`, and the same `resources`.
 
-`from` is the image name, without a device and without your organization. `resources.compose` is a public URL. For an `existing` app, assume the gold Compose file for that image. `changes` lists the edits to make before running that file, such as binding the host port to `127.0.0.1`. Leave `changes` off when the URL is already the file to run. When the image has no published Compose file, leave `compose` empty until you put a public URL there. `env` names variables to generate on the machine that runs the pattern. The card does not carry the values.
+`from` is the image name, without a device and without your organization. `resources.compose` is a public `https` URL. For an `existing` app, assume the gold Compose file for that image. `changes` lists the edits to make before running that file, such as binding the host port to `127.0.0.1`. Omit `changes` when the URL is already the file to run. When the image has no published Compose file, omit `compose` until you put a public URL there. `env` names variables to generate on the machine that runs the pattern. The card does not carry the values.
 
 Leave these off the card: `deviceName`, `deviceId`, `organization`, hostnames, passwords, volume data, and a timezone. A hostname setting is written as a change, "the hostname of this app" or "the hostname of the `None` app", not as your `<org>.edgible.com` name.
 
@@ -64,7 +64,23 @@ docker ps --format '{{.Image}} {{.Ports}}'
 
 Repeat the export for each app. Copy `metadata.name`, the workload `containerPort`, and the access `modes`. Drop `deviceId`, `organization`, and `hostname` after you have used the device id for one decision: exports that share a device id and a port are one process. Match that port to the `Ports` column of `docker ps` to read `from`. The export of an `existing` app does not record the image.
 
-[1. The website card](01-website-card.md) and [2. The n8n card](02-n8n-card.md) are this file filled in.
+Check a card against the schema. This needs the `pyyaml` and `jsonschema` packages.
+
+```bash
+curl -fsSL https://guides.edgible.com/guides/self-hosting-is-social/card.schema.json -o ~/card.schema.json
+python3 -c '
+import json, sys
+from pathlib import Path
+import yaml
+from jsonschema import Draft202012Validator
+schema = json.loads(Path.home().joinpath("card.schema.json").read_text())
+card = yaml.safe_load(Path(sys.argv[1]).read_text())
+Draft202012Validator(schema, format_checker=Draft202012Validator.FORMAT_CHECKER).validate(card)
+print("ok")
+' ~/website-card.yml
+```
+
+`ok` means the file matches [card.schema.json](card.schema.json). A file that still has `deviceName`, `organization`, or a placeholder URL fails.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
 

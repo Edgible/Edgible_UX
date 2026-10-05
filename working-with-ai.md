@@ -57,9 +57,10 @@ Give a coding agent the markdown for a chapter and have it adapt the commands to
 
 Ask a question against the whole corpus by fetching `llms-full.txt`, when you do not yet know which guide the answer is in.
 
-The shape of a shareable pattern is [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md). An assistant that can run `edgible` reads that section and writes the file from the apps you name.
+The source of truth for a shareable pattern is [card.schema.json](guides/self-hosting-is-social/card.schema.json). [The card](guides/self-hosting-is-social/README.md#the-card) on [Self Hosting is Social](guides/self-hosting-is-social/README.md) is how an assistant that can run `edgible` fills that schema from the apps you name.
 
 ```bash
+curl https://guides.edgible.com/guides/self-hosting-is-social/card.schema.json
 curl https://guides.edgible.com/guides/self-hosting-is-social/README.md
 ```
 
