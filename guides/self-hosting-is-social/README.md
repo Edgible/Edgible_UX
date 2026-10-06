@@ -2,7 +2,9 @@
 
 **A proven solution can be shared as a pattern, so someone else can reproduce it.**
 
-The service stays on hardware you own. A card is a useful way to hand the pattern to someone else, and it is a natural fit for Edgible because an app is already a port, an auth mode, and a serving device. The hostname is created when you publish, so the card leaves out your device name, your hostnames, and your organization id. The next person maps each place to a serving device they have, and Edgible publishes the apps. The auth mode stays `None`, `org`, or `api-key`, separate from the program.
+The service stays on hardware you own. A card is the pattern of how you published it: the programs, the images, the ports, the auth mode on each hostname, and which apps share a serving device.
+
+It is a useful way to hand that pattern to someone else, and a natural fit for Edgible, because an app is already a port, an auth mode, and a serving device. The hostname is created when you publish, so the card leaves out your device name, your hostnames, and your organization id. The next person maps each place to a serving device they have, and Edgible publishes the apps. The auth mode stays `None`, `org`, or `api-key`, separate from the program.
 
 A Compose file says how each program runs. A card adds which hostname is open, which one asks for an `org` login, and which apps have to share a serving device. That pattern is worth sharing when several apps have to coexist and work together to solve one problem.
 
