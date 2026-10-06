@@ -8,8 +8,8 @@ A hosted chat answers from files you upload to someone else. This chapter publis
 
 Both apps are place `desk`. This chapter maps that place to `minipc`. Open WebUI calls Ollama on the machine. The sample document stays a file you upload after the chat is published.
 
-![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card-light.svg#only-light)
-![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card-dark.svg#only-dark)
+![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/images/card-light.svg#only-light)
+![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/images/card-dark.svg#only-dark)
 
 **Where you run this:** the serving device that will hold the model. A 4 GB guest cannot. `qwen2.5:7b` needs room on the order of 8 GB free, with Open WebUI beside it. The [assistant card](https://github.com/Edgible/cards/blob/main/cards/assistant/README.md) fetches the Compose file Open WebUI publishes and runs `tailor.sh`.
 

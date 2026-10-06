@@ -8,8 +8,8 @@
 
 The card starts from the Compose file n8n publishes. The files and the edits are on the [n8n card](https://github.com/Edgible/cards/blob/main/cards/n8n/README.md). Both apps are place `workhorse`. This chapter maps that place to `minipc`.
 
-![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/card-light.svg#only-light)
-![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/card-dark.svg#only-dark)
+![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/images/card-light.svg#only-light)
+![The n8n card lists two apps in one place, and no hostnames. Place workhorse is one serving device: n8n is n8n editor on port 5678, org login. n8n-hooks is n8n webhooks, same process as n8n on port 5678, open to anyone. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/n8n/images/card-dark.svg#only-dark)
 
 **Where you run this:** the **Ubuntu guest**. The n8n hostnames are gone. The [n8n card](https://github.com/Edgible/cards/blob/main/cards/n8n/README.md) fetches the Compose file.
 
