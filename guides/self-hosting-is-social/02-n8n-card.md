@@ -92,4 +92,4 @@ The report says 2 applications, `n8n` and `n8n-hooks`, each `pre-existing`. `edg
 
 ## Next
 
-[Self Hosting is Social](README.md). The website card is [The website card](01-website-card.md).
+[3. The assistant card](03-assistant-card.md). Series: [README](README.md). The website card is [The website card](01-website-card.md).

@@ -144,6 +144,7 @@ nav:
       - guides/self-hosting-is-social/README.md
       - guides/self-hosting-is-social/01-website-card.md
       - guides/self-hosting-is-social/02-n8n-card.md
+      - guides/self-hosting-is-social/03-assistant-card.md
   - Glossary: glossary.md
   - Appendix:
       - Overview: appendix/README.md
