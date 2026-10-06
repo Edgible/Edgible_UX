@@ -22,7 +22,7 @@ You fetch the website card, follow its README, start nginx, Umami and Uptime Kum
 - `~/website-card.yml` lists `site` on port `8080` with `none`, `analytics` on port `3000` with `none`, `umami` on port `3000` with `org`, and `status` on port `3001` with `org`.
 - Each app has a `what` line and a `from` line. `umami` also names `postgres:15-alpine`. `analytics` names the same Umami image as `umami`. That image is `ghcr.io/umami-software/umami:latest`. `status` names `louislam/uptime-kuma:2`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id.
-- Each application has a `resources` section. `site` names the Compose file in the cards repo and has no `changes`. `analytics` and `umami` name the Umami GitHub Compose URL and the same `changes`. `status` names the Uptime Kuma GitHub Compose URL and its `changes`.
+- The card has no `resources` section. The Compose files sit in the card directory.
 - `site`, `analytics` and `umami` have `place: web`. `status` has `place: monitor`.
 - `ss` shows `127.0.0.1:8080`, `127.0.0.1:3000` and `127.0.0.1:3001`.
 - `edgible stack validate -f ~/website.stack.yml` reports 4 applications: `site`, `analytics`, `umami`, `status`.
@@ -107,7 +107,7 @@ Deploy waits until those apps are published. `edgible app list` shows them again
 - [ ] `grep -nE 'what:|from:|database:' ~/website-card.yml` shows `nginx:alpine`, `ghcr.io/umami-software/umami:latest` on both `analytics` and `umami`, `postgres:15-alpine`, and `louislam/uptime-kuma:2`.
 - [ ] `grep -nE 'deviceName|organization' ~/website-card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/website-card.yml` prints nothing.
-- [ ] `grep -n 'compose:' ~/website-card.yml` shows `https://raw.githubusercontent.com/Edgible/cards/main/cards/website/docker-compose.yml` under `site`, `https://raw.githubusercontent.com/umami-software/umami/master/docker-compose.yml` under both `analytics` and `umami`, and `https://raw.githubusercontent.com/louislam/uptime-kuma/master/compose.yaml` under `status`.
+- [ ] `grep -nE 'resources:|compose:|changes:' ~/website-card.yml` prints nothing.
 - [ ] `grep -n 'Bind the host port' ~/website-card.yml` shows that change under `analytics`, `umami`, and `status`, and not under `site`.
 - [ ] `grep -n 'place:' ~/website-card.yml` shows `web` for `site`, `analytics` and `umami`, and `monitor` for `status`.
 - [ ] `ss -ltnp | grep -E '8080|3000|3001'` shows `127.0.0.1` on each port.

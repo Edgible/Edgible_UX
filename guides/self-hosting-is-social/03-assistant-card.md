@@ -22,7 +22,7 @@ You fetch the assistant card, follow its README, generate `~/assistant.stack.yml
 - `~/assistant-card.yml` lists `assistant` on port `8088` with `org`, and `ollama` on port `11434` with `api-key`.
 - `assistant` names `ghcr.io/open-webui/open-webui:main`. `ollama` names `ollama/ollama:latest`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id.
-- Both applications name the Open WebUI Compose URL and the same `changes`.
+- The card has no `resources` section. The Compose file sits in the card directory.
 - Both have `place: desk`.
 - `ss` shows `127.0.0.1:8088` and `127.0.0.1:11434`.
 - `edgible stack validate -f ~/assistant.stack.yml` reports 2 applications: `assistant`, `ollama`.
@@ -43,7 +43,7 @@ On the serving device:
 curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card.yml -o ~/assistant-card.yml
 ```
 
-`org` in the file is the auth mode `org`. `api-key` is the auth mode `api-key`. `from` is the image name. `place` is `desk` on both apps, so they stay on one serving device. The Compose URL is the file Open WebUI publishes. `changes` is the edit list. `tailor.sh` applies that list.
+`org` in the file is the auth mode `org`. `api-key` is the auth mode `api-key`. `from` is the image name. `place` is `desk` on both apps, so they stay on one serving device. The Compose file sits in the card directory. `card.yml` does not name it.
 
 ## 3.3 Start the containers
 
@@ -90,8 +90,7 @@ Ask: what are the support hours? The answer is the sentence in the sample. Suppo
 - [ ] `grep -n 'from:' ~/assistant-card.yml` shows `ghcr.io/open-webui/open-webui:main` and `ollama/ollama:latest`.
 - [ ] `grep -nE 'deviceName|organization' ~/assistant-card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/assistant-card.yml` prints nothing.
-- [ ] `grep -n 'compose:' ~/assistant-card.yml` shows `https://raw.githubusercontent.com/open-webui/open-webui/main/docker-compose.yaml` under both apps.
-- [ ] `grep -n 'changes:' -A3 ~/assistant-card.yml` shows the build block, `127.0.0.1:8088`, and `127.0.0.1:11434` under both apps.
+- [ ] `grep -nE 'resources:|compose:|changes:' ~/assistant-card.yml` prints nothing.
 - [ ] `grep -n 'place:' ~/assistant-card.yml` shows `desk` for both.
 - [ ] `ss -ltnp | grep 8088` shows `127.0.0.1:8088`. `ss -ltnp | grep 11434` shows `127.0.0.1:11434`.
 - [ ] `edgible stack validate -f ~/assistant.stack.yml` reports 2 applications: `assistant`, `ollama`.

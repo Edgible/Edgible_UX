@@ -22,7 +22,7 @@ You fetch the n8n card, follow its README, generate `~/n8n.stack.yml` from the c
 - `~/n8n-card.yml` lists `n8n` on port `5678` with `org`, and `n8n-hooks` on port `5678` with `none`.
 - Both name `docker.n8n.io/n8nio/n8n`. `n8n` also names `postgres:18`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id.
-- Both applications name the same GitHub Compose URL, the same `.env` and `init-data.sh` URLs, and the same `changes`.
+- The card has no `resources` section. The Compose file and `init-data.sh` sit in the card directory.
 - Both have `place: workhorse`.
 - `ss` shows `127.0.0.1:5678`, and nothing is listening on `5432`.
 - `edgible stack validate -f ~/n8n.stack.yml` reports 2 applications: `n8n`, `n8n-hooks`.
@@ -84,7 +84,7 @@ The report says 2 applications, `n8n` and `n8n-hooks`, each `pre-existing`. `edg
 - [ ] `grep -nE 'from:|database:' ~/n8n-card.yml` shows `docker.n8n.io/n8nio/n8n` twice and `postgres:18` once.
 - [ ] `grep -nE 'deviceName|organization' ~/n8n-card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/n8n-card.yml` prints nothing.
-- [ ] `grep -n 'compose:' ~/n8n-card.yml` shows `https://raw.githubusercontent.com/n8n-io/n8n-hosting/main/docker-compose/withPostgres/docker-compose.yml` under both apps.
+- [ ] `grep -nE 'resources:|compose:|changes:' ~/n8n-card.yml` prints nothing.
 - [ ] `grep -n 'place:' ~/n8n-card.yml` shows `workhorse` for both.
 - [ ] `ss -ltnp | grep 5678` shows `127.0.0.1:5678`. `ss -ltnp | grep 5432` prints nothing.
 - [ ] `edgible stack validate -f ~/n8n.stack.yml` reports 2 applications: `n8n`, `n8n-hooks`.
