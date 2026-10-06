@@ -11,7 +11,7 @@ Both apps are place `desk`. This chapter maps that place to `minipc`. Open WebUI
 ![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card-light.svg#only-light)
 ![The assistant card lists two apps in one place, and no hostnames. Place desk is one serving device: assistant is chat over your documents on port 8088, org login. ollama is chat and embedding models on port 11434, bearer key. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card-dark.svg#only-dark)
 
-**Where you run this:** the serving device that will hold the model. A 4 GB guest cannot. `qwen2.5:7b` needs room on the order of 8 GB free, with Open WebUI beside it. The [assistant card](https://github.com/Edgible/cards/blob/main/cards/assistant/README.md) fetches the Compose file and pulls the models.
+**Where you run this:** the serving device that will hold the model. A 4 GB guest cannot. `qwen2.5:7b` needs room on the order of 8 GB free, with Open WebUI beside it. The [assistant card](https://github.com/Edgible/cards/blob/main/cards/assistant/README.md) fetches the Compose file Open WebUI publishes and runs `tailor.sh`.
 
 ## 3.1 The job
 
@@ -22,7 +22,7 @@ You fetch the assistant card, follow its README, generate `~/assistant.stack.yml
 - `~/assistant-card.yml` lists `assistant` on port `8088` with `org`, and `ollama` on port `11434` with `api-key`.
 - `assistant` names `ghcr.io/open-webui/open-webui:main`. `ollama` names `ollama/ollama:latest`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id.
-- Both applications name the assistant Compose file in the cards repo.
+- Both applications name the Open WebUI Compose URL and the same `changes`.
 - Both have `place: desk`.
 - `ss` shows `127.0.0.1:8088` and `127.0.0.1:11434`.
 - `edgible stack validate -f ~/assistant.stack.yml` reports 2 applications: `assistant`, `ollama`.
@@ -43,19 +43,24 @@ On the serving device:
 curl -fsSL https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/card.yml -o ~/assistant-card.yml
 ```
 
-`org` in the file is the auth mode `org`. `api-key` is the auth mode `api-key`. `from` is the image name. `place` is `desk` on both apps, so they stay on one serving device. The Compose file is already bound to `127.0.0.1`. This card has no `tailor.sh`.
+`org` in the file is the auth mode `org`. `api-key` is the auth mode `api-key`. `from` is the image name. `place` is `desk` on both apps, so they stay on one serving device. The Compose URL is the file Open WebUI publishes. `changes` is the edit list. `tailor.sh` applies that list.
 
 ## 3.3 Start the containers
 
-Follow the [assistant card](https://github.com/Edgible/cards/blob/main/cards/assistant/README.md). It fetches `docker-compose.yml` and `sample-help.pdf`, starts the containers, and pulls `qwen2.5:7b` and `nomic-embed-text`. The pulls are large.
+Follow the [assistant card](https://github.com/Edgible/cards/blob/main/cards/assistant/README.md). It fetches the Open WebUI Compose file and `sample-help.pdf`, and runs `tailor.sh`.
 
-Then:
+Start it, then pull the models:
 
 ```bash
+docker compose -f ~/assistant/docker-compose.yaml up -d
+docker exec ollama ollama pull qwen2.5:7b
+docker exec ollama ollama pull nomic-embed-text
 ss -ltnp | grep 8088
 ss -ltnp | grep 11434
 docker exec ollama ollama ls
 ```
+
+The pulls are large.
 
 `127.0.0.1:8088` and `127.0.0.1:11434` are listening. `ollama ls` lists `qwen2.5:7b` and `nomic-embed-text`.
 
@@ -85,7 +90,8 @@ Ask: what are the support hours? The answer is the sentence in the sample. Suppo
 - [ ] `grep -n 'from:' ~/assistant-card.yml` shows `ghcr.io/open-webui/open-webui:main` and `ollama/ollama:latest`.
 - [ ] `grep -nE 'deviceName|organization' ~/assistant-card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/assistant-card.yml` prints nothing.
-- [ ] `grep -n 'compose:' ~/assistant-card.yml` shows `https://raw.githubusercontent.com/Edgible/cards/main/cards/assistant/docker-compose.yml` under both apps.
+- [ ] `grep -n 'compose:' ~/assistant-card.yml` shows `https://raw.githubusercontent.com/open-webui/open-webui/main/docker-compose.yaml` under both apps.
+- [ ] `grep -n 'changes:' -A3 ~/assistant-card.yml` shows the build block, `127.0.0.1:8088`, and `127.0.0.1:11434` under both apps.
 - [ ] `grep -n 'place:' ~/assistant-card.yml` shows `desk` for both.
 - [ ] `ss -ltnp | grep 8088` shows `127.0.0.1:8088`. `ss -ltnp | grep 11434` shows `127.0.0.1:11434`.
 - [ ] `edgible stack validate -f ~/assistant.stack.yml` reports 2 applications: `assistant`, `ollama`.
