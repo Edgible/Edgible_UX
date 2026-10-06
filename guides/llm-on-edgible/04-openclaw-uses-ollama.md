@@ -8,10 +8,10 @@ OpenClaw and n8n each have their own VM on a different home computer from the Ma
 
 [OpenClaw chapter 8](../openclaw-on-edgible/08-models-beyond-free-gemini.md) 8.5 is same-LAN only (Gateway next to the Mac). Skip it here. Cloud keys in that chapter can stay; this chapter only registers the published 20B.
 
-![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives through socat on the Ubuntu guest at Ollama.app on the macOS host, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-light.svg#only-light)
-![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives through socat on the Ubuntu guest at Ollama.app on the macOS host, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-dark.svg#only-dark)
+![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives at Ollama.app on the Mac, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-light.svg#only-light)
+![The OpenClaw Gateway on another box you own calls ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives at Ollama.app on the Mac, where gpt-oss:20b loads.](../../images/diagrams/llm-on-edgible-04-dark.svg#only-dark)
 
-**Where you run this:** every `openclaw` command runs on the **OpenClaw VM** (a different home computer); only `ollama ls` / `ollama ps` / `ollama show` run on the **macOS host**, and the hostname and secret are copied from the **Ubuntu guest**.
+**Where you run this:** every `openclaw` command runs on the **OpenClaw VM** (a different home computer); `ollama ls` / `ollama ps` / `ollama show`, and the hostname and secret, are on the **macOS host**.
 
 ## 4.1 The job
 
@@ -46,9 +46,9 @@ openclaw gateway restart
 openclaw models list --provider ollama
 ```
 
-Copy the host from `edgible app list` on the Mac guest. The secret is from `api-keys create`, not the key id. Prefer putting the secret in `~/.openclaw/.env` if you already keep provider keys there, so it is not sitting in shell history.
+Copy the host from `edgible app list` on the Mac. The secret is from `api-keys create`, not the key id. Prefer putting the secret in `~/.openclaw/.env` if you already keep provider keys there, so it is not sitting in shell history.
 
-`list` must print `ollama/gpt-oss:20b` (and the 7B). HTML / login: the `ollama` app is `org`. 401: wrong secret. Empty list / timeout: Mac Ollama quit, forwarder down, or the Mac VM slept.
+`list` must print `ollama/gpt-oss:20b` (and the 7B). HTML / login: the `ollama` app is `org`. 401: wrong secret. Empty list / timeout: Mac Ollama quit.
 
 Then either:
 

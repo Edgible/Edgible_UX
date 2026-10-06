@@ -146,8 +146,8 @@ SERIES = {
         "hosts": [("ollama.<org>.edgible.com", KEY)],
         "machine": "THE GPU STAYS HOME",
         "ports": [
-            ("127.0.0.1:11434", "Ollama on the Mac"),
-            ("guest forwarder", "socat to the Mac"),
+            ("0.0.0.0:11434", "Ollama.app, Metal"),
+            ("serving agent", "on this Mac"),
         ],
         "notes": [
             "weights never leave the machine",
@@ -155,13 +155,6 @@ SERIES = {
             "router: no forwarded port",
         ],
     },
-}
-
-MAC = {
-    "title": "MACOS HOST",
-    "ports": [("0.0.0.0:11434", "Ollama.app, Metal")],
-    "notes": ["the weights and the GPU stay here"],
-    "link": "UTM virt LAN, often 192.168.64.1",
 }
 
 # One entry per chapter that opens with a diagram. The key is the SVG basename,
@@ -408,18 +401,16 @@ CHAPTERS = {
     "llm-on-edgible-02": {
         "caller": ["Any", "off-box", "client"],
         "hosts": [("ollama.<org>.edgible.com", KEY, "this chapter")],
-        "machine": "UBUNTU GUEST",
+        "machine": "MACOS HOST",
         "ports": [
-            ("socat", "127.0.0.1:11434 here"),
+            ("0.0.0.0:11434", "Ollama.app, Metal"),
             ("serving agent", "app ollama, api-key"),
         ],
-        "notes": ["the guest only forwards"],
-        "machine2": MAC,
+        "notes": ["the weights and the GPU stay here"],
         "alt": (
             "An off-box client calls ollama.<org>.edgible.com with a bearer key. It "
-            "arrives at the serving agent on the Ubuntu guest, where socat forwards "
-            "127.0.0.1:11434 across the virt LAN to Ollama.app on the macOS host, so "
-            "the weights and the GPU stay there."
+            "arrives at Ollama.app on 0.0.0.0:11434 on the Mac, published by the "
+            "serving agent on that same machine, so the weights and the GPU stay there."
         ),
     },
     "llm-on-edgible-03": {
@@ -428,29 +419,32 @@ CHAPTERS = {
             ("ollama.<org>.edgible.com", KEY, "Basic LLM Chain"),
             ("ollama.<org>…/v1", KEY, "AI Assistant chat"),
         ],
-        "machine": "UBUNTU GUEST",
-        "ports": [("socat", "127.0.0.1:11434 here")],
+        "machine": "MACOS HOST",
+        "ports": [
+            ("0.0.0.0:11434", "Ollama.app, Metal"),
+            ("serving agent", "app ollama, api-key"),
+        ],
         "notes": ["Authorization: Bearer, not an open port"],
-        "machine2": MAC,
         "alt": (
             "n8n on another box you own calls ollama.<org>.edgible.com with a bearer "
             "key, the Basic LLM Chain node on the bare hostname and the AI Assistant "
-            "chat on the /v1 path. Both arrive through socat on the Ubuntu guest at "
-            "Ollama.app on the macOS host."
+            "chat on the /v1 path. Both arrive at Ollama.app on the Mac, published by "
+            "the serving agent on that machine."
         ),
     },
     "llm-on-edgible-04": {
         "caller": ["OpenClaw", "another box", "you own"],
         "hosts": [("ollama.<org>.edgible.com", KEY, "no /v1 suffix")],
-        "machine": "UBUNTU GUEST",
-        "ports": [("socat", "127.0.0.1:11434 here")],
+        "machine": "MACOS HOST",
+        "ports": [
+            ("0.0.0.0:11434", "gpt-oss:20b loads here"),
+            ("serving agent", "app ollama, api-key"),
+        ],
         "notes": ["Authorization: Bearer, not an open port"],
-        "machine2": {**MAC, "ports": [("0.0.0.0:11434", "gpt-oss:20b loads here")]},
         "alt": (
             "The OpenClaw Gateway on another box you own calls "
             "ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives "
-            "through socat on the Ubuntu guest at Ollama.app on the macOS host, where "
-            "gpt-oss:20b loads."
+            "at Ollama.app on the Mac, where gpt-oss:20b loads."
         ),
     },
 }
@@ -1063,7 +1057,7 @@ ALT = {
     "llm-on-edgible": (
         "An n8n VM and an OpenClaw VM on other machines call "
         "ollama.<org>.edgible.com with a bearer key. It arrives at Ollama on the Mac, "
-        "bound to 127.0.0.1:11434 and reached through a forwarder on the guest, so the "
+        "bound to 0.0.0.0:11434 and published by the serving agent on that Mac, so the "
         "model weights and the GPU stay home and the router has no forwarded port."
     ),
 }

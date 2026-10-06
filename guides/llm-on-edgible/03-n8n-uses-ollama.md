@@ -8,8 +8,8 @@ n8n is on its own VM on a different home computer, so it has no local model. Do 
 
 n8n uses that one hostname in two shapes. Workflow nodes speak Ollama’s native API at the bare origin; the built-in **AI Assistant** speaks OpenAI-compatible `/v1`. Same secret, same GPU, two credentials and two models. The Assistant also needs a sandbox and a search backend running beside n8n. Do not mix the two URLs, do not put the Edgible secret on `n8n-hooks`, do not set the `ollama` app to `None`, and do not run n8n or the sandbox on the Mac UTM guest. The Mac serves Ollama (and the website); n8n is the remote self-hosted caller.
 
-![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.](../../images/diagrams/llm-on-edgible-03-light.svg#only-light)
-![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive through socat on the Ubuntu guest at Ollama.app on the macOS host.](../../images/diagrams/llm-on-edgible-03-dark.svg#only-dark)
+![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive at Ollama.app on the Mac, published by the serving agent on that machine.](../../images/diagrams/llm-on-edgible-03-light.svg#only-light)
+![n8n on another box you own calls ollama.<org>.edgible.com with a bearer key, the Basic LLM Chain node on the bare hostname and the AI Assistant chat on the /v1 path. Both arrive at Ollama.app on the Mac, published by the serving agent on that machine.](../../images/diagrams/llm-on-edgible-03-dark.svg#only-dark)
 
 **Where you run this:** almost everything is on the **n8n VM** (its browser UI and `docker compose` in `~/n8n`); only `ollama show` / `ollama ps` and any missing `ollama pull` run on the **macOS host**.
 
@@ -287,7 +287,7 @@ docker compose exec -T n8n wget -qO- \
   "https://ollama.<org>.edgible.com/v1/models" | head -c 400 && echo
 ```
 
-You want JSON that includes `qwen2.5:7b` and `gpt-oss:20b`. 401 = bad secret. Timeout/HTML = Mac Ollama/forwarder down or wrong host.
+You want JSON that includes `qwen2.5:7b` and `gpt-oss:20b`. 401 = bad secret. Timeout/HTML = Mac Ollama quit, or the wrong host.
 
 Do not publish sandbox or SearXNG ports to prove this. `ss` on the VM should still show `5678` on `127.0.0.1` only.
 

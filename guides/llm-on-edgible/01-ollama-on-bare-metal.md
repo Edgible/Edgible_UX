@@ -6,7 +6,7 @@
 
 Nothing can be published until something is actually answering, and the machine that answers has to be the one with the GPU. On this topology that is the Mac host. `ollama`, the menu-bar Ollama app and Metal are all macOS, and there is no `apt install ollama` anywhere in this chapter. So use Terminal.app (or iTerm) on the MacBook or Mac mini, never an SSH session into the UTM guest.
 
-Do not install Ollama inside the Ubuntu guest, where Edgible’s serving agent already lives. A UTM guest cannot access the Mac’s GPU, so inference falls back to CPU, and it takes RAM from a 4 GB guest that has to run Edgible and the website. Keep the weights and the GPU on the Mac, leave Ollama on its default Mac localhost bind, and let [chapter 2](02-edgible-to-ollama.md) do the forwarding and the publishing.
+Do not install Ollama inside a guest. A guest cannot access the Mac’s GPU, so inference falls back to CPU. Keep the weights and the GPU on the Mac, leave Ollama on its default Mac localhost bind, and let [chapter 2](02-edgible-to-ollama.md) publish it from the serving agent on that same Mac.
 
 **Where you run this:** every command in this chapter runs on the **macOS host** (Terminal.app on the Mac), not in the Ubuntu guest.
 
@@ -25,7 +25,7 @@ You install Ollama on the Mac that hosts the Ubuntu VM, pull a 7B-class chat mod
 
 **Need first:** A Mac with enough RAM left after the Ubuntu VM: a 7B wants on the order of 8 GB+ for weights. The VM from [Edgible on an Ubuntu VM](../start-here/01-edgible-on-vm.md) can stay running; you do not use it in this chapter. [Ollama for Mac](https://ollama.com/download).
 
-**Not this chapter:** `OLLAMA_HOST=0.0.0.0`, socat, an Edgible app, n8n, OpenClaw, or `curl` from the VM.
+**Not this chapter:** `OLLAMA_HOST=0.0.0.0`, an Edgible app, n8n, OpenClaw, or `curl` from another machine.
 
 ## 1.2 Install and hello (macOS host only)
 

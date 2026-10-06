@@ -51,7 +51,6 @@ Port-forwarding and the firewall rules around it. Dynamic DNS. Certbot and renew
 
 ## Known limits
 
-- No macOS serving agent yet. [LLM on Edgible](guides/llm-on-edgible/README.md) works around this: Ollama runs on the Mac for GPU access, and an Ubuntu guest publishes it through a loopback forwarder. A macOS agent would remove that hop.
 - TLS terminates on the serving device, so the gateway cannot inject HTTP headers. The original client IP therefore does not reach the app, which breaks visitor geolocation in analytics tools. [What the country column will not tell you](guides/website-on-edgible/04-publish-umami.md#45-what-the-country-column-will-not-tell-you) shows the empty country column and proves the cause. PROXY protocol between gateway and device would close this gap.
 - WebSocket-heavy apps should be checked on first publish. [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) describes what it means when the page shell loads but the canvas stays blank.
 

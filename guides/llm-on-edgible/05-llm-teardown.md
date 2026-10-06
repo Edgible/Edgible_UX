@@ -6,29 +6,27 @@
 
 Of everything in these guides, this is the one worth being careful about. `ollama` is an `api-key` app in front of a GPU. As long as the hostname exists, anyone holding that secret can run inference on your hardware from anywhere, and a secret you pasted into an n8n credential, an OpenClaw config and a shell history is a secret in more places than you can remember.
 
-The Mac also ends this series in a state it did not start in. Chapter 2 set `OLLAMA_HOST` to `0.0.0.0:11434`, so Ollama is listening on every interface the Mac has, not only loopback. That is fine while the virt LAN is the only network reaching it, and it is worth undoing when you are finished.
+The Mac also ends this series in a state it did not start in. Chapter 2 set `OLLAMA_HOST` to `0.0.0.0:11434`, so Ollama is listening on every interface the Mac has, not only loopback. Putting it back on localhost when you are finished keeps the model off the LAN.
 
-Three machines are involved, so this chapter is ordered by blast radius: the public hostname first, then the callers that used it, then the local plumbing, then the weights if you want the disk back.
+This chapter is ordered by blast radius: the public hostname first, then the callers that used it, then the Mac's bind, then the weights if you want the disk back.
 
 ```
 delete first    app ollama            the public hostname and its api-key
 then            n8n credentials       OpenClaw provider config
-then            ollama-forward        socat and its systemd unit on the guest
 last            OLLAMA_HOST           the Mac back to loopback, weights optional
 ```
 
-**Where you run this:** `edgible` on the **Ubuntu guest**, the credential deletes in the **n8n UI**, `openclaw config` on the **OpenClaw VM**, and the last two sections on the **macOS host**.
+**Where you run this:** `edgible` on the **macOS host**, the credential deletes in the **n8n UI**, `openclaw config` on the **OpenClaw VM**, and the loopback step on the **macOS host**.
 
 ## 5.1 The job
 
-You delete the `ollama` app, remove the credentials that carried its secret, stop and remove the loopback forwarder, and put the Mac's Ollama back on localhost.
+You delete the `ollama` app, remove the credentials that carried its secret, and put the Mac's Ollama back on localhost.
 
 **Done when**
 
 - `edgible app list` no longer shows `ollama`.
 - The HTTPS origin fails from a phone on cellular, with the Bearer token that used to work.
 - n8n has no Ollama credentials left, and OpenClaw is off `ollama/gpt-oss:20b`.
-- `ollama-forward.service` is gone, and nothing is listening on `11434` on the guest.
 - The Mac's Ollama is back on `127.0.0.1:11434`.
 - `hello-world` still loads, and `edgible device health` is still OK.
 
@@ -38,7 +36,7 @@ You delete the `ollama` app, remove the credentials that carried its secret, sto
 
 ## 5.2 Delete the app and the key
 
-On the Ubuntu guest. The app goes first, because deleting it is what makes the secret worthless everywhere it has been copied to:
+On the Mac. The app goes first, because deleting it is what makes the secret worthless everywhere it has been copied to:
 
 ```bash
 edgible app list
@@ -82,28 +80,7 @@ Set whichever model you were on before as the primary. The `list` should now pri
 
 **Smoke test.** `openclaw agent --model … hello` answers on the model you just set, and no chat turn hangs waiting for a hostname that is gone.
 
-## 5.4 Stop the forwarder on the guest
-
-The `socat` unit only forwarded loopback to the Mac, and Edgible is no longer publishing that port, so this is tidying rather than exposure. On the Ubuntu guest:
-
-```bash
-sudo systemctl disable --now ollama-forward.service
-sudo rm -f /etc/systemd/system/ollama-forward.service /usr/local/bin/ollama-forward.sh
-sudo systemctl daemon-reload
-```
-
-`sudo apt-get purge -y socat` if nothing else on the guest uses it.
-
-**Smoke test.** On the guest:
-
-```bash
-systemctl status ollama-forward.service
-ss -ltnp | grep 11434
-```
-
-You want `Unit ollama-forward.service could not be found` and no output from `ss`.
-
-## 5.5 Put the Mac back on loopback
+## 5.4 Put the Mac back on loopback
 
 macOS host, Terminal.app. This undoes the bind from 2.2:
 
@@ -123,7 +100,7 @@ You want `127.0.0.1:11434`, not `*:11434`. Local chats still work; nothing on th
 
 If you kept a firewall exception for Ollama when you set this up, remove it in **System Settings → Network → Firewall → Options**.
 
-## 5.6 The weights, if you want the disk back
+## 5.5 The weights, if you want the disk back
 
 Models are the largest thing this series put on your machine: a 7B is roughly 4 GB and `gpt-oss:20b` roughly 13 GB. They are also the slowest thing to get back, so this is a separate decision from everything above.
 
@@ -141,7 +118,6 @@ Keep any tag you use locally. Removing Ollama itself is dragging **Ollama.app** 
 - [ ] `edgible app list` no longer shows `ollama`.
 - [ ] The HTTPS origin fails from a phone on cellular with the old Bearer token.
 - [ ] n8n has no Ollama credentials left, and OpenClaw is off `ollama/gpt-oss:20b`.
-- [ ] `systemctl status ollama-forward.service` reports no such unit, and `ss` shows nothing on `11434`.
 - [ ] `lsof` on the Mac shows `127.0.0.1:11434`, not `*:11434`.
 - [ ] `hello-world` still loads and `edgible device health` is OK.
 
