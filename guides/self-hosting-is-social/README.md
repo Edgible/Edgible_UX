@@ -17,7 +17,7 @@ Hover a step.
 
 ## The card
 
-The cards live in [Edgible/cards](https://github.com/Edgible/cards). [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for the file. The card README is how you fetch the card, edit `card.env`, start the containers, and publish. [1. The website card](01-website-card.md), [2. The n8n card](02-n8n-card.md), and [3. The assistant card](03-assistant-card.md) use the files from that repo.
+The cards live in [Edgible/cards](https://github.com/Edgible/cards). Each chapter below is the walkthrough for this machine: which place maps to `minipc`, and the smoke test. The commands are on that card's README. [1. The website card](01-website-card.md), [2. The n8n card](02-n8n-card.md), and [3. The assistant card](03-assistant-card.md) follow the files in that repo.
 
 Each chapter is one job and one smoke test. Do them in order.
 
