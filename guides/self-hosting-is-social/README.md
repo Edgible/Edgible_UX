@@ -12,12 +12,12 @@ What you stop doing is rebuilding a known setup from memory. [Website on Edgible
 
 Hover a step.
 
-![You build several Edgible apps, write them as a card, add files such as tailor.sh, and publish the card. Someone else finds that card, tailors it for their machine, turns it into a stack file, and deploys the stack.](../../images/diagrams/self-hosting-is-social-light.svg#only-light)
-![You build several Edgible apps, write them as a card, add files such as tailor.sh, and publish the card. Someone else finds that card, tailors it for their machine, turns it into a stack file, and deploys the stack.](../../images/diagrams/self-hosting-is-social-dark.svg#only-dark)
+![You build several Edgible apps, write them as a card, add the Compose file and card.env, and publish the card. Someone else finds that card, edits card.env, starts the containers, and publishes each app.](../../images/diagrams/self-hosting-is-social-light.svg#only-light)
+![You build several Edgible apps, write them as a card, add the Compose file and card.env, and publish the card. Someone else finds that card, edits card.env, starts the containers, and publishes each app.](../../images/diagrams/self-hosting-is-social-dark.svg#only-dark)
 
 ## The card
 
-The cards live in [Edgible/cards](https://github.com/Edgible/cards). [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for the file. [card-to-stack.py](https://github.com/Edgible/cards/blob/main/tools/card-to-stack.py) writes the stack file, filling in your device name and your organization id. When a card includes `tailor.sh`, that card's README is how you run it. [1. The website card](01-website-card.md), [2. The n8n card](02-n8n-card.md), and [3. The assistant card](03-assistant-card.md) use the files from that repo.
+The cards live in [Edgible/cards](https://github.com/Edgible/cards). [card.schema.json](https://github.com/Edgible/cards/blob/main/tools/card.schema.json) is the source of truth for the file. The card README is how you fetch the card, edit `card.env`, start the containers, and publish. [1. The website card](01-website-card.md), [2. The n8n card](02-n8n-card.md), and [3. The assistant card](03-assistant-card.md) use the files from that repo.
 
 Each chapter is one job and one smoke test. Do them in order.
 

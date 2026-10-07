@@ -16,8 +16,8 @@ for the ones where the service lives on the Mac and the guest only forwards, and
 a third-party box for the outbound connections to Gemini, Telegram or WhatsApp.
 
 The social series index is not that shape. It is the workflow around a card:
-someone builds apps, shares them as a card, and someone else tailors that card,
-turns it into a stack file, and deploys it.
+someone builds apps, shares them as a card, and someone else edits card.env,
+starts the containers, and publishes each app.
 
 Two files per series, light and dark. Material's colour scheme is a toggle on
 the page rather than an OS preference, and an SVG loaded through <img> cannot
@@ -762,9 +762,9 @@ def flow_svg(spec: dict, palette: dict) -> str:
 FLOWS = {
     "self-hosting-is-social": {
         "alt": (
-            "You build several Edgible apps, write them as a card, add files such as "
-            "tailor.sh, and publish the card. Someone else finds that card, tailors it "
-            "for their machine, turns it into a stack file, and deploys the stack."
+            "You build several Edgible apps, write them as a card, add the Compose file "
+            "and card.env, and publish the card. Someone else finds that card, edits "
+            "card.env, starts the containers, and publishes each app."
         ),
         "rows": [
             (
@@ -790,10 +790,9 @@ FLOWS = {
                     (
                         "3",
                         "Add the files",
-                        "such as tailor.sh",
-                        "Optional files beside the card: a Compose file, a sample page, "
-                        "and tailor.sh. The changes list says what to edit. The script "
-                        "applies that list and stops if an edit did not land.",
+                        "Compose, card.env",
+                        "The Compose file sits next to the card. card.env lists the "
+                        "settings for the machine. A sample file goes in etc/.",
                     ),
                     (
                         "4",
@@ -819,27 +818,25 @@ FLOWS = {
                     ),
                     (
                         "6",
-                        "Tailor it",
+                        "Edit card.env",
                         "for your machine",
-                        "Follow the card README. It fetches the Compose files and runs "
-                        "tailor.sh. You supply what is yours, such as an org label. The "
-                        "script does not store a device name, a hostname, or a password.",
+                        "Follow the card README. Set the device name. Fill any empty "
+                        "secret. Fetching the card again replaces card.env.",
                     ),
                     (
                         "7",
-                        "Make the stack",
-                        "card-to-stack.py",
-                        "card-to-stack.py reads the card and writes a stack file. It "
-                        "fills in your device name and your organization id. Auth mode "
-                        "org is written edgible-login.",
+                        "Start",
+                        "docker compose up",
+                        "The Compose file reads card.env. The card README has the "
+                        "command. The containers are listening before you publish.",
                     ),
                     (
                         "8",
-                        "Deploy",
-                        "edgible stack deploy",
-                        "edgible stack deploy publishes the ports in that stack file. "
-                        "The processes are already listening. Deploy does not start "
-                        "the containers.",
+                        "Publish",
+                        "create existing",
+                        "edgible app create existing publishes each port. The device "
+                        "name comes from card.env. The organization id comes from the "
+                        "logged-in CLI.",
                     ),
                 ],
             ),
