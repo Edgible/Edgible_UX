@@ -20,7 +20,7 @@ You follow the assistant card: fetch it, edit `card.env`, start the containers, 
 **Done when**
 
 - `~/assistant/card.yml` lists `assistant` on port `8088` with `org`, and `ollama` on port `11434` with `api-key`.
-- `assistant` names `ghcr.io/open-webui/open-webui:main`. `ollama` names `ollama/ollama:latest`.
+- `assistant` names `ghcr.io/open-webui/open-webui:latest`. `ollama` names `ollama/ollama:latest`.
 - The card has no `deviceName`, no `<org>.edgible.com` hostname, and no organization id.
 - The card has no `resources` section. The Compose file sits in the card directory.
 - Both have `place: desk`.
@@ -71,7 +71,7 @@ Ask: what are the support hours? The answer is the sentence in the sample. Suppo
 ## Verify
 
 - [ ] `grep -nE 'name: (assistant|ollama)|port:|authModes:' ~/assistant/card.yml` shows `assistant` on port `8088` with `org`, and `ollama` on port `11434` with `api-key`.
-- [ ] `grep -n 'from:' ~/assistant/card.yml` shows `ghcr.io/open-webui/open-webui:main` and `ollama/ollama:latest`.
+- [ ] `grep -n 'from:' ~/assistant/card.yml` shows `ghcr.io/open-webui/open-webui:latest` and `ollama/ollama:latest`.
 - [ ] `grep -nE 'deviceName|organization' ~/assistant/card.yml` prints nothing.
 - [ ] `grep -n 'edgible.com' ~/assistant/card.yml` prints nothing.
 - [ ] `grep -nE 'resources:|compose:|changes:' ~/assistant/card.yml` prints nothing.
