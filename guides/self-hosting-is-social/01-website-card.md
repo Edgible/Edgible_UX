@@ -4,7 +4,7 @@
 
 ## 1.0 Why
 
-[Website on Edgible](../website-on-edgible/README.md) published a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted those hostnames and stopped the containers. This chapter runs the website again from the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md). The site is a React app. The editor is Strapi.
+[Website on Edgible](../website-on-edgible/README.md) published a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted those hostnames and stopped the containers. This chapter runs the website again from the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md). The site is a Vite React app served as static files. The editor is Strapi.
 
 The card has two places. `site`, `strapi`, `analytics`, and `umami` are `web`. `status` is `monitor`. This chapter maps both places to `minipc`.
 
