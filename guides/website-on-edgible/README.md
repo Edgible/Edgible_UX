@@ -28,4 +28,4 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 
 Two limits are stated where they arise rather than glossed over: visitor country is unavailable to self-hosted analytics behind Edgible ([4.5](04-publish-umami.md#45-what-the-country-column-will-not-tell-you)), and a monitor running on the machine it watches cannot report that machine going down ([5.5](05-uptime-kuma.md#55-what-this-cannot-tell-you)).
 
-After teardown, [Self Hosting is Social](../self-hosting-is-social/README.md) writes the website card and publishes the four apps again. Other guides: [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md), [LLM on Edgible](../llm-on-edgible/README.md).
+After teardown, [Self Hosting is Social](../self-hosting-is-social/README.md) publishes the website card: a React site, a Strapi editor, the analytics, and the monitor. Other guides: [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md), [LLM on Edgible](../llm-on-edgible/README.md).

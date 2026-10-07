@@ -104,4 +104,4 @@ Leave those alone if any other guide is still in progress. [Self Hosting is Soci
 
 ## Next
 
-[Self Hosting is Social](../self-hosting-is-social/README.md) writes the website card and publishes the four apps again. It starts from this teardown. [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [LLM on Edgible](../llm-on-edgible/README.md) go further with the same machine. Series: [README](README.md).
+[Self Hosting is Social](../self-hosting-is-social/README.md) publishes the website card: a React site, a Strapi editor, the analytics, and the monitor. It starts from this teardown. [n8n on Edgible](../n8n-on-edgible/README.md), [OpenClaw on Edgible](../openclaw-on-edgible/README.md) and [LLM on Edgible](../llm-on-edgible/README.md) go further with the same machine. Series: [README](README.md).

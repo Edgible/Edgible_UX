@@ -43,7 +43,7 @@ The agent everyone is currently trying, on hardware you control. [OpenClaw on Ed
 
 Private AI, where the prompts and the weights stay home. In [LLM on Edgible](guides/llm-on-edgible/README.md), Ollama and the model weights stay on one machine while n8n on a second and OpenClaw on a third call it over HTTPS with a bearer secret. No port-forward and no mesh VPN. This combination exercises private inference, machine authentication and remote self-hosted callers together.
 
-A proven solution can be shared as a pattern, so someone else can reproduce it. [Self Hosting is Social](guides/self-hosting-is-social/README.md) takes the website as the first card: four apps, two places, with the device name, the hostnames and the organization id left out. The second card is n8n: the editor on `org` and the hooks on `None`, one place. The third card is the assistant: Open WebUI on `org` and Ollama on `api-key`, one place. The card README is how the next person runs it.
+A proven solution can be shared as a pattern, so someone else can reproduce it. [Self Hosting is Social](guides/self-hosting-is-social/README.md) takes the website as the first card: a React site, a Strapi editor, analytics and a monitor, in two places, with the device name, the hostnames and the organization id left out. The second card is n8n: the editor on `org` and the hooks on `None`, one place. The third card is the assistant: Open WebUI on `org` and Ollama on `api-key`, one place. The card README is how the next person runs it.
 
 ## What it replaces
 

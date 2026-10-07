@@ -24,4 +24,4 @@ Then pick a guide by what you want to stop paying for or stop handing over:
 - [OpenClaw on Edgible](../openclaw-on-edgible/README.md): an AI agent with a shell, reachable from your phone, never exposed.
 - [LLM on Edgible](../llm-on-edgible/README.md): a model on your own GPU, called over HTTPS by other machines you own.
 
-After [Website on Edgible](../website-on-edgible/README.md) is torn down, [Self Hosting is Social](../self-hosting-is-social/README.md) writes that pattern as one file and publishes the four apps again.
+After [Website on Edgible](../website-on-edgible/README.md) is torn down, [Self Hosting is Social](../self-hosting-is-social/README.md) publishes the website card: a React site, a Strapi editor, the analytics, and the monitor.

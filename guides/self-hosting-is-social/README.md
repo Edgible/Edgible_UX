@@ -8,7 +8,7 @@ It is a useful way to hand that pattern to someone else, and a natural fit for E
 
 A Compose file says how each program runs. A card adds which hostname is open, which one asks for an `org` login, and which apps have to share a serving device. That pattern is worth sharing when several apps have to coexist and work together to solve one problem.
 
-What you stop doing is rebuilding a known setup from memory. [Website on Edgible](../website-on-edgible/README.md) and [n8n on Edgible](../n8n-on-edgible/README.md) are each several apps working together, so this series reproduces each one from a card. The website is four apps in two places. n8n is two hostnames on one process, the editor on `org` and the hooks on `None`. The assistant is the third: a chat on `org` and a model on `api-key`, one place. One app on one port is a single `edgible app create existing`, which is the whole job.
+What you stop doing is rebuilding a known setup from memory. [Website on Edgible](../website-on-edgible/README.md) and [n8n on Edgible](../n8n-on-edgible/README.md) are each several apps working together, so this series reproduces each one from a card. The website is a React site and a Strapi editor, plus analytics and a monitor, in two places. n8n is two hostnames on one process, the editor on `org` and the hooks on `None`. The assistant is the third: a chat on `org` and a model on `api-key`, one place. One app on one port is a single `edgible app create existing`, which is the whole job.
 
 Hover a step.
 
@@ -27,6 +27,6 @@ Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what 
 
 | # | Chapter | Smoke test |
 | --- | --- | --- |
-| 1 | [1. The website card](01-website-card.md) | `edgible app list` shows `site`, `analytics`, `umami` and `status` again |
+| 1 | [1. The website card](01-website-card.md) | `edgible app list` shows `site`, `strapi`, `analytics`, `umami` and `status` |
 | 2 | [2. The n8n card](02-n8n-card.md) | `edgible app list` shows `n8n` (`org`) and `n8n-hooks` (`None`) |
 | 3 | [3. The assistant card](03-assistant-card.md) | `edgible app list` shows `assistant` (`org`) and `ollama` (`api-key`) |
