@@ -112,7 +112,7 @@ edgible app create existing \
   --device-id <device-id>
 ```
 
-No chapter checks a TCP app end to end yet. Until one does, the line above is the claim, and the help output is its check.
+[Game server on Edgible](../guides/game-server-on-edgible/README.md) checks both end to end with one Minecraft server: [Java players over TCP](../guides/game-server-on-edgible/02-java-over-tcp.md) publishes port `25565` as a TCP app, and [Bedrock players over UDP](../guides/game-server-on-edgible/03-bedrock-over-udp.md) publishes port `29132` as a UDP app. In both, a status ping to the public address answers from the server on the guest. A TCP or UDP app has no auth mode, and its public port must be from `20000` to `29999`.
 
 ## 4. A GUI that maps a hostname to a port
 
@@ -138,7 +138,7 @@ Where Edgible differs is in what happens around that gap:
 
 - Your DNS stays where it is. Your own domain is one `CNAME` at the provider you already use. You do not move your nameservers or hand the whole zone to us, and the rest of the zone, mail included, stays as it is. [A domain of your own](../guides/website-on-edgible/02-publish-the-site.md#26-a-domain-of-your-own-optional) is the check.
 - Each published hostname has its own auth mode: `None`, `org`, or `api-key`. One process can sit on two hostnames with different auth modes. [Publish Umami](../guides/website-on-edgible/04-publish-umami.md) puts the tracking script on a `None` hostname and the dashboard on an `org` hostname, on the same port.
-- It is not only web. The same serving agent carries plain TCP and UDP, so the dream's "HTTP and TCP" is one tool here, not two. §3 has the check.
+- It is not only web. The same serving agent carries plain TCP and UDP, so the dream's "HTTP and TCP" is one tool here, not two. [Game server on Edgible](../guides/game-server-on-edgible/README.md) is the check.
 
 [For evaluators and architects](for-evaluators.md) compares these approaches more broadly, without product names.
 

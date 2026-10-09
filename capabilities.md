@@ -1,6 +1,6 @@
 # What Edgible does, and where these guides prove it
 
-Edgible publishes a service running on a machine you own at a public HTTPS hostname, using only an outbound connection on TCP 443. The alternatives each cost something. Port-forwarding exposes the service, and anything it holds, to the open internet. A mesh VPN requires enrolling every device that will ever need access. A reverse proxy with certbot and dynamic DNS means you operate TLS and a domain yourself. With Edgible the machine makes the connection outward, and a hostname appears with a certificate already issued and an auth mode already applied.
+Edgible publishes a service running on a machine you own at a public HTTPS hostname, using only an outbound connection on TCP 443. A service that does not speak HTTPS, such as a game server, is published the same way as a TCP or UDP app. The alternatives each cost something. Port-forwarding exposes the service, and anything it holds, to the open internet. A mesh VPN requires enrolling every device that will ever need access. A reverse proxy with certbot and dynamic DNS means you operate TLS and a domain yourself. With Edgible the machine makes the connection outward, and a hostname appears with a certificate already issued and an auth mode already applied.
 
 ## The three differentiators
 
@@ -31,6 +31,7 @@ Where names the chapter that demonstrates the feature. How is the observable pro
 | Publishes software you did not write | Publish stock apps | [Edgible publishes Ollama](guides/llm-on-edgible/02-edgible-to-ollama.md) | Stock Ollama, unmodified, goes public |
 | CLI, console and wizard parity | Repeatable setup | [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) | Same app from flags or prompts |
 | Clean unpublish | Reversible demo | [Tear down n8n](guides/n8n-on-edgible/06-n8n-teardown.md), [Tear down OpenClaw](guides/openclaw-on-edgible/09-openclaw-teardown.md) | Hostnames dead; other apps still serving |
+| TCP and UDP apps | Publish what is not web | [Java players over TCP](guides/game-server-on-edgible/02-java-over-tcp.md), [Bedrock players over UDP](guides/game-server-on-edgible/03-bedrock-over-udp.md) | `mc-monitor` answers on the public address over TCP and over UDP |
 | Many apps on one machine, each with its own auth mode | One machine, mixed estate | [n8n uses the published Ollama URL](guides/llm-on-edgible/03-n8n-uses-ollama.md) | `None`, `org` and `api-key` at once |
 
 ## The set-piece demos
@@ -43,6 +44,8 @@ The agent everyone is currently trying, on hardware you control. [OpenClaw on Ed
 
 Private AI, where the prompts and the weights stay home. In [LLM on Edgible](guides/llm-on-edgible/README.md), Ollama and the model weights stay on one machine while n8n on a second and OpenClaw on a third call it over HTTPS with a bearer secret. No port-forward and no mesh VPN. This combination exercises private inference, machine authentication and remote self-hosted callers together.
 
+Game night on a box you own, for the friends you invite. [Game server on Edgible](guides/game-server-on-edgible/README.md) runs one Minecraft server and publishes it twice: Java Edition as a TCP app on `25565` and Bedrock Edition, through the Geyser plugin, as a UDP app on `29132`. Friends on PC and on phone meet in one world. Neither app has an auth mode, so the game's own online mode and whitelist decide who plays.
+
 A proven solution can be shared as a pattern, so someone else can reproduce it. [Self Hosting is Social](guides/self-hosting-is-social/README.md) takes the website as the first card: a React site, a Strapi editor, analytics and a monitor, in two places, with the device name, the hostnames and the organization id left out. The second card is n8n: the editor on `org` and the hooks on `None`, one place. The third card is the assistant: Open WebUI on `org` and Ollama on `api-key`, one place. The card README is how the next person runs it.
 
 ## What it replaces
@@ -52,6 +55,7 @@ Port-forwarding and the firewall rules around it. Dynamic DNS. Certbot and renew
 ## Known limits
 
 - TLS terminates on the serving device, so the gateway cannot inject HTTP headers. The original client IP therefore does not reach the app, which breaks visitor geolocation in analytics tools. [What the country column will not tell you](guides/website-on-edgible/04-publish-umami.md#45-what-the-country-column-will-not-tell-you) shows the empty country column and proves the cause. PROXY protocol between gateway and device would close this gap.
+- A TCP or UDP app has no auth mode, and its public port must be from `20000` to `29999`, held by one app on its gateway at a time. [When port 25565 is taken](guides/game-server-on-edgible/02-java-over-tcp.md#25-when-port-25565-is-taken) shows the error and the fix, and [Why the port is 29132](guides/game-server-on-edgible/03-bedrock-over-udp.md#32-why-the-port-is-29132) the range.
 - WebSocket-heavy apps should be checked on first publish. [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) describes what it means when the page shell loads but the canvas stays blank.
 
 ---

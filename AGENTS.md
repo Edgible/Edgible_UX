@@ -104,6 +104,7 @@ whether a chapter in that series proves it.
 | n8n on Edgible | The back office workhorse, running at 3am in your own building | Handing your API keys to a hosted automation service |
 | OpenClaw on Edgible | The agent everyone is currently trying, with its shell and admin console off the internet | Exposing an admin port to reach the agent from a phone |
 | LLM on Edgible | Private AI: prompts, documents and weights never leave hardware you own | Sending the questions you would not type into a hosted model |
+| Game server on Edgible | Game night on a box you own, for the friends you invite | Renting a game server, or forwarding a port so friends can join |
 | Self Hosting is Social | A proven solution can be shared as a pattern, so someone else can reproduce it | Rebuilding a useful setup from memory |
 
 The themes are also the art direction. Any illustration added to a series should

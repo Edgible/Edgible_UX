@@ -155,6 +155,23 @@ SERIES = {
             "router: no forwarded port",
         ],
     },
+    "game-server-on-edgible": {
+        "caller": ["Friends", "on PC", "and phone"],
+        "hosts": [
+            ("mc-java.<org>…:25565", OPEN),
+            ("mc-bedrock.<org>…:29132", OPEN),
+        ],
+        "machine": "ONE MACHINE YOU OWN",
+        "ports": [
+            ("127.0.0.1:25565", "Paper, TCP"),
+            ("127.0.0.1:29132", "Geyser, UDP"),
+        ],
+        "notes": [
+            "one server, two protocols",
+            "the whitelist decides who plays",
+            "router: no forwarded port",
+        ],
+    },
 }
 
 # One entry per chapter that opens with a diagram. The key is the SVG basename,
@@ -445,6 +462,56 @@ CHAPTERS = {
             "The OpenClaw Gateway on another box you own calls "
             "ollama.<org>.edgible.com with a bearer key and no /v1 suffix. It arrives "
             "at Ollama.app on the Mac, where gpt-oss:20b loads."
+        ),
+    },
+    "game-server-on-edgible-01": {
+        "caller": ["The internet", "cannot reach", "this yet"],
+        "hosts": [],
+        "empty": "nothing published yet",
+        "machine": "UBUNTU GUEST",
+        "ports": [
+            ("127.0.0.1:25565", "Paper, TCP"),
+            ("127.0.0.1:29132", "Geyser, UDP"),
+            ("named volume", "the world"),
+        ],
+        "notes": ["online mode and whitelist on", "router: no forwarded port"],
+        "alt": (
+            "Nothing is published yet. One Minecraft container on the Ubuntu guest "
+            "listens on 127.0.0.1:25565 over TCP for Java players and on "
+            "127.0.0.1:29132 over UDP for Bedrock players through Geyser, and its "
+            "named volume holds the world."
+        ),
+    },
+    "game-server-on-edgible-02": {
+        "caller": ["A friend", "on a PC", "Java Edition"],
+        "hosts": [("mc-java.<org>…:25565", OPEN, "TCP")],
+        "machine": "UBUNTU GUEST",
+        "ports": [("127.0.0.1:25565", "Paper, TCP")],
+        "notes": ["the whitelist decides who plays", "router: no forwarded port"],
+        "alt": (
+            "A friend on a PC opens mc-java.<org>.edgible.com on TCP port 25565, open "
+            "to anyone. It arrives at the Paper server on 127.0.0.1:25565 on the Ubuntu "
+            "guest, where online mode and the whitelist decide who plays, with no "
+            "forwarded port."
+        ),
+    },
+    "game-server-on-edgible-03": {
+        "caller": ["A friend", "on a phone", "Bedrock"],
+        "hosts": [
+            ("mc-java.<org>…:25565", OPEN, "TCP"),
+            ("mc-bedrock.<org>…:29132", OPEN, "UDP"),
+        ],
+        "machine": "UBUNTU GUEST",
+        "ports": [
+            ("127.0.0.1:25565", "Paper, TCP"),
+            ("127.0.0.1:29132", "Geyser, UDP"),
+        ],
+        "notes": ["one world, two protocols", "router: no forwarded port"],
+        "alt": (
+            "A friend on a phone opens mc-bedrock.<org>.edgible.com on UDP port 29132, "
+            "open to anyone. It arrives at Geyser, mapped from 127.0.0.1:29132 to port "
+            "19132 in the container, which hands the player to the same Paper server as "
+            "the Java players."
         ),
     },
 }
@@ -1050,6 +1117,12 @@ ALT = {
         "an org login. It arrives at the OpenClaw Gateway bound to 127.0.0.1:18789 on a "
         "machine you own, so the agent's shell and admin console are never exposed and "
         "the router has no forwarded port."
+    ),
+    "game-server-on-edgible": (
+        "Friends on PC and on phone reach two hostnames: mc-java on TCP port 25565 "
+        "and mc-bedrock on UDP port 29132, both open to anyone. Both arrive at one "
+        "Minecraft server on one machine you own, with Paper on 127.0.0.1:25565 and "
+        "Geyser on 127.0.0.1:29132, and no forwarded port."
     ),
     "llm-on-edgible": (
         "An n8n VM and an OpenClaw VM on other machines call "

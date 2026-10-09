@@ -25,6 +25,7 @@ GUIDES = [
     ("n8n on Edgible", "guides/n8n-on-edgible"),
     ("OpenClaw on Edgible", "guides/openclaw-on-edgible"),
     ("LLM on Edgible", "guides/llm-on-edgible"),
+    ("Game server on Edgible", "guides/game-server-on-edgible"),
     ("Self Hosting is Social", "guides/self-hosting-is-social"),
 ]
 

@@ -8,7 +8,7 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | --- | --- |
 | Serving agent | The daemon installed on the machine that runs your service. It holds an outbound connection on TCP 443 and proxies traffic to a local port. |
 | Serving device | The registered record of that machine in the console, with a name such as `minipc` and a health state. Not interchangeable with serving agent. |
-| App | One published hostname pointing at one local port, with one auth mode. A single process can be published as several apps. |
+| App | One published hostname pointing at one local port, with one auth mode. A single process can be published as several apps. A TCP or UDP app has no auth mode. |
 | Published hostname | The public HTTPS address an app answers on. Standard shape: `https://<app>.<org>.edgible.com`, where `<app>` is the app name you chose at publish time and `<org>` is your organisation label in Edgible. In examples, angle brackets mark placeholders; always copy the exact host from `edgible app list` or the console. |
 | `<app>` | The app name in a published hostname, such as `hello-world` in `hello-world.<org>.edgible.com`. |
 | `<org>` | Your organisation label in a published hostname, such as `acme` in `hello-world.acme.edgible.com`. Not the word "org" literally; copy the label from `edgible app list`. |
@@ -21,6 +21,8 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | `None` | Auth mode with no check, for callers such as Stripe or GitHub webhooks that cannot sign in. |
 | Org | Your organisation in Edgible. It appears in every hostname and defines who `org` auth lets in. |
 | Unpublish | Removing an app, which takes its hostname down while leaving the service running and other apps serving. |
+| TCP app, UDP app | An app created with `--protocol tcp` or `--protocol udp`, which carries the connection or the packets unchanged to a local port. It answers at `<app>.<org>.edgible.com:<port>` and has no auth mode, because there is no browser request to sign in with. |
+| Public port range | The ports a TCP or UDP app can use on the managed gateway: `20000` to `29999`. The public port is the `--port` you publish, and one app holds a port on its gateway at a time. |
 
 ## Networking
 
@@ -92,6 +94,19 @@ Every term these guides use, in one place. Chapters restate the parameters they 
 | Metal | How Ollama reaches the Mac GPU. A UTM guest cannot, which is why inference stays on the host. |
 | Model tag | The name and size of a model, such as `qwen2.5:7b` or `gpt-oss:20b`. |
 | `11434` | Ollama's HTTP port, on the Mac by default. |
+
+## Game server
+
+| Term | What it means here |
+| --- | --- |
+| Java Edition | Minecraft on Windows, Mac and Linux PCs. It connects over TCP, by default on port `25565`. |
+| Bedrock Edition | Minecraft on phones, tablets, Windows and consoles. It connects over UDP, by default on port `19132`. |
+| Paper | A Minecraft Java server that loads plugins. [Game server on Edgible](guides/game-server-on-edgible/README.md) runs it in the `itzg/minecraft-server` image. |
+| Geyser | A plugin that lets Bedrock players into a Java server by translating between the two, so both editions share one world. |
+| Floodgate | Geyser's companion plugin, which lets Bedrock players in without a Java account. Geyser uses it when its `auth-type` is `floodgate`. |
+| Online mode | A Java server setting that checks every player's account. On by default; these guides leave it on. |
+| Whitelist | The list of players allowed in. With a TCP or UDP app, which has no auth mode, it is what decides who plays. |
+| `mc-monitor` | A status checker shipped in the `itzg` images. `status` pings a Java server over TCP, and `status-bedrock` pings a Bedrock server over UDP. |
 
 ## The machines in these guides
 
