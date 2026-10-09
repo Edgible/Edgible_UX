@@ -4,7 +4,7 @@
 
 ## 4.0 Why
 
-Neither app in this series has an auth mode, so for as long as they exist, anyone who has the address can reach the server and read its status. The whitelist keeps strangers out of the world, but a server you have stopped playing on is still a public endpoint on a box you own.
+Neither app in this series has an auth mode, so for as long as they exist, treat them as reachable by anyone: anyone can reach the server and read its status. The whitelist keeps strangers out of the world, but a server you have stopped playing on is still a public endpoint on a box you own.
 
 This is also a shared machine. It may still be running another series, so the default here is this series only: `hello-world` and the Edgible serving agent stay.
 

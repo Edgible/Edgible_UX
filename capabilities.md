@@ -55,7 +55,7 @@ Port-forwarding and the firewall rules around it. Dynamic DNS. Certbot and renew
 ## Known limits
 
 - TLS terminates on the serving device, so the gateway cannot inject HTTP headers. The original client IP therefore does not reach the app, which breaks visitor geolocation in analytics tools. [What the country column will not tell you](guides/website-on-edgible/04-publish-umami.md#45-what-the-country-column-will-not-tell-you) shows the empty country column and proves the cause. PROXY protocol between gateway and device would close this gap.
-- A TCP or UDP app has no auth mode, and its public port must be from `20000` to `29999`, held by one app on its gateway at a time. [When port 25565 is taken](guides/game-server-on-edgible/02-java-over-tcp.md#25-when-port-25565-is-taken) shows the error and the fix, and [Why the port is 29132](guides/game-server-on-edgible/03-bedrock-over-udp.md#32-why-the-port-is-29132) the range.
+- A TCP or UDP app has no auth mode, so treat it as reachable by anyone and publish only services with their own way to refuse a caller, such as a game server's whitelist. Its public port must be from `20000` to `29999`, held by one app on its gateway at a time. [When port 25565 is taken](guides/game-server-on-edgible/02-java-over-tcp.md#25-when-port-25565-is-taken) shows the error and the fix, and [Why the port is 29132](guides/game-server-on-edgible/03-bedrock-over-udp.md#32-why-the-port-is-29132) the range.
 - WebSocket-heavy apps should be checked on first publish. [n8n editor through Edgible](guides/n8n-on-edgible/02-n8n-editor-through-edgible.md) describes what it means when the page shell loads but the canvas stays blank.
 
 ---

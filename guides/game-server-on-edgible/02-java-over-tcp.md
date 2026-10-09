@@ -83,7 +83,9 @@ On a PC with Minecraft Java Edition, ideally on another network:
 
 The server list shows the message `Game night` and the player count before anyone joins, which is the same status `mc-monitor` read. A friend on the whitelist lands in the world. Anyone else is disconnected with a message that they are not on the whitelist, which is the check that the server, not Edgible, decides who plays.
 
-Be clear about what is reachable. A TCP app has no auth mode, so anyone who has the address can reach the server and see its status. What keeps them out of the world is online mode, which rejects an account that is not real, and the whitelist, which rejects an account that is not invited. Both were turned on in 1.4, before this chapter published anything.
+Be clear about what is reachable. A TCP app has no auth mode, so treat it as reachable by anyone, not only by the friends you gave the address to: anyone can reach the server and read its status. What keeps them out of the world is online mode, which rejects an account that is not real, and the whitelist, which rejects an account that is not invited. Both were turned on in 1.4, before this chapter published anything.
+
+That is why a game server suits a TCP app: it has its own way to say no. A service whose only protection would be an address nobody knows, such as SSH or a database, does not, so do not publish one this way.
 
 ## 2.5 When port 25565 is taken
 

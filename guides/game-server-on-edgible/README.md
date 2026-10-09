@@ -11,6 +11,8 @@ It is also the first series in these guides that is not web. Minecraft comes in 
 
 A TCP or UDP app has no auth mode. There is no browser and no HTTP request in a game connection, so there is nothing for an `org` login or an `api-key` to attach to, and the CLI refuses one. What decides who plays is the game itself: online mode, which checks every Java player's account, and a whitelist, which lists the friends you invite. Chapter 1 turns both on before anything is published.
 
+Treat a TCP or UDP app as reachable by anyone, not only by people you gave the address to. That is fine for a game server, whose whitelist does the job a login would. It is not fine for a service whose only protection would be an address nobody knows, such as SSH, a database or a home-automation controller. Do not publish those as TCP or UDP apps.
+
 Each chapter is one job and one smoke test. Do them in order.
 
 Chapters share a shape: a one-line hook under the title, then **N.0 Why** (what is missing without this chapter, and which machine you run it on), then **N.1 The job** (what you'll do, how you'll know, what you need, what this is not). Steps after that, a **Verify** checklist that mirrors *Done when*, and **Next** at the end.
