@@ -4,14 +4,14 @@
 
 ## 1.0 Why
 
-[Website on Edgible](../website-on-edgible/README.md) published a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted those hostnames and stopped the containers. This chapter runs the website again from the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md). The site is a Vite React app served as static files. The editor is Strapi.
+[Website on Edgible](../website-on-edgible/README.md) published a public site, an open tracking script, a locked analytics dashboard, and a locked uptime monitor. [Tear down the website stack](../website-on-edgible/06-website-teardown.md) deleted those hostnames and stopped the containers. This chapter runs the website again from the [website card](https://github.com/Edgible/cards/blob/main/website/README.md). The site is a Vite React app served as static files. The editor is Strapi.
 
 The card has two places. `site`, `strapi`, `analytics`, and `umami` are `web`. `status` is `monitor`. This chapter maps both places to `minipc`.
 
-![The website card lists five apps in two places, and no hostnames. Place web is one serving device: site is your pages, served by React on port 8080, open to anyone. strapi is Strapi editor on port 1337, org login. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/website/images/card-light.svg#only-light)
-![The website card lists five apps in two places, and no hostnames. Place web is one serving device: site is your pages, served by React on port 8080, open to anyone. strapi is Strapi editor on port 1337, org login. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/cards/website/images/card-dark.svg#only-dark)
+![The website card lists five apps in two places, and no hostnames. Place web is one serving device: site is your pages, served by React on port 8080, open to anyone. strapi is Strapi editor on port 1337, org login. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/website/images/card-light.svg#only-light)
+![The website card lists five apps in two places, and no hostnames. Place web is one serving device: site is your pages, served by React on port 8080, open to anyone. strapi is Strapi editor on port 1337, org login. analytics is Umami tracking script, same process as umami on port 3000, open to anyone. umami is Umami dashboard on port 3000, org login. Place monitor may be another serving device: status is Uptime Kuma on port 3001, org login. The card names no device and no organization.](https://raw.githubusercontent.com/Edgible/cards/main/website/images/card-dark.svg#only-dark)
 
-**Where you run this:** the **Ubuntu guest**. Follow the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md) in your home directory.
+**Where you run this:** the **Ubuntu guest**. Follow the [website card](https://github.com/Edgible/cards/blob/main/website/README.md) in your home directory.
 
 ## 1.1 The job
 
@@ -23,11 +23,11 @@ You follow the How on the website card.
 
 **Need first:** [Tear down the website stack](../website-on-edgible/06-website-teardown.md), including the serving agent still installed. `hello-world` can stay.
 
-**Not this chapter:** the commands, the Compose files, and `card.env`. Those are the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md).
+**Not this chapter:** the commands, the Compose files, and `card.env`. Those are the [website card](https://github.com/Edgible/cards/blob/main/website/README.md).
 
 ## 1.2 How
 
-The commands are on the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md). In your home directory:
+The commands are on the [website card](https://github.com/Edgible/cards/blob/main/website/README.md). In your home directory:
 
 1. Fetch the card.
 2. Edit `card.env`. Set `WEB_DEVICE` and `MONITOR_DEVICE` to `minipc`.
@@ -45,7 +45,7 @@ If the teardown removed the Umami tracking snippet from your pages, put it back 
 
 ## 1.3 Getting started
 
-Follow Getting Started on the [website card](https://github.com/Edgible/cards/blob/main/cards/website/README.md).
+Follow Verify on the [website card](https://github.com/Edgible/cards/blob/main/website/README.md).
 
 ## Verify
 
