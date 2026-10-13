@@ -104,7 +104,7 @@ Then hard-refresh the public URL. No rebuild, no container restart, no Edgible c
 
 `site.<org>.edgible.com` is a working public address, and for a demo it is enough. A site you hand to customers usually wants your own name on it. Edgible supports custom domains, so the shape is: your domain points at the Edgible hostname, and the app knows to answer for it.
 
-You need a domain and access to its DNS. Then:
+You need a domain of your own and access to its DNS. A name under `edgible.com` will not do: that whole zone is reserved for the hostnames Edgible generates, such as `site.<org>.edgible.com`, so Edgible refuses any other name in it, even one that looks free. Then:
 
 1. Add the hostname to the app. It is the **Custom domains / additional hostnames** prompt you left blank in 2.2, and the same field is on the application in the console. Enter the name you want, for example `www.example.com`.
 2. At your DNS provider, create a `CNAME` record from that name to the hostname Edgible issued:
