@@ -181,6 +181,14 @@ If you are still on a forwarded port or a hand-maintained reverse proxy, the com
 
 [Start here](../guides/start-here/01-edgible-on-vm.md) ends with the observable check: the page loads on a phone with Wi-Fi off, while the verify list still shows the port is not forwarded.
 
+### 7. Testing on real machines, the way users reach them
+
+A self-hosted app is proven only when someone on the internet can use it with the right access rules, not when its container starts. Testing that across many machines is usually out of reach. Each machine sits behind a different router, often one that cannot forward a port. Each app needs a public hostname, a DNS record and a certificate, restricting it to a team means running a sign-in proxy, and every test leaves records and configuration to clean up. So most testing stops at `localhost`, or at one hand-built cloud server, which proves nothing about a small board computer in someone's home.
+
+With Edgible, any machine that runs containers, at home, in the office or in the cloud, runs a serving agent that connects out. Publishing an app gives it a real `https://` hostname at once, with the auth mode it needs: `None`, `org` or `api-key`. Unpublishing removes it. No port is opened, and no DNS or certificate is managed. A fleet of mismatched machines can then act as one test lab, and anyone can contribute a test result with an account and a machine. Builds that only connect out need nothing more; Edgible matters when the work must be reached.
+
+The check: every app card in [Edgible/cards](https://github.com/Edgible/cards) carries a `test.yml` from this lifecycle, with `publish`, `verify` and `teardown` on a real serving device, and the nightly regression keeps it current.
+
 ## Quick evaluation checklist
 
 Questions an architect can answer from the guides without trusting marketing copy.
