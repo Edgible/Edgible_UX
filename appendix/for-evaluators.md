@@ -178,8 +178,9 @@ If you are still on a forwarded port or a hand-maintained reverse proxy, the com
 - **CGNAT:** for a growing share of connections there is no public address to forward, so skill does not help.
 - **Asymmetry:** an open port answers the internet continuously; you patch and renew on that schedule.
 - **Capability:** one port cannot give one service two public identities with two access rules.
+- **Cloud servers:** the instance needs no static address and no load balancer, and its firewall can refuse every inbound connection. Its address can change on every restart, because nothing points at it: visitors reach the published hostname, and the serving agent connects out.
 
-[Start here](../guides/start-here/01-edgible-on-vm.md) ends with the observable check: the page loads on a phone with Wi-Fi off, while the verify list still shows the port is not forwarded.
+[Start here](../guides/start-here/01-edgible-on-vm.md) ends with the observable check: the page loads on a phone with Wi-Fi off, while the verify list still shows the port is not forwarded. On a cloud server the check is the same in its own terms: the instance's firewall lists no inbound rules, and the published hostname still loads.
 
 ### 7. Testing on real machines, the way users reach them
 
