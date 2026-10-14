@@ -57,13 +57,13 @@ Give a coding agent the markdown for a chapter and have it adapt the commands to
 
 Ask a question against the whole corpus by fetching `llms-full.txt`, when you do not yet know which guide the answer is in.
 
-The cards live in [Edgible/cards](https://github.com/Edgible/cards). The format, the schema, and the tools live in [Edgible/card-kit](https://github.com/Edgible/card-kit). [card.schema.json](https://github.com/Edgible/card-kit/blob/main/card.schema.json) is the source of truth for a card. The card README is how you fetch a card, edit `card.env`, start the containers, and publish. [card-image.py](https://github.com/Edgible/card-kit/blob/main/card-image.py) draws the picture. An assistant that can run `edgible` reads that schema and the cards in the repo. [Self Hosting is Social](guides/self-hosting-is-social/README.md) is the idea. The guide does not keep a second copy of those files.
+The cards live in [edgible-org/cards](https://github.com/edgible-org/cards). The catalog at [cards.edgible.org](https://cards.edgible.org) lists them with their test results, and its [llms.txt](https://cards.edgible.org/llms.txt) indexes every card and need for an assistant. The format, the schema, and the tools live in [edgible-org/card-kit](https://github.com/edgible-org/card-kit). [card.schema.json](https://github.com/edgible-org/card-kit/blob/main/card.schema.json) is the source of truth for a card. The card README is how you fetch a card, edit `card.env`, start the containers, and publish. [card-image.py](https://github.com/edgible-org/card-kit/blob/main/card-image.py) draws the picture. An assistant that can run `edgible` reads that schema and the cards in the repo. [Self Hosting is Social](guides/self-hosting-is-social/README.md) is the idea. The guide does not keep a second copy of those files.
 
 ```bash
-curl https://raw.githubusercontent.com/Edgible/card-kit/main/card.schema.json
-curl https://raw.githubusercontent.com/Edgible/card-kit/main/card-image.py
-curl https://raw.githubusercontent.com/Edgible/cards/main/website/README.md
-curl https://raw.githubusercontent.com/Edgible/cards/main/website/card.yml
+curl https://raw.githubusercontent.com/edgible-org/card-kit/main/card.schema.json
+curl https://raw.githubusercontent.com/edgible-org/card-kit/main/card-image.py
+curl https://raw.githubusercontent.com/edgible-org/cards/main/website/README.md
+curl https://raw.githubusercontent.com/edgible-org/cards/main/website/card.yml
 curl https://guides.edgible.com/guides/self-hosting-is-social/README.md
 ```
 

@@ -187,7 +187,7 @@ A self-hosted app is proven only when someone on the internet can use it with th
 
 With Edgible, any machine that runs containers, at home, in the office or in the cloud, runs a serving agent that connects out. Publishing an app gives it a real `https://` hostname at once, with the auth mode it needs: `None`, `org` or `api-key`. Unpublishing removes it. No port is opened, and no DNS or certificate is managed. A fleet of mismatched machines can then act as one test lab, and anyone can contribute a test result with an account and a machine. Builds that only connect out need nothing more; Edgible matters when the work must be reached.
 
-The check: every app card in [Edgible/cards](https://github.com/Edgible/cards) carries a `test.yml` from this lifecycle, with `publish`, `verify` and `teardown` on a real serving device, and the nightly regression keeps it current.
+The check: every app card in [edgible-org/cards](https://github.com/edgible-org/cards) carries a `test.yml` from this lifecycle, with `publish`, `verify` and `teardown` on a real serving device, and the nightly regression keeps it current.
 
 ## Quick evaluation checklist
 
