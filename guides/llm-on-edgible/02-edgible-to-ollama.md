@@ -74,9 +74,9 @@ If it does not, install the agent here. It runs under your account, and on this 
 edgible agent install \
   --device-type serving \
   --device-name macbook \
-  --non-interactive
+  --yes
 edgible agent start
-edgible device health --name macbook
+edgible device health --device macbook
 ```
 
 Then create the app. `--port 11434` is the Ollama listen from 2.2. `--device-id` is the id from `edgible device list` for this Mac.
