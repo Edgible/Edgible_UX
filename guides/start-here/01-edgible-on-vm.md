@@ -169,7 +169,7 @@ If your guest is a separate physical machine on your LAN rather than a VM, use i
 ```bash
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y ca-certificates curl
+sudo apt-get install -y ca-certificates curl unzip
 ```
 
 If the upgrade installed a new kernel, reboot the VM (`sudo reboot`), then log in again.
@@ -230,7 +230,7 @@ Still inside the guest:
 curl -fsSL https://get.edgible.com/install.sh | bash
 ```
 
-The CLI needs Node.js 20+. The installer offers to install it if it is missing. Accept that.
+The CLI needs Node.js 20+, and the installer needs `unzip` (1.5.1 installed it). The installer offers to install Node if it is missing. Accept that. On Ubuntu 26.04, `sudo apt-get install -y nodejs` installs a recent enough one first; Ubuntu 24.04's is too old, so let the installer do it there.
 
 Reload your PATH if `edgible` is not found (new shell, or `source ~/.bashrc`).
 
@@ -309,7 +309,7 @@ Keep the name to letters and digits. Hyphens can cause trouble, which is why it 
 edgible agent install \
   --device-type serving \
   --device-name minipc \
-  --non-interactive
+  --yes
 ```
 
 Expect 30–60 seconds. Run without `sudo`. That is what installs the agent as you.
@@ -332,7 +332,7 @@ That process connects outbound to the control plane (WebSocket over HTTPS). It d
 Wait a few seconds, then:
 
 ```bash
-edgible device health --name minipc
+edgible device health --device minipc
 ```
 
 Expect **Health check OK** within about 15 seconds.
@@ -349,7 +349,7 @@ Common causes: login was skipped, no outbound 443, or the device name already ex
 ### Verify
 
 - [ ] `systemctl --user status edgible-agent` shows `active (running)`.
-- [ ] `edgible device health --name minipc` prints **Health check OK**.
+- [ ] `edgible device health --device minipc` prints **Health check OK**.
 - [ ] Dashboard lists a serving device named `minipc`.
 
 ---
