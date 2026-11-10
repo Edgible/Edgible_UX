@@ -4,9 +4,10 @@
  * compound selectors, so the rules below have to match on both attributes to
  * win the cascade. */
 
-/* Jost, a Futura revival, standing in for the Edgible brand face Nexa. Nexa is
- * licensed and cannot ship in a public repo; Jost is under the SIL Open Font
- * License, so it can. Licence text: fonts/Jost-OFL.txt.
+/* Jost, a Futura revival, for text: the same as www.edgible.ai and
+ * cards.edgible.org. It is under the SIL Open Font License, so it can ship in a
+ * public repo. Licence text: fonts/Jost-OFL.txt. (The logo's wordmark is set
+ * in Outfit, as outlines in images/edgible-logo-white.svg, so it needs no font.)
  *
  * These are variable fonts covering weights 100 to 900 in one file each. */
 @font-face {
